@@ -1,0 +1,127 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<UsingTask AssemblyFile="packages\xunit.runners.1.9.2\tools\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
+
+	<PropertyGroup>
+		<BuildDependsOn>
+			$(BuildDependsOn);
+			BeforeBuild;
+			CoreBuild;
+			AfterBuild
+		</BuildDependsOn>
+	</PropertyGroup>
+  
+	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
+	<Target Name="BeforeBuild" />
+	<Target Name="AfterBuild" />
+
+	<Target Name="CoreBuild" >
+
+		<Message 
+			Text="=========== $(Configuration) Build ===========" 
+			Importance="High" 
+			/>
+	
+		<MSBuild 
+			Projects="$(SolutionFile)" 
+			Targets="Build" 
+			Properties="Configuration=$(Configuration)" 
+			/>
+		
+		<Message 
+			Text="=========== $(Configuration) Build Done ===========" 
+			Importance="High" 
+			/>
+	
+	</Target>
+	
+	<PropertyGroup>
+		<UnitTestDependsOn>
+			$(UnitTestDependsOn);
+			Build;
+			BeforeUnitTest;
+			CoreUnitTest;
+			AfterUnitTest
+		</UnitTestDependsOn>
+	</PropertyGroup>
+	
+	<Target Name="UnitTest" DependsOnTargets="$(UnitTestDependsOn)" />
+	<Target Name="BeforeUnitTest" />
+	<Target Name="AfterUnitTest" />
+
+	<Target Name="CoreUnitTest" >
+	
+		<Message 
+			Text="=========== Unit Tests ===========" 
+			Importance="High" 
+			/>
+	
+		<xunit 
+			Assembly="$(UnitTestAssemblyPath)" 
+			/>
+
+		<Message 
+			Text="=========== Unit Tests Done ===========" 
+			Importance="High" 
+			/>
+		
+		<Message 
+			Text="=========== Integration Tests ===========" 
+			Importance="High" 
+			/>
+		
+		<xunit 
+			Assembly="$(IntegrationTestAssemblyPath)" />
+
+		<Message 
+			Text="=========== Integration Tests Done ===========" 
+			Importance="High" 
+			/>
+
+    </Target>
+	
+	
+	<Target Name="TravisCI">
+	
+		<Message Text="=========== Travis Building Source (NO UNIT TESTS YET) ===========" Importance="High" />
+
+		<MSBuild 
+			Projects="@(TravisCIProjects)" 
+			Targets="Build" 
+			Properties="Configuration=$(Configuration)" 
+			/>
+		
+		<Message Text="=========== Travis Build Complete ===========" Importance="High" />
+		
+	</Target>
+
+	<!-- 
+		Execute source environment checks before trying to compile  
+	-->
+	<Target Name="ValidateBuildEnvironment" BeforeTargets="$(BuildDependsOn)">
+		
+		<ItemGroup>
+			<!-- Put required property values here -->
+			<_MandatoryProperty Remove="@(_MandatoryProperty)" />
+			<_MandatoryProperty Include="SolutionFile"><Value>$(SolutionFile)</Value></_MandatoryProperty>  
+			<_MandatoryProperty Include="UnitTestAssemblyPath"><Value>$(UnitTestAssemblyPath)</Value></_MandatoryProperty>  
+			<_MandatoryProperty Include="IntegrationTestAssemblyPath"><Value>$(IntegrationTestAssemblyPath)</Value></_MandatoryProperty>  
+			<_MandatoryProperty Include="TravisCIProjects"><Value>$(TravisCIProjects)</Value></_MandatoryProperty>  
+			<!-- Put required property values here -->
+			
+			<!-- Put required files here -->
+			<!-- Put required files here -->
+		</ItemGroup>
+		
+		<!-- Validate properties -->
+		<Error 
+			Condition=" '%(_MandatoryProperty.Value)' == '' "
+			Text="Property [%(_MandatoryProperty.Identity)] has not been set" />
+ 
+		<!-- Validate files -->
+		<Error 
+			Condition=" !Exists('%(_MandatoryPath.Value)') "
+			Text = "Path [%(_MandatoryPath.Value)] does not exist - [%(_MandatoryPath.Identity)] " />
+	</Target>
+
+</Project>

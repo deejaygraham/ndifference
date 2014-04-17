@@ -1,0 +1,40 @@
+<Project DefaultTargets="UnitTest" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+	<PropertyGroup>
+		<ProjectName>NDifference</ProjectName>
+		<Version Condition="'$(Version)'==''">0.1.0.0</Version>
+		<Configuration Condition=" '$(Configuration)' == '' " >Debug</Configuration>
+	</PropertyGroup>
+
+	<!-- 
+		Folders
+	-->
+	<PropertyGroup>
+		<RootFolder>$(MSBuildProjectDirectory)\</RootFolder>
+		<SourceFolder>$(RootFolder)src\</SourceFolder>
+		<TestsFolder>$(RootFolder)tests\</TestsFolder>
+		<UnitTestOutputFolder>$(TestsFolder)Core.Tests\bin\$(Configuration)\</UnitTestOutputFolder>
+		<IntegrationTestOutputFolder>$(TestsFolder)Core.IntegrationTests\bin\$(Configuration)\</IntegrationTestOutputFolder>
+	</PropertyGroup>
+
+	<!-- 
+		Solutions and Projects 
+	-->
+	<PropertyGroup>
+		<SolutionFile Include="$(RootFolder)$(ProjectName).sln" />
+	</PropertyGroup>
+	<ItemGroup>
+		<TravisCIProjects Include="$(SourceFolder)Core\Core.csproj" />
+	</PropertyGroup>
+	
+	<!--
+		Output Binaries 
+	-->
+	<PropertyGroup>
+		<UnitTestAssemblyPath>$(UnitTestOutputFolder)$(ProjectName).Tests.dll</UnitTestAssemblyPath>
+		<IntegrationTestAssemblyPath>$(IntegrationTestOutputFolder)$(ProjectName).IntegrationTests.dll</IntegrationTestAssemblyPath>
+	</PropertyGroup>
+	
+	<Import Project="NDifference.targets" />
+
+</Project>

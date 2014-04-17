@@ -1,0 +1,20 @@
+## Travis CI Integration
+## NDifference
+
+language: c
+
+before_install:
+  - sudo apt-get update -qq > /dev/null
+  - sudo apt-get install -qq mono-devel > /dev/null
+  - mozroots --import --sync
+  ##- chmod +x packages/xunit.runners.1.9.2/tools/xunit.console.clr4.x86.exe
+  - export EnableNuGetPackageRestore=true
+ 
+  
+install:
+  - sudo apt-get install mono-gmcs
+
+script:
+  - xbuild ndifference.proj /t:TravisCI
+ ## - mono packages/xunit.runners.1.9.2/tools/xunit.console.clr4.x86.exe tests/Core.Tests/bin/Release/NDifference.Tests.dll
+ ## - mono packages/xunit.runners.1.9.2/tools/xunit.console.clr4.x86.exe tests/Core.IntegrationTests/bin/Release/NDifference.IntegrationTests.dll

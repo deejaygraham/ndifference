@@ -23,10 +23,11 @@
 	<PropertyGroup>
 		<SolutionFile Include="$(RootFolder)$(ProjectName).sln" />
 	</PropertyGroup>
+	
 	<ItemGroup>
 		<!-- Removed for debugging -->
 		<!-- <TravisCIProjects Include="$(SourceFolder)Core\Core.csproj" /> -->
-	</PropertyGroup>
+	</ItemGroup>
 	
 	<!--
 		Output Binaries 

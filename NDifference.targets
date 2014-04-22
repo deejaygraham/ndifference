@@ -2,20 +2,7 @@
 
 	<UsingTask AssemblyFile="packages\xunit.runners.1.9.2\tools\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
 
-	<PropertyGroup>
-		<BuildDependsOn>
-			$(BuildDependsOn);
-			BeforeBuild;
-			CoreBuild;
-			AfterBuild
-		</BuildDependsOn>
-	</PropertyGroup>
-  
-	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
-	<Target Name="BeforeBuild" />
-	<Target Name="AfterBuild" />
-
-	<Target Name="CoreBuild" >
+	<Target Name="Build" >
 
 		<Message 
 			Text="=========== $(Configuration) Build ===========" 
@@ -35,22 +22,8 @@
 	
 	</Target>
 	
-	<PropertyGroup>
-		<UnitTestDependsOn>
-			$(UnitTestDependsOn);
-			Build;
-			BeforeUnitTest;
-			CoreUnitTest;
-			AfterUnitTest
-		</UnitTestDependsOn>
-	</PropertyGroup>
-	
-	<Target Name="UnitTest" DependsOnTargets="$(UnitTestDependsOn)" />
-	<Target Name="BeforeUnitTest" />
-	<Target Name="AfterUnitTest" />
+	<Target Name="UnitTest" AfterTargets="Build" >
 
-	<Target Name="CoreUnitTest" >
-	
 		<Message 
 			Text="=========== Unit Tests ===========" 
 			Importance="High" 
@@ -80,7 +53,6 @@
 
     </Target>
 	
-	
 	<Target Name="TravisCI">
 	
 		<Message Text="=========== Travis Building Source (NO UNIT TESTS YET) ===========" Importance="High" />
@@ -98,7 +70,7 @@
 	<!-- 
 		Execute source environment checks before trying to compile  
 	-->
-	<Target Name="ValidateBuildEnvironment" BeforeTargets="$(BuildDependsOn)">
+	<Target Name="ValidateBuildEnvironment" BeforeTargets="$(BuildDependsOn);TravisCI">
 		
 		<ItemGroup>
 			<!-- Put required property values here -->

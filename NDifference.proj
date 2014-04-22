@@ -1,4 +1,4 @@
-<Project DefaultTargets="UnitTest" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 
 	<PropertyGroup>
 		<ProjectName>NDifference</ProjectName>
@@ -24,7 +24,8 @@
 		<SolutionFile Include="$(RootFolder)$(ProjectName).sln" />
 	</PropertyGroup>
 	<ItemGroup>
-		<TravisCIProjects Include="$(SourceFolder)Core\Core.csproj" />
+		<!-- Removed for debugging -->
+		<!-- <TravisCIProjects Include="$(SourceFolder)Core\Core.csproj" /> -->
 	</PropertyGroup>
 	
 	<!--

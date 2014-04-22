@@ -70,7 +70,7 @@
 	<!-- 
 		Execute source environment checks before trying to compile  
 	-->
-	<Target Name="ValidateBuildEnvironment" BeforeTargets="$(BuildDependsOn);TravisCI">
+	<Target Name="ValidateBuildEnvironment" BeforeTargets="$(BuildDependsOn)">
 		
 		<ItemGroup>
 			<!-- Put required property values here -->

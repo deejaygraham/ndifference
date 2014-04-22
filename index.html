@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Ndifference : Tools for public API difference reporting on .Net assemblies" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Ndifference</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/deejaygraham/ndifference">View on GitHub</a>
+
+          <h1 id="project_title">Ndifference</h1>
+          <h2 id="project_tagline">Tools for public API difference reporting on .Net assemblies</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/deejaygraham/ndifference/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/deejaygraham/ndifference/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="ndifference" class="anchor" href="#ndifference"><span class="octicon octicon-link"></span></a>NDifference</h1>
+
+<p>Tools for public API difference reporting on .Net assemblies</p>
+
+<h2>
+<a name="what-is-it" class="anchor" href="#what-is-it"><span class="octicon octicon-link"></span></a>What is it?</h2>
+
+<p>NDifference is a difference and reporting tool to allow developers to discover breaking changes in the public 
+API of a .Net project between releases at the assembly level. It works with published assemblies via reflection 
+and does not require the original source code.</p>
+
+<p>It performs static analysis on .Net assemblies, providing built-in inspectors for the most common checks and 
+supports loading of custom inspectors. Analysis is performed at the library, assembly and type level.</p>
+
+<h2>
+<a name="product-inspection" class="anchor" href="#product-inspection"><span class="octicon octicon-link"></span></a>Product Inspection</h2>
+
+<p>The following is a list of built-in product level inspections:</p>
+
+<ul>
+<li>Removed assemblies</li>
+<li>Changed assemblies</li>
+<li>Added assemblies</li>
+</ul><h2>
+<a name="assembly-inspection" class="anchor" href="#assembly-inspection"><span class="octicon octicon-link"></span></a>Assembly Inspection</h2>
+
+<p>The following is a list of built-in assembly level inspections:</p>
+
+<ul>
+<li>Changed target architecture</li>
+<li>Changed assembly references</li>
+<li>Removed types</li>
+<li>Added types</li>
+<li>Obsolete types</li>
+<li>Changed types</li>
+</ul><h2>
+<a name="type-inspection" class="anchor" href="#type-inspection"><span class="octicon octicon-link"></span></a>Type Inspection</h2>
+
+<p>The following is a list of built-in type level inspections:</p>
+
+<ul>
+<li>Constant values</li>
+<li>Enum values</li>
+<li>Abstraction</li>
+<li>Constructors</li>
+<li>Derivation</li>
+<li>Events</li>
+<li>Fields</li>
+<li>Finalizers</li>
+<li>Interface implementation</li>
+<li>Methods</li>
+<li>Properties</li>
+<li>Sealing</li>
+<li>Obsolete members</li>
+<li>Taxonomy</li>
+</ul><h2>
+<a name="reporting" class="anchor" href="#reporting"><span class="octicon octicon-link"></span></a>Reporting</h2>
+
+<p>There is a built-in reporting capability for common file formats but custom reporting is supported too.</p>
+
+<h2>
+<a name="extensibility" class="anchor" href="#extensibility"><span class="octicon octicon-link"></span></a>Extensibility</h2>
+
+<p>Both the inspection rules and the report output are customisable.</p>
+
+<h2>
+<a name="prior-art" class="anchor" href="#prior-art"><span class="octicon octicon-link"></span></a>Prior Art</h2>
+
+<p>The original inspiration for this project came from Microsoft's unsupported 
+<a href="http://www.microsoft.com/en-us/download/details.aspx?id=11287">libcheck</a> tool.</p>
+
+<h2>
+<a name="ci-status" class="anchor" href="#ci-status"><span class="octicon octicon-link"></span></a>CI Status</h2>
+
+<p>The project builds on Travis: <a href="https://travis-ci.org/deejaygraham/ndifference"><img src="https://travis-ci.org/deejaygraham/ndifference.png?branch=master" alt="Build Status"></a>.</p>
+
+<h2>
+<a name="get-involved" class="anchor" href="#get-involved"><span class="octicon octicon-link"></span></a>Get Involved!</h2>
+
+<p>Have an idea about improving the project? Please get involved. NDifference is an open source project (of course) and we accept 
+contributions! Contribute a patch or let us know how to improve.</p>
+
+<h3>
+<a name="thank-yous-" class="anchor" href="#thank-yous-"><span class="octicon octicon-link"></span></a>Thank You's !</h3>
+
+<ul>
+<li>The <a href="http://www.mono-project.com/Cecil">Mono.Cecil</a> Project for the reflection engine</li>
+<li>The fine folks at <a href="http://xunit.codeplex.com">xunit</a> for their unit testing framework.</li>
+<li>
+<a href="https://travis-ci.org/">Travis-ci</a> for the CI support.</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Ndifference maintained by <a href="https://github.com/deejaygraham">deejaygraham</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-46047274-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>

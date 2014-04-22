@@ -21,7 +21,7 @@
 		Solutions and Projects 
 	-->
 	<PropertyGroup>
-		<SolutionFile Include="$(RootFolder)$(ProjectName).sln" />
+		<SolutionFile>$(RootFolder)$(ProjectName).sln</SolutionFile>
 	</PropertyGroup>
 	
 	<ItemGroup>

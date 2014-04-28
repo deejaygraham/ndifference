@@ -2,7 +2,8 @@
 namespace NDifference
 {
     /// <summary>
-	/// Plain old C# Object. No distinction form enum, class, struct, interface needed yet.
+	/// Plain old C# Object. No distinction between enum, class, 
+	/// struct, interface needed yet.
 	/// </summary>
 	public class PocoType : IDiscoveredType
 	{

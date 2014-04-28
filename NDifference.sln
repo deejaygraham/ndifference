@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reflection", "src\Reflection\Reflection.csproj", "{10C50D33-3151-4D4B-B6E8-749735FE92E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalkingSkeleton", "src\WalkingSkeleton\WalkingSkeleton.csproj", "{FE4A176F-1BA5-4EEF-B132-2860EF6C6A13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.csproj", "{FB9DB4C7-F9B4-420C-9440-7F422C814F2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{B283A0A5-C05F-4267-9817-77C60A73CB53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{FE4A176F-1BA5-4EEF-B132-2860EF6C6A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE4A176F-1BA5-4EEF-B132-2860EF6C6A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE4A176F-1BA5-4EEF-B132-2860EF6C6A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB9DB4C7-F9B4-420C-9440-7F422C814F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB9DB4C7-F9B4-420C-9440-7F422C814F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB9DB4C7-F9B4-420C-9440-7F422C814F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB9DB4C7-F9B4-420C-9440-7F422C814F2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B283A0A5-C05F-4267-9817-77C60A73CB53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B283A0A5-C05F-4267-9817-77C60A73CB53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B283A0A5-C05F-4267-9817-77C60A73CB53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B283A0A5-C05F-4267-9817-77C60A73CB53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

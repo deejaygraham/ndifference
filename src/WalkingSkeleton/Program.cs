@@ -1,4 +1,5 @@
-﻿using Reflection;
+﻿using NDifference;
+using NDifference.Reflection;
 using System;
 using System.Reflection;
 
@@ -21,6 +22,13 @@ namespace WalkingSkeleton
 			assemblyPath = Assembly.GetExecutingAssembly().Location;
 
 			foreach (var tn in ar.AllTypeNamesIn(assemblyPath))
+			{
+				Console.WriteLine(tn);
+			}
+
+			assemblyPath = Assembly.GetAssembly(typeof(PocoType)).Location;
+
+			foreach (var tn in ar.AllTypesIn(assemblyPath))
 			{
 				Console.WriteLine(tn);
 			}

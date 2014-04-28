@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Reflection
+namespace NDifference.Reflection
 {
     public static class CecilExtensionMethods
     {

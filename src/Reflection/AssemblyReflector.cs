@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Reflection
+namespace NDifference.Reflection
 {
 	public class AssemblyReflector
 	{
@@ -21,5 +21,19 @@ namespace Reflection
 
 			yield break;
 		}
+
+		public IEnumerable<IDiscoveredType> AllTypesIn(string assembly)
+		{
+			Debug.Assert(!String.IsNullOrEmpty(assembly), "Assembly name is blank");
+			Debug.Assert(File.Exists(assembly), "Assembly does not exist");
+
+			var definition = AssemblyDefinition.ReadAssembly(assembly);
+
+			foreach (var typeDef in definition.MainModule.GetTypes().Where(x => !x.IsInternalName()))
+				yield return new PocoType { FullName = new FullyQualifiedName(typeDef.FriendlyName()) };
+
+			yield break;
+		}
+
 	}
 }

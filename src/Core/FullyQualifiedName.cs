@@ -12,7 +12,7 @@ namespace NDifference
 	{
 		public FullyQualifiedName(string fqn)
 		{
-			Debug.Assert(!String.IsNullOrEmpty(fqn), "Name cannot be blank");
+			Debug.Assert(!string.IsNullOrEmpty(fqn), "Name cannot be blank");
 
 			this.Value = fqn;
 		}
@@ -25,11 +25,11 @@ namespace NDifference
 			{
 				string text = this.Value;
 
-				const char dot = '.';
+				const char Dot = '.';
 
-				if (this.Value.Contains(dot))
+				if (this.Value.Contains(Dot))
 				{
-					int index = this.Value.LastIndexOf(dot);
+					int index = this.Value.LastIndexOf(Dot);
 					text = this.Value.Substring(index + 1);
 				}
 
@@ -43,11 +43,11 @@ namespace NDifference
 			{
 				string text = string.Empty;
 
-				const char dot = '.';
+				const char Dot = '.';
 
-				if (this.Value.Contains(dot))
+				if (this.Value.Contains(Dot))
 				{
-					int index = this.Value.LastIndexOf(dot);
+					int index = this.Value.LastIndexOf(Dot);
 					text = this.Value.Substring(0, index);
 				}
 
@@ -91,7 +91,7 @@ namespace NDifference
 
 			const bool IgnoreCase = false;
 
-			return String.Compare(this.Value, another.Value, IgnoreCase) == 0;
+			return string.Compare(this.Value, another.Value, IgnoreCase) == 0;
 		}
 
 		public override string ToString()

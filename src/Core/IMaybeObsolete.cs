@@ -1,5 +1,4 @@
-﻿
-namespace NDifference
+﻿namespace NDifference
 {
 	/// <summary>
 	/// Has this been made obsolete?

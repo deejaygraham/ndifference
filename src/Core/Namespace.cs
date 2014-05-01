@@ -10,7 +10,7 @@ namespace NDifference
 	public class Namespace : IComparable<Namespace>
 	{
 		public Namespace()
-			: this(String.Empty)
+			: this(string.Empty)
 		{
 		}
 
@@ -19,7 +19,22 @@ namespace NDifference
 			this.Value = value;
 		}
 
-		public bool IsGlobal { get { return String.IsNullOrEmpty(this.Value); } }
+		public bool IsGlobal 
+		{ 
+			get 
+			{ 
+				return string.IsNullOrEmpty(this.Value); 
+			} 
+		}
+
+		public bool IsSystem 
+		{ 
+			get 
+			{
+				const string SystemNamespace = "System";
+				return this.Value == SystemNamespace; 
+			} 
+		}
 
 		public string Value { get; private set; }
 
@@ -27,9 +42,9 @@ namespace NDifference
 		{
 			Debug.Assert(ns != null, "NamespaceName is blank");
 			Debug.Assert(tn != null, "TypeName is blank");
-			Debug.Assert(!String.IsNullOrEmpty(tn.Value), "TypeName is blank");
+			Debug.Assert(!string.IsNullOrEmpty(tn.Value), "TypeName is blank");
 
-			if (String.IsNullOrEmpty(ns.Value))
+			if (string.IsNullOrEmpty(ns.Value))
 				return new FullyQualifiedName(tn.Value);
 
 			return new FullyQualifiedName(string.Format("{0}.{1}", ns.Value, tn.Value));

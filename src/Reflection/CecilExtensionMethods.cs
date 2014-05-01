@@ -8,6 +8,49 @@ namespace NDifference.Reflection
 {
     public static class CecilExtensionMethods
     {
+		public static ITypeInfo ToTypeInfo(this TypeDefinition td)
+		{
+			Debug.Assert(td != null, "Type definition cannot be blank");
+
+			var fqn = new FullyQualifiedName(td.FriendlyName());
+ 
+			return new PocoType
+				{
+					Taxonomy = td.ToTaxonomy(),
+					FullName = fqn.ToString(), 
+					Name = fqn.Type.ToString(),
+					Namespace = fqn.ContainingNamespace.ToString(),
+					Assembly = td.Module.Assembly.FullName
+				};
+		}
+
+		public static TypeTaxonomy ToTaxonomy(this TypeDefinition td)
+		{
+			Debug.Assert(td != null, "Type definition cannot be blank");
+
+			TypeTaxonomy kind = TypeTaxonomy.Unknown;
+
+			// check is enum first - enums are enum and class according to cecil.
+			if (td.IsEnum)
+			{
+				kind = TypeTaxonomy.Enum;
+			}
+			else if (td.IsClass)
+			{
+				kind = TypeTaxonomy.Class;
+			}
+			else if (td.IsInterface)
+			{
+				kind = TypeTaxonomy.Interface;
+			}
+			else if (td.IsEnum)
+			{
+				kind = TypeTaxonomy.Enum;
+			}
+
+			return kind;
+		}
+
 		public static string FriendlyName(this TypeDefinition td)
 		{
 			if (td.HasGenericParameters)
@@ -18,7 +61,7 @@ namespace NDifference.Reflection
 			return td.FullName;
 		}
 
-		public static bool IsInternalName(this TypeDefinition td)
+		public static bool IsInternalType(this TypeDefinition td)
 		{
 			const string NetModuleType = "<Module>";
 			const string ExtenionsMethodSignature = "<"; // extension methods seem to show up as className/<blah>
@@ -32,9 +75,12 @@ namespace NDifference.Reflection
 		{
 			var builder = new StringBuilder();
 
+			if (!string.IsNullOrEmpty(td.Namespace))
+				builder.AppendFormat("{0}.", td.Namespace);
+
 			string className = StripGenericNameSuffix(td);
 
-			builder.AppendFormat("{0}.{1}", td.Namespace, className);
+			builder.Append(className);
 
 			const string OpenTag = "<";
 			const string CloseTag = ">";
@@ -50,8 +96,6 @@ namespace NDifference.Reflection
 
 		private static string StripGenericNameSuffix(TypeDefinition td)
 		{
-			Debug.Assert(td != null);
-
 			const char Tilde = '`';
 
 			int tildePosition = td.Name.IndexOf(Tilde);
@@ -75,7 +119,7 @@ namespace NDifference.Reflection
 
 			const string CommaDelimiter = ",";
 
-			return String.Join(CommaDelimiter, list);
+			return string.Join(CommaDelimiter, list);
 		}
     }
 }

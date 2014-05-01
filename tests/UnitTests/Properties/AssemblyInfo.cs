@@ -8,4 +8,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NDifference.UnitTests")]
 [assembly: AssemblyDescription("Unit Test assembly for NDifference")]
 [assembly: AssemblyCulture("")]
-

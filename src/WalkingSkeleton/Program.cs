@@ -5,30 +5,28 @@ using System.Reflection;
 
 namespace WalkingSkeleton
 {
-	class Program
+	public class Program
 	{
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
-			// Load an assembly and return all names...
-			AssemblyReflector ar = new AssemblyReflector();
+			var factory = new CecilReflectorFactory();
+			var reflector = factory.LoadAssembly(Assembly.GetAssembly(typeof(CecilReflector)).Location);
 
-			string assemblyPath = Assembly.GetAssembly(typeof(AssemblyReflector)).Location;
-
-			foreach(var tn in ar.AllTypeNamesIn(assemblyPath))
+			foreach(var tn in reflector.GetTypes())
 			{
 				Console.WriteLine(tn);
 			}
 
-			assemblyPath = Assembly.GetExecutingAssembly().Location;
+			reflector = factory.LoadAssembly(Assembly.GetExecutingAssembly().Location);
 
-			foreach (var tn in ar.AllTypeNamesIn(assemblyPath))
+			foreach (var tn in reflector.GetTypes())
 			{
 				Console.WriteLine(tn);
 			}
 
-			assemblyPath = Assembly.GetAssembly(typeof(PocoType)).Location;
+			reflector = factory.LoadAssembly(Assembly.GetAssembly(typeof(PocoType)).Location);
 
-			foreach (var tn in ar.AllTypesIn(assemblyPath))
+			foreach (var tn in reflector.GetTypes())
 			{
 				Console.WriteLine(tn);
 			}
@@ -43,11 +41,11 @@ namespace WalkingSkeleton
 	/// <typeparam name="T"></typeparam>
 	public class TemplatedType<T>
 	{
-		private T _object;
+		private T exampleObject;
 
 		public TemplatedType(T o)
 		{
-			this._object = o;
+			this.exampleObject = o;
 		}
 	}
 }

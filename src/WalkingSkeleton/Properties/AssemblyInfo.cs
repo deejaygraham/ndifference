@@ -8,4 +8,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WalkingSkeleton")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCulture("")]
-

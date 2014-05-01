@@ -28,6 +28,7 @@ Add core project
 Add msbuild project
 Add gui project
 Add console project
+Add powershell project binding?
 
 Version number
 Tag version in git

@@ -5,7 +5,7 @@ namespace NDifference
 	/// Plain old C# Object. No distinction between enum, class, 
 	/// struct, interface needed yet.
 	/// </summary>
-	public class PocoType : IDiscoveredType
+	public class PocoType : ITypeInfo
 	{
 		private Identifier ident = new Identifier();
 
@@ -22,9 +22,19 @@ namespace NDifference
 			}
 		}
 
-		public FullyQualifiedName FullName { get; set; }
+		public TypeTaxonomy Taxonomy { get; set; }
 
-		public Obsolete ObsoleteMarker { get; set; }
+		public AccessModifier Access { get; set; }
+
+		public string Namespace { get; set; }
+
+		public string Name { get; set; }
+
+		public string FullName { get; set; }
+
+		public string Assembly { get; set; }
+
+		//// public Obsolete ObsoleteMarker { get; set; }
 
 		public override string ToString()
 		{

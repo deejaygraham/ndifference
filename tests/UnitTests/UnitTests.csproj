@@ -48,8 +48,23 @@
     <Compile Include="..\..\src\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="CecilAssemblyReflectorFacts.cs" />
+    <Compile Include="FieldDeclarationFacts.cs" />
+    <Compile Include="FileExtensions.cs" />
+    <Compile Include="FullyQualifiedNameFacts.cs" />
     <Compile Include="IdentifierFacts.cs" />
+    <Compile Include="OnTheFlyCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDeclarationFacts.cs" />
+    <Compile Include="TestDataBuilders\CodeBuildingListExtensions.cs" />
+    <Compile Include="TestDataBuilders\CompilableClassBuilder.cs" />
+    <Compile Include="TestDataBuilders\CompilableEnumBuilder.cs" />
+    <Compile Include="TestDataBuilders\CompilableInterfaceBuilder.cs" />
+    <Compile Include="TestDataBuilders\CompilableSourceBuilder.cs" />
+    <Compile Include="TestDataBuilders\FullyQualifiedNameBuilder.cs" />
+    <Compile Include="TestDataBuilders\IBuildable.cs" />
+    <Compile Include="TestDataBuilders\IBuildToCode.cs" />
+    <Compile Include="TestDataBuilders\UsingStatementBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -59,6 +74,13 @@
       <Project>{fb9db4c7-f9b4-420c-9440-7f422c814f2b}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Reflection\Reflection.csproj">
+      <Project>{10c50d33-3151-4d4b-b6e8-749735fe92e2}</Project>
+      <Name>Reflection</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

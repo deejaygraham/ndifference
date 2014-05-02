@@ -5,8 +5,9 @@ using System.IO;
 namespace NDifference
 {
 	/// <summary>
-	/// Information about assembly on disk.
+	/// Information about assembly on disk before reflection/introspection for types.
 	/// </summary>
+	[DebuggerDisplay("{Name}")]
 	public class AssemblyDiskInfo : IAssemblyDiskInfo
 	{
 		private Identifier ident = new Identifier();

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace NDifference
 {
+	[DebuggerDisplay("{Name}")]
 	public class AssemblyInfo : IAssemblyInfo
 	{
 		private List<AssemblyReference> references = new List<AssemblyReference>();

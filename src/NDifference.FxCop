@@ -128,11 +128,6 @@
          <Item>'NDifference.Core.dll'</Item>
         </Issue>
        </Message>
-       <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Created="2014-04-30 15:24:07Z">
-        <Issue>
-         <Item>'NDifference.Core.dll'</Item>
-        </Issue>
-       </Message>
       </Messages>
       <Namespaces>
        <Namespace Name="NDifference">
@@ -598,38 +593,7 @@
          <Item>'NDifference.Reflection.dll'</Item>
         </Issue>
        </Message>
-       <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Created="2014-04-30 15:24:07Z">
-        <Issue>
-         <Item>'NDifference.Reflection.dll'</Item>
-        </Issue>
-       </Message>
       </Messages>
-      <Namespaces>
-       <Namespace Name="NDifference.Reflection">
-        <Types>
-         <Type Name="CecilExtensionMethods">
-          <Members>
-           <Member Name="#IsInternalName(Mono.Cecil.TypeDefinition)">
-            <Messages>
-             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2014-04-30 15:24:07Z">
-              <Issue>
-               <Item>'CecilExtensionMethods.IsInternalName(this TypeDefinition)'</Item>
-               <Item>'string.StartsWith(string)'</Item>
-               <Item>'string.StartsWith(string, StringComparison)'</Item>
-              </Issue>
-              <Issue>
-               <Item>'CecilExtensionMethods.IsInternalName(this TypeDefinition)'</Item>
-               <Item>'string.StartsWith(string)'</Item>
-               <Item>'string.StartsWith(string, StringComparison)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
-      </Namespaces>
      </Module>
     </Modules>
    </Target>
@@ -663,9 +627,6 @@
     <Resolution Name="Member">Rename virtual/interface member {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>
     <Resolution Name="MemberParameter">In virtual/interface member {0}, rename parameter {1} so that it no longer conflicts with the reserved language keyword '{2}'. Using a reserved keyword as the name of a parameter on a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>
     <Resolution Name="Type">Rename type {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a type makes it harder for consumers in other languages to use the type.</Resolution>
-   </Rule>
-   <Rule TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014">
-    <Resolution Name="Default">Mark {0} with CLSCompliant(true) because it exposes externally visible types.</Resolution>
    </Rule>
    <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
     <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>

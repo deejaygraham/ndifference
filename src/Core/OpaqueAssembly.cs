@@ -11,6 +11,7 @@ namespace NDifference
 	/// A simple assembly before reflection/introspection for types.
 	/// </summary>
 	[DebuggerDisplay("{Name}")]
+	[Obsolete("Use AssemblyInfo or AssemblyDiskInfo")]
 	public sealed class OpaqueAssembly : IEquatable<OpaqueAssembly>, IUniquelyIdentifiable
 	{
 		private Identifier ident = new Identifier();

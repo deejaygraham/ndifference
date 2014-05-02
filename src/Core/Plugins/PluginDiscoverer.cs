@@ -16,6 +16,8 @@ namespace NDifference.Plugins
 			Debug.Assert(finder != null, "Finder cannot be null");
 
 			this.AssemblyFinder = finder;
+			this.AssemblyFinder.Filter = FileFilterConstants.AssemblyFilter; 
+			
 			this.Instantiator = new ObjectInstantiator<T>();
 			this.IgnoreAssemblies = new HashSet<string>(new CaseInsensitiveFileNameComparer());
 		}
@@ -37,7 +39,7 @@ namespace NDifference.Plugins
 		{
 			Debug.Assert(this.AssemblyFinder != null, "Finder is not set");
 			Debug.Assert(typeof(T).IsInterface, "Plugins are only supported for interfaces");
-
+			
 			List<T> found = new List<T>();
 
 			IAssemblyReflectorFactory factory = new MsReflectorFactory();

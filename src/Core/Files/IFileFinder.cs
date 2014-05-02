@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace NDifference.Plugins
+namespace NDifference
 {
 	public interface IFileFinder
 	{
+		string Filter { get; set; }
+
 		IEnumerable<string> Find();
 	}
 }

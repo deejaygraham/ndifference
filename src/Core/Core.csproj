@@ -43,20 +43,25 @@
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
     <Compile Include="AccessModifier.cs" />
-    <Compile Include="AssemblyReference.cs" />
+    <Compile Include="Delta.cs" />
+    <Compile Include="DeltaBuilder.cs" />
+    <Compile Include="ExtensionMethods\IEnumerableExtensions.cs" />
+    <Compile Include="Files\AssemblyReference.cs" />
     <Compile Include="ExtensionMethods\AssemblyExtensions.cs" />
     <Compile Include="ExtensionMethods\FileInfoExtensions.cs" />
     <Compile Include="ExtensionMethods\PathExtensions.cs" />
     <Compile Include="ExtensionMethods\TypeExtensions.cs" />
     <Compile Include="FieldDeclaration.cs" />
-    <Compile Include="FileFilterConstants.cs" />
+    <Compile Include="Files\FileFilterConstants.cs" />
     <Compile Include="FullyQualifiedName.cs" />
-    <Compile Include="IAssemblyDiskInfo.cs" />
-    <Compile Include="IAssemblyInfo.cs" />
+    <Compile Include="Files\IAssemblyDiskInfo.cs" />
+    <Compile Include="Files\IAssemblyInfo.cs" />
     <Compile Include="ICommonality.cs" />
     <Compile Include="Identifier.cs" />
-    <Compile Include="Inspection\AssemblyDiskInfo.cs" />
-    <Compile Include="Inspection\AssemblyInfo.cs" />
+    <Compile Include="Files\AssemblyDiskInfo.cs" />
+    <Compile Include="Files\AssemblyDiskInfoPair.cs" />
+    <Compile Include="Files\AssemblyInfo.cs" />
+    <Compile Include="Files\AssemblyNameComparer.cs" />
     <Compile Include="Inspection\AssemblyReflectionOption.cs" />
     <Compile Include="Inspection\MsReflector.cs" />
     <Compile Include="Inspection\MsReflectorFactory.cs" />
@@ -72,10 +77,11 @@
     <Compile Include="Namespace.cs" />
     <Compile Include="Obsolete.cs" />
     <Compile Include="OpaqueAssembly.cs" />
+    <Compile Include="Pair.cs" />
     <Compile Include="Parameter.cs" />
-    <Compile Include="Plugins\IFileFinder.cs" />
+    <Compile Include="Files\IFileFinder.cs" />
     <Compile Include="Plugins\ObjectInstantiator.cs" />
-    <Compile Include="Plugins\FileSystemAssemblyFinder.cs" />
+    <Compile Include="Files\FileFinder.cs" />
     <Compile Include="Plugins\PluginDiscoverer.cs" />
     <Compile Include="PocoType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

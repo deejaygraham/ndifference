@@ -33,7 +33,6 @@ namespace WalkingSkeleton
 				Console.WriteLine(tn);
 			}
 
-
 			IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
 			var aInspectors = new AssemblyInspectorPluginDiscoverer(finder);

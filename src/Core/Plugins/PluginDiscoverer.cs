@@ -9,7 +9,7 @@ namespace NDifference.Plugins
 	/// Attempts to find assemblies on disk that contain implmentations of T.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	internal class PluginDiscoverer<T> where T : class
+	public abstract class PluginDiscoverer<T> where T : class
 	{
 		public PluginDiscoverer(IFileFinder finder)
 		{

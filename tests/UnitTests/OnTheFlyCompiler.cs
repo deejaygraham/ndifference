@@ -68,12 +68,12 @@ namespace NDifference.UnitTests
 
 		private string FileName { get; set; }
 
-		public OpaqueAssembly Compile(IBuildToCode code)
+		public IAssemblyDiskInfo Compile(IBuildToCode code)
 		{
 			return this.Compile(code.Build());
 		}
 
-		public OpaqueAssembly Compile(string code)
+		public IAssemblyDiskInfo Compile(string code)
 		{
 			Debug.Assert(this.Provider != null, "CodeDomProvider is not set");
 			Debug.Assert(this.Parameters != null, "CompilerParameters not set");
@@ -97,7 +97,7 @@ namespace NDifference.UnitTests
 				throw new InvalidOperationException("Compilation Failed:\n" + string.Join(Environment.NewLine, results.Errors.BuildErrorMessageList(code).ToArray()));
 			}
 
-			return new OpaqueAssembly(this.FileName);
+			return AssemblyDiskInfo.BuildFrom(this.FileName);
 		}
 
 		public void Dispose()

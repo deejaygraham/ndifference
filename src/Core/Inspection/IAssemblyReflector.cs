@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace NDifference
 {
+	/// <summary>
+	/// Provides reflection information on types and general assembly.
+	/// </summary>
 	public interface IAssemblyReflector
 	{
 		IEnumerable<ITypeInfo> GetTypes();

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace NDifference
 {
-	internal class FileFinder : IFileFinder
+	public class FileFinder : IFileFinder
 	{
 		public FileFinder()
 			: this(string.Empty)

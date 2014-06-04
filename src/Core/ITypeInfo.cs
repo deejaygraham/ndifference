@@ -25,5 +25,7 @@ namespace NDifference
 		///// The name of the type.
 		///// </summary>
 		//FullyQualifiedName FullName { get; }
+
+		string Hash();
 	}
 }

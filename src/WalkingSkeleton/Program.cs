@@ -1,6 +1,8 @@
 ﻿using NDifference;
+using NDifference.Plugins;
 using NDifference.Reflection;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace WalkingSkeleton
@@ -30,6 +32,21 @@ namespace WalkingSkeleton
 			{
 				Console.WriteLine(tn);
 			}
+
+
+			IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
+
+			var aInspectors = new AssemblyInspectorPluginDiscoverer(finder);
+			aInspectors.Ignore("NDifference.dll");
+			aInspectors.Ignore("NDifference.UnitTests.dll");
+
+			aInspectors.Find();
+
+			var tInspectors = new TypeInspectorPluginDiscoverer(finder);
+			tInspectors.Ignore("NDifference.dll");
+			tInspectors.Ignore("NDifference.UnitTests.dll");
+
+			tInspectors.Find();
 
 			Console.ReadKey();
 		}

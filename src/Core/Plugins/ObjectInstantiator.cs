@@ -8,7 +8,7 @@ namespace NDifference.Plugins
 	/// Looks for implementations of a particular type.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	internal class ObjectInstantiator<T> where T : class
+	public class ObjectInstantiator<T> where T : class
 	{
 		public List<T> CreateTypesImplementingInterface(IAssemblyReflector reflector)
 		{

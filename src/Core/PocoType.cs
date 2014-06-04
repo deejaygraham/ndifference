@@ -1,14 +1,19 @@
 ﻿
+using System;
+using System.Security.Cryptography;
+
 namespace NDifference
 {
     /// <summary>
 	/// Plain old C# Object. No distinction between enum, class, 
 	/// struct, interface needed yet.
 	/// </summary>
+	[Serializable]
 	public class PocoType : ITypeInfo
 	{
+		[NonSerialized]
 		private Identifier ident = new Identifier();
-
+				
 		public string Identifier
 		{
 			get
@@ -44,6 +49,11 @@ namespace NDifference
 		public override int GetHashCode()
 		{
 			return this.FullName.GetHashCode();
+		}
+
+		public string Hash()
+		{
+			return this.GetHash<SHA1Managed>();
 		}
 	}
 }

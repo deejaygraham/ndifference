@@ -43,8 +43,10 @@
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
     <Compile Include="AccessModifier.cs" />
+    <Compile Include="AnalysisWorkflow.cs" />
     <Compile Include="Delta.cs" />
     <Compile Include="DeltaBuilder.cs" />
+    <Compile Include="ExtensionMethods\HashAlgorithmExtensions.cs" />
     <Compile Include="ExtensionMethods\IEnumerableExtensions.cs" />
     <Compile Include="Files\AssemblyReference.cs" />
     <Compile Include="ExtensionMethods\AssemblyExtensions.cs" />
@@ -65,6 +67,8 @@
     <Compile Include="Inspection\AssemblyReflectionOption.cs" />
     <Compile Include="Inspection\MsReflector.cs" />
     <Compile Include="Inspection\MsReflectorFactory.cs" />
+    <Compile Include="Inspectors\IAssemblyInspector.cs" />
+    <Compile Include="Inspectors\ITypeInspector.cs" />
     <Compile Include="ITypeInfo.cs" />
     <Compile Include="IMaybeObsolete.cs" />
     <Compile Include="InspectedAssembly.cs" />
@@ -80,6 +84,8 @@
     <Compile Include="Pair.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Files\IFileFinder.cs" />
+    <Compile Include="Plugins\AssemblyInspectorPluginDiscoverer.cs" />
+    <Compile Include="Plugins\TypeInspectorPluginDiscoverer.cs" />
     <Compile Include="Plugins\ObjectInstantiator.cs" />
     <Compile Include="Files\FileFinder.cs" />
     <Compile Include="Plugins\PluginDiscoverer.cs" />
@@ -89,6 +95,12 @@
     <Compile Include="Signature.cs" />
     <Compile Include="TypeName.cs" />
     <Compile Include="TypeTaxonomy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+    <Folder Include="Framework\" />
+    <Folder Include="Project\" />
+    <Folder Include="Reporting\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

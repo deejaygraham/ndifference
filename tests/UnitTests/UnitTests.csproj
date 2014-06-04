@@ -54,6 +54,7 @@
     <Compile Include="FullyQualifiedNameFacts.cs" />
     <Compile Include="IdentifierFacts.cs" />
     <Compile Include="OnTheFlyCompiler.cs" />
+    <Compile Include="PocoTypeFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDeclarationFacts.cs" />
     <Compile Include="TestDataBuilders\CodeBuildingListExtensions.cs" />

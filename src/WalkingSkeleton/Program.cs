@@ -1,6 +1,8 @@
-﻿using NDifference;
+﻿using Mono.Cecil;
+using NDifference;
 using NDifference.Plugins;
 using NDifference.Reflection;
+using NDifference.UnitTests;
 using System;
 using System.IO;
 using System.Reflection;
@@ -35,15 +37,24 @@ namespace WalkingSkeleton
 
 			IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
+			var coreAssembly = Assembly.GetAssembly(typeof(PocoType));
+			var testAssembly = Assembly.GetAssembly(typeof(PocoTypeFacts));
+			var reflAssembly = Assembly.GetAssembly(typeof(CecilReflector));
+			var monoAssembly = Assembly.GetAssembly(typeof(DefaultAssemblyResolver));
+
 			var aInspectors = new AssemblyInspectorPluginDiscoverer(finder);
-			aInspectors.Ignore("NDifference.dll");
-			aInspectors.Ignore("NDifference.UnitTests.dll");
+			aInspectors.Ignore(Path.GetFileName(coreAssembly.Location));
+			aInspectors.Ignore(Path.GetFileName(testAssembly.Location));
+			aInspectors.Ignore(Path.GetFileName(reflAssembly.Location));
+			aInspectors.Ignore(Path.GetFileName(monoAssembly.Location));
 
 			aInspectors.Find();
 
 			var tInspectors = new TypeInspectorPluginDiscoverer(finder);
-			tInspectors.Ignore("NDifference.dll");
-			tInspectors.Ignore("NDifference.UnitTests.dll");
+			tInspectors.Ignore(Path.GetFileName(coreAssembly.Location));
+			tInspectors.Ignore(Path.GetFileName(testAssembly.Location));
+			tInspectors.Ignore(Path.GetFileName(reflAssembly.Location));
+			tInspectors.Ignore(Path.GetFileName(monoAssembly.Location));
 
 			tInspectors.Find();
 

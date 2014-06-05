@@ -1,15 +1,11 @@
-﻿using Mono.Cecil;
-using NDifference;
+﻿using NDifference;
 using NDifference.Analysis;
 using NDifference.Files;
 using NDifference.Framework;
 using NDifference.Inspectors;
 using NDifference.Plugins;
 using NDifference.Projects;
-using NDifference.Reflection;
 using NDifference.Reporting;
-using NDifference.TypeSystem;
-using NDifference.UnitTests;
 using System;
 using System.IO;
 using System.Linq;

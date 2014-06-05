@@ -16,9 +16,9 @@ namespace NDifference.UnitTests
 			var collection = new IdentifiedChangeCollection();
 
 			collection.Add(new Category { Name = "C1", Priority = new CategoryPriority(1) });
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(1) });
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(1) });
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(1) });
+			collection.Add(new IdentifiedChange { Priority = 1 });
+			collection.Add(new IdentifiedChange { Priority = 1 });
+			collection.Add(new IdentifiedChange { Priority = 1 });
 
 			Assert.Equal(3, collection.ChangesInCategory(new CategoryPriority(1)).Count);
 		}
@@ -31,9 +31,9 @@ namespace NDifference.UnitTests
 			collection.Add(new Category { Name = "C1", Priority = new CategoryPriority(1) });
 			collection.Add(new Category { Name = "C2", Priority = new CategoryPriority(2) });
 
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(1) });
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(1) });
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(1) });
+			collection.Add(new IdentifiedChange { Priority = 1 });
+			collection.Add(new IdentifiedChange { Priority = 1 });
+			collection.Add(new IdentifiedChange { Priority = 1 });
 
 			Assert.Equal(0, collection.ChangesInCategory(new CategoryPriority(2)).Count);
 		}
@@ -62,9 +62,9 @@ namespace NDifference.UnitTests
 
 			collection.Add(new IdentifiedChange());
 			collection.Add(new IdentifiedChange());
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(3) });
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(4) });
-			collection.Add(new IdentifiedChange { Priority = new CategoryPriority(5) });
+			collection.Add(new IdentifiedChange { Priority = 3 });
+			collection.Add(new IdentifiedChange { Priority = 4 });
+			collection.Add(new IdentifiedChange { Priority = 5 });
 
 			Assert.Equal(5, collection.UnCategorisedChanges().Count);
 		}

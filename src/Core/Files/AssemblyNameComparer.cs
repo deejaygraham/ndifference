@@ -6,7 +6,7 @@ namespace NDifference
 	/// <summary>
 	/// Compare based on name only.
 	/// </summary>
-	internal sealed class AssemblyNameComparer : IEqualityComparer<IAssemblyInfo>, IEqualityComparer<IAssemblyDiskInfo>
+	public sealed class AssemblyNameComparer : IEqualityComparer<IAssemblyInfo>, IEqualityComparer<IAssemblyDiskInfo>
 	{
 		public bool Equals(IAssemblyInfo x, IAssemblyInfo y)
 		{

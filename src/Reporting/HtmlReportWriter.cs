@@ -181,7 +181,7 @@ namespace NDifference.Reporting
 										++inThisCat;
 										object descriptor = change.Descriptor;
 
-										if (descriptor != null)
+										if (descriptor != null && this.Map != null)
 										{
 											IDocumentLink link = descriptor as IDocumentLink;
 
@@ -221,7 +221,7 @@ namespace NDifference.Reporting
 										{
 											object descriptor = change.Descriptor;
 
-											if (descriptor != null)
+											if (descriptor != null && this.Map != null)
 											{
 												IDocumentLink link = descriptor as IDocumentLink;
 

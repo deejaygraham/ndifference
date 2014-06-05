@@ -9,7 +9,7 @@ namespace NDifference.Files
 {
 	public class AssemblyDiskInfoBuilder
 	{
-		public static IEnumerable<AssemblyDiskInfo> BuildFromFolder(string folder)
+		public static IEnumerable<IAssemblyDiskInfo> BuildFromFolder(string folder)
 		{
 			var finder = new FileFinder(folder, FileFilterConstants.AssemblyFilter);
 
@@ -19,12 +19,12 @@ namespace NDifference.Files
 			yield break;
 		}
 
-		public static AssemblyDiskInfo BuildFromFile(string path)
+		public static IAssemblyDiskInfo BuildFromFile(string path)
 		{
 			return new AssemblyDiskInfo(path);
 		}
 
-		public static IEnumerable<AssemblyDiskInfo> BuildFrom(DirectoryInfo info)
+		public static IEnumerable<IAssemblyDiskInfo> BuildFrom(DirectoryInfo info)
 		{
 			var finder = new FileFinder(info.FullName, FileFilterConstants.AssemblyFilter);
 
@@ -34,7 +34,7 @@ namespace NDifference.Files
 			yield break;
 		}
 
-		public static AssemblyDiskInfo BuildFrom(FileInfo info)
+		public static IAssemblyDiskInfo BuildFrom(FileInfo info)
 		{
 			return new AssemblyDiskInfo(
 						info.FullName,

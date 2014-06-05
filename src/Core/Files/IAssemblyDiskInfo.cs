@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NDifference
 {
@@ -32,4 +34,24 @@ namespace NDifference
 		/// </summary>
 		string Checksum { get; }
 	}
+
+	public static class IAssemblyDiskInfoExtensions
+	{
+		/// <summary>
+		/// Find a match for a specific assembly in a list.
+		/// </summary>
+		/// <param name="assemblies"></param>
+		/// <param name="instance"></param>
+		/// <returns></returns>
+		public static IAssemblyDiskInfo FindMatchFor(this IEnumerable<IAssemblyDiskInfo> assemblies, IAssemblyDiskInfo instance)
+		{
+			return assemblies.FindMatchFor(instance, new AssemblyNameComparer());
+		}
+
+		public static IAssemblyDiskInfo FindMatchFor(this IEnumerable<IAssemblyDiskInfo> assemblies, IAssemblyDiskInfo instance, IEqualityComparer<IAssemblyDiskInfo> comparison)
+		{
+			return assemblies.FirstOrDefault(x => comparison.Equals(x, instance));
+		}
+	}
+
 }

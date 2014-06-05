@@ -9,25 +9,27 @@ namespace NDifference.Analysis
 	[DebuggerDisplay("{_value}")]
 	public class CategoryPriority : IEquatable<CategoryPriority>
 	{
-		public static CategoryPriority InvalidValue = new CategoryPriority(-1);
-
-		private int _value;
+		public static readonly int InvalidValue = -1;
 
 		public CategoryPriority(int value)
 		{
-			this._value = value;
+			this.Value = value;
 		}
+
+		public int Value { get; private set; }
+
+		public bool IsValid { get { return this.Value != InvalidValue; } }
 
 		public override string ToString()
 		{
-			return this._value.ToString();
+			return this.Value.ToString();
 		}
 
 		public override int GetHashCode()
 		{
-			return this._value.GetHashCode();
+			return this.Value.GetHashCode();
 		}
-
+		
 		/// <summary>
 		/// Equal based on value.
 		/// </summary>
@@ -46,7 +48,7 @@ namespace NDifference.Analysis
 				return false;
 			}
 
-			return leftHandSide._value == rightHandSide._value;
+			return leftHandSide.Value == rightHandSide.Value;
 		}
 
 		public static bool operator !=(CategoryPriority leftHandSide, CategoryPriority rightHandSide)
@@ -68,7 +70,7 @@ namespace NDifference.Analysis
 				return false;
 			}
 
-			return this._value == actualPriority._value;
+			return this.Value == actualPriority.Value;
 		}
 
 		public bool Equals(CategoryPriority other)
@@ -78,7 +80,7 @@ namespace NDifference.Analysis
 				return false;
 			}
 
-			return this._value == other._value;
+			return this.Value == other.Value;
 		}
 	}
 }

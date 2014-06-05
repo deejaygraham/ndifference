@@ -15,7 +15,7 @@ namespace NDifference.Analysis
 			this.FooterBlocks = new List<string>();
 			this.SummaryBlocks = new Dictionary<string, string>();
 
-			this.Categories = new List<Category>();
+			this.Categories = new HashSet<Category>();
 			this.Changes = new List<IdentifiedChange>();
 		}
 
@@ -36,7 +36,7 @@ namespace NDifference.Analysis
 
 		public List<string> FooterBlocks { get; private set; }
 
-		public List<Category> Categories { get; private set; }
+		public HashSet<Category> Categories { get; private set; }
 
 		public List<IdentifiedChange> Changes { get; private set; }
 
@@ -45,7 +45,7 @@ namespace NDifference.Analysis
 			Debug.Assert(this.Categories != null, "Categories collection is null");
 			Debug.Assert(cat != null, "Category is null");
 			Debug.Assert(!String.IsNullOrEmpty(cat.Name), "Category must be named");
-			Debug.Assert(cat.Priority != CategoryPriority.InvalidValue, "Category order is not set");
+			Debug.Assert(cat.Priority.IsValid, "Category order is not set");
 
 			this.Categories.Add(cat);
 		}
@@ -61,10 +61,10 @@ namespace NDifference.Analysis
 		{
 			Debug.Assert(this.Categories != null, "Categories collection is null");
 			Debug.Assert(this.Changes != null, "Changes collection is null");
-			Debug.Assert(priority != CategoryPriority.InvalidValue, "Invalid order value");
+			Debug.Assert(priority .IsValid, "Invalid order value");
 			//Debug.Assert(this.Categories.Any(c => c.Priority == priority), "Invalid order value");
 
-			return this.Changes.Where(x => x.Priority == priority).ToList();
+			return this.Changes.Where(x => x.Priority == priority.Value).ToList();
 		}
 
 		public List<IdentifiedChange> UnCategorisedChanges()
@@ -79,7 +79,7 @@ namespace NDifference.Analysis
 
 			// category that does not exist.
 			list.AddRange(this.Changes.Where(x => x.Priority != CategoryPriority.InvalidValue
-				&& !this.Categories.Any(c => c.Priority == x.Priority)));
+				&& !this.Categories.Any(c => c.Priority.Value == x.Priority)));
 
 			return list;
 		}

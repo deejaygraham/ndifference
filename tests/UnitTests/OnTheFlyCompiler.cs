@@ -1,4 +1,5 @@
 ﻿using Microsoft.CSharp;
+using NDifference.Files;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -97,7 +98,7 @@ namespace NDifference.UnitTests
 				throw new InvalidOperationException("Compilation Failed:\n" + string.Join(Environment.NewLine, results.Errors.BuildErrorMessageList(code).ToArray()));
 			}
 
-			return AssemblyDiskInfo.BuildFrom(this.FileName);
+			return AssemblyDiskInfoBuilder.BuildFromFile(this.FileName);
 		}
 
 		public void Dispose()

@@ -43,10 +43,13 @@
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
     <Compile Include="Analysis\IAnalysisWorkflow.cs" />
+    <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Files\AssemblyDiskInfoBuilder.cs" />
     <Compile Include="Framework\Product.cs" />
     <Compile Include="Framework\ProductIncrement.cs" />
     <Compile Include="Framework\ProductIncrementPair.cs" />
+    <Compile Include="Inspectors\IAssemblyCollectionInspector.cs" />
+    <Compile Include="Plugins\AssemblyDiskInfoInspectorPluginDiscoverer.cs" />
     <Compile Include="Plugins\ReportingPluginDiscoverer.cs" />
     <Compile Include="Projects\Project.cs" />
     <Compile Include="Projects\PersistableProject.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Reporting\IReportOutput.cs" />
     <Compile Include="Reporting\IReportWriter.cs" />
     <Compile Include="Reporting\OutputFileMap.cs" />
+    <Compile Include="Reporting\OutputFileMapBuilder.cs" />
     <Compile Include="Reporting\ReportFormatRepository.cs" />
     <Compile Include="Reporting\ReportingRepository.cs" />
     <Compile Include="TypeSystem\AccessModifier.cs" />

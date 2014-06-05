@@ -7,6 +7,8 @@ namespace NDifference.Inspectors
 	/// </summary>
 	public interface IAssemblyInspector
 	{
+		// REVIEW - do we need a unique id for each one /short code and a on/off switch controlled by project
+
 		void Inspect(IAssemblyInfo first, IAssemblyInfo second, IdentifiedChangeCollection changes);
 	}
 }

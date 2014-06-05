@@ -1,4 +1,5 @@
-﻿using NDifference.Framework;
+﻿using NDifference.Files;
+using NDifference.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -124,7 +125,7 @@ namespace NDifference.Projects
 						fullPath = baseFolder.MakeAbsolutePath(file);
 					}
 
-					firstVersion.Add(AssemblyDiskInfo.BuildFrom(fullPath));
+					firstVersion.Add(AssemblyDiskInfoBuilder.BuildFromFile(fullPath));
 				}
 			}
 
@@ -148,7 +149,7 @@ namespace NDifference.Projects
 						fullPath = baseFolder.MakeAbsolutePath(file);
 					}
 
-					secondVersion.Add(AssemblyDiskInfo.BuildFrom(fullPath));
+					secondVersion.Add(AssemblyDiskInfoBuilder.BuildFromFile(fullPath));
 				}
 			}
 

@@ -12,20 +12,6 @@ namespace NDifference
 	{
 		private Identifier ident = new Identifier();
 		
-		public static AssemblyDiskInfo BuildFrom(FileInfo info)
-		{
-			return new AssemblyDiskInfo(
-						info.FullName,
-						info.CreationTimeUtc,
-						info.Length,
-						info.CalculateChecksum());
-		}
-
-		public static AssemblyDiskInfo BuildFrom(string path)
-		{
-			return new AssemblyDiskInfo(path);
-		}
-		
 		public AssemblyDiskInfo()
 		{
 		}
@@ -143,6 +129,17 @@ namespace NDifference
 				&& this.Size == other.Size
 				&& this.Date == other.Date
 				&& this.Checksum == other.Checksum;
+		}
+
+		public string CalculateHash()
+		{
+			// REVIEW - Made up hash. 
+			if (String.IsNullOrEmpty(this.Checksum))
+			{
+				this.Checksum = Guid.NewGuid().ToString();
+			}
+
+			return this.Checksum;
 		}
 	}
 }

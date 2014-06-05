@@ -5,7 +5,7 @@ namespace NDifference
 	/// <summary>
 	/// Information about an assembly as it is on disk
 	/// </summary>
-	public interface IAssemblyDiskInfo : IUniquelyIdentifiable, IEquatable<IAssemblyDiskInfo>
+	public interface IAssemblyDiskInfo : IUniquelyIdentifiable, IEquatable<IAssemblyDiskInfo>, IHashable
 	{
 		/// <summary>
 		/// File name

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace NDifference
+namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// Full name of an a defined type - namespace & type name

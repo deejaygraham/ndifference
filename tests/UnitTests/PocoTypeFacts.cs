@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.TypeSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace NDifference.UnitTests
 			var p1 = new PocoType { FullName = "Hello.World" };
 			var p2 = new PocoType { FullName = "Hello.World" };
 
-			Assert.Equal(p2.Hash(), p1.Hash());
+			Assert.Equal(p2.CalculateHash(), p1.CalculateHash());
 		}
 
 		[Fact]
@@ -24,7 +25,7 @@ namespace NDifference.UnitTests
 			var p1 = new PocoType { FullName = "Hello.World", Access = AccessModifier.Internal };
 			var p2 = new PocoType { FullName = "Hello.World", Access = AccessModifier.Public };
 
-			Assert.NotEqual(p2.Hash(), p1.Hash());
+			Assert.NotEqual(p2.CalculateHash(), p1.CalculateHash());
 		}
 	}
 }

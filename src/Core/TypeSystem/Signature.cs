@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NDifference
+namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// A method signature.

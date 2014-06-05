@@ -1,12 +1,13 @@
-﻿using System;
+﻿
+using System;
 using System.Text;
 
-namespace NDifference
+namespace NDifference.TypeSystem
 {
 	/// <summary>
-	/// A field belonging to a class.
+	/// A property of a class.
 	/// </summary>
-	public class FieldDeclaration
+	public class PropertyDeclaration
 	{
 		public string Name { get; set; }
 
@@ -14,13 +15,13 @@ namespace NDifference
 
 		public InstanceAccessModifier Access { get; set; }
 
-		public bool IsInstance
-		{
+		public bool IsInstance 
+		{ 
 			get
 			{
 				return this.Access == InstanceAccessModifier.Instance;
 			}
-
+			
 			set
 			{
 				this.Access = value ? InstanceAccessModifier.Instance : InstanceAccessModifier.Static;
@@ -40,19 +41,43 @@ namespace NDifference
 			}
 		}
 
-		public bool IsReadOnly { get; set; }
+		public bool IsReadWrite
+		{
+			get { return this.HasGetter && this.HasSetter; }
+		}
+
+		public bool IsReadOnly
+		{
+			get { return this.HasGetter && !this.HasSetter; }
+		}
+
+		public bool IsWriteOnly
+		{
+			get { return this.HasSetter && !this.HasGetter; }
+		}
+
+		public bool HasGetter { get; set; }
+
+		public bool HasSetter { get; set; }
 
 		public override string ToString()
 		{
 			var builder = new StringBuilder();
 
-			if (this.IsStatic)
-				builder.Append("static ");
+			builder.AppendFormat("{0} ", this.Type.Type);
+			builder.AppendFormat("{0} {{ ", this.Name);
 
-			if (this.IsReadOnly)
-				builder.Append("readonly ");
+			if (this.HasGetter)
+			{
+				builder.Append("get; ");
+			}
 
-			builder.AppendFormat("{0} {1} ", this.Type.Type, this.Name);
+			if (this.HasSetter)
+			{
+				builder.Append("set; ");
+			}
+
+			builder.Append("} ");
 
 			return builder.ToString();
 		}

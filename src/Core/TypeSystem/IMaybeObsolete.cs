@@ -1,4 +1,4 @@
-﻿namespace NDifference
+﻿namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// Has this been made obsolete?

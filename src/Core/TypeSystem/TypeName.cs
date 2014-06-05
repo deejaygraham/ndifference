@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NDifference
+namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// Simple name of a type in an assembly. Does not contain namespace info.

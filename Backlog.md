@@ -40,6 +40,31 @@ Release checklist
 Handle extension methods
 System.Runtime.CompilerServices.ExtensionAttribute
 
+* Graph of Assembly dependencies
+* Hashes
+* Levenstein Distance for code
+
+# Namespaces
+
+Reflection
+Analysis 
+Exceptions
+Reporting
+Framework
+Logging
+Tasks 
+
+# Events in Reflection 
+
+Consider
+IdentifiedEvent
+InterfaceFound
+ClassFound
+StructFound
+EnumFound
+TypeFound
+AssemblyFound
+
 
 # Rules
 

@@ -1,4 +1,5 @@
 ﻿using Mono.Cecil;
+using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

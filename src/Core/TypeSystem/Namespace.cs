@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace NDifference
+namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// An organizational unit within an assembly.

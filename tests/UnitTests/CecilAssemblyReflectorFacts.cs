@@ -1,4 +1,5 @@
 ﻿using NDifference.Reflection;
+using NDifference.TypeSystem;
 using System.Linq;
 using Xunit;
 

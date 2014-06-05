@@ -1,12 +1,12 @@
 ﻿
-namespace NDifference
+namespace NDifference.TypeSystem
 {
-/// <summary>
+	/// <summary>
 	/// Identifies a type or member as obsolete/deprecated.
 	/// </summary>
 	public class Obsolete
 	{
-		public static readonly Obsolete NotObsolete = new Obsolete();
+		//public static readonly Obsolete NotObsolete = new Obsolete();
 
 		public Obsolete()
 		{

@@ -1,12 +1,12 @@
 ﻿
-namespace NDifference
+namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// A type discovered during reflection of an assembly.
 	/// </summary>
-	public interface ITypeInfo : /* IMaybeObsolete, */ IUniquelyIdentifiable
+	public interface ITypeInfo : /* IMaybeObsolete, */ IUniquelyIdentifiable, IHashable
 	{
-		/// <summary>
+		/// <summary>F
 		/// The "kind" of object this is - enum, interface, class etc.
 		/// </summary>
 		TypeTaxonomy Taxonomy { get; }
@@ -26,6 +26,6 @@ namespace NDifference
 		///// </summary>
 		//FullyQualifiedName FullName { get; }
 
-		string Hash();
+		string CalculateHash();
 	}
 }

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace NDifference.ExtensionMethods
+namespace NDifference
 {
 	public static class PathExtensions
 	{

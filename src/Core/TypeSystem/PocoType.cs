@@ -2,7 +2,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace NDifference
+namespace NDifference.TypeSystem
 {
     /// <summary>
 	/// Plain old C# Object. No distinction between enum, class, 
@@ -51,7 +51,7 @@ namespace NDifference
 			return this.FullName.GetHashCode();
 		}
 
-		public string Hash()
+		public string CalculateHash()
 		{
 			return this.GetHash<SHA1Managed>();
 		}

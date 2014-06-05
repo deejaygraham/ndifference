@@ -1,4 +1,6 @@
-﻿namespace NDifference.Plugins
+﻿using NDifference.Inspectors;
+
+namespace NDifference.Plugins
 {
 	public sealed class AssemblyInspectorPluginDiscoverer : PluginDiscoverer<IAssemblyInspector>
 	{

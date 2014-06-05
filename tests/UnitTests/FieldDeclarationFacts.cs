@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using NDifference.TypeSystem;
+using Xunit;
 
 namespace NDifference.UnitTests
 {

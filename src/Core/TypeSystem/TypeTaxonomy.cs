@@ -1,5 +1,5 @@
 ﻿
-namespace NDifference
+namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// Supported types

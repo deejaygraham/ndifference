@@ -1,4 +1,6 @@
 ﻿
+using NDifference.TypeSystem;
+
 namespace NDifference.UnitTests
 {
 	public class FullyQualifiedNameBuilder : IBuildable<FullyQualifiedName>

@@ -2,6 +2,8 @@
 using NDifference;
 using NDifference.Plugins;
 using NDifference.Reflection;
+using NDifference.Reporting;
+using NDifference.TypeSystem;
 using NDifference.UnitTests;
 using System;
 using System.IO;
@@ -57,6 +59,21 @@ namespace WalkingSkeleton
 			tInspectors.Ignore(Path.GetFileName(monoAssembly.Location));
 
 			tInspectors.Find();
+
+			var reportingPlugins = new ReportingPluginDiscoverer(finder);
+			reportingPlugins.Ignore(Path.GetFileName(coreAssembly.Location));
+			reportingPlugins.Ignore(Path.GetFileName(testAssembly.Location));
+			reportingPlugins.Ignore(Path.GetFileName(reflAssembly.Location));
+			reportingPlugins.Ignore(Path.GetFileName(monoAssembly.Location));
+
+			IReportingRepository rr = new ReportingRepository();
+
+			rr.AddRange(reportingPlugins.Find());
+
+			foreach (var fmt in rr.ReportFormats.SupportedFormats)
+			{
+				Console.WriteLine(fmt);
+			}
 
 			Console.ReadKey();
 		}

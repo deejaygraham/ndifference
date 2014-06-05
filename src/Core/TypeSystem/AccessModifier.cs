@@ -1,4 +1,4 @@
-﻿namespace NDifference
+﻿namespace NDifference.TypeSystem
 {
 	public enum AccessModifier
 	{

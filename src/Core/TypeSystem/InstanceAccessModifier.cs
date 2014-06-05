@@ -1,5 +1,5 @@
 ﻿
-namespace NDifference
+namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// How a method, field, property is accessed.

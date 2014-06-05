@@ -1,4 +1,6 @@
-﻿
+﻿using NDifference.Analysis;
+using System;
+
 namespace NDifference.Inspectors
 {
 	/// <summary>
@@ -6,11 +8,17 @@ namespace NDifference.Inspectors
 	/// </summary>
 	public class ArchitectureChangeInspector : IAssemblyInspector
 	{
-		public void Inspect(IAssemblyInfo first, IAssemblyInfo second)
+		public void Inspect(IAssemblyInfo first, IAssemblyInfo second, IdentifiedChangeCollection changes)
 		{
 			if (first.Architecture != second.Architecture)
 			{
 				// need to report this change...
+				changes.Add(new IdentifiedChange 
+				{
+					Description = String.Format("Architecture has changed from {0} to {1}", 
+						first.Architecture, 
+						second.Architecture)
+				});
 			}
 		}
 	}

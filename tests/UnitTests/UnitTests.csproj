@@ -48,7 +48,12 @@
     <Compile Include="..\..\src\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="AddedAssembliesInspectorFacts.cs" />
+    <Compile Include="AddedTypesInspectorFacts.cs" />
+    <Compile Include="AssemblyDiskInfoFacts.cs" />
     <Compile Include="CecilAssemblyReflectorFacts.cs" />
+    <Compile Include="CommonAssembliesInspectorFacts.cs" />
+    <Compile Include="CommonTypesInspectorFacts.cs" />
     <Compile Include="FieldDeclarationFacts.cs" />
     <Compile Include="FileExtensions.cs" />
     <Compile Include="FullyQualifiedNameFacts.cs" />
@@ -63,6 +68,8 @@
     <Compile Include="ProjectWriterFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDeclarationFacts.cs" />
+    <Compile Include="RemovedAssembliesInspectorFacts.cs" />
+    <Compile Include="RemovedTypesInspectorFacts.cs" />
     <Compile Include="ReportAsHtml4Facts.cs" />
     <Compile Include="TestDataBuilders\CodeBuildingListExtensions.cs" />
     <Compile Include="TestDataBuilders\CompilableClassBuilder.cs" />

@@ -1,14 +1,17 @@
 ﻿using NDifference.Analysis;
 using NDifference.Projects;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace NDifference.Reporting
 {
 	public static class OutputFileMapBuilder
 	{
-		public static OutputFileMap BuildFor(IdentifiedChangeCollection assemblyChanges, Project project, IReportFormat format)
+		public static OutputFileMap BuildFor(string indexIdentifier, IEnumerable<IdentifiedChangeCollection> allChanges, Project project, IReportFormat format)
 		{
-			Debug.Assert(assemblyChanges != null, "No superficial changes");
+			Debug.Assert(!String.IsNullOrEmpty(indexIdentifier), "Index id cannot be blank");
+			Debug.Assert(allChanges != null, "No superficial changes");
 			Debug.Assert(format != null, "No format specified");
 			Debug.Assert(project != null, "No project specified");
 
@@ -18,26 +21,27 @@ namespace NDifference.Reporting
 			};
 
 			string summaryPagePath = project.Settings.SuggestIndexPath(format.Extension);
-			map.Add(assemblyChanges.Identifier, summaryPagePath);
+			map.Add(indexIdentifier, summaryPagePath);
 
-			foreach(var change in assemblyChanges.Changes)
+			foreach(var changeCollection in allChanges)
 			{
-				object descriptor = change.Descriptor;
+				string parentPath = project.Settings.SuggestPath(changeCollection.Name, format.Extension);
+				map.Add(changeCollection.Name, parentPath);
 
-				if (descriptor != null)
+				foreach (var change in changeCollection.Changes)
 				{
-					IDocumentLink link = descriptor as IDocumentLink;
+					object descriptor = change.Descriptor;
 
-					if (link != null)
+					if (descriptor != null)
 					{
-						string pagePath = project.Settings.SuggestPath(link.LinkUrl, format.Extension);
-						map.Add(link.Identifier, pagePath);
+						IDocumentLink link = descriptor as IDocumentLink;
+
+						if (link != null)
+						{
+							string pagePath = project.Settings.SuggestPath(link.LinkUrl, format.Extension);
+							map.Add(link.Identifier, pagePath);
+						}
 					}
-				}
-
-				if (change.Descriptor != null)
-				{
-
 				}
 			}
 

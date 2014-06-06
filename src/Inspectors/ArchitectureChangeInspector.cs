@@ -8,6 +8,14 @@ namespace NDifference.Inspectors
 	/// </summary>
 	public class ArchitectureChangeInspector : IAssemblyInspector
 	{
+		public bool Enabled { get; set; }
+
+		public string ShortCode { get { return "AI001"; } }
+
+		public string DisplayName { get { return "Assembly Architecture Changes"; } }
+
+		public string Description { get { return "Checks for changes to an assembly's architecture"; } }
+
 		public void Inspect(IAssemblyInfo first, IAssemblyInfo second, IdentifiedChangeCollection changes)
 		{
 			if (first.Architecture != second.Architecture)

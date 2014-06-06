@@ -1,10 +1,11 @@
 ﻿
+using System;
 namespace NDifference.TypeSystem
 {
 	/// <summary>
 	/// A type discovered during reflection of an assembly.
 	/// </summary>
-	public interface ITypeInfo : /* IMaybeObsolete, */ IUniquelyIdentifiable, IHashable
+	public interface ITypeInfo : IMaybeObsolete, IUniquelyIdentifiable, IHashable, IEquatable<ITypeInfo>
 	{
 		/// <summary>F
 		/// The "kind" of object this is - enum, interface, class etc.

@@ -43,11 +43,16 @@
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
     <Compile Include="AddedAssembliesInspector.cs" />
+    <Compile Include="AddedTypesInspector.cs" />
     <Compile Include="ArchitectureChangeInspector.cs" />
+    <Compile Include="CommonTypesInspector.cs" />
+    <Compile Include="ObsoleteTypeInspector.cs" />
+    <Compile Include="RemovedTypesInspector.cs" />
     <Compile Include="WellKnownAssemblyCategories.cs" />
     <Compile Include="CommonAssembliesInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemovedAssembliesInspector.cs" />
+    <Compile Include="WellKnownTypeCategories.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

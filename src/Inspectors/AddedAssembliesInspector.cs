@@ -1,16 +1,19 @@
 ﻿using NDifference.Analysis;
-using NDifference;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
 	public class AddedAssembliesInspector : IAssemblyCollectionInspector
 	{
+		public bool Enabled { get; set; }
+
+		public string ShortCode { get { return "ACI001"; } }
+
+		public string DisplayName { get { return "Added Assemblies";  } }
+
+		public string Description { get { return "Checks for added assemblies"; } }
+
 		public void Inspect(IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
 		{
 			Debug.Assert(first != null, "First list of assemblies cannot be null");

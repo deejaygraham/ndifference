@@ -121,7 +121,7 @@ namespace NDifference.Projects
 						fullPath = baseFolder.MakeAbsolutePath(file);
 					}
 
-					firstVersion.Add(AssemblyDiskInfoBuilder.BuildFromFile(fullPath));
+					firstVersion.Add(new AssemblyDiskInfo(fullPath));
 				}
 			}
 
@@ -145,7 +145,7 @@ namespace NDifference.Projects
 						fullPath = baseFolder.MakeAbsolutePath(file);
 					}
 
-					secondVersion.Add(AssemblyDiskInfoBuilder.BuildFromFile(fullPath));
+					secondVersion.Add(new AssemblyDiskInfo(fullPath));
 				}
 			}
 

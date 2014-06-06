@@ -49,8 +49,11 @@
     <Compile Include="Framework\ProductIncrement.cs" />
     <Compile Include="Framework\ProductIncrementPair.cs" />
     <Compile Include="Inspectors\IAssemblyCollectionInspector.cs" />
-    <Compile Include="Plugins\AssemblyDiskInfoInspectorPluginDiscoverer.cs" />
+    <Compile Include="Inspectors\IInspector.cs" />
+    <Compile Include="Inspectors\ITypeCollectionInspector.cs" />
+    <Compile Include="Plugins\AssemblyCollectionInspectorPluginDiscoverer.cs" />
     <Compile Include="Plugins\ReportingPluginDiscoverer.cs" />
+    <Compile Include="Plugins\TypeCollectionInspectorPluginDiscoverer.cs" />
     <Compile Include="Projects\Project.cs" />
     <Compile Include="Projects\PersistableProject.cs" />
     <Compile Include="Projects\PersistableProjectSettings.cs" />
@@ -127,6 +130,7 @@
     <Compile Include="Analysis\CategoryPriority.cs" />
     <Compile Include="TypeSystem\Signature.cs" />
     <Compile Include="TypeSystem\TypeName.cs" />
+    <Compile Include="TypeSystem\TypeNameComparer.cs" />
     <Compile Include="TypeSystem\TypeTaxonomy.cs" />
   </ItemGroup>
   <ItemGroup>

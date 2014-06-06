@@ -125,7 +125,7 @@ namespace NDifference
 
 		private bool PropertiesMatch(IAssemblyDiskInfo other)
 		{
-			return this.Name == other.Name
+			return String.Equals(this.Name, other.Name, StringComparison.CurrentCultureIgnoreCase)
 				&& this.Size == other.Size
 				&& this.Date == other.Date
 				&& this.Checksum == other.Checksum;

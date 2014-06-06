@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Diagnostics;
 using System.Security.Cryptography;
 
 namespace NDifference.TypeSystem
@@ -9,6 +10,7 @@ namespace NDifference.TypeSystem
 	/// struct, interface needed yet.
 	/// </summary>
 	[Serializable]
+	[DebuggerDisplay("{Taxonomy} {Name}")]
 	public class PocoType : ITypeInfo
 	{
 		[NonSerialized]
@@ -39,7 +41,7 @@ namespace NDifference.TypeSystem
 
 		public string Assembly { get; set; }
 
-		//// public Obsolete ObsoleteMarker { get; set; }
+		public Obsolete ObsoleteMarker { get; set; }
 
 		public override string ToString()
 		{
@@ -55,5 +57,53 @@ namespace NDifference.TypeSystem
 		{
 			return this.GetHash<SHA1Managed>();
 		}
+
+		public static bool operator ==(PocoType leftHandSide, PocoType rightHandSide)
+		{
+			if (object.ReferenceEquals(leftHandSide, rightHandSide))
+			{
+				return true;
+			}
+
+			if (((object)leftHandSide == null) || ((object)rightHandSide == null))
+			{
+				return false;
+			}
+
+			return leftHandSide.FullName == rightHandSide.FullName;
+		}
+
+		public static bool operator !=(PocoType leftHandSide, PocoType rightHandSide)
+		{
+			return !(leftHandSide == rightHandSide);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+			{
+				return false;
+			}
+
+			PocoType otherType = obj as PocoType;
+
+			if ((object)otherType == null)
+			{
+				return false;
+			}
+
+			return this.FullName == otherType.FullName;
+		}
+
+		public bool Equals(ITypeInfo other)
+		{
+			if ((object)other == null)
+			{
+				return false;
+			}
+
+			return this.FullName == other.FullName;
+		}
+
 	}
 }

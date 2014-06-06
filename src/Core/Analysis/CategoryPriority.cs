@@ -6,7 +6,7 @@ namespace NDifference.Analysis
 	/// <summary>
 	/// Used to give an ordering to categories in a report.
 	/// </summary>
-	[DebuggerDisplay("{_value}")]
+	[DebuggerDisplay("{Value}")]
 	public class CategoryPriority : IEquatable<CategoryPriority>
 	{
 		public static readonly int InvalidValue = -1;

@@ -10,14 +10,14 @@ namespace NDifference.Files
 			var finder = new FileFinder(folder, FileFilterConstants.AssemblyFilter);
 
 			foreach (var file in finder.Find())
-				yield return BuildFromFile(file);
+				yield return BuildFrom(new FileInfo(file));
 
 			yield break;
 		}
 
 		public static IAssemblyDiskInfo BuildFromFile(string path)
 		{
-			return new AssemblyDiskInfo(path);
+			return BuildFrom(new FileInfo(path));
 		}
 
 		public static IEnumerable<IAssemblyDiskInfo> BuildFrom(DirectoryInfo info)

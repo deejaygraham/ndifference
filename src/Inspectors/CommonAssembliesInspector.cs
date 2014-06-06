@@ -7,6 +7,14 @@ namespace NDifference.Inspectors
 {
 	public class CommonAssembliesInspector : IAssemblyCollectionInspector
 	{
+		public bool Enabled { get; set; }
+
+		public string ShortCode { get { return "ACI001"; } }
+
+		public string DisplayName { get { return "Common Assemblies"; } }
+
+		public string Description { get { return "Checks for common assemblies between two versions"; } }
+
 		public void Inspect(IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
 		{
 			Debug.Assert(first != null, "First list of assemblies cannot be null");
@@ -14,6 +22,7 @@ namespace NDifference.Inspectors
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
 			changes.Add(WellKnownAssemblyCategories.ChangedAssemblies);
+			changes.Add(WellKnownAssemblyCategories.UnchangedAssemblies);
 
 			var comparer = new AssemblyNameComparer();
 
@@ -32,13 +41,17 @@ namespace NDifference.Inspectors
 					continue;
 				}
 
-				if (oldVersion == newVersion)
+				if (oldVersion.Equals(newVersion))
 				{
 					// if there's an exact match in all respects
 					// this may be the case if we're using 
 					// the same version of a third party library 
 					// REVIEW - don't add it...
-					changes.Add(new IdentifiedChange { Description = oldVersion.Name + " has NOT changed" } );
+					changes.Add(new IdentifiedChange 
+					{
+						Description = oldVersion.Name,
+						Priority = WellKnownAssemblyCategories.UnchangedAssemblies.Priority.Value
+					} );
 				}
 				else
 				{

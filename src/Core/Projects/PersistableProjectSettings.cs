@@ -21,6 +21,12 @@ namespace NDifference.Projects
 
 		public bool ConsolidateAssemblyTypes { get; set; }
 
+		[XmlElement("From")]
+		public int FromIndex { get; set; }
+
+		[XmlElement("To")]
+		public int ToIndex { get; set; }
+
 		[XmlIgnore]
 		public string HeadTag { get; set; }
 

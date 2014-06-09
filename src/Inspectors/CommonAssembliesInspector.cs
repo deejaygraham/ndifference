@@ -5,6 +5,9 @@ using System.Diagnostics;
 
 namespace NDifference.Inspectors
 {
+	/// <summary>
+	/// Looking for changes between common assemblies in two releases
+	/// </summary>
 	public class CommonAssembliesInspector : IAssemblyCollectionInspector
 	{
 		public bool Enabled { get; set; }
@@ -22,13 +25,9 @@ namespace NDifference.Inspectors
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
 			changes.Add(WellKnownAssemblyCategories.ChangedAssemblies);
-			changes.Add(WellKnownAssemblyCategories.UnchangedAssemblies);
+//			changes.Add(WellKnownAssemblyCategories.UnchangedAssemblies);
 
 			var comparer = new AssemblyNameComparer();
-
-			// REVIEW - need well known categories for each item... assemblies added, changed, removed, unchanged.
-			//	changes.Add(new IdentifiedChange { Description = added.Name });
-			//}
 
 			foreach (var common in first.InCommonWith(second, comparer))
 			{
@@ -47,11 +46,16 @@ namespace NDifference.Inspectors
 					// this may be the case if we're using 
 					// the same version of a third party library 
 					// REVIEW - don't add it...
-					changes.Add(new IdentifiedChange 
-					{
-						Description = oldVersion.Name,
-						Priority = WellKnownAssemblyCategories.UnchangedAssemblies.Priority.Value
-					} );
+					//bool reportUnchanged = false;
+
+					//if (reportUnchanged)
+					//{
+					//	changes.Add(new IdentifiedChange
+					//	{
+					//		Description = oldVersion.Name,
+					//		Priority = WellKnownAssemblyCategories.UnchangedAssemblies.Priority.Value
+					//	});
+					//}
 				}
 				else
 				{

@@ -1,15 +1,10 @@
 ﻿using NDifference;
 using NDifference.Analysis;
-using NDifference.Files;
 using NDifference.Framework;
-using NDifference.Inspectors;
-using NDifference.Plugins;
 using NDifference.Projects;
 using NDifference.Reflection;
-using NDifference.Reporting;
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace WalkingSkeleton

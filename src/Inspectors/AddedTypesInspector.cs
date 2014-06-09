@@ -5,6 +5,9 @@ using System.Diagnostics;
 
 namespace NDifference.Inspectors
 {
+	/// <summary>
+	/// Looking for types that have been added between first and second.
+	/// </summary>
 	public class AddedTypesInspector : ITypeCollectionInspector
 	{
 		public bool Enabled { get; set; }

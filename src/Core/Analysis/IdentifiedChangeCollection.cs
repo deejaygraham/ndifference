@@ -18,7 +18,7 @@ namespace NDifference.Analysis
 			this.Categories = new HashSet<Category>();
 			this.Changes = new List<IdentifiedChange>();
 		}
-
+		
 		public string Identifier { get; set; }
 
 		public string Name { get; set; }
@@ -57,14 +57,12 @@ namespace NDifference.Analysis
 			this.Changes.Add(change);
 		}
 
-		public List<IdentifiedChange> ChangesInCategory(CategoryPriority priority)
+		public List<IdentifiedChange> ChangesInCategory(int priority)
 		{
 			Debug.Assert(this.Categories != null, "Categories collection is null");
 			Debug.Assert(this.Changes != null, "Changes collection is null");
-			Debug.Assert(priority .IsValid, "Invalid order value");
-			//Debug.Assert(this.Categories.Any(c => c.Priority == priority), "Invalid order value");
 
-			return this.Changes.Where(x => x.Priority == priority.Value).ToList();
+			return this.Changes.Where(x => x.Priority == priority).ToList();
 		}
 
 		public List<IdentifiedChange> UnCategorisedChanges()

@@ -47,7 +47,7 @@
     <Compile Include="Files\AssemblyDiskInfoBuilder.cs" />
     <Compile Include="Framework\Product.cs" />
     <Compile Include="Framework\ProductIncrement.cs" />
-    <Compile Include="Framework\ProductIncrementPair.cs" />
+    <Compile Include="Inspection\WellKnownChangePriorities.cs" />
     <Compile Include="Inspectors\IAssemblyCollectionInspector.cs" />
     <Compile Include="Inspectors\IInspector.cs" />
     <Compile Include="Inspectors\ITypeCollectionInspector.cs" />

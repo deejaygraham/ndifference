@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using System;
 
 namespace NDifference.Inspectors
@@ -18,6 +19,8 @@ namespace NDifference.Inspectors
 
 		public void Inspect(IAssemblyInfo first, IAssemblyInfo second, IdentifiedChangeCollection changes)
 		{
+			changes.Add(WellKnownTypeCategories.AssemblyInternal);
+
 			if (first.Architecture != second.Architecture)
 			{
 				// need to report this change...
@@ -25,7 +28,8 @@ namespace NDifference.Inspectors
 				{
 					Description = String.Format("Architecture has changed from {0} to {1}", 
 						first.Architecture, 
-						second.Architecture)
+						second.Architecture),
+					Priority = WellKnownChangePriorities.AssemblyInternal
 				});
 			}
 		}

@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace NDifference.Inspectors
 {
+	/// <summary>
+	/// Looking for assemblies that have been added from first to second.
+	/// </summary>
 	public class AddedAssembliesInspector : IAssemblyCollectionInspector
 	{
 		public bool Enabled { get; set; }
@@ -24,7 +27,6 @@ namespace NDifference.Inspectors
 
 			var comparer = new AssemblyNameComparer();
 
-			// REVIEW - need well known categories for each item... assemblies added, changed, removed, unchanged.
 			foreach (var added in first.AddedTo(second, comparer))
 			{
 				changes.Add(new IdentifiedChange 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Framework
 {
@@ -18,6 +14,8 @@ namespace NDifference.Framework
 
 		public Product()
 		{
+			this.FromIncrement = 0;
+			this.ToIncrement = 1;
 		}
 
 		public Product(string name)
@@ -43,6 +41,16 @@ namespace NDifference.Framework
 			}
 		}
 
+		/// <summary>
+		/// Index of "from" increment.
+		/// </summary>
+		public int FromIncrement { get; set; }
+
+		/// <summary>
+		/// Index of "to" increment.
+		/// </summary>
+		public int ToIncrement { get; set; }
+
 		public void Add(ProductIncrement increment)
 		{
 			Debug.Assert(increment != null, "ProductIncrement cannot be null");
@@ -55,15 +63,20 @@ namespace NDifference.Framework
 			this.increments.Clear();
 		}
 
-		public ProductIncrementPair ComparedIncrements
+		public Pair<ProductIncrement> ComparedIncrements
 		{
 			get
 			{
+				Debug.Assert(this.FromIncrement >= 0, "From increment value is invalid");
+				Debug.Assert(this.ToIncrement >= 0, "To increment value is invalid");
+				Debug.Assert(this.FromIncrement != this.ToIncrement, "From and To increment values cannot be the same");
+
 				Debug.Assert(this.increments != null, "ProductIncrement collection is null");
 				Debug.Assert(this.increments.Count > 1, "Too few increments for comparison");
+				Debug.Assert(this.ToIncrement < this.increments.Count, "To increment settings is too high");
 
 				// REVIEW - return other indexes ???
-				return ProductIncrementPair.MakePair(this.increments[0], this.increments[1]);
+				return Pair<ProductIncrement>.MakePair(this.increments[this.FromIncrement], this.increments[this.ToIncrement]);
 			}
 		}
 

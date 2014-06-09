@@ -1,10 +1,14 @@
 ﻿using NDifference.Analysis;
+using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace NDifference.Inspectors
 {
+	/// <summary>
+	/// Checks types in an assembly to find differences used for further analysis.
+	/// </summary>
 	public class CommonTypesInspector : ITypeCollectionInspector
 	{
 		public bool Enabled { get; set; }
@@ -22,7 +26,7 @@ namespace NDifference.Inspectors
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
 			changes.Add(WellKnownTypeCategories.ChangedTypes);
-			changes.Add(WellKnownTypeCategories.UnchangedTypes);
+//			changes.Add(WellKnownTypeCategories.UnchangedTypes);
 
 			var comparer = new TypeNameComparer();
 
@@ -45,11 +49,26 @@ namespace NDifference.Inspectors
                     // if there's an exact match in all respects -
                     // this may be the case if we're using 
                     // the same version in two separate instances 
-					changes.Add(new IdentifiedChange { Description = newVersion.Name, Priority = WellKnownTypeCategories.UnchangedTypes.Priority.Value });
+					//bool reportUnchanged = false;
+
+					//if (reportUnchanged)
+					//{
+					//	changes.Add(new IdentifiedChange { Description = newVersion.Name, Priority = WellKnownTypeCategories.UnchangedTypes.Priority.Value });
+					//}
                 }
                 else
                 {
-					changes.Add(new IdentifiedChange { Description = newVersion.Name, Priority = WellKnownTypeCategories.ChangedTypes.Priority.Value });
+					changes.Add(new IdentifiedChange 
+					{ 
+						Description = newVersion.Name, 
+						Priority = WellKnownTypeCategories.ChangedTypes.Priority.Value,
+						Descriptor = new DocumentLink
+						{
+							LinkText = oldVersion.Name,
+							LinkUrl = oldVersion.Name,
+							Identifier = newVersion.Identifier
+						}
+					});
                 }
 			}
 		}

@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace NDifference.Inspectors
 {
+	/// <summary>
+	/// Looking for assemblies in first that are not in second.
+	/// </summary>
 	public class RemovedAssembliesInspector : IAssemblyCollectionInspector
 	{
 		public bool Enabled { get; set; }

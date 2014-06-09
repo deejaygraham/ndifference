@@ -5,6 +5,9 @@ using System.Diagnostics;
 
 namespace NDifference.Inspectors
 {
+	/// <summary>
+	/// Checks for obsolete types in an assembly.
+	/// </summary>
 	public class ObsoleteTypeInspector : ITypeCollectionInspector
 	{
 		public bool Enabled { get; set; }

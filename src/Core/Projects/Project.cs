@@ -1,5 +1,4 @@
-﻿using NDifference.Files;
-using NDifference.Framework;
+﻿using NDifference.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -152,6 +151,16 @@ namespace NDifference.Projects
 			project.Product.Add(secondVersion);
 
 			project.Settings = ProjectSettings.FromPersistableFormat(persistableFormat.Settings);
+
+			if (project.Settings.FromIndex >= 0)
+			{
+				project.Product.FromIncrement = project.Settings.FromIndex;
+			}
+
+			if (project.Settings.ToIndex < project.Product.Increments.Count)
+			{
+				project.Product.ToIncrement = project.Settings.ToIndex;
+			}
 
 			return project;
 		}

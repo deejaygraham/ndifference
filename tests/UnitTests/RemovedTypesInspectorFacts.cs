@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Inspectors;
 using NDifference.TypeSystem;
 using System.Collections.Generic;
@@ -27,10 +28,9 @@ namespace NDifference.UnitTests
 
 			inspector.Inspect(first, second, changes);
 
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownTypeCategories.AddedTypes.Priority).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownTypeCategories.RemovedTypes.Priority).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownTypeCategories.ChangedTypes.Priority).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownTypeCategories.UnchangedTypes.Priority).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.ChangedTypes).Count);
 		}
 
 		[Fact]
@@ -51,12 +51,9 @@ namespace NDifference.UnitTests
 
 			inspector.Inspect(first, second, changes);
 
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownTypeCategories.AddedTypes.Priority).Count);
-			Assert.Equal(1, changes.ChangesInCategory(WellKnownTypeCategories.RemovedTypes.Priority).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownTypeCategories.ChangedTypes.Priority).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownTypeCategories.UnchangedTypes.Priority).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes).Count);
+			Assert.Equal(1, changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.ChangedTypes).Count);
 		}
-
 	}
-
 }

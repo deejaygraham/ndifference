@@ -124,11 +124,11 @@ namespace NDifference.Reporting
 										}
 
 										// write each category
-										foreach (var cat in changes.Categories)
+										foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
 										{
-											if (changes.ChangesInCategory(cat.Priority).Any())
+											if (changes.ChangesInCategory(cat.Priority.Value).Any())
 											{
-												html.WriteTableRow(cat.Name, changes.ChangesInCategory(cat.Priority).Count, "#" + cat.Identifier);
+												html.WriteTableRow(cat.Name, changes.ChangesInCategory(cat.Priority.Value).Count, "#" + cat.Identifier);
 											}
 										}
 									});
@@ -137,72 +137,71 @@ namespace NDifference.Reporting
 								html.WriteComment(" End of Summary Table ");
 							});
 
-							foreach (var cat in changes.Categories)
+							foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
 							{
-								// write table for each
-
-								//		html.WriteElement("table", () =>
-								//		{
-								//			html.WriteAttributeString("summary", "List of assemblies that have changed between versions");
-
-								//			html.WriteElement("caption", () =>
-								//			{
-								//				html.WriteString("List of changed assemblies");
-								//			});
-
-								//			html.WriteElement("tbody", () =>
-								//			{
-								//				foreach (var change in summaryChanges.Changes)
-								//				{
-								//					html.WriteElement("tr", () =>
-								//					{
-								//						html.WriteElement("td", () =>
-								//						{
-								//							html.WriteLink(fileMap.LookupRelativeTo(change.Second.Identifier, project.Settings.IndexPath), change.Second.Name);
-								//						});
-								//					});
-								//				}
-								//			});
-								//		});
-
 								html.WriteElement("div", () =>
 								{
 									html.WriteAttributeString("id", cat.Identifier.ToString());
-									html.WriteElement("h2", () =>
+
+									var catChanges = changes.ChangesInCategory(cat.Priority.Value);
+
+									if (catChanges.Any())
 									{
-										html.WriteString(cat.Name);
-									});
-
-									int inThisCat = 0;
-
-									foreach (var change in changes.ChangesInCategory(cat.Priority))
-									{
-										++inThisCat;
-										object descriptor = change.Descriptor;
-
-										if (descriptor != null && this.Map != null)
+										html.WriteElement("h2", () =>
 										{
-											IDocumentLink link = descriptor as IDocumentLink;
+											html.WriteString(cat.Name);
+										});
 
-											if (link != null)
+										html.WriteComment("Category P" + cat.Priority.Value);
+
+										html.WriteElement("table", () =>
+										{
+											if (!String.IsNullOrEmpty(cat.Description))
 											{
-												html.WriteElement("p", () =>
+												html.WriteAttributeString("summary", cat.Description);
+												
+												html.WriteElement("caption", () =>
 												{
-													// look up correct path...
-													html.WriteLink(this.Map.LookupRelative(link.Identifier), link.LinkText);
+													// new property on category - caption ?
+													html.WriteString(cat.Description);
 												});
 											}
-										}
-										else if (!String.IsNullOrEmpty(change.Description))
-										{
-											html.WriteElement("p", () =>
-											{
-												html.WriteString(change.Description);
-											});
-										}
-									}
 
-									if (inThisCat == 0)
+
+											html.WriteElement("tbody", () =>
+											{
+												foreach (var change in catChanges)
+												{
+													html.WriteElement("tr", () =>
+													{
+														object descriptor = change.Descriptor;
+
+														if (descriptor != null && this.Map != null)
+														{
+															IDocumentLink link = descriptor as IDocumentLink;
+
+															if (link != null)
+															{
+																html.WriteElement("td", () =>
+																{
+																	// look up correct path...
+																	html.WriteLink(this.Map.LookupRelative(link.Identifier), link.LinkText);
+																});
+															}
+														}
+														else if (!String.IsNullOrEmpty(change.Description))
+														{
+															html.WriteElement("td", () =>
+															{
+																html.WriteString(change.Description);
+															});
+														}
+													});
+												}
+											});
+										});
+									}
+									else
 									{
 										html.WriteComment(" No " + cat.Name + " identified ");
 									}
@@ -211,6 +210,8 @@ namespace NDifference.Reporting
 
 							if (changes.UnCategorisedChanges().Any())
 							{
+								html.WriteComment(" Writing Uncategorised changes ... ");
+
 								foreach (var uncat in changes.UnCategorisedChanges())
 								{
 									// write table here...
@@ -262,6 +263,13 @@ namespace NDifference.Reporting
 				if (this.Map != null)
 				{
 					output.File = this.Map.Lookup(changes.Identifier);
+
+					string folder = Path.GetDirectoryName(output.File);
+
+					if (!Directory.Exists(folder))
+					{
+						Directory.CreateDirectory(folder);
+					}
 				}
 
 				output.Execute(content);

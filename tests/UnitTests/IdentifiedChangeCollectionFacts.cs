@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using Xunit;
 
 namespace NDifference.UnitTests
@@ -15,7 +16,7 @@ namespace NDifference.UnitTests
 			collection.Add(new IdentifiedChange { Priority = 1 });
 			collection.Add(new IdentifiedChange { Priority = 1 });
 
-			Assert.Equal(3, collection.ChangesInCategory(new CategoryPriority(1)).Count);
+			Assert.Equal(3, collection.ChangesInCategory(1).Count);
 		}
 
 		[Fact]
@@ -30,7 +31,7 @@ namespace NDifference.UnitTests
 			collection.Add(new IdentifiedChange { Priority = 1 });
 			collection.Add(new IdentifiedChange { Priority = 1 });
 
-			Assert.Equal(0, collection.ChangesInCategory(new CategoryPriority(2)).Count);
+			Assert.Equal(0, collection.ChangesInCategory(2).Count);
 		}
 
 		[Fact]

@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Inspectors;
 using System.Collections.Generic;
 using Xunit;
@@ -26,9 +27,9 @@ namespace NDifference.UnitTests
 
 			inspector.Inspect(first, second, changes);
 
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownAssemblyCategories.AddedAssemblies.Priority).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownAssemblyCategories.RemovedAssemblies.Priority).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownAssemblyCategories.ChangedAssemblies.Priority).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies).Count);
 		}
 
 		[Fact]
@@ -51,9 +52,9 @@ namespace NDifference.UnitTests
 
 			inspector.Inspect(first, second, changes);
 
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownAssemblyCategories.AddedAssemblies.Priority).Count);
-			Assert.Equal(1, changes.ChangesInCategory(WellKnownAssemblyCategories.RemovedAssemblies.Priority).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownAssemblyCategories.ChangedAssemblies.Priority).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
+			Assert.Equal(1, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);
+			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies).Count);
 		}
 
 	}

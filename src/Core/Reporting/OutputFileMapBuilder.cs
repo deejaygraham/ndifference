@@ -6,46 +6,120 @@ using System.Diagnostics;
 
 namespace NDifference.Reporting
 {
-	public static class OutputFileMapBuilder
+	public class OutputFileMapBuilder
 	{
-		public static OutputFileMap BuildFor(string indexIdentifier, IEnumerable<IdentifiedChangeCollection> allChanges, Project project, IReportFormat format)
+		public static OutputFileMapBuilder Map()
 		{
-			Debug.Assert(!String.IsNullOrEmpty(indexIdentifier), "Index id cannot be blank");
-			Debug.Assert(allChanges != null, "No superficial changes");
-			Debug.Assert(format != null, "No format specified");
-			Debug.Assert(project != null, "No project specified");
+			return new OutputFileMapBuilder();
+		}
 
-			var map = new OutputFileMap
+		public OutputFileMapBuilder()
+		{
+			this.map = new OutputFileMap();
+		}
+
+		private OutputFileMap map;
+
+		private Project project;
+
+		private IReportFormat format;
+
+		public OutputFileMapBuilder UsingProject(Project p)
+		{
+			this.project = p;
+			this.map.IndexFolder = project.Settings.IndexPath;
+
+			return this;
+		}
+
+		public OutputFileMapBuilder As(IReportFormat fmt)
+		{
+			this.format = fmt;
+
+			return this;
+		}
+
+		public OutputFileMapBuilder With(IDocumentLink link)
+		{
+			Debug.Assert(this.map != null, "Map not created");
+			Debug.Assert(this.project != null, "Project not set");
+
+			string pagePath = this.project.Settings.SuggestPath(link.LinkUrl, this.format.Extension);
+			map.Add(link.Identifier, pagePath);
+
+			return this;
+		}
+
+		public OutputFileMapBuilder With(IdentifiedChange change)
+		{
+			object descriptor = change.Descriptor;
+
+			if (descriptor != null)
 			{
-				IndexFolder = project.Settings.IndexPath
-			};
+				IDocumentLink link = descriptor as IDocumentLink;
 
-			string summaryPagePath = project.Settings.SuggestIndexPath(format.Extension);
-			map.Add(indexIdentifier, summaryPagePath);
-
-			foreach(var changeCollection in allChanges)
-			{
-				string parentPath = project.Settings.SuggestPath(changeCollection.Name, format.Extension);
-				map.Add(changeCollection.Name, parentPath);
-
-				foreach (var change in changeCollection.Changes)
+				if (link != null)
 				{
-					object descriptor = change.Descriptor;
+					return this.With(link);
+				}
+			}
 
-					if (descriptor != null)
+			return this;
+		}
+
+		public OutputFileMapBuilder With(IEnumerable<IdentifiedChangeCollection> changes)
+		{
+			foreach (var change in changes)
+			{
+				this.With(change);
+			}
+
+			return this;
+		}
+
+		public OutputFileMapBuilder With(IdentifiedChangeCollection change)
+		{
+			Debug.Assert(this.map != null, "Map not created");
+			Debug.Assert(this.project != null, "Project not set");
+
+			string parentPath = project.Settings.SuggestPath(change.Name, format.Extension);
+			map.Add(change.Identifier, parentPath);
+
+			foreach (var c in change.Changes)
+			{
+				object descriptor = c.Descriptor;
+
+				if (descriptor != null)
+				{
+					IDocumentLink link = descriptor as IDocumentLink;
+
+					if (link != null)
 					{
-						IDocumentLink link = descriptor as IDocumentLink;
-
-						if (link != null)
-						{
-							string pagePath = project.Settings.SuggestPath(link.LinkUrl, format.Extension);
-							map.Add(link.Identifier, pagePath);
-						}
+						string pagePath = project.Settings.SuggestPath(link.LinkUrl, format.Extension);
+						map.Add(link.Identifier, pagePath);
 					}
 				}
 			}
 
-			return map;
+			return this;
+		}
+
+		public OutputFileMapBuilder WithIndex(string indexIdentifier)
+		{
+			Debug.Assert(this.map != null, "Map not created");
+			Debug.Assert(this.project != null, "Project not set");
+
+			Debug.Assert(!String.IsNullOrEmpty(indexIdentifier), "Index id cannot be blank");
+
+			string summaryPagePath = this.project.Settings.SuggestIndexPath(this.format.Extension);
+			map.Add(indexIdentifier, summaryPagePath);
+
+			return this;
+		}
+
+		public OutputFileMap Build()
+		{
+			return this.map;
 		}
 	}
 }

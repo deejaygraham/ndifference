@@ -1,5 +1,5 @@
-﻿
-using System;
+﻿using System;
+
 namespace NDifference.TypeSystem
 {
 	/// <summary>
@@ -21,12 +21,5 @@ namespace NDifference.TypeSystem
 		string FullName { get; }
 
 		AccessModifier Access { get; }
-
-		///// <summary>
-		///// The name of the type.
-		///// </summary>
-		//FullyQualifiedName FullName { get; }
-
-		string CalculateHash();
 	}
 }

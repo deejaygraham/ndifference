@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace NDifference.Files
+namespace NDifference
 {
 	public class AssemblyDiskInfoBuilder
 	{

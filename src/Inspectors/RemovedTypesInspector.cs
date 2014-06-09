@@ -5,6 +5,9 @@ using System.Diagnostics;
 
 namespace NDifference.Inspectors
 {
+	/// <summary>
+	/// Looking for types removed from an assembly.
+	/// </summary>
 	public class RemovedTypesInspector : ITypeCollectionInspector
 	{
 		public bool Enabled { get; set; }

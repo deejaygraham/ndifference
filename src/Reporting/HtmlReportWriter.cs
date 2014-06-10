@@ -85,6 +85,18 @@ namespace NDifference.Reporting
 									{
 										html.WriteString(changes.Heading);
 									});
+
+									// do breadcrumbs...
+									if (!String.IsNullOrEmpty(changes.Parent))
+									{
+										html.WriteLink(this.Map.LookupRelative(changes.Parent), "Up...");
+									}
+
+									if (!String.IsNullOrEmpty(changes.Grandparent))
+									{
+										html.WriteLink(this.Map.LookupRelative(changes.Grandparent), "Summary");
+									}
+
 								});
 							}
 
@@ -176,11 +188,11 @@ namespace NDifference.Reporting
 													{
 														object descriptor = change.Descriptor;
 
-														if (descriptor != null && this.Map != null)
+														if (descriptor != null)
 														{
 															IDocumentLink link = descriptor as IDocumentLink;
 
-															if (link != null)
+															if (link != null && this.Map != null)
 															{
 																html.WriteElement("td", () =>
 																{
@@ -188,13 +200,19 @@ namespace NDifference.Reporting
 																	html.WriteLink(this.Map.LookupRelative(link.Identifier), link.LinkText);
 																});
 															}
+															else
+															{
+																ITextDescriptor textDesc = descriptor as ITextDescriptor;
+
+																if (textDesc != null)
+																{
+																	html.WriteTableRow(textDesc.Name, textDesc.Message);
+																}
+															}
 														}
 														else if (!String.IsNullOrEmpty(change.Description))
 														{
-															html.WriteElement("td", () =>
-															{
-																html.WriteString(change.Description);
-															});
+															html.WriteTableRow(change.Description);
 														}
 													});
 												}

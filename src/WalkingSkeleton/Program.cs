@@ -120,6 +120,36 @@ namespace WalkingSkeleton
 				new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter), 
 				new CecilReflectorFactory());
 
+			workflow.AnalysisStarting += (o, e) =>
+				{
+					Console.WriteLine("Analysis starting...");
+				};
+
+			workflow.PluginsLoading += (o, e) =>
+			{
+				Console.Write("Loading plugins...");
+			};
+
+			workflow.PluginsComplete += (o, e) =>
+			{
+				Console.Write("done.");
+			};
+
+			workflow.AssemblyComparisonStarting += (o, e) =>
+				{
+					Console.WriteLine(".");
+				};
+
+			workflow.AssemblyComparisonComplete += (o, e) =>
+				{
+					Console.WriteLine(".");
+				};
+
+			workflow.AnalysisComplete += (o, e) =>
+			{
+				Console.WriteLine("Done.");
+			};
+
 			workflow.Analyse(project);
 		
 		}

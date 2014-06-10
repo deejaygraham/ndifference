@@ -1,5 +1,6 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
+using NDifference.Reporting;
 using System;
 
 namespace NDifference.Inspectors
@@ -29,7 +30,14 @@ namespace NDifference.Inspectors
 					Description = String.Format("Architecture has changed from {0} to {1}", 
 						first.Architecture, 
 						second.Architecture),
-					Priority = WellKnownChangePriorities.AssemblyInternal
+					Priority = WellKnownChangePriorities.AssemblyInternal,
+					Descriptor = new TextDescriptor 
+					{ 
+						Name = "Architecture has changed", 
+						Message = String.Format("From: {0} To: {1}", 
+							first.Architecture, 
+							second.Architecture) 
+					}
 				});
 			}
 		}

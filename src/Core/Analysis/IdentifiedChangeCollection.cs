@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace NDifference.Analysis
 {
+	[DebuggerDisplay("{Name}")]
 	public sealed class IdentifiedChangeCollection : IUniquelyIdentifiable
 	{
 		public IdentifiedChangeCollection()
@@ -20,6 +21,10 @@ namespace NDifference.Analysis
 		}
 		
 		public string Identifier { get; set; }
+
+		public string Parent { get; set; }
+
+		public string Grandparent { get; set; }
 
 		public string Name { get; set; }
 

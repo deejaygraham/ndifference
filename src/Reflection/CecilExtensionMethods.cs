@@ -15,7 +15,7 @@ namespace NDifference.Reflection
 
 			var fqn = new FullyQualifiedName(td.FriendlyName());
  
-			return new PocoType
+			var t = new PocoType
 				{
 					Taxonomy = td.ToTaxonomy(),
 					FullName = fqn.ToString(), 
@@ -23,6 +23,8 @@ namespace NDifference.Reflection
 					Namespace = fqn.ContainingNamespace.ToString(),
 					Assembly = td.Module.Assembly.FullName
 				};
+
+			return t;
 		}
 
 		public static TypeTaxonomy ToTaxonomy(this TypeDefinition td)
@@ -70,6 +72,56 @@ namespace NDifference.Reflection
 			return td.Name.StartsWith(NetModuleType) 
 				|| (td.Name.StartsWith(ExtenionsMethodSignature)
 				&& td.IsNestedPrivate);
+		}
+
+        public static bool IsInPublicApi(this FieldDefinition field)
+        {
+            return field.IsPublic() || field.IsProtected();
+        }
+
+        /// <summary>
+        /// Extension method to determine if this field definition is public.
+        /// </summary>
+        /// <param name="field">The field.</param>
+        /// <returns>True if it is public.</returns>
+        public static bool IsPublic(this FieldDefinition field)
+        {
+            if (field.IsSpecialName)
+            {
+                return false;
+            }
+
+            return field.IsPublic;
+        }
+
+        public static bool IsProtected(this FieldDefinition field)
+        {
+            if (field.IsSpecialName)
+            {
+                return false;
+            }
+
+            return field.IsFamily || field.IsFamilyAndAssembly || field.IsFamilyOrAssembly;
+        }
+
+		public static long ConstantValue(this FieldDefinition field)
+		{
+			long value = 0;
+
+			try
+			{
+				value = Convert.ToInt64(field.Constant);
+			}
+			catch (OverflowException)
+			{
+				value = 0;
+			}
+			catch (InvalidCastException)
+			{
+				value = 0;
+			}
+
+			return value;
 		}
 
 		private static string MakeGenericFriendlyName(TypeDefinition td)

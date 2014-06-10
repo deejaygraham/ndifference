@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,7 +34,9 @@ namespace NDifference.Inspectors
 					changes.Add(new IdentifiedChange
 					{
 						Description = string.Format("{0} {1}", s.Name, s.ObsoleteMarker.Message),
-						Priority = WellKnownTypeCategories.ObsoleteTypes.Priority.Value
+						Priority = WellKnownTypeCategories.ObsoleteTypes.Priority.Value,
+						//put source code into name ...
+						Descriptor = new TextDescriptor { Name = s.Name, Message = s.ObsoleteMarker.Message }
 					});
 				}
 			}

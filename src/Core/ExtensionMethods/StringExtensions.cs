@@ -25,6 +25,18 @@ namespace NDifference
 
 			return builder.ToString();
 		}
+
+		public static string HtmlSafeTypeName(this string fullyQualifiedName)
+		{
+			const string XmlLessThan = "<";
+			const string HtmlLessThan = "&lt;";
+			const string XmlGreaterThan = ">";
+			const string HtmlGreaterThan = "&gt;";
+
+			return fullyQualifiedName
+				.Replace(XmlLessThan, HtmlLessThan)
+				.Replace(XmlGreaterThan, HtmlGreaterThan);
+		}
 	}
 
 }

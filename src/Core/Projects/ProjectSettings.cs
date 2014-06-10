@@ -126,10 +126,17 @@ namespace NDifference.Projects
 			Debug.Assert(!String.IsNullOrEmpty(fileName), "File name cannot be blank");
 			Debug.Assert(!String.IsNullOrEmpty(extension), "Extension cannot be blank");
 
-			if (String.IsNullOrEmpty(this.SubFolder))
-				return Path.Combine(this.OutputFolder, fileName + extension);
+			try
+			{
+				if (String.IsNullOrEmpty(this.SubFolder))
+					return Path.Combine(this.OutputFolder, fileName + extension);
 
-			return Path.Combine(this.OutputFolder, this.SubFolder, fileName + extension);
+				return Path.Combine(this.OutputFolder, this.SubFolder, fileName + extension);
+			}
+			catch (ArgumentException)
+			{
+				return null;
+			}
 		}
 
 		/// <summary>

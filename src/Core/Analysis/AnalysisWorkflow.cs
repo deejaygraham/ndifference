@@ -1,4 +1,5 @@
-﻿using NDifference.Inspection;
+﻿using NDifference.Framework;
+using NDifference.Inspection;
 using NDifference.Inspectors;
 using NDifference.Plugins;
 using NDifference.Projects;
@@ -18,6 +19,18 @@ namespace NDifference.Analysis
 	/// </summary>
 	public class AnalysisWorkflow : IAnalysisWorkflow
 	{
+		public event EventHandler<CancellableEventArgs> AnalysisStarting;
+
+		public event EventHandler AnalysisComplete;
+
+		public event EventHandler<CancellableEventArgs> PluginsLoading;
+
+		public event EventHandler PluginsComplete;
+
+		public event EventHandler<CancellableEventArgs> AssemblyComparisonStarting;
+
+		public event EventHandler AssemblyComparisonComplete;
+
 		public AnalysisWorkflow(IFileFinder finder, IAssemblyReflectorFactory reflectorFactory)
 		{
 			Debug.Assert(finder != null, "Finder cannot be null");
@@ -51,9 +64,26 @@ namespace NDifference.Analysis
 
 		public void Analyse(Project project)
 		{
+			var cancelStart = new CancellableEventArgs();
+			this.AnalysisStarting.Fire(this, cancelStart);
+
+			if (cancelStart.CancelAction)
+			{
+				return;
+			}
+
 			try
 			{
 				this.DiscoverPlugins();
+
+				var cancelCompare = new CancellableEventArgs();
+				this.AssemblyComparisonStarting.Fire(this, cancelCompare);
+
+				if (cancelCompare.CancelAction)
+				{
+					return;
+				}
+
 
 				IdentifiedChangeCollection summaryChanges = new IdentifiedChangeCollection
 				{
@@ -103,6 +133,8 @@ namespace NDifference.Analysis
 							Heading = dll1.Name
 						};
 
+						dllChanges.Parent = summaryChanges.Identifier;
+
 						// each inspector
 						// looking for general changes to the assembly...
 						foreach (var ai in this.AssemblyInspectors.Where(x => x.Enabled))
@@ -138,6 +170,8 @@ namespace NDifference.Analysis
 					}
 				}
 
+				this.AssemblyComparisonComplete.Fire(this);
+				
 				var reportRepo = new ReportingRepository();
 				var reportFinder = new ReportingPluginDiscoverer(this.Finder);
 
@@ -176,6 +210,10 @@ namespace NDifference.Analysis
 			{
 				// add to list of errors.
 			}
+			finally
+			{
+				this.AnalysisComplete.Fire(this);
+			}
 		}
 
 		private void RunAssemblyCollectionInspectors(IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
@@ -188,6 +226,14 @@ namespace NDifference.Analysis
 
 		private void DiscoverPlugins()
 		{
+			var cancelSearch = new CancellableEventArgs();
+			this.PluginsLoading.Fire(this, cancelSearch);
+
+			if (cancelSearch.CancelAction)
+			{
+				return;
+			}
+
 			// need to be turned on or off depending on project settings...
 			this.AssemblyCollectionInspectors.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(this.Finder).Find());
 			this.AssemblyCollectionInspectors.ForEach(x => x.Enabled = true);
@@ -202,6 +248,8 @@ namespace NDifference.Analysis
 			this.TypeInspectors.ForEach(x => x.Enabled = true);
 
 			this.ReportWriters.AddRange(new ReportingPluginDiscoverer(this.Finder).Find());
+
+			this.PluginsComplete.Fire(this);
 		}
 	}
 }

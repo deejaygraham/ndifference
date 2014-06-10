@@ -51,6 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\ClassDefinitionBuilder.cs" />
+    <Compile Include="Builders\EnumDefinitionBuilder.cs" />
+    <Compile Include="Builders\InterfaceDefinitionBuilder.cs" />
+    <Compile Include="Builders\ObsoleteBuilder.cs" />
     <Compile Include="CecilReflector.cs" />
     <Compile Include="CecilExtensionMethods.cs" />
     <Compile Include="..\CommonVersionInfo.cs">

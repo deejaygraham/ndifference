@@ -6,6 +6,8 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using System.Linq;
+using NDifference.Reflection.Builders;
 
 namespace NDifference.Reflection
 {
@@ -35,24 +37,34 @@ namespace NDifference.Reflection
 			{
 			    var types = module.GetTypes();
 
-			    foreach (var type in types)
+				foreach (var type in types.Where(x => option == AssemblyReflectionOption.All || x.IsPublic))
 			    {
-					if (type.IsInternalType())
+					ITypeInfo info = null;
+
+					if (type.IsEnum)
 					{
+						var builder = new EnumDefinitionBuilder();
+						info = builder.BuildFrom(type);
+					}
+					else if (type.IsClass)
+					{
+						var builder = new ClassDefinitionBuilder();
+						info = builder.BuildFrom(type);
+					}
+					else if (type.IsInterface)
+					{
+						var builder = new InterfaceDefinitionBuilder();
+						info = builder.BuildFrom(type);
+					}
+					else
+					{
+						// don't support these types
 						continue;
 					}
-
-					TypeTaxonomy kind = type.ToTaxonomy();
-
-					// don't support this type
-					if (kind == TypeTaxonomy.Unknown)
+					 
+					if (info != null && (option == AssemblyReflectionOption.All || type.IsPublic))
 					{
-						continue;
-					}
-						 
-					if (option == AssemblyReflectionOption.All || type.IsPublic)
-					{
-						typeList.Add(type.ToTypeInfo());
+						typeList.Add(info);
 					}
 			    }
 			}

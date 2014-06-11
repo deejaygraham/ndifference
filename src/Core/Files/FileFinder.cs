@@ -26,14 +26,14 @@ namespace NDifference
 
 		public string Filter { get; set; }
 		
-		public IEnumerable<string> Find()
+		public IEnumerable<IFile> Find()
 		{
 			Debug.Assert(!string.IsNullOrEmpty(this.Folder), "Folder cannot be blank");
 			Debug.Assert(!string.IsNullOrEmpty(this.Filter), "Filter is not set");
 			Debug.Assert(Directory.Exists(this.Folder), "Folder does not exist");
 
 			foreach(string file in Directory.GetFiles(this.Folder, this.Filter))
-				yield return file;
+				yield return new PhysicalFile(file);
 
 			yield break;
 		}

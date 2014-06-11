@@ -14,7 +14,7 @@ namespace NDifference.Reporting
 	{
 		IEnumerable<IReportFormat> SupportedFormats { get; }
 
-		OutputFileMap Map { get; set; }
+		FileMap Map { get; set; }
 
 		//Project Project { get; set; }
 

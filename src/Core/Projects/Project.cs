@@ -72,15 +72,20 @@ namespace NDifference.Projects
 
 				bool writeAbsolutePaths = string.IsNullOrEmpty(baseFolder);
 
+				if (!baseFolder.EndsWith("\\"))
+				{
+					baseFolder += "\\";
+				}
+
 				foreach (var assembly in this.Product.ComparedIncrements.First.Assemblies)
 				{
-					string include = writeAbsolutePaths ? assembly.Path : PathExtensions.MakeRelativePath(baseFolder, assembly.Path);
+					string include = writeAbsolutePaths ? assembly.Path : baseFolder.MakeRelativePath(assembly.Path);
 					persistableFormat.SourceAssemblies.Add(include);
 				}
 
 				foreach (var assembly in this.Product.ComparedIncrements.Second.Assemblies)
 				{
-					string include = writeAbsolutePaths ? assembly.Path : PathExtensions.MakeRelativePath(baseFolder, assembly.Path);
+					string include = writeAbsolutePaths ? assembly.Path : baseFolder.MakeRelativePath(assembly.Path);
 					persistableFormat.TargetAssemblies.Add(include);
 				}
 			}
@@ -99,6 +104,11 @@ namespace NDifference.Projects
 				Id = persistableFormat.Identifier,
 				Version = persistableFormat.Version
 			};
+
+			if (!string.IsNullOrEmpty(baseFolder) && !baseFolder.EndsWith("\\"))
+			{
+				baseFolder += "\\";
+			}
 
 			project.Product.Name = persistableFormat.ProductName;
 

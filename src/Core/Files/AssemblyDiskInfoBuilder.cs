@@ -10,7 +10,7 @@ namespace NDifference
 			var finder = new FileFinder(folder, FileFilterConstants.AssemblyFilter);
 
 			foreach (var file in finder.Find())
-				yield return BuildFrom(new FileInfo(file));
+				yield return BuildFrom(new FileInfo(file.FullPath));
 
 			yield break;
 		}

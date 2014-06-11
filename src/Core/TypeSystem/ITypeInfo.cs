@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NDifference.TypeSystem
 {
@@ -21,5 +23,13 @@ namespace NDifference.TypeSystem
 		string FullName { get; }
 
 		AccessModifier Access { get; }
+	}
+
+	public static class ITypeInfoExtensions
+	{
+		public static ITypeInfo FindMatchFor(this IEnumerable<ITypeInfo> types, string instance)
+		{
+			return types.FirstOrDefault(x => x.FullName.Equals(instance, StringComparison.CurrentCultureIgnoreCase));
+		}
 	}
 }

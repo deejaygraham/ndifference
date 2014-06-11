@@ -4,6 +4,7 @@ using NDifference.Inspectors;
 using NDifference.Plugins;
 using NDifference.Projects;
 using NDifference.Reporting;
+using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -158,13 +159,25 @@ namespace NDifference.Analysis
 							// find common types...
 							IdentifiedChangeCollection typeChanges = new IdentifiedChangeCollection
 							{
-								Name = common.Description,
+								Name = commonType.Description,
 								Heading = dll1.Name
 							};
 
 							foreach (var ti in this.TypeInspectors.Where(x => x.Enabled))
 							{
+								ITypeInfo t1 = typesIn1.FindMatchFor(commonType.Description);
+								ITypeInfo t2 = typesIn2.FindMatchFor(commonType.Description);
+
+								Debug.Assert(t1 != null, "No common type found in first assembly");
+								Debug.Assert(t2 != null, "No common type found in second assembly");
+
 								//ti.Inspect()
+								ti.Inspect(t1, t2, typeChanges);
+							}
+
+							if (typeChanges.Changes.Any())
+							{
+								typeChangeCollection.Add(typeChanges);
 							}
 						}
 					}
@@ -183,7 +196,7 @@ namespace NDifference.Analysis
 				{
 					IReportFormat format = writer.SupportedFormats.First();
 
-					writer.Map = OutputFileMapBuilder.Map()
+					writer.Map = FileMapBuilder.Map()
 						.UsingProject(project)
 						.As(format)
 						.WithIndex(summaryChanges.Identifier)
@@ -192,17 +205,22 @@ namespace NDifference.Analysis
 						.With(typeChangeCollection)
 						.Build();
 
-					IReportOutput output = new FileOutput(Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName));
-					output.Folder = project.Settings.OutputFolder;
+					IReportOutput output = new FileOutput(Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension));
 
 					writer.Write(summaryChanges, output, format);
 
 					foreach (var dllChange in dllChangeCollection)
 					{
-						IReportOutput dllOutput = new FileOutput(dllChange.Name);
-						output.Folder = project.Settings.OutputFolder;
+						IReportOutput dllOutput = new FileOutput(Path.Combine(project.Settings.SubPath, dllChange.Name + format.Extension));
 
-						writer.Write(dllChange, output, format);
+						writer.Write(dllChange, dllOutput, format);
+					}
+
+					foreach(var typeChange in typeChangeCollection)
+					{
+						IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name + format.Extension));
+
+						writer.Write(typeChange, typeOutput, format);
 					}
 				}
 			}

@@ -7,37 +7,42 @@ namespace NDifference.Reporting
 {
 	public class FileOutput : IReportOutput
 	{
-		public FileOutput(string fileName)
+		public FileOutput(IFile file)
 		{
-			Debug.Assert(!string.IsNullOrEmpty(fileName), "Filename cannot be blank");
+			this.Path = file.FullPath;
+			this.Folder = file.Folder;
+		}
 
-			if (Path.IsPathRooted(fileName))
+		public FileOutput(string fullPath)
+		{
+			Debug.Assert(!string.IsNullOrEmpty(fullPath), "Filename cannot be blank");
+
+			if (System.IO.Path.IsPathRooted(fullPath))
 			{
-				this.Folder = Path.GetDirectoryName(fileName);
+				this.Folder = System.IO.Path.GetDirectoryName(fullPath);
+				this.Path = fullPath;
 			}
 			else
 			{
 				this.Folder = Directory.GetCurrentDirectory();
+				this.Path = System.IO.Path.Combine(this.Folder, fullPath);
 			}
-
-			this.File = Path.GetFileName(fileName);
 		}
 
-		public string Folder { get; set; }
+		public string Folder { get; private set; }
 
-		public string File { get; set; }
+		public string Path { get; private set; }
 
 		public void Execute(string reportContent)
 		{
-			Debug.Assert(!String.IsNullOrEmpty(this.Folder), "Folder not set");
-			Debug.Assert(!String.IsNullOrEmpty(this.File), "File not set");
+			Debug.Assert(!String.IsNullOrEmpty(this.Path), "File not set");
 
 			if (!Directory.Exists(this.Folder))
 			{
 				Directory.CreateDirectory(this.Folder);
 			}
 
-			string fullPath = Path.Combine(this.Folder, this.File);
+			string fullPath = System.IO.Path.Combine(this.Folder, this.Path);
 
 			if (System.IO.File.Exists(fullPath))
 			{

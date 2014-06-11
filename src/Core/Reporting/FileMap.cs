@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
-	public class OutputFileMap
+	public class FileMap
 	{
-		private Dictionary<string, string> identToFileMap = new Dictionary<string, string>();
+		private Dictionary<string, IFile> identToFileMap = new Dictionary<string, IFile>();
 
-		public string IndexFolder { get; set; }
+		public IFolder IndexFolder { get; set; }
 
-		public void Add(string key, string value)
+		public void Add(string key, IFile value)
 		{
 			Debug.Assert(!String.IsNullOrEmpty(key), "Key cannot be blank");
-			Debug.Assert(!String.IsNullOrEmpty(value), "Value cannot be blank");
+			Debug.Assert(value != null, "Value cannot be null");
 
 			if (this.identToFileMap.ContainsKey(key))
 				return;
@@ -29,32 +29,28 @@ namespace NDifference.Reporting
 			Debug.Assert(!String.IsNullOrEmpty(key), "Key cannot be blank");
 			Debug.Assert(this.identToFileMap.ContainsKey(key), "Nothing stored for " + key);
 
-			string value = this.identToFileMap[key];
-
-			return value;
+			return this.identToFileMap[key].FullPath;
 		}
 
-		public string LookupRelativeTo(string key, string folder)
+		public string LookupRelativeTo(string key, IFolder folder)
 		{
 			Debug.Assert(!String.IsNullOrEmpty(key), "Key cannot be blank");
-			Debug.Assert(!String.IsNullOrEmpty(folder), "Folder cannot be blank");
+			Debug.Assert(folder != null, "Folder cannot be null");
 
 			Debug.Assert(this.identToFileMap.ContainsKey(key), "Nothing stored for " + key);
 
-			string value = this.identToFileMap[key];
+			IFile value = this.identToFileMap[key];
 
-			return folder.MakeRelativePath(value);
+			return folder.TrailingSlashPath.MakeRelativePath(value.FullPath);
 		}
 
 		public string LookupRelative(string key)
 		{
 			Debug.Assert(!String.IsNullOrEmpty(key), "Key cannot be blank");
 			Debug.Assert(this.identToFileMap.ContainsKey(key), "Nothing stored for " + key);
-			Debug.Assert(!String.IsNullOrEmpty(this.IndexFolder), "IndexFolder property not set");
+			Debug.Assert(this.IndexFolder != null, "IndexFolder property not set");
 
-			string value = this.identToFileMap[key];
-
-			return this.IndexFolder.MakeRelativePath(value).Replace("\\", "/");
+			return this.LookupRelativeTo(key, this.IndexFolder);
 		}
 	}
 }

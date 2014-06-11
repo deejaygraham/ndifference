@@ -6,51 +6,51 @@ using System.Diagnostics;
 
 namespace NDifference.Reporting
 {
-	public class OutputFileMapBuilder
+	public class FileMapBuilder
 	{
-		public static OutputFileMapBuilder Map()
+		public static FileMapBuilder Map()
 		{
-			return new OutputFileMapBuilder();
+			return new FileMapBuilder();
 		}
 
-		public OutputFileMapBuilder()
+		public FileMapBuilder()
 		{
-			this.map = new OutputFileMap();
+			this.map = new FileMap();
 		}
 
-		private OutputFileMap map;
+		private FileMap map;
 
 		private Project project;
 
 		private IReportFormat format;
 
-		public OutputFileMapBuilder UsingProject(Project p)
+		public FileMapBuilder UsingProject(Project p)
 		{
 			this.project = p;
-			this.map.IndexFolder = project.Settings.IndexPath;
+			this.map.IndexFolder = new PhysicalFolder(project.Settings.IndexPath);
 
 			return this;
 		}
 
-		public OutputFileMapBuilder As(IReportFormat fmt)
+		public FileMapBuilder As(IReportFormat fmt)
 		{
 			this.format = fmt;
 
 			return this;
 		}
 
-		public OutputFileMapBuilder With(IDocumentLink link)
+		public FileMapBuilder With(IDocumentLink link)
 		{
 			Debug.Assert(this.map != null, "Map not created");
 			Debug.Assert(this.project != null, "Project not set");
 
 			string pagePath = this.project.Settings.SuggestPath(link.LinkUrl.HtmlSafeTypeName(), this.format.Extension);
-			map.Add(link.Identifier, pagePath);
+			map.Add(link.Identifier, new PhysicalFile(pagePath));
 
 			return this;
 		}
 
-		public OutputFileMapBuilder With(IdentifiedChange change)
+		public FileMapBuilder With(IdentifiedChange change)
 		{
 			object descriptor = change.Descriptor;
 
@@ -67,7 +67,7 @@ namespace NDifference.Reporting
 			return this;
 		}
 
-		public OutputFileMapBuilder With(IEnumerable<IdentifiedChangeCollection> changes)
+		public FileMapBuilder With(IEnumerable<IdentifiedChangeCollection> changes)
 		{
 			foreach (var change in changes)
 			{
@@ -77,13 +77,13 @@ namespace NDifference.Reporting
 			return this;
 		}
 
-		public OutputFileMapBuilder With(IdentifiedChangeCollection change)
+		public FileMapBuilder With(IdentifiedChangeCollection change)
 		{
 			Debug.Assert(this.map != null, "Map not created");
 			Debug.Assert(this.project != null, "Project not set");
 
 			string parentPath = project.Settings.SuggestPath(change.Name.HtmlSafeTypeName(), format.Extension);
-			map.Add(change.Identifier, parentPath);
+			map.Add(change.Identifier, new PhysicalFile(parentPath));
 
 			foreach (var c in change.Changes)
 			{
@@ -96,7 +96,7 @@ namespace NDifference.Reporting
 					if (link != null)
 					{
 						string pagePath = project.Settings.SuggestPath(link.LinkUrl.HtmlSafeTypeName(), format.Extension);
-						map.Add(link.Identifier, pagePath);
+						map.Add(link.Identifier, new PhysicalFile(pagePath));
 					}
 				}
 			}
@@ -104,7 +104,7 @@ namespace NDifference.Reporting
 			return this;
 		}
 
-		public OutputFileMapBuilder WithIndex(string indexIdentifier)
+		public FileMapBuilder WithIndex(string indexIdentifier)
 		{
 			Debug.Assert(this.map != null, "Map not created");
 			Debug.Assert(this.project != null, "Project not set");
@@ -112,12 +112,12 @@ namespace NDifference.Reporting
 			Debug.Assert(!String.IsNullOrEmpty(indexIdentifier), "Index id cannot be blank");
 
 			string summaryPagePath = this.project.Settings.SuggestIndexPath(this.format.Extension);
-			map.Add(indexIdentifier, summaryPagePath);
+			map.Add(indexIdentifier, new PhysicalFile(summaryPagePath));
 
 			return this;
 		}
 
-		public OutputFileMap Build()
+		public FileMap Build()
 		{
 			return this.map;
 		}

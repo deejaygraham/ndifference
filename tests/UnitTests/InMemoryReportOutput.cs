@@ -11,7 +11,7 @@ namespace NDifference.UnitTests
 	{
 		public string Folder { get; set; }
 
-		public string File { get; set; }
+		public string Path { get; set; }
 
 		public string Content { get; private set; }
 

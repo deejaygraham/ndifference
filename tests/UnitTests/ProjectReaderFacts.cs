@@ -117,7 +117,7 @@ namespace NDifference.UnitTests
 		{
 			var project = new Project();
 
-			project.Settings.OutputFolder = @"C:\MyFolder";
+			project.Settings.OutputFolder = @"C:\MyFolder\\";
 
 			string xmlText = WriteProjectToString(project);
 

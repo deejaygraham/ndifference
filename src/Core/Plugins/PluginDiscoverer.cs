@@ -50,7 +50,7 @@ namespace NDifference.Plugins
 				if (this.FilterFile(file))
 					continue;
 
-				var reflector = factory.LoadAssembly(file);
+				var reflector = factory.LoadAssembly(file.FullPath);
 
 				Debug.Assert(reflector != null, "Reflector not loaded correctly");
 
@@ -67,11 +67,9 @@ namespace NDifference.Plugins
 			return found;
 		}
 
-		private bool FilterFile(string path)
+		private bool FilterFile(IFile path)
 		{
-			string candidateFile = System.IO.Path.GetFileName(path);
-
-			return this.IgnoreAssemblies.Contains(candidateFile);
+			return this.IgnoreAssemblies.Contains(path.Name);
 		}
 	}
 

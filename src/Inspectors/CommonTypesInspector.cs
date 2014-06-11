@@ -44,23 +44,23 @@ namespace NDifference.Inspectors
 				string oldHash = oldVersion.CalculateHash();
 				string newHash = newVersion.CalculateHash();
 
-				if (oldHash.Equals(newHash))
-                {
-                    // if there's an exact match in all respects -
-                    // this may be the case if we're using 
-                    // the same version in two separate instances 
-					//bool reportUnchanged = false;
+				//if (oldHash.Equals(newHash))
+				//{
+				//	// if there's an exact match in all respects -
+				//	// this may be the case if we're using 
+				//	// the same version in two separate instances 
+				//	//bool reportUnchanged = false;
 
-					//if (reportUnchanged)
-					//{
-					//	changes.Add(new IdentifiedChange { Description = newVersion.Name, Priority = WellKnownTypeCategories.UnchangedTypes.Priority.Value });
-					//}
-                }
-                else
+				//	//if (reportUnchanged)
+				//	//{
+				//	//	changes.Add(new IdentifiedChange { Description = newVersion.Name, Priority = WellKnownTypeCategories.UnchangedTypes.Priority.Value });
+				//	//}
+				//}
+				//else
                 {
 					changes.Add(new IdentifiedChange 
 					{ 
-						Description = newVersion.Name, 
+						Description = newVersion.FullName, 
 						Priority = WellKnownTypeCategories.ChangedTypes.Priority.Value,
 						Descriptor = new DocumentLink
 						{

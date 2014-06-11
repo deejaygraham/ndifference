@@ -46,6 +46,10 @@
     <Compile Include="ExtensionMethods\EventHandlerExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Files\AssemblyDiskInfoBuilder.cs" />
+    <Compile Include="Files\IFile.cs" />
+    <Compile Include="Files\IFolder.cs" />
+    <Compile Include="Files\PhysicalFile.cs" />
+    <Compile Include="Files\PhysicalFolder.cs" />
     <Compile Include="Framework\CancellableEventArgs.cs" />
     <Compile Include="Framework\Product.cs" />
     <Compile Include="Framework\ProductIncrement.cs" />
@@ -72,8 +76,8 @@
     <Compile Include="Reporting\IReportOutput.cs" />
     <Compile Include="Reporting\IReportWriter.cs" />
     <Compile Include="Reporting\ITextDescriptor.cs" />
-    <Compile Include="Reporting\OutputFileMap.cs" />
-    <Compile Include="Reporting\OutputFileMapBuilder.cs" />
+    <Compile Include="Reporting\FileMap.cs" />
+    <Compile Include="Reporting\FileMapBuilder.cs" />
     <Compile Include="Reporting\ReportFormatRepository.cs" />
     <Compile Include="Reporting\ReportingRepository.cs" />
     <Compile Include="Reporting\TextDescriptor.cs" />

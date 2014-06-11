@@ -20,13 +20,6 @@ namespace NDifference
 			Debug.Assert(!string.IsNullOrEmpty(basePath), "Base path cannot be null");
 			Debug.Assert(!string.IsNullOrEmpty(fullyQualifiedPath), "Fully qualified path cannot be null");
 
-			const string Separator = "\\";
-
-			if (!basePath.EndsWith(Separator, StringComparison.OrdinalIgnoreCase))
-			{
-				basePath += Separator;
-			}
-
 			Uri baseUri = new Uri(basePath);
 			Uri fullyQualifiedUri = new Uri(fullyQualifiedPath);
 

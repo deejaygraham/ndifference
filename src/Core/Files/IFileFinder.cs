@@ -6,6 +6,6 @@ namespace NDifference
 	{
 		string Filter { get; set; }
 
-		IEnumerable<string> Find();
+		IEnumerable<IFile> Find();
 	}
 }

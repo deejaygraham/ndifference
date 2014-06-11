@@ -11,9 +11,9 @@ namespace NDifference.Reporting
 	/// </summary>
 	public interface IReportOutput
 	{
-		string Folder { get; set; }
+		//string Folder { get; }
 
-		string File { get; set; }
+		string Path { get; }
 
 		void Execute(string reportContent);
 	}

@@ -56,6 +56,7 @@
     <Compile Include="CommonTypesInspectorFacts.cs" />
     <Compile Include="FieldDeclarationFacts.cs" />
     <Compile Include="FileExtensions.cs" />
+    <Compile Include="FileMapFacts.cs" />
     <Compile Include="FullyQualifiedNameFacts.cs" />
     <Compile Include="HtmlReportWriterFacts.cs" />
     <Compile Include="IdentifiedChangeCollectionFacts.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="InMemoryReportOutput.cs" />
     <Compile Include="OnTheFlyCompiler.cs" />
     <Compile Include="PathExtensionFacts.cs" />
+    <Compile Include="PhysicalFileFacts.cs" />
     <Compile Include="PocoTypeFacts.cs" />
     <Compile Include="ProjectReaderFacts.cs" />
     <Compile Include="ProjectWriterFacts.cs" />

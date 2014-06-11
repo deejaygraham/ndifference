@@ -21,7 +21,7 @@ namespace NDifference.Reporting
 			}
 		}
 
-		public OutputFileMap Map { get; set; }
+		public FileMap Map { get; set; }
 
 		public void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format)
 		{
@@ -32,6 +32,18 @@ namespace NDifference.Reporting
 
 			try
 			{
+				if (this.Map != null)
+				{
+					//output.Path = this.Map.Lookup(changes.Identifier);
+
+					string folder = Path.GetDirectoryName(output.Path);
+
+					if (!Directory.Exists(folder))
+					{
+						Directory.CreateDirectory(folder);
+					}
+				}
+
 				var settings = new XmlWriterSettings
 				{
 					Encoding = Encoding.UTF8,
@@ -86,15 +98,21 @@ namespace NDifference.Reporting
 										html.WriteString(changes.Heading);
 									});
 
+									string currentFolder = Path.GetDirectoryName(output.Path);
+
 									// do breadcrumbs...
 									if (!String.IsNullOrEmpty(changes.Parent))
 									{
-										html.WriteLink(this.Map.LookupRelative(changes.Parent), "Up...");
+										html.WriteLink(
+											this.Map.LookupRelativeTo(changes.Parent, new PhysicalFolder(currentFolder)), 
+												"Up...");
 									}
 
 									if (!String.IsNullOrEmpty(changes.Grandparent))
 									{
-										html.WriteLink(this.Map.LookupRelative(changes.Grandparent), "Summary");
+										html.WriteLink(
+											this.Map.LookupRelativeTo(changes.Grandparent, new PhysicalFolder(currentFolder)), 
+											"Summary");
 									}
 
 								});
@@ -277,18 +295,6 @@ namespace NDifference.Reporting
 				}
 
 				string content = text.ToString();
-
-				if (this.Map != null)
-				{
-					output.File = this.Map.Lookup(changes.Identifier);
-
-					string folder = Path.GetDirectoryName(output.File);
-
-					if (!Directory.Exists(folder))
-					{
-						Directory.CreateDirectory(folder);
-					}
-				}
 
 				output.Execute(content);
 			}

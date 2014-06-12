@@ -70,7 +70,9 @@ namespace NDifference.Inspectors
 							LinkText = oldVersion.Name, 
 							LinkUrl = oldVersion.Name, 
 							Identifier = newVersion.Identifier 
-						}
+						},
+						Inspector = this.ShortCode
+
 					});
 				}
 			}

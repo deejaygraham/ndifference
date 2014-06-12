@@ -105,6 +105,8 @@
     <Compile Include="TypeSystem\ClassDefinition.cs" />
     <Compile Include="TypeSystem\EnumDefinition.cs" />
     <Compile Include="TypeSystem\EnumValue.cs" />
+    <Compile Include="TypeSystem\IReferenceTypeDefinition.cs" />
+    <Compile Include="TypeSystem\MemberEvent.cs" />
     <Compile Include="TypeSystem\FieldDeclaration.cs" />
     <Compile Include="Files\FileFilterConstants.cs" />
     <Compile Include="TypeSystem\FullyQualifiedName.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Inspection\MsReflectorFactory.cs" />
     <Compile Include="Inspectors\IAssemblyInspector.cs" />
     <Compile Include="Inspectors\ITypeInspector.cs" />
+    <Compile Include="TypeSystem\IMemberInfo.cs" />
     <Compile Include="TypeSystem\InterfaceDefinition.cs" />
     <Compile Include="TypeSystem\ITypeInfo.cs" />
     <Compile Include="TypeSystem\IMaybeObsolete.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="Inspection\IAssemblyReflectorFactory.cs" />
     <Compile Include="TypeSystem\InstanceAccessModifier.cs" />
     <Compile Include="IUniquelyIdentifiable.cs" />
+    <Compile Include="TypeSystem\MemberAccessibility.cs" />
     <Compile Include="TypeSystem\MethodDeclaration.cs" />
     <Compile Include="TypeSystem\Namespace.cs" />
     <Compile Include="TypeSystem\Obsolete.cs" />

@@ -11,7 +11,7 @@ namespace NDifference.TypeSystem
 {
 	[DebuggerDisplay("class {FullName}")]
 	[Serializable]
-	public class ClassDefinition : ITypeInfo, ISourceCodeProvider
+	public class ClassDefinition : ITypeInfo, ISourceCodeProvider, IReferenceTypeDefinition
 	{
 		[NonSerialized]
 		private Identifier ident = new Identifier();
@@ -23,7 +23,7 @@ namespace NDifference.TypeSystem
 			//this.Fields = new List<Field>();
 			//this.Methods = new List<IMethod>();
 			//this.Properties = new List<Property>();
-			//this.Events = new List<Event>();
+			this.Events = new List<MemberEvent>();
 			//this.Indexers = new List<Indexer>();
 			//this.Operators = new List<Operator>();
 			//this.Constructors = new List<InstanceConstructor>();
@@ -74,15 +74,11 @@ namespace NDifference.TypeSystem
 		//	}
 		//}
 
-		///// <summary>
-		///// Which class does this class derive from (if any)?
-		///// </summary>
-		//public FullyQualifiedName InheritsFrom { get; set; }
 
-		///// <summary>
-		///// Which interfaces does this class implement?
-		///// </summary>
-		//public List<FullyQualifiedName> Implements { get; set; }
+		/// <summary>
+		/// Which interfaces does this class implement?
+		/// </summary>
+		public List<FullyQualifiedName> Implements { get; set; }
 
 		//public List<Constant> Constants { get; set; }
 
@@ -92,7 +88,7 @@ namespace NDifference.TypeSystem
 
 		//public List<Property> Properties { get; set; }
 
-		//public List<Event> Events { get; set; }
+		public List<MemberEvent> Events { get; set; }
 
 		//public List<Indexer> Indexers { get; set; }
 

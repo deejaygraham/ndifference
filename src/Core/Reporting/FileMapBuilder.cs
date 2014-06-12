@@ -27,7 +27,6 @@ namespace NDifference.Reporting
 		public FileMapBuilder UsingProject(Project p)
 		{
 			this.project = p;
-			this.map.IndexFolder = new PhysicalFolder(project.Settings.IndexPath);
 
 			return this;
 		}

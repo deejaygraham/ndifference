@@ -56,7 +56,7 @@ namespace NDifference.Inspectors
 				//	//	changes.Add(new IdentifiedChange { Description = newVersion.Name, Priority = WellKnownTypeCategories.UnchangedTypes.Priority.Value });
 				//	//}
 				//}
-				//else
+				if (!oldHash.Equals(newHash))
                 {
 					changes.Add(new IdentifiedChange 
 					{ 
@@ -65,9 +65,11 @@ namespace NDifference.Inspectors
 						Descriptor = new DocumentLink
 						{
 							LinkText = oldVersion.Name,
-							LinkUrl = oldVersion.Name,
+							LinkUrl = oldVersion.FullName,
 							Identifier = newVersion.Identifier
-						}
+						},
+						Inspector = this.ShortCode
+
 					});
                 }
 			}

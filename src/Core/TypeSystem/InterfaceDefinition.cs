@@ -14,7 +14,7 @@ namespace NDifference.TypeSystem
 	/// </summary>
 	[DebuggerDisplay("interface {FullName}")]
 	[Serializable]
-	public class InterfaceDefinition : ITypeInfo, ISourceCodeProvider
+	public class InterfaceDefinition : ITypeInfo, ISourceCodeProvider, IReferenceTypeDefinition
 	{
 		[NonSerialized]
 		private Identifier ident = new Identifier();
@@ -23,9 +23,9 @@ namespace NDifference.TypeSystem
 		{
 			//this.Methods = new List<IMethod>();
 			//this.Properties = new List<Property>();
-			//this.Events = new List<Event>();
+			this.Events = new List<MemberEvent>();
 			//this.Indexers = new List<Indexer>();
-			//this.Implements = new List<FullyQualifiedName>();
+			this.Implements = new List<FullyQualifiedName>();
 		}
 
 		public string Identifier
@@ -59,14 +59,14 @@ namespace NDifference.TypeSystem
 
 		//public List<Property> Properties { get; set; }
 
-		//public List<Event> Events { get; set; }
+		public List<MemberEvent> Events { get; set; }
 
 		//public List<Indexer> Indexers { get; set; }
-
-		///// <summary>
-		///// Which interfaces does this interface inherit?
-		///// </summary>
-		//public List<FullyQualifiedName> Implements { get; set; }
+		
+		/// <summary>
+		/// Which interfaces does this interface inherit?
+		/// </summary>
+		public List<FullyQualifiedName> Implements { get; set; }
 
 		public override string ToString()
 		{

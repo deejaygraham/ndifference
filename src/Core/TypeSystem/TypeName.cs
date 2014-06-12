@@ -11,6 +11,7 @@ namespace NDifference.TypeSystem
 	/// Simple name of a type in an assembly. Does not contain namespace info.
 	/// </summary>
 	[DebuggerDisplay("type {Value}")]
+	[Serializable]
 	public class TypeName : IComparable<TypeName> 
 	{
 		public TypeName(string value)

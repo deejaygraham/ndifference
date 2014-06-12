@@ -61,6 +61,7 @@
     <Compile Include="HtmlReportWriterFacts.cs" />
     <Compile Include="IdentifiedChangeCollectionFacts.cs" />
     <Compile Include="IdentifierFacts.cs" />
+    <Compile Include="IHashableFacts.cs" />
     <Compile Include="InMemoryReportOutput.cs" />
     <Compile Include="OnTheFlyCompiler.cs" />
     <Compile Include="PathExtensionFacts.cs" />

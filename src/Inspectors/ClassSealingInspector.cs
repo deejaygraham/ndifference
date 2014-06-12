@@ -30,12 +30,14 @@ namespace NDifference.Inspectors
 			Debug.Assert(first != null, "First type is not a class");
 			Debug.Assert(second != null, "Second type is not a class");
 
-			//if (!firstClass.IsSealed && secondClass.IsSealed)
+			if (!firstClass.IsSealed && secondClass.IsSealed)
 			{
 				changes.Add(new IdentifiedChange
 				{
 					Description = "Class is now marked as sealed",
-					Priority = 1 // need value... for type taxonomy-like changes
+					Priority = 1,// need value... for type taxonomy-like changes,
+					Inspector = this.ShortCode
+
 				});
 			}
 		}

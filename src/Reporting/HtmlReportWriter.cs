@@ -98,23 +98,22 @@ namespace NDifference.Reporting
 										html.WriteString(changes.Heading);
 									});
 
-									string currentFolder = Path.GetDirectoryName(output.Path);
-
-									// do breadcrumbs...
-									if (!String.IsNullOrEmpty(changes.Parent))
+									if (changes.Parents.Any())
 									{
-										html.WriteLink(
-											this.Map.LookupRelativeTo(changes.Parent, new PhysicalFolder(currentFolder)), 
-												"Up...");
-									}
+										string currentFolder = Path.GetDirectoryName(output.Path);
 
-									if (!String.IsNullOrEmpty(changes.Grandparent))
-									{
-										html.WriteLink(
-											this.Map.LookupRelativeTo(changes.Grandparent, new PhysicalFolder(currentFolder)), 
-											"Summary");
+										// do breadcrumbs...
+										html.WriteElement("ul", () =>
+										{
+											changes.Parents.ForEach(x =>
+											{
+												html.WriteElement("li", () =>
+												{
+													html.WriteLink(this.Map.PathRelativeTo(x.Identifier, new PhysicalFolder(currentFolder)), x.LinkText);
+												});
+											});
+										});
 									}
-
 								});
 							}
 
@@ -215,7 +214,9 @@ namespace NDifference.Reporting
 																html.WriteElement("td", () =>
 																{
 																	// look up correct path...
-																	html.WriteLink(this.Map.LookupRelative(link.Identifier), link.LinkText);
+																	IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
+
+																	html.WriteLink(this.Map.PathRelativeTo(link.Identifier, folder), link.LinkText + " " + change.Inspector);
 																});
 															}
 															else
@@ -224,13 +225,13 @@ namespace NDifference.Reporting
 
 																if (textDesc != null)
 																{
-																	html.WriteTableRow(textDesc.Name, textDesc.Message);
+																	html.WriteTableRow(textDesc.Name, textDesc.Message + " " + change.Inspector);
 																}
 															}
 														}
 														else if (!String.IsNullOrEmpty(change.Description))
 														{
-															html.WriteTableRow(change.Description);
+															html.WriteTableRow(change.Description + " " + change.Inspector);
 														}
 													});
 												}
@@ -266,7 +267,8 @@ namespace NDifference.Reporting
 													html.WriteElement("p", () =>
 													{
 														// project path index path...
-														html.WriteLink(this.Map.LookupRelative(link.Identifier), link.LinkText);
+														IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
+														html.WriteLink(this.Map.PathRelativeTo(link.Identifier, folder), link.LinkText + " " + change.Inspector);
 													});
 												}
 											}
@@ -274,7 +276,7 @@ namespace NDifference.Reporting
 											{
 												html.WriteElement("p", () =>
 												{
-													html.WriteString(change.Description);
+													html.WriteString(change.Description + " " + change.Inspector);
 												});
 											}
 										}

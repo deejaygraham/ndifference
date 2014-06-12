@@ -5,9 +5,10 @@ using System.Linq;
 namespace NDifference.TypeSystem
 {
 	/// <summary>
-	/// Full name of an a defined type - namespace & type name
+	/// Full name of an a defined type - namespace and type name
 	/// </summary>
 	[DebuggerDisplay("type {Value}")]
+	[Serializable]
 	public class FullyQualifiedName : IComparable<FullyQualifiedName>
 	{
 		public FullyQualifiedName(string fqn)

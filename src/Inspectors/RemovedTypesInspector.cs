@@ -31,7 +31,9 @@ namespace NDifference.Inspectors
 				changes.Add(new IdentifiedChange
 				{
 					Description = removed.Name,
-					Priority = WellKnownTypeCategories.RemovedTypes.Priority.Value
+					Priority = WellKnownTypeCategories.RemovedTypes.Priority.Value,
+					Inspector = this.ShortCode
+
 				});
 			}
 

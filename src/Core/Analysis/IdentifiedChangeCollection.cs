@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.Reporting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,13 +19,13 @@ namespace NDifference.Analysis
 
 			this.Categories = new HashSet<Category>();
 			this.Changes = new List<IdentifiedChange>();
+
+			this.Parents = new List<IDocumentLink>();
 		}
 		
 		public string Identifier { get; set; }
 
-		public string Parent { get; set; }
-
-		public string Grandparent { get; set; }
+		public List<IDocumentLink> Parents { get; private set; }
 
 		public string Name { get; set; }
 
@@ -85,6 +86,12 @@ namespace NDifference.Analysis
 				&& !this.Categories.Any(c => c.Priority.Value == x.Priority)));
 
 			return list;
+		}
+
+		public void CopyMetaFrom(IdentifiedChangeCollection other)
+		{
+			this.MetaBlocks = new List<string>(other.MetaBlocks);
+			this.FooterBlocks = new List<string>(other.FooterBlocks);
 		}
 	}
 }

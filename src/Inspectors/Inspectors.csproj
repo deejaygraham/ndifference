@@ -47,6 +47,8 @@
     <Compile Include="ArchitectureChangeInspector.cs" />
     <Compile Include="ClassSealingInspector.cs" />
     <Compile Include="CommonTypesInspector.cs" />
+    <Compile Include="DemoTypeCollectionInspector.cs" />
+    <Compile Include="DemoTypeInspector.cs" />
     <Compile Include="ObsoleteTypeInspector.cs" />
     <Compile Include="RemovedTypesInspector.cs" />
     <Compile Include="WellKnownAssemblyCategories.cs" />

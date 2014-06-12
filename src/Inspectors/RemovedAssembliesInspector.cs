@@ -33,7 +33,9 @@ namespace NDifference.Inspectors
 				changes.Add(new IdentifiedChange 
 				{ 
 					Description = added.Name,
-					Priority = WellKnownAssemblyCategories.RemovedAssemblies.Priority.Value
+					Priority = WellKnownAssemblyCategories.RemovedAssemblies.Priority.Value,
+					Inspector = this.ShortCode
+
 				});
 			}
 		}

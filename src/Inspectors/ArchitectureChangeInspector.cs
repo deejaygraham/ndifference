@@ -31,12 +31,15 @@ namespace NDifference.Inspectors
 						first.Architecture, 
 						second.Architecture),
 					Priority = WellKnownChangePriorities.AssemblyInternal,
+					Inspector = this.ShortCode,
 					Descriptor = new TextDescriptor 
 					{ 
 						Name = "Architecture has changed", 
 						Message = String.Format("From: {0} To: {1}", 
 							first.Architecture, 
-							second.Architecture) 
+							second.Architecture)
+						
+
 					}
 				});
 			}

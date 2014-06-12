@@ -9,6 +9,7 @@ namespace NDifference.Analysis
 		public IdentifiedChange()
 		{
 			this.Priority = CategoryPriority.InvalidValue;
+			this.Inspector = "No Inspector Specified";
 		}
 
 		public string Description { get; set; }
@@ -16,6 +17,8 @@ namespace NDifference.Analysis
 		public int Priority { get; set; }
 
 		public object Descriptor { get; set; }
+
+		public string Inspector { get; set; }
 
 		// public ISourceCode Code { get; set; }
 

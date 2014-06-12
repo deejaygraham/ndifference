@@ -28,8 +28,8 @@ namespace NDifference.Reflection.Builders
 				Access = discovered.IsPublic ? AccessModifier.Public : AccessModifier.Internal
 			};
 
-			//var eventBuilder = new EventBuilder();
-			//eventBuilder.BuildFrom(discovered, id);
+			var eventBuilder = new MemberEventBuilder();
+			eventBuilder.BuildFrom(discovered, id);
 
 			//var propBuilder = new PropertyBuilder();
 			//propBuilder.BuildFrom(discovered, id);

@@ -20,10 +20,9 @@ namespace NDifference.UnitTests
 
 			const string key = "12345";
 
-			map.IndexFolder = new PhysicalFolder(Folder);
 			map.Add(key, new PhysicalFile(Path.Combine(Folder, "Summary.txt")));
 
-			Assert.Equal("Summary.txt", map.LookupRelative(key));
+			Assert.Equal("Summary.txt", map.PathRelativeTo(key, new PhysicalFolder(Folder)));
 		}
 
 		[Fact]
@@ -35,10 +34,9 @@ namespace NDifference.UnitTests
 
 			const string key = "12345";
 
-			map.IndexFolder = new PhysicalFolder(Folder);
 			map.Add(key, new PhysicalFile(Path.Combine(Folder, "SubFolder\\Details.txt")));
 
-			Assert.Equal("SubFolder\\Details.txt", map.LookupRelative(key));
+			Assert.Equal("SubFolder\\Details.txt", map.PathRelativeTo(key, new PhysicalFolder(Folder)));
 		}
 
 		[Fact]
@@ -51,13 +49,12 @@ namespace NDifference.UnitTests
 			const string key1 = "12345";
 			const string key2 = "67890";
 
-			map.IndexFolder = new PhysicalFolder(Folder);
 			map.Add(key1, new PhysicalFile(Path.Combine(Folder, "Summary.txt")));
 			map.Add(key2, new PhysicalFile(Path.Combine(Folder, "SubFolder\\Details.txt")));
 
 			IFolder subFolder = new PhysicalFolder(Path.Combine(Folder, "SubFolder"));
 
-			Assert.Equal("..\\Summary.txt", map.LookupRelativeTo(key1, subFolder));
+			Assert.Equal("..\\Summary.txt", map.PathRelativeTo(key1, subFolder));
 		}
 
 	}

@@ -11,7 +11,7 @@ namespace NDifference.Reporting
 	{
 		private Dictionary<string, IFile> identToFileMap = new Dictionary<string, IFile>();
 
-		public IFolder IndexFolder { get; set; }
+		//public IFolder IndexFolder { get; set; }
 
 		public void Add(string key, IFile value)
 		{
@@ -24,7 +24,7 @@ namespace NDifference.Reporting
 			this.identToFileMap.Add(key, value);
 		}
 
-		public string Lookup(string key)
+		public string PathFor(string key)
 		{
 			Debug.Assert(!String.IsNullOrEmpty(key), "Key cannot be blank");
 			Debug.Assert(this.identToFileMap.ContainsKey(key), "Nothing stored for " + key);
@@ -32,7 +32,7 @@ namespace NDifference.Reporting
 			return this.identToFileMap[key].FullPath;
 		}
 
-		public string LookupRelativeTo(string key, IFolder folder)
+		public string PathRelativeTo(string key, IFolder folder)
 		{
 			Debug.Assert(!String.IsNullOrEmpty(key), "Key cannot be blank");
 			Debug.Assert(folder != null, "Folder cannot be null");
@@ -44,13 +44,13 @@ namespace NDifference.Reporting
 			return folder.TrailingSlashPath.MakeRelativePath(value.FullPath);
 		}
 
-		public string LookupRelative(string key)
-		{
-			Debug.Assert(!String.IsNullOrEmpty(key), "Key cannot be blank");
-			Debug.Assert(this.identToFileMap.ContainsKey(key), "Nothing stored for " + key);
-			Debug.Assert(this.IndexFolder != null, "IndexFolder property not set");
+		//public string LookupRelative(string key)
+		//{
+		//	Debug.Assert(!String.IsNullOrEmpty(key), "Key cannot be blank");
+		//	Debug.Assert(this.identToFileMap.ContainsKey(key), "Nothing stored for " + key);
+		//	Debug.Assert(this.IndexFolder != null, "IndexFolder property not set");
 
-			return this.LookupRelativeTo(key, this.IndexFolder);
-		}
+		//	return this.LookupRelativeTo(key, this.IndexFolder);
+		//}
 	}
 }

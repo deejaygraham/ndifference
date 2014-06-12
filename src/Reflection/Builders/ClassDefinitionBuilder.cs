@@ -30,8 +30,8 @@ namespace NDifference.Reflection.Builders
 				IsSealed = discovered.IsSealed
 			};
 
-			//var eventBuilder = new EventBuilder();
-			//eventBuilder.BuildFrom(discovered, cd);
+			var eventBuilder = new MemberEventBuilder();
+			eventBuilder.BuildFrom(discovered, cd);
 
 			//var fieldBuilder = new FieldBuilder();
 			//fieldBuilder.BuildFrom(discovered, cd);

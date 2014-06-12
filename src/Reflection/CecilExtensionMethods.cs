@@ -54,7 +54,7 @@ namespace NDifference.Reflection
 			return kind;
 		}
 
-		public static string FriendlyName(this TypeDefinition td)
+		public static string FriendlyName(this TypeReference td)
 		{
 			if (td.HasGenericParameters)
 			{
@@ -124,7 +124,7 @@ namespace NDifference.Reflection
 			return value;
 		}
 
-		private static string MakeGenericFriendlyName(TypeDefinition td)
+		private static string MakeGenericFriendlyName(TypeReference td)
 		{
 			var builder = new StringBuilder();
 
@@ -147,7 +147,7 @@ namespace NDifference.Reflection
 			return builder.ToString();
 		}
 
-		private static string StripGenericNameSuffix(TypeDefinition td)
+		private static string StripGenericNameSuffix(TypeReference td)
 		{
 			const char Tilde = '`';
 

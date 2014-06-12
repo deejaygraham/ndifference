@@ -134,7 +134,8 @@ namespace NDifference.Analysis
 							Heading = dll1.Name
 						};
 
-						dllChanges.Parent = summaryChanges.Identifier;
+						dllChanges.CopyMetaFrom(summaryChanges);
+						dllChanges.Parents.Add(new DocumentLink { Identifier = summaryChanges.Identifier, LinkText = summaryChanges.Name });
 
 						// each inspector
 						// looking for general changes to the assembly...
@@ -162,6 +163,11 @@ namespace NDifference.Analysis
 								Name = commonType.Description,
 								Heading = dll1.Name
 							};
+
+							typeChanges.CopyMetaFrom(summaryChanges);
+
+							typeChanges.Parents.Add(new DocumentLink { Identifier = summaryChanges.Identifier, LinkText = summaryChanges.Name });
+							typeChanges.Parents.Add(new DocumentLink { Identifier = dllChanges.Identifier, LinkText = dllChanges.Name });
 
 							foreach (var ti in this.TypeInspectors.Where(x => x.Enabled))
 							{
@@ -218,7 +224,7 @@ namespace NDifference.Analysis
 
 					foreach(var typeChange in typeChangeCollection)
 					{
-						IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name + format.Extension));
+						IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.HtmlSafeTypeName() + format.Extension));
 
 						writer.Write(typeChange, typeOutput, format);
 					}

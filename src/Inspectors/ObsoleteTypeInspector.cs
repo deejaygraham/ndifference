@@ -36,7 +36,9 @@ namespace NDifference.Inspectors
 						Description = string.Format("{0} {1}", s.Name, s.ObsoleteMarker.Message),
 						Priority = WellKnownTypeCategories.ObsoleteTypes.Priority.Value,
 						//put source code into name ...
-						Descriptor = new TextDescriptor { Name = s.Name, Message = s.ObsoleteMarker.Message }
+						Descriptor = new TextDescriptor { Name = s.Name, Message = s.ObsoleteMarker.Message },
+						Inspector = this.ShortCode
+
 					});
 				}
 			}

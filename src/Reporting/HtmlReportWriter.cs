@@ -168,120 +168,18 @@ namespace NDifference.Reporting
 
 							foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
 							{
-								html.WriteElement("div", () =>
-								{
-									html.WriteAttributeString("id", cat.Identifier.ToString());
-
-									var catChanges = changes.ChangesInCategory(cat.Priority.Value);
-
-									if (catChanges.Any())
-									{
-										html.WriteElement("h2", () =>
-										{
-											html.WriteString(cat.Name);
-										});
-
-										html.WriteComment("Category P" + cat.Priority.Value);
-
-										html.WriteElement("table", () =>
-										{
-											if (!String.IsNullOrEmpty(cat.Description))
-											{
-												html.WriteAttributeString("summary", cat.Description);
-												
-												html.WriteElement("caption", () =>
-												{
-													// new property on category - caption ?
-													html.WriteString(cat.Description);
-												});
-											}
-
-
-											html.WriteElement("tbody", () =>
-											{
-												foreach (var change in catChanges)
-												{
-													html.WriteElement("tr", () =>
-													{
-														object descriptor = change.Descriptor;
-
-														if (descriptor != null)
-														{
-															IDocumentLink link = descriptor as IDocumentLink;
-
-															if (link != null && this.Map != null)
-															{
-																html.WriteElement("td", () =>
-																{
-																	// look up correct path...
-																	IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
-
-																	html.WriteLink(this.Map.PathRelativeTo(link.Identifier, folder), link.LinkText + " " + change.Inspector);
-																});
-															}
-															else
-															{
-																ITextDescriptor textDesc = descriptor as ITextDescriptor;
-
-																if (textDesc != null)
-																{
-																	html.WriteTableRow(textDesc.Name, textDesc.Message + " " + change.Inspector);
-																}
-															}
-														}
-														else if (!String.IsNullOrEmpty(change.Description))
-														{
-															html.WriteTableRow(change.Description + " " + change.Inspector);
-														}
-													});
-												}
-											});
-										});
-									}
-									else
-									{
-										html.WriteComment(" No " + cat.Name + " identified ");
-									}
-								});
+								RenderCategory(cat, changes.ChangesInCategory(cat.Priority.Value), html, output);
 							}
 
-							if (changes.UnCategorisedChanges().Any())
+							var uncatChanges = changes.UnCategorisedChanges();
+
+							if (uncatChanges.Any())
 							{
 								html.WriteComment(" Writing Uncategorised changes ... ");
 
-								foreach (var uncat in changes.UnCategorisedChanges())
-								{
-									// write table here...
-									html.WriteElement("div", () =>
-									{
-										foreach (var change in changes.UnCategorisedChanges())
-										{
-											object descriptor = change.Descriptor;
+								var uncat = new Category { Priority = new CategoryPriority(999), Description = "Uncategorised changes", Name = "Uncategorised Changes" };
 
-											if (descriptor != null && this.Map != null)
-											{
-												IDocumentLink link = descriptor as IDocumentLink;
-
-												if (link != null)
-												{
-													html.WriteElement("p", () =>
-													{
-														// project path index path...
-														IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
-														html.WriteLink(this.Map.PathRelativeTo(link.Identifier, folder), link.LinkText + " " + change.Inspector);
-													});
-												}
-											}
-											else if (!String.IsNullOrEmpty(change.Description))
-											{
-												html.WriteElement("p", () =>
-												{
-													html.WriteString(change.Description + " " + change.Inspector);
-												});
-											}
-										}
-									});
-								}
+								RenderCategory(uncat, uncatChanges, html, output);
 							}
 
 							foreach (var footer in changes.FooterBlocks)
@@ -308,6 +206,83 @@ namespace NDifference.Reporting
 					text = null;
 				}
 			}
+		}
+
+		private void RenderCategory(Category cat, IEnumerable<IdentifiedChange> changes, XmlWriter html, IReportOutput output)
+		{
+			html.WriteElement("div", () =>
+			{
+				html.WriteAttributeString("id", cat.Identifier.ToString());
+
+				if (changes.Any())
+				{
+					html.WriteElement("h2", () =>
+					{
+						html.WriteString(cat.Name);
+					});
+
+					html.WriteComment("Category P" + cat.Priority.Value);
+
+					html.WriteElement("table", () =>
+					{
+						if (!String.IsNullOrEmpty(cat.Description))
+						{
+							html.WriteAttributeString("summary", cat.Description);
+
+							html.WriteElement("caption", () =>
+							{
+								// new property on category - caption ?
+								html.WriteString(cat.Description);
+							});
+						}
+
+
+						html.WriteElement("tbody", () =>
+						{
+							foreach (var change in changes)
+							{
+								html.WriteElement("tr", () =>
+								{
+									object descriptor = change.Descriptor;
+
+									if (descriptor != null)
+									{
+										IDocumentLink link = descriptor as IDocumentLink;
+
+										if (link != null && this.Map != null)
+										{
+											html.WriteElement("td", () =>
+											{
+												// look up correct path...
+												IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
+
+												html.WriteLink(this.Map.PathRelativeTo(link.Identifier, folder), link.LinkText + " " + change.Inspector);
+											});
+										}
+										else
+										{
+											ITextDescriptor textDesc = descriptor as ITextDescriptor;
+
+											if (textDesc != null)
+											{
+												html.WriteTableRow(textDesc.Name, textDesc.Message + " " + change.Inspector);
+											}
+										}
+									}
+									else if (!String.IsNullOrEmpty(change.Description))
+									{
+										html.WriteTableRow(change.Description + " " + change.Inspector);
+									}
+								});
+							}
+						});
+					});
+				}
+				else
+				{
+					html.WriteComment(" No " + cat.Name + " identified ");
+				}
+			});
 		}
 	}
 }

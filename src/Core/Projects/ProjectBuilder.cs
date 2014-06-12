@@ -53,7 +53,7 @@ namespace NDifference.Projects
 			styleBuilder.AppendLine("html,body,div,h1,h2,h3,h4,h5,h6,p,img,dl,dt,dd,ol,ul,li,table,caption,tbody,tfoot,thead,tr,th,td,form,fieldset,embed,object,applet { margin: 0; padding: 0; border: 0; }");
 
 			styleBuilder.AppendLine("html, body { background-color:#fff; }");
-			styleBuilder.AppendLine("body { font-family:helvetica,arial,sans-serif; font-size:13px; color:#333; }");
+			styleBuilder.AppendLine("body { font-family:helvetica,arial,sans-serif; font-size:13px; color:#333; padding: 1em; }");
 
 			styleBuilder.AppendLine("header { margin-bottom: 0; }");
 			styleBuilder.AppendLine("header > hgroup { background-color: #3c8dc5; color:#fff; padding: 1em; }");

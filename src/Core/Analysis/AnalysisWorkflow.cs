@@ -131,9 +131,14 @@ namespace NDifference.Analysis
 						IdentifiedChangeCollection dllChanges = new IdentifiedChangeCollection
 						{
 							Name = dll1.Name,
-							Heading = dll1.Name
+							Heading = dll1.Name,
 						};
 
+						dllChanges.SummaryBlocks.Add("Name", dll1.Name);
+						dllChanges.SummaryBlocks.Add("From", reflector1.GetAssemblyInfo().Version.ToString());
+						dllChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString());
+						dllChanges.SummaryBlocks.Add("% Churn", "Not calculated yet");
+						
 						dllChanges.CopyMetaFrom(summaryChanges);
 						dllChanges.Parents.Add(new DocumentLink { Identifier = summaryChanges.Identifier, LinkText = summaryChanges.Name });
 
@@ -163,6 +168,11 @@ namespace NDifference.Analysis
 								Name = commonType.Description,
 								Heading = dll1.Name
 							};
+
+							typeChanges.SummaryBlocks.Add("Name", commonType.Description);
+							typeChanges.SummaryBlocks.Add("From", reflector1.GetAssemblyInfo().Version.ToString());
+							typeChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString());
+							typeChanges.SummaryBlocks.Add("% Churn", "Not calculated yet");
 
 							typeChanges.CopyMetaFrom(summaryChanges);
 

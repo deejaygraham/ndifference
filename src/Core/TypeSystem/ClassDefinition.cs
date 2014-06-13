@@ -18,15 +18,15 @@ namespace NDifference.TypeSystem
 
 		public ClassDefinition()
 		{
-			//this.Implements = new List<FullyQualifiedName>();
-			//this.Constants = new List<Constant>();
-			//this.Fields = new List<Field>();
-			//this.Methods = new List<IMethod>();
-			//this.Properties = new List<Property>();
+			this.Implements = new List<FullyQualifiedName>();
+			this.Constants = new List<Constant>();
+			this.Fields = new List<MemberField>();
+			this.Methods = new List<IMemberMethod>();
+			this.Properties = new List<MemberProperty>();
 			this.Events = new List<MemberEvent>();
-			//this.Indexers = new List<Indexer>();
-			//this.Operators = new List<Operator>();
-			//this.Constructors = new List<InstanceConstructor>();
+			this.Indexers = new List<Indexer>();
+			this.Operators = new List<Operator>();
+			this.Constructors = new List<InstanceConstructor>();
 		}
 
 		public string Identifier
@@ -66,39 +66,43 @@ namespace NDifference.TypeSystem
 		/// </summary>
 		public bool IsAbstract { get; set; }
 
-		//public bool IsSubclass
-		//{
-		//	get
-		//	{
-		//		return this.InheritsFrom != null;
-		//	}
-		//}
+		public bool IsSubclass
+		{
+			get
+			{
+				return this.InheritsFrom != null;
+			}
+		}
 
+		/// <summary>
+		/// Which class does this class derive from (if any)?
+		/// </summary>
+		public FullyQualifiedName InheritsFrom { get; set; }
 
 		/// <summary>
 		/// Which interfaces does this class implement?
 		/// </summary>
 		public List<FullyQualifiedName> Implements { get; set; }
 
-		//public List<Constant> Constants { get; set; }
+		public List<Constant> Constants { get; set; }
 
-		//public List<Field> Fields { get; set; }
+		public List<MemberField> Fields { get; set; }
 
-		//public List<IMethod> Methods { get; set; }
+		public List<IMemberMethod> Methods { get; set; }
 
-		//public List<Property> Properties { get; set; }
+		public List<MemberProperty> Properties { get; set; }
 
 		public List<MemberEvent> Events { get; set; }
 
-		//public List<Indexer> Indexers { get; set; }
+		public List<Indexer> Indexers { get; set; }
 
-		//public List<Operator> Operators { get; set; }
+		public List<Operator> Operators { get; set; }
 
-		//public List<InstanceConstructor> Constructors { get; set; }
+		public List<InstanceConstructor> Constructors { get; set; }
 
-		//public StaticConstructor StaticConstructor { get; set; }
+		public StaticConstructor StaticConstructor { get; set; }
 
-		//public Finalizer Finalizer { get; set; }
+		public Finalizer Finalizer { get; set; }
 
 		// embedded types
 
@@ -117,11 +121,54 @@ namespace NDifference.TypeSystem
 			return this.GetHash<SHA1Managed>();
 		}
 
-		public SourceCode ToCode()
+		public ICoded ToCode()
 		{
 			SourceCode code = new SourceCode();
 
-			code.Add(new IdentifierTag(this.FullName));
+			code.Add(new KeywordTag("public"));
+
+			if (this.IsAbstract)
+			{
+				code.Add(new KeywordTag("abstract"));
+			}
+
+			if (this.IsSealed)
+			{
+				code.Add(new KeywordTag("sealed"));
+			}
+
+			code.Add(new KeywordTag("class"));
+			code.Add(new TypeNameTag(this.Name));
+
+			if (this.IsSubclass || this.Implements.Count > 0)
+			{
+				code.Add(new PunctuationTag(":"));
+			}
+
+			if (this.IsSubclass)
+			{
+				code.Add(new TypeNameTag(this.InheritsFrom.Type.Value));
+			}
+
+			if (this.IsSubclass && this.Implements.Count > 0)
+			{
+				code.Add(new PunctuationTag(","));
+			}
+
+			if (this.Implements.Count > 0)
+			{
+				for (int i = 0; i < this.Implements.Count; ++i)
+				{
+					var interf = this.Implements[i].Type;
+
+					code.Add(new TypeNameTag(interf.Value));
+
+					if (i < this.Implements.Count - 1)
+					{
+						code.Add(new PunctuationTag(","));
+					}
+				}
+			}
 
 			return code;
 		}

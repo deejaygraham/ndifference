@@ -103,6 +103,8 @@ namespace NDifference.Projects
 
 		public string ReportFormat { get; set; }
 
+		public string IgnoreInspectors { get; set; }
+
 		public string ApplicationName { get; set; }
 
 		public string ApplicationLink { get; set; }

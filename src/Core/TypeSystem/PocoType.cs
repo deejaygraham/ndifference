@@ -1,4 +1,5 @@
 ﻿
+using NDifference.SourceFormatting;
 using System;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -105,5 +106,9 @@ namespace NDifference.TypeSystem
 			return this.FullName == other.FullName;
 		}
 
+		public ICoded ToCode ()
+		{
+			return new SourceCode();
+		}
 	}
 }

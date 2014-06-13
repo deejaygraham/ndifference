@@ -77,6 +77,11 @@ namespace NDifference.Analysis
 			{
 				this.DiscoverPlugins();
 
+				this.AssemblyCollectionInspectors.ForEach(x => x.Enabled = !project.Settings.IgnoreInspectors.Contains(x.ShortCode));
+				this.AssemblyInspectors.ForEach(x => x.Enabled = !project.Settings.IgnoreInspectors.Contains(x.ShortCode));
+				this.TypeCollectionInspectors.ForEach(x => x.Enabled = !project.Settings.IgnoreInspectors.Contains(x.ShortCode));
+				this.TypeInspectors.ForEach(x => x.Enabled = !project.Settings.IgnoreInspectors.Contains(x.ShortCode));
+
 				var cancelCompare = new CancellableEventArgs();
 				this.AssemblyComparisonStarting.Fire(this, cancelCompare);
 
@@ -169,7 +174,15 @@ namespace NDifference.Analysis
 								Heading = dll1.Name
 							};
 
-							typeChanges.SummaryBlocks.Add("Name", commonType.Description);
+							ITypeInfo t1 = typesIn1.FindMatchFor(commonType.Description);
+							ITypeInfo t2 = typesIn2.FindMatchFor(commonType.Description);
+
+							Debug.Assert(t1 != null, "No common type found in first assembly");
+							Debug.Assert(t2 != null, "No common type found in second assembly");
+
+							typeChanges.SummaryBlocks.Add("Name", t2.Name);
+							typeChanges.SummaryBlocks.Add("Namespace", t2.Namespace);
+							typeChanges.SummaryBlocks.Add("Assembly", t2.Assembly);
 							typeChanges.SummaryBlocks.Add("From", reflector1.GetAssemblyInfo().Version.ToString());
 							typeChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString());
 							typeChanges.SummaryBlocks.Add("% Churn", "Not calculated yet");
@@ -181,13 +194,6 @@ namespace NDifference.Analysis
 
 							foreach (var ti in this.TypeInspectors.Where(x => x.Enabled))
 							{
-								ITypeInfo t1 = typesIn1.FindMatchFor(commonType.Description);
-								ITypeInfo t2 = typesIn2.FindMatchFor(commonType.Description);
-
-								Debug.Assert(t1 != null, "No common type found in first assembly");
-								Debug.Assert(t2 != null, "No common type found in second assembly");
-
-								//ti.Inspect()
 								ti.Inspect(t1, t2, typeChanges);
 							}
 
@@ -270,16 +276,12 @@ namespace NDifference.Analysis
 
 			// need to be turned on or off depending on project settings...
 			this.AssemblyCollectionInspectors.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(this.Finder).Find());
-			this.AssemblyCollectionInspectors.ForEach(x => x.Enabled = true);
 
 			this.AssemblyInspectors.AddRange(new AssemblyInspectorPluginDiscoverer(this.Finder).Find());
-			this.AssemblyInspectors.ForEach(x => x.Enabled = true);
 
 			this.TypeCollectionInspectors.AddRange(new TypeCollectionInspectorPluginDiscoverer(this.Finder).Find());
-			this.TypeCollectionInspectors.ForEach(x => x.Enabled = true);
 
 			this.TypeInspectors.AddRange(new TypeInspectorPluginDiscoverer(this.Finder).Find());
-			this.TypeInspectors.ForEach(x => x.Enabled = true);
 
 			this.ReportWriters.AddRange(new ReportingPluginDiscoverer(this.Finder).Find());
 

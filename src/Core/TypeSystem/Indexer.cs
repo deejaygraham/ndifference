@@ -7,20 +7,19 @@ using System.Threading.Tasks;
 
 namespace NDifference.TypeSystem
 {
+	/// <summary>
+	/// Represents array like behaviour for object.
+	/// </summary>
 	[Serializable]
-	public class MemberEvent : IMemberInfo
+	public class Indexer : IMemberInfo
 	{
-		public string Name { get; set; }
-
-		public FullyQualifiedName EventType { get; set; }
-
 		public MemberAccessibility Accessibility { get; set; }
-
-		public Obsolete ObsoleteMarker { get; set; }
 
 		public ICoded ToCode()
 		{
-			return null;
+			return new SourceCode();
 		}
+
+		public Obsolete ObsoleteMarker { get; set; }
 	}
 }

@@ -86,7 +86,7 @@ namespace NDifference.TypeSystem
 			return !(a == b);
 		}
 
-		public SourceCode ToCode()
+		public ICoded ToCode()
 		{
 			SourceCode code = new SourceCode();
 

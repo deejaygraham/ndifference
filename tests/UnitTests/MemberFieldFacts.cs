@@ -3,15 +3,15 @@ using Xunit;
 
 namespace NDifference.UnitTests
 {
-	public class FieldDeclarationFacts
+	public class MemberFieldFacts
 	{
 		[Fact]
 		public void FieldDeclaration_ToString_Is_Formatted_On_Single_Line()
 		{
-			var fd = new FieldDeclaration
+			var fd = new MemberField
 			{
 				Name = "Age",
-				Type = new FullyQualifiedName("System.Int32")
+				FieldType = new FullyQualifiedName("System.Int32")
 			};
 
 			Assert.Equal("Int32 Age ", fd.ToString());
@@ -20,10 +20,10 @@ namespace NDifference.UnitTests
 		[Fact]
 		public void FieldDeclaration_ToString_ReadOnly_Formatted_On_Single_Line()
 		{
-			var fd = new FieldDeclaration
+			var fd = new MemberField
 			{
 				Name = "Age",
-				Type = new FullyQualifiedName("System.Int32"),
+				FieldType = new FullyQualifiedName("System.Int32"),
 				IsReadOnly = true
 			};
 
@@ -33,10 +33,10 @@ namespace NDifference.UnitTests
 		[Fact]
 		public void FieldDeclaration_ToString_Static_Formatted_On_Single_Line()
 		{
-			var fd = new FieldDeclaration
+			var fd = new MemberField
 			{
 				Name = "Age",
-				Type = new FullyQualifiedName("System.Int32"),
+				FieldType = new FullyQualifiedName("System.Int32"),
 				IsStatic = true
 			};
 

@@ -10,13 +10,18 @@ using System.Xml.Serialization;
 
 namespace NDifference.SourceFormatting
 {
-	public class SourceCode : IXmlSerializable, IEquatable<SourceCode>
+	public class SourceCode : IXmlSerializable, IEquatable<SourceCode>, ICoded
 	{
 		private List<SourceCodeTag> tags = new List<SourceCodeTag>();
 
-		public void Add(SourceCode code)
+		public void Add(ICoded code)
 		{
-			foreach (SourceCodeTag tag in code.tags)
+			SourceCode asCode = code as SourceCode;
+
+			if (asCode == null)
+				return;
+
+			foreach (SourceCodeTag tag in asCode.tags)
 			{
 				this.tags.Add(tag);
 			}
@@ -118,19 +123,19 @@ namespace NDifference.SourceFormatting
 			return !(a == b);
 		}
 
-		//public void SaveTo(TextWriter writer)
-		//{
-		//	ObjectFlattener<SourceCode>.Flatten(this, writer);
-		//}
+		public void SaveTo(TextWriter writer)
+		{
+			ObjectFlattener<SourceCode>.Flatten(this, writer);
+		}
 
-		//public string ToXml()
-		//{
-		//	using (var writer = new StringWriter())
-		//	{
-		//		this.SaveTo(writer);
-		//		return writer.ToString();
-		//	}
-		//}
+		public string ToXml()
+		{
+			using (var writer = new StringWriter())
+			{
+				this.SaveTo(writer);
+				return writer.ToString();
+			}
+		}
 
 		public ReadOnlyCollection<SourceCodeTag> Content
 		{

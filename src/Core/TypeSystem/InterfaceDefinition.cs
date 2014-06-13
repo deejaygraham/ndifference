@@ -21,10 +21,10 @@ namespace NDifference.TypeSystem
 
 		public InterfaceDefinition()
 		{
-			//this.Methods = new List<IMethod>();
-			//this.Properties = new List<Property>();
+			this.Methods = new List<IMemberMethod>();
+			this.Properties = new List<MemberProperty>();
 			this.Events = new List<MemberEvent>();
-			//this.Indexers = new List<Indexer>();
+			this.Indexers = new List<Indexer>();
 			this.Implements = new List<FullyQualifiedName>();
 		}
 
@@ -55,13 +55,13 @@ namespace NDifference.TypeSystem
 
 		public Obsolete ObsoleteMarker { get; set; }
 
-		//public List<IMethod> Methods { get; set; }
+		public List<IMemberMethod> Methods { get; set; }
 
-		//public List<Property> Properties { get; set; }
+		public List<MemberProperty> Properties { get; set; }
 
 		public List<MemberEvent> Events { get; set; }
 
-		//public List<Indexer> Indexers { get; set; }
+		public List<Indexer> Indexers { get; set; }
 		
 		/// <summary>
 		/// Which interfaces does this interface inherit?
@@ -83,7 +83,7 @@ namespace NDifference.TypeSystem
 			return this.GetHash<SHA1Managed>();
 		}
 
-		public SourceCode ToCode()
+		public ICoded ToCode()
 		{
 			SourceCode code = new SourceCode();
 

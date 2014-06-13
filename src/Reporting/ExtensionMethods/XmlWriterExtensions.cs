@@ -84,7 +84,26 @@ namespace NDifference.Reporting
 			});
 		}
 
-		public static void WriteTableRow(this XmlWriter writer, string cell1, string cell2, string link)
+		public static void WriteTableRowRaw(this XmlWriter writer, string cell1, string cell2, string cell3)
+		{
+			writer.WriteElement("tr", () =>
+			{
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(cell1);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(cell2);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(cell3);
+				});
+			});
+		}
+
+		public static void WriteTableRowLink(this XmlWriter writer, string cell1, string cell2, string link)
 		{
 			writer.WriteElement("tr", () =>
 			{
@@ -114,7 +133,7 @@ namespace NDifference.Reporting
 
 		public static void WriteTableRow(this XmlWriter writer, string cell1, int cell2, string link)
 		{
-			writer.WriteTableRow(cell1, cell2.ToString(), link);
+			writer.WriteTableRowLink(cell1, cell2.ToString(), link);
 		}
 	}
 }

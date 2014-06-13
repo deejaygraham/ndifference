@@ -104,6 +104,11 @@ namespace NDifference.Projects
 		public string ApplicationVersion { get; private set; }
 
 		/// <summary>
+		/// Semi-colon delimited list of inspectors to exclude from the analysis.
+		/// </summary>
+		public string IgnoreInspectors { get; set; }
+
+		/// <summary>
 		/// Suggest the path (based on settings) to write the index file.
 		/// </summary>
 		/// <param name="extension"></param>
@@ -190,7 +195,8 @@ namespace NDifference.Projects
 				Subfolder = this.SubFolder,
 				SummaryTitle = this.SummaryTitle,
 				FromIndex = this.FromIndex,
-				ToIndex = this.ToIndex
+				ToIndex = this.ToIndex,
+				IgnoreInspectors = this.IgnoreInspectors
 			};
 
 			return persistableSettings;
@@ -218,7 +224,8 @@ namespace NDifference.Projects
 				SubFolder = persistableSettings.Subfolder,
 				SummaryTitle = persistableSettings.SummaryTitle,
 				FromIndex = persistableSettings.FromIndex,
-				ToIndex = persistableSettings.ToIndex
+				ToIndex = persistableSettings.ToIndex,
+				IgnoreInspectors = persistableSettings.IgnoreInspectors
 			};
 
 			return settings;

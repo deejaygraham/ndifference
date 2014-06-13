@@ -54,7 +54,7 @@
     <Compile Include="CecilAssemblyReflectorFacts.cs" />
     <Compile Include="CommonAssembliesInspectorFacts.cs" />
     <Compile Include="CommonTypesInspectorFacts.cs" />
-    <Compile Include="FieldDeclarationFacts.cs" />
+    <Compile Include="MemberFieldFacts.cs" />
     <Compile Include="FileExtensions.cs" />
     <Compile Include="FileMapFacts.cs" />
     <Compile Include="FullyQualifiedNameFacts.cs" />
@@ -63,6 +63,7 @@
     <Compile Include="IdentifierFacts.cs" />
     <Compile Include="IHashableFacts.cs" />
     <Compile Include="InMemoryReportOutput.cs" />
+    <Compile Include="ICodedFacts.cs" />
     <Compile Include="OnTheFlyCompiler.cs" />
     <Compile Include="PathExtensionFacts.cs" />
     <Compile Include="PhysicalFileFacts.cs" />

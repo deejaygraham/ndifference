@@ -8,19 +8,15 @@ using System.Threading.Tasks;
 namespace NDifference.TypeSystem
 {
 	[Serializable]
-	public class MemberEvent : IMemberInfo
+	public class Operator : IMemberInfo
 	{
-		public string Name { get; set; }
-
-		public FullyQualifiedName EventType { get; set; }
-
 		public MemberAccessibility Accessibility { get; set; }
-
-		public Obsolete ObsoleteMarker { get; set; }
 
 		public ICoded ToCode()
 		{
-			return null;
+			return new SourceCode();
 		}
+
+		public Obsolete ObsoleteMarker { get; set; }
 	}
 }

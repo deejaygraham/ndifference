@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.SourceFormatting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,9 +26,15 @@ namespace NDifference.Reporting
 		/// Format a link in the correct way.
 		/// </summary>
 		/// <param name="link"></param>
-		/// <param name="text"></param>
 		/// <returns></returns>
-		string FormatLink(string link, string text);
+		string Format(IDocumentLink link);
+
+		/// <summary>
+		/// Formats source code in the correct way.
+		/// </summary>
+		/// <param name="source"></param>
+		/// <returns></returns>
+		string Format(ICoded source);
 
 		/// <summary>
 		/// Does this format match the provided one?

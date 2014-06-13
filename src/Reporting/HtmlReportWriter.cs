@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.SourceFormatting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -223,6 +224,10 @@ namespace NDifference.Reporting
 
 					html.WriteComment("Category P" + cat.Priority.Value);
 
+					// work out how wide table needs to be...?
+					bool implementsIDeltaDescriptor = changes.Any(x => x.Descriptor != null && (x.Descriptor as IDeltaDescriptor != null));
+					int columns = implementsIDeltaDescriptor ? 3 : 2;
+
 					html.WriteElement("table", () =>
 					{
 						if (!String.IsNullOrEmpty(cat.Description))
@@ -261,11 +266,45 @@ namespace NDifference.Reporting
 										}
 										else
 										{
-											ITextDescriptor textDesc = descriptor as ITextDescriptor;
+											IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
 
-											if (textDesc != null)
+											if (delta != null)
 											{
-												html.WriteTableRow(textDesc.Name, textDesc.Message + " " + change.Inspector);
+												string wasText = delta.Was.ToString();
+												string isText = delta.IsNow.ToString();
+
+												ICoded was = delta.Was as ICoded;
+												ICoded isNow = delta.IsNow as ICoded;
+
+												if (was != null)
+												{
+													// do html format...
+													wasText = this._format.Format(was);
+												}
+
+												if (isNow != null)
+												{
+													isText = this._format.Format(isNow);
+													// get formatter to convert...
+												}
+
+												html.WriteTableRowRaw(delta.Name, wasText, isText);
+											}
+											else
+											{
+												ITextDescriptor textDesc = descriptor as ITextDescriptor;
+
+												if (textDesc != null)
+												{
+													string text = textDesc.Message.ToString();
+
+													ICoded code = textDesc.Message as ICoded;
+
+													if (code != null)
+														text = this._format.Format(code);
+
+													html.WriteTableRow(textDesc.Name, text + " " + change.Inspector);
+												}
 											}
 										}
 									}

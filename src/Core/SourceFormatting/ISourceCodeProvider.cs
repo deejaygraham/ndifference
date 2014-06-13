@@ -11,6 +11,6 @@ namespace NDifference.SourceFormatting
 	/// </summary>
 	public interface ISourceCodeProvider
 	{
-		SourceCode ToCode();
+		ICoded ToCode();
 	}
 }

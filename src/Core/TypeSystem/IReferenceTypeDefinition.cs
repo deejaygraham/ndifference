@@ -10,12 +10,12 @@ namespace NDifference.TypeSystem
 	{
 		List<FullyQualifiedName> Implements { get; set; }
 
-		//List<IMethod> Methods { get; set; }
+		List<IMemberMethod> Methods { get; set; }
 
-		//List<Property> Properties { get; set; }
+		List<MemberProperty> Properties { get; set; }
 
 		List<MemberEvent> Events { get; set; }
 
-		//List<Indexer> Indexers { get; set; }
+		List<Indexer> Indexers { get; set; }
 	}
 }

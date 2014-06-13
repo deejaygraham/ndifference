@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.SourceFormatting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +8,7 @@ namespace NDifference.TypeSystem
 	/// <summary>
 	/// A type discovered during reflection of an assembly.
 	/// </summary>
-	public interface ITypeInfo : IMaybeObsolete, IUniquelyIdentifiable, IHashable, IEquatable<ITypeInfo>
+	public interface ITypeInfo : IMaybeObsolete, IUniquelyIdentifiable, IHashable, IEquatable<ITypeInfo>, ISourceCodeProvider
 	{
 		/// <summary>F
 		/// The "kind" of object this is - enum, interface, class etc.

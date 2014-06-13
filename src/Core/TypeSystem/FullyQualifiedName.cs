@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.SourceFormatting;
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace NDifference.TypeSystem
 	/// </summary>
 	[DebuggerDisplay("type {Value}")]
 	[Serializable]
-	public class FullyQualifiedName : IComparable<FullyQualifiedName>
+	public class FullyQualifiedName : IComparable<FullyQualifiedName>, ISourceCodeProvider
 	{
 		public FullyQualifiedName(string fqn)
 		{
@@ -119,5 +120,15 @@ namespace NDifference.TypeSystem
 
 			return this.Value.CompareTo(other.Value);
 		}
+
+		public ICoded ToCode()
+		{
+			SourceCode code = new SourceCode();
+
+			code.Add(new TypeNameTag(this.ToString()));
+
+			return code;
+		}
+
 	}
 }

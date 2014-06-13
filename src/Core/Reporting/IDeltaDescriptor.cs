@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
-	public interface ITextDescriptor
+	public interface IDeltaDescriptor
 	{
 		string Name { get; }
 
-		object Message { get; }
+		object Was { get; }
+
+		object IsNow { get; }
+
 	}
 }

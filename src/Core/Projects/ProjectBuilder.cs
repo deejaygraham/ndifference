@@ -94,6 +94,28 @@ namespace NDifference.Projects
 
 			settings.StyleTag = styleBuilder.ToString();
 
+			var ignoreList = new List<string>();
+
+			//ignoreList.Add("ACI001");
+			//ignoreList.Add("ACI002");
+			//ignoreList.Add("ACI003");
+
+			ignoreList.Add("AI001");
+
+			ignoreList.Add("TCI001");
+			ignoreList.Add("TCI002");
+			ignoreList.Add("TCI003");
+			ignoreList.Add("TCI004");
+			ignoreList.Add("TCI005");
+
+			ignoreList.Add("TI00DEMO");
+			ignoreList.Add("TI00SEC");
+			ignoreList.Add("TI001");
+			ignoreList.Add("TI004");
+			ignoreList.Add("TI005");
+
+			settings.IgnoreInspectors = String.Join(";", ignoreList);
+			
 			return settings;
 		}
 	}

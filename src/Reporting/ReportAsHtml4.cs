@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NDifference.SourceFormatting;
+using System;
 using System.Globalization;
+using System.Text;
 
 namespace NDifference.Reporting
 {
@@ -22,9 +24,31 @@ namespace NDifference.Reporting
 
 		public string Extension { get { return ".html"; } }
 
-		public string FormatLink(string link, string text)
+		public string Format(IDocumentLink link)
 		{
-			return string.Format(CultureInfo.CurrentUICulture, "<a href=\"{0}\">{1}</a>", link, text);
+			return string.Format(CultureInfo.CurrentUICulture, "<a id=\"{0}\" href=\"{1}\">{2}</a>", link.Identifier, link.LinkUrl, link.LinkText);
+		}
+
+		public string Format(ICoded source)
+		{
+			var builder = new StringBuilder(source.ToXml());
+
+			builder.Replace("<SourceCode>", "<code>");
+			builder.Replace("</SourceCode>", "</code>");
+
+			builder.Replace("<punc>", "<span class=\"punc\">");
+			builder.Replace("</punc>", "</span>");
+
+			builder.Replace("<ident>", "<span class=\"ident\">");
+			builder.Replace("</ident>", "</span>");
+
+			builder.Replace("<kw>", "<span class=\"kw\">");
+			builder.Replace("</kw>", "</span>");
+
+			builder.Replace("<tn>", "<span class=\"tn\">");
+			builder.Replace("</tn>", "</span>");
+
+			return builder.ToString();
 		}
 
 		public bool Supports(IReportFormat other)

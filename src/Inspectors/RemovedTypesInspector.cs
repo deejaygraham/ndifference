@@ -12,7 +12,7 @@ namespace NDifference.Inspectors
 	{
 		public bool Enabled { get; set; }
 
-		public string ShortCode { get { return "TCI004"; } }
+		public string ShortCode { get { return "TCI005"; } }
 
 		public string DisplayName { get { return "Removed Types"; } }
 

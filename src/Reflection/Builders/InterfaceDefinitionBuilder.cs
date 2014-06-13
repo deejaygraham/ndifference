@@ -24,27 +24,27 @@ namespace NDifference.Reflection.Builders
 				FullName = discovered.FriendlyName(),
 				Name = fqn.Type.ToString(),
 				Namespace = fqn.ContainingNamespace.ToString(),
-				Assembly = discovered.Module.Assembly.FullName,
+				Assembly = discovered.Module.Assembly.Name.Name,
 				Access = discovered.IsPublic ? AccessModifier.Public : AccessModifier.Internal
 			};
 
 			var eventBuilder = new MemberEventBuilder();
 			eventBuilder.BuildFrom(discovered, id);
 
-			//var propBuilder = new PropertyBuilder();
-			//propBuilder.BuildFrom(discovered, id);
+			var propBuilder = new PropertyBuilder();
+			propBuilder.BuildFrom(discovered, id);
 
-			//var methodBuilder = new MethodBuilder();
-			//methodBuilder.BuildFrom(discovered, id);
+			var methodBuilder = new MethodBuilder();
+			methodBuilder.BuildFrom(discovered, id);
 
 			if (discovered.HasInterfaces)
 			{
 				foreach (var inter in discovered.Interfaces)
 				{
-					//if (inter.IsPublicInterface())
-					//{
-					//	id.Implements.Add(inter.FullyQualifyName());
-					//}
+					if (inter.IsPublicInterface())
+					{
+						id.Implements.Add(new FullyQualifiedName(inter.FriendlyName()));
+					}
 				}
 			}
 

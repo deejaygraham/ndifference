@@ -7,14 +7,75 @@ using System.Threading.Tasks;
 
 namespace NDifference.TypeSystem
 {
+	///// <summary>
+	///// A method signature.
+	///// </summary>
+	//[DebuggerDisplay("sig {Name}(..)")]
+	//public class Signature
+	//{
+	//	public string Name { get; set; }
+
+	//	public int TypeParameterCount { get; set; }
+	//}
+
+
 	/// <summary>
-	/// A method signature.
+	/// Name, number, modifiers and types of formal parameters, number of generic type parameters.
 	/// </summary>
+	[DebuggerDisplay("sig {Name}(..)")]
+	[Serializable]
 	public class Signature
 	{
+		public Signature()
+		{
+			this.FormalParameters = new List<Parameter>();
+		}
+
+		public Signature(string methodName)
+			: this()
+		{
+			this.Name = methodName;
+		}
+
+		public Signature(string methodName, IList<Parameter> formalParameters)
+		{
+			this.Name = methodName;
+			this.FormalParameters = new List<Parameter>(formalParameters);
+		}
+
 		public string Name { get; set; }
 
-		public int TypeParameterCount { get; set; }
+		public List<Parameter> FormalParameters { get; private set; }
+
+		public void Add(Parameter formalParameter)
+		{
+			this.FormalParameters.Add(formalParameter);
+		}
+
+		public override string ToString()
+		{
+			StringBuilder builder = new StringBuilder();
+
+			builder.Append(this.Name);
+			builder.Append(" (");
+
+			for (int i = 0; i < this.FormalParameters.Count; ++i)
+			{
+				Parameter p = this.FormalParameters[i];
+
+				builder.Append(p.Name.Type.Value);
+
+				if (i < this.FormalParameters.Count - 1)
+				{
+					builder.Append(",");
+				}
+			}
+
+			builder.Append(")");
+
+			return builder.ToString();
+		}
+
 	}
 
 	public class SignatureOverloadResolver

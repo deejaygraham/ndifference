@@ -76,13 +76,14 @@ namespace NDifference.TypeSystem
 			this.AllowedValues.Add(new EnumValue(name, value));
 		}
 
-		public SourceCode ToCode()
+		public ICoded ToCode()
 		{
 			SourceCode code = new SourceCode();
 
-			//code.Add(new IdentifierTag(this.TypeName.Name));
+			code.Add(new IdentifierTag(this.Name));
 
 			return code;
+
 		}
 
 		public static bool operator ==(EnumDefinition a, EnumDefinition b)

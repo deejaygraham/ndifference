@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NDifference.Reporting
+namespace NDifference.TypeSystem
 {
-	public interface ITextDescriptor
+	public interface IMemberMethod : IMemberInfo
 	{
-		string Name { get; }
-
-		object Message { get; }
+		Signature Signature { get; }
 	}
 }

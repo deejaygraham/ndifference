@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.Inspectors;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -64,6 +65,23 @@ namespace NDifference.Plugins
 				}
 			}
 
+			// debug !!!
+			HashSet<string> codes = new HashSet<string>();
+
+			foreach(var item in found)
+			{
+				IInspector insp = item as IInspector;
+
+				if (insp != null)
+				{
+					if (codes.Contains(insp.ShortCode))
+					{
+						throw new Exception("Duplicate found for " + insp.ShortCode + "  " + insp.DisplayName);
+					}
+
+					codes.Add(insp.ShortCode);
+				}
+			}
 			return found;
 		}
 

@@ -24,7 +24,7 @@ namespace NDifference.Reflection.Builders
 				FullName = discovered.FriendlyName(),
 				Name = fqn.Type.ToString(),
 				Namespace = fqn.ContainingNamespace.ToString(),
-				Assembly = discovered.Module.Assembly.FullName,
+				Assembly = discovered.Module.Assembly.Name.Name,
 				Access = discovered.IsPublic ? AccessModifier.Public : AccessModifier.Internal,
 				IsAbstract = discovered.IsAbstract,
 				IsSealed = discovered.IsSealed
@@ -33,27 +33,27 @@ namespace NDifference.Reflection.Builders
 			var eventBuilder = new MemberEventBuilder();
 			eventBuilder.BuildFrom(discovered, cd);
 
-			//var fieldBuilder = new FieldBuilder();
-			//fieldBuilder.BuildFrom(discovered, cd);
+			var fieldBuilder = new FieldBuilder();
+			fieldBuilder.BuildFrom(discovered, cd);
 
-			//var propertyBuilder = new PropertyBuilder();
-			//propertyBuilder.BuildFrom(discovered, cd);
+			var propertyBuilder = new PropertyBuilder();
+			propertyBuilder.BuildFrom(discovered, cd);
 
-			//var methodBuilder = new MethodBuilder();
-			//methodBuilder.BuildFrom(discovered, cd);
+			var methodBuilder = new MethodBuilder();
+			methodBuilder.BuildFrom(discovered, cd);
 
-			//if (discovered.HasSuperClass())
-			//{
-			//	cd.InheritsFrom = discovered.BaseType.FullyQualifyName();
-			//}
+			if (discovered.HasSuperClass())
+			{
+				cd.InheritsFrom = new FullyQualifiedName(discovered.BaseType.FriendlyName());
+			}
 
-			//if (discovered.HasInterfaces)
-			//{
-			//	foreach (var inter in discovered.Interfaces.Where(x => x.IsPublicInterface()))
-			//	{
-			//		cd.Implements.Add(inter.FullyQualifyName());
-			//	}
-			//}
+			if (discovered.HasInterfaces)
+			{
+				foreach (var inter in discovered.Interfaces.Where(x => x.IsPublicInterface()))
+				{
+					cd.Implements.Add(new FullyQualifiedName(inter.FriendlyName()));
+				}
+			}
 
 			var obsoleteBuilder = new ObsoleteBuilder();
 			obsoleteBuilder.BuildFrom(discovered, cd);

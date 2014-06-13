@@ -49,8 +49,11 @@
     <Compile Include="CommonTypesInspector.cs" />
     <Compile Include="DemoTypeCollectionInspector.cs" />
     <Compile Include="DemoTypeInspector.cs" />
+    <Compile Include="InterfacesAdded.cs" />
+    <Compile Include="InterfacesRemoved.cs" />
     <Compile Include="ObsoleteTypeInspector.cs" />
     <Compile Include="RemovedTypesInspector.cs" />
+    <Compile Include="SourceOutputTypeInspector.cs" />
     <Compile Include="WellKnownAssemblyCategories.cs" />
     <Compile Include="CommonAssembliesInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

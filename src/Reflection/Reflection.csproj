@@ -53,16 +53,24 @@
   <ItemGroup>
     <Compile Include="Builders\ClassDefinitionBuilder.cs" />
     <Compile Include="Builders\EnumDefinitionBuilder.cs" />
+    <Compile Include="Builders\FieldBuilder.cs" />
     <Compile Include="Builders\MemberEventBuilder.cs" />
     <Compile Include="Builders\InterfaceDefinitionBuilder.cs" />
+    <Compile Include="Builders\MethodBuilder.cs" />
     <Compile Include="Builders\ObsoleteBuilder.cs" />
+    <Compile Include="Builders\PropertyBuilder.cs" />
+    <Compile Include="Builders\SignatureBuilder.cs" />
+    <Compile Include="MethodDefinitionExtensions.cs" />
     <Compile Include="CecilReflector.cs" />
-    <Compile Include="CecilExtensionMethods.cs" />
     <Compile Include="..\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
     <Compile Include="CecilReflectorFactory.cs" />
+    <Compile Include="FieldDefinitionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDefinitionExtensions.cs" />
+    <Compile Include="TypeDefinitionExtensions.cs" />
+    <Compile Include="TypeReferenceExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

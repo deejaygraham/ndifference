@@ -25,21 +25,18 @@ namespace NDifference.Inspectors
 			if (first.Architecture != second.Architecture)
 			{
 				// need to report this change...
-				changes.Add(new IdentifiedChange 
+				changes.Add(new IdentifiedChange
 				{
-					Description = String.Format("Architecture has changed from {0} to {1}", 
-						first.Architecture, 
+					Description = String.Format("Architecture has changed from {0} to {1}",
+						first.Architecture,
 						second.Architecture),
 					Priority = WellKnownChangePriorities.AssemblyInternal,
 					Inspector = this.ShortCode,
-					Descriptor = new TextDescriptor 
-					{ 
-						Name = "Architecture has changed", 
-						Message = String.Format("From: {0} To: {1}", 
-							first.Architecture, 
-							second.Architecture)
-						
-
+					Descriptor = new DeltaDescriptor
+					{
+						Name = "Architecture has changed",
+						Was = first.Architecture,
+						IsNow = second.Architecture
 					}
 				});
 			}

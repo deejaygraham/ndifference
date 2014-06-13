@@ -23,7 +23,7 @@ namespace NDifference.Reflection.Builders
 				FullName = discovered.FriendlyName(),
 				Name = fqn.Type.ToString(),
 				Namespace = fqn.ContainingNamespace.ToString(),
-				Assembly = discovered.Module.Assembly.FullName,
+				Assembly = discovered.Module.Assembly.Name.Name,
 				Access = discovered.IsPublic ? AccessModifier.Public : AccessModifier.Internal
 			};
 

@@ -40,10 +40,10 @@ namespace NDifference.TypeSystem
 		{
 			SourceCode code = new SourceCode();
 
-			//code.Add(new PunctuationTag("~"));
-			////code.Add(this.TypeName.ToCode());
-			//code.Add(new PunctuationTag("("));
-			//code.Add(new PunctuationTag(")"));
+			code.Add(new PunctuationTag("~"));
+			code.Add(this.Name.ToCode());
+			code.Add(new PunctuationTag("("));
+			code.Add(new PunctuationTag(")"));
 
 			return code;
 		}

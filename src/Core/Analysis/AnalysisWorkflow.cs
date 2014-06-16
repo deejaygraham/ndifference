@@ -104,7 +104,8 @@ namespace NDifference.Analysis
 				var secondVersion = project.Product.ComparedIncrements.Second;
 
 				RunAssemblyCollectionInspectors(firstVersion.Assemblies, secondVersion.Assemblies, summaryChanges);
-				
+
+
 				summaryChanges.SummaryBlocks.Add("Name", project.Product.Name);
 				summaryChanges.SummaryBlocks.Add("From", firstVersion.Name);
 				summaryChanges.SummaryBlocks.Add("To", secondVersion.Name);
@@ -151,12 +152,16 @@ namespace NDifference.Analysis
 						// looking for general changes to the assembly...
 						foreach (var ai in this.AssemblyInspectors.Where(x => x.Enabled))
 						{
+							Trace.TraceInformation("Running assembly inspector {0}", ai.DisplayName);
+
 							ai.Inspect(reflector1.GetAssemblyInfo(), reflector2.GetAssemblyInfo(), dllChanges);
 						}
 
 						// looking for added/removed types...
 						foreach(var tci in this.TypeCollectionInspectors.Where(x => x.Enabled))
 						{
+							Trace.TraceInformation("Running type collection inspector {0}", tci.DisplayName);
+
 							tci.Inspect(reflector1.GetTypes(AssemblyReflectionOption.Public), reflector2.GetTypes(AssemblyReflectionOption.Public), dllChanges);
 						}
 
@@ -194,6 +199,8 @@ namespace NDifference.Analysis
 
 							foreach (var ti in this.TypeInspectors.Where(x => x.Enabled))
 							{
+								Trace.TraceInformation("Running type inspector {0}", ti.DisplayName);
+
 								ti.Inspect(t1, t2, typeChanges);
 							}
 
@@ -240,6 +247,7 @@ namespace NDifference.Analysis
 
 					foreach(var typeChange in typeChangeCollection)
 					{
+
 						IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.HtmlSafeTypeName() + format.Extension));
 
 						writer.Write(typeChange, typeOutput, format);
@@ -260,6 +268,8 @@ namespace NDifference.Analysis
 		{
 			foreach (var aci in this.AssemblyCollectionInspectors.Where(x => x.Enabled))
 			{
+				Trace.TraceInformation("Running assembly collection inspector {0}", aci.DisplayName);
+
 				aci.Inspect(first, second, changes);
 			}
 		}

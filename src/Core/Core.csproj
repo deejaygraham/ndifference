@@ -111,6 +111,7 @@
     <Compile Include="TypeSystem\EnumDefinition.cs" />
     <Compile Include="TypeSystem\EnumValue.cs" />
     <Compile Include="TypeSystem\Finalizer.cs" />
+    <Compile Include="TypeSystem\IExactlyMatch.cs" />
     <Compile Include="TypeSystem\IMemberMethod.cs" />
     <Compile Include="TypeSystem\Indexer.cs" />
     <Compile Include="TypeSystem\InstanceConstructor.cs" />

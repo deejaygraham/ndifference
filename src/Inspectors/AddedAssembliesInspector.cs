@@ -11,7 +11,7 @@ namespace NDifference.Inspectors
 	{
 		public bool Enabled { get; set; }
 
-		public string ShortCode { get { return "ACI001"; } }
+		public string ShortCode { get { return "ACI_AAI"; } }
 
 		public string DisplayName { get { return "Added Assemblies";  } }
 

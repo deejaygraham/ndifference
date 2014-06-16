@@ -50,10 +50,16 @@
     </Compile>
     <Compile Include="AddedAssembliesInspectorFacts.cs" />
     <Compile Include="AddedTypesInspectorFacts.cs" />
+    <Compile Include="ArchitectureChangeInspectorFacts.cs" />
     <Compile Include="AssemblyDiskInfoFacts.cs" />
     <Compile Include="CecilAssemblyReflectorFacts.cs" />
+    <Compile Include="ClassAbstractionInspectorFacts.cs" />
+    <Compile Include="ClassDerivationInspectorFacts.cs" />
+    <Compile Include="ClassSealingInspectorFacts.cs" />
     <Compile Include="CommonAssembliesInspectorFacts.cs" />
     <Compile Include="CommonTypesInspectorFacts.cs" />
+    <Compile Include="ConstantsAddedFacts.cs" />
+    <Compile Include="ConstantsRemovedFacts.cs" />
     <Compile Include="MemberFieldFacts.cs" />
     <Compile Include="FileExtensions.cs" />
     <Compile Include="FileMapFacts.cs" />
@@ -75,6 +81,8 @@
     <Compile Include="RemovedAssembliesInspectorFacts.cs" />
     <Compile Include="RemovedTypesInspectorFacts.cs" />
     <Compile Include="ReportAsHtml4Facts.cs" />
+    <Compile Include="TestDataBuilders\AssemblyReflectorBuilder.cs" />
+    <Compile Include="TestDataBuilders\BoilerplateCodeBuilder.cs" />
     <Compile Include="TestDataBuilders\CodeBuildingListExtensions.cs" />
     <Compile Include="TestDataBuilders\CompilableClassBuilder.cs" />
     <Compile Include="TestDataBuilders\CompilableEnumBuilder.cs" />
@@ -83,6 +91,7 @@
     <Compile Include="TestDataBuilders\FullyQualifiedNameBuilder.cs" />
     <Compile Include="TestDataBuilders\IBuildable.cs" />
     <Compile Include="TestDataBuilders\IBuildToCode.cs" />
+    <Compile Include="TestDataBuilders\IdentifiedChangeCollectionBuilder.cs" />
     <Compile Include="TestDataBuilders\UsingStatementBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

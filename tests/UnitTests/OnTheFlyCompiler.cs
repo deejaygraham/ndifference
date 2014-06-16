@@ -92,7 +92,7 @@ namespace NDifference.UnitTests
 
 			var results = this.Provider.CompileAssemblyFromSource(this.Parameters, code);
 
-			if (results.Errors.Count > 0)
+			if (results.Errors.HasErrors)
 			{
 				throw new InvalidOperationException("Compilation Failed:\n" + string.Join(Environment.NewLine, results.Errors.BuildErrorMessageList(code).ToArray()));
 			}

@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class ClassSealingInspector : ITypeInspector
+	public class ConstantsObsolete : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
-		public string ShortCode { get { return "TI_CSI"; } }
+		public string ShortCode { get { return "TI_COI"; } }
 
-		public string DisplayName { get { return "Class Sealing"; } }
+		public string DisplayName { get { return "Obsolete Constants"; } }
 
-		public string Description { get { return "Checks for classes that are sealed in the new version"; } }
+		public string Description { get { return "Checks for obsolete constants"; } }
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
@@ -31,15 +31,19 @@ namespace NDifference.Inspectors
 			Debug.Assert(firstClass != null, "First type is not a class");
 			Debug.Assert(secondClass != null, "Second type is not a class");
 
-			if (!firstClass.IsSealed && secondClass.IsSealed)
+			var obs = secondClass.Constants.FindObsoleteMembers();
+
+			foreach(var o in obs)
 			{
 				changes.Add(new IdentifiedChange
 				{
-					Description = "Class is now marked as sealed",
 					Priority = 1,// need value... for type taxonomy-like changes,
 					Inspector = this.ShortCode,
-					Descriptor = new DeltaDescriptor { Name = "Class is now marked as sealed", Was = first.ToCode(), IsNow = second.ToCode() }
-
+					Descriptor = new TextDescriptor
+					{
+						Name = o.ToString(),
+						Message = o.ToCode()
+					}
 				});
 			}
 		}

@@ -114,6 +114,10 @@ namespace NDifference.Projects
 			ignoreList.Add("TI004");
 			ignoreList.Add("TI005");
 
+			// finalizers
+			//ignoreList.Add("TI006");
+			//ignoreList.Add("TI007");
+
 			settings.IgnoreInspectors = String.Join(";", ignoreList);
 			
 			return settings;

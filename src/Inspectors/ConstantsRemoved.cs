@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class ClassSealingInspector : ITypeInspector
+	public class ConstantsRemoved : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
-		public string ShortCode { get { return "TI_CSI"; } }
+		public string ShortCode { get { return "TI_CRI"; } }
 
-		public string DisplayName { get { return "Class Sealing"; } }
+		public string DisplayName { get { return "Removed Constants"; } }
 
-		public string Description { get { return "Checks for classes that are sealed in the new version"; } }
+		public string Description { get { return "Checks for existing constants removed in the new version"; } }
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
@@ -31,16 +31,23 @@ namespace NDifference.Inspectors
 			Debug.Assert(firstClass != null, "First type is not a class");
 			Debug.Assert(secondClass != null, "Second type is not a class");
 
-			if (!firstClass.IsSealed && secondClass.IsSealed)
+			if (firstClass.Constants.Any())
 			{
-				changes.Add(new IdentifiedChange
-				{
-					Description = "Class is now marked as sealed",
-					Priority = 1,// need value... for type taxonomy-like changes,
-					Inspector = this.ShortCode,
-					Descriptor = new DeltaDescriptor { Name = "Class is now marked as sealed", Was = first.ToCode(), IsNow = second.ToCode() }
+				var removed = secondClass.Constants.FindRemovedMembers(firstClass.Constants);
 
-				});
+				foreach (var rem in removed)
+				{
+					changes.Add(new IdentifiedChange
+					{
+						Priority = 1,// need value... for type taxonomy-like changes,
+						Inspector = this.ShortCode,
+						Descriptor = new TextDescriptor
+						{
+							Name = rem.ToString(),
+							Message = rem.ToCode()
+						}
+					});
+				}
 			}
 		}
 	}

@@ -12,7 +12,7 @@ namespace NDifference.Inspectors
 	{
 		public bool Enabled { get; set; }
 
-		public string ShortCode { get { return "AI001"; } }
+		public string ShortCode { get { return "AI_ACI"; } }
 
 		public string DisplayName { get { return "Assembly Architecture Changes"; } }
 

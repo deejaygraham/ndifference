@@ -25,6 +25,8 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
 				return;
 
+			changes.Add(WellKnownTypeCategories.TypeInternal);
+
 			ClassDefinition firstClass = first as ClassDefinition;
 			ClassDefinition secondClass = second as ClassDefinition;
 
@@ -38,33 +40,23 @@ namespace NDifference.Inspectors
 					// check for heirarchy change
 					if (firstClass.InheritsFrom != secondClass.InheritsFrom)
 					{
-						changes.Add(new IdentifiedChange
-						{
-							Priority = 1,// need value... for type taxonomy-like changes,
-							Inspector = this.ShortCode,
-							Descriptor = new DeltaDescriptor
+						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new DeltaDescriptor
 							{
 								Name = String.Format("Class was derived from {0}, now derived from {1}", firstClass.InheritsFrom, secondClass.InheritsFrom),
 								Was = first.ToCode(),
 								IsNow = second.ToCode()
-							}
-						});
+							}));
 					}
 				}
 				else
 				{
 					// no longer derived...
-					changes.Add(new IdentifiedChange
-					{
-						Priority = 1,// need value... for type taxonomy-like changes,
-						Inspector = this.ShortCode,
-						Descriptor = new DeltaDescriptor 
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new DeltaDescriptor 
 						{ 
 							Name = "Class no longer derives from " + firstClass.InheritsFrom.ToString(), 
 							Was = first.ToCode(), 
 							IsNow = second.ToCode() 
-						}
-					});
+						}));
 				}
 			}
 		}

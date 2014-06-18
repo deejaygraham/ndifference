@@ -1,4 +1,5 @@
-﻿using NDifference.Framework;
+﻿using NDifference.Exceptions;
+using NDifference.Framework;
 using NDifference.Inspection;
 using NDifference.Inspectors;
 using NDifference.Plugins;
@@ -89,7 +90,6 @@ namespace NDifference.Analysis
 				{
 					return;
 				}
-
 
 				IdentifiedChangeCollection summaryChanges = new IdentifiedChangeCollection
 				{
@@ -234,6 +234,14 @@ namespace NDifference.Analysis
 						.With(typeChangeCollection)
 						.Build();
 
+					if (!String.IsNullOrEmpty(project.Settings.SubFolder))
+					{
+						if (Directory.Exists(project.Settings.SubPath))
+						{
+							Directory.GetFiles(project.Settings.SubPath, "*" + format.Extension).ToList().ForEach(x => File.Delete(x));
+						}
+					}
+
 					IReportOutput output = new FileOutput(Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension));
 
 					writer.Write(summaryChanges, output, format);
@@ -247,14 +255,13 @@ namespace NDifference.Analysis
 
 					foreach(var typeChange in typeChangeCollection)
 					{
-
 						IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.HtmlSafeTypeName() + format.Extension));
 
 						writer.Write(typeChange, typeOutput, format);
 					}
 				}
 			}
-			catch
+			catch (PluginLoadException )
 			{
 				// add to list of errors.
 			}

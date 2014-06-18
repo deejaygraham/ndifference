@@ -33,13 +33,15 @@ namespace NDifference.Inspectors
 
 			if (!firstClass.IsAbstract && secondClass.IsAbstract)
 			{
-				changes.Add(new IdentifiedChange
-				{
-					Description = "Class is now abstract",
-					Priority = 1,// need value... for type taxonomy-like changes,
-					Inspector = this.ShortCode,
-					Descriptor = new DeltaDescriptor { Name = "Class is now abstract", Was = first.ToCode(), IsNow = second.ToCode() }
-				});
+				changes.Add(WellKnownTypeCategories.TypeInternal);
+
+				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, 
+					new DeltaDescriptor 
+					{ 
+						Name = "Class is now abstract", 
+						Was = first.ToCode(), 
+						IsNow = second.ToCode() 
+					}));
 			}
 		}
 	}

@@ -48,18 +48,19 @@
     <Compile Include="..\..\src\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="AddedAssembliesInspectorFacts.cs" />
-    <Compile Include="AddedTypesInspectorFacts.cs" />
-    <Compile Include="ArchitectureChangeInspectorFacts.cs" />
+    <Compile Include="Inspectors\Assemblies\AddedAssembliesInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\AddedTypesInspectorFacts.cs" />
+    <Compile Include="Inspectors\Assemblies\ArchitectureChangeInspectorFacts.cs" />
     <Compile Include="AssemblyDiskInfoFacts.cs" />
     <Compile Include="CecilAssemblyReflectorFacts.cs" />
-    <Compile Include="ClassAbstractionInspectorFacts.cs" />
-    <Compile Include="ClassDerivationInspectorFacts.cs" />
-    <Compile Include="ClassSealingInspectorFacts.cs" />
-    <Compile Include="CommonAssembliesInspectorFacts.cs" />
-    <Compile Include="CommonTypesInspectorFacts.cs" />
-    <Compile Include="ConstantsAddedFacts.cs" />
-    <Compile Include="ConstantsRemovedFacts.cs" />
+    <Compile Include="Inspectors\Types\ClassAbstractionInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\ClassDerivationInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\ClassSealingInspectorFacts.cs" />
+    <Compile Include="Inspectors\Assemblies\CommonAssembliesInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\CommonTypesInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\ConstantsObsoleteFacts.cs" />
+    <Compile Include="Inspectors\Types\ConstantsAddedFacts.cs" />
+    <Compile Include="Inspectors\Types\ConstantsRemovedFacts.cs" />
     <Compile Include="MemberFieldFacts.cs" />
     <Compile Include="FileExtensions.cs" />
     <Compile Include="FileMapFacts.cs" />
@@ -78,8 +79,8 @@
     <Compile Include="ProjectWriterFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDeclarationFacts.cs" />
-    <Compile Include="RemovedAssembliesInspectorFacts.cs" />
-    <Compile Include="RemovedTypesInspectorFacts.cs" />
+    <Compile Include="Inspectors\Assemblies\RemovedAssembliesInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\RemovedTypesInspectorFacts.cs" />
     <Compile Include="ReportAsHtml4Facts.cs" />
     <Compile Include="TestDataBuilders\AssemblyReflectorBuilder.cs" />
     <Compile Include="TestDataBuilders\BoilerplateCodeBuilder.cs" />

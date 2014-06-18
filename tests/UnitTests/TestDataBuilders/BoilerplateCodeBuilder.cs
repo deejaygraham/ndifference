@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NDifference.UnitTests.TestDataBuilders
+namespace NDifference.UnitTests
 {
 	public static class BoilerplateCodeBuilder
 	{

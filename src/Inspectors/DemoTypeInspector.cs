@@ -10,7 +10,7 @@ namespace NDifference.Inspectors
 {
 	public class DemoTypeInspector : ITypeInspector
 	{
-		public bool Enabled { get; set; }
+		public bool Enabled { get { return false; } set { } }
 
 		public string ShortCode { get { return "TI00DEMO"; } }
 
@@ -20,13 +20,8 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(new IdentifiedChange
-			{
-				Description = "This is a demonstration type inspector-identified change",
-				Priority = 1,// need value... for type taxonomy-like changes,
-				Inspector = this.ShortCode
-
-			});
+			changes.Add(WellKnownTypeCategories.TypeDebug);
+			changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeDebug, "This is a demonstration type inspector-identified change"));
 		}
 	}
 }

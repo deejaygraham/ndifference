@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NDifference.UnitTests.TestDataBuilders
+namespace NDifference.UnitTests
 {
 	/// <summary>
 	/// Builds AssemblyReflector object given some source code.

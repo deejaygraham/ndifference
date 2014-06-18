@@ -303,7 +303,7 @@ namespace NDifference.Reporting
 													if (code != null)
 														text = this._format.Format(code);
 
-													html.WriteTableRow(textDesc.Name, text + " " + change.Inspector);
+													html.WriteTableRowRaw(textDesc.Name, text + " " + change.Inspector);
 												}
 											}
 										}

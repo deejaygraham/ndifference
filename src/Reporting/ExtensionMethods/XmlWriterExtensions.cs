@@ -84,6 +84,21 @@ namespace NDifference.Reporting
 			});
 		}
 
+		public static void WriteTableRowRaw(this XmlWriter writer, string cell1, string cell2)
+		{
+			writer.WriteElement("tr", () =>
+			{
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(cell1);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(cell2);
+				});
+			});
+		}
+
 		public static void WriteTableRowRaw(this XmlWriter writer, string cell1, string cell2, string cell3)
 		{
 			writer.WriteElement("tr", () =>

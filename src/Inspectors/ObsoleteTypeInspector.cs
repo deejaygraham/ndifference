@@ -25,21 +25,13 @@ namespace NDifference.Inspectors
 			Debug.Assert(second != null, "Second list of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownTypeCategories.ObsoleteTypes);
+			changes.Add(WellKnownAssemblyCategories.ObsoleteTypes);
 
 			foreach (var s in second)
 			{
 				if (s.ObsoleteMarker != null)
 				{
-					changes.Add(new IdentifiedChange
-					{
-						Description = string.Format("{0} {1}", s.Name, s.ObsoleteMarker.Message),
-						Priority = WellKnownTypeCategories.ObsoleteTypes.Priority.Value,
-						//put source code into name ...
-						Descriptor = new TextDescriptor { Name = s.Name, Message = s.ObsoleteMarker.Message },
-						Inspector = this.ShortCode
-
-					});
+					changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.ObsoleteTypes, new TextDescriptor { Name = s.FullName, Message = s.ObsoleteMarker.Message }));
 				}
 			}
 

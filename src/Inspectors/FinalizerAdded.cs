@@ -21,6 +21,8 @@ namespace NDifference.Inspectors
 		
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
+			changes.Add(WellKnownTypeCategories.FinalizersAdded);
+
 			if (first.Taxonomy == TypeTaxonomy.Class
 				&& second.Taxonomy == TypeTaxonomy.Class)
 			{
@@ -32,13 +34,7 @@ namespace NDifference.Inspectors
 
 				if (wasDestructor == null && nowDestructor != null)
 				{
-					changes.Add(new IdentifiedChange
-					{
-						Description = "Finalizer changes",
-						Priority = 1,// need value... for type taxonomy-like changes,
-						Inspector = this.ShortCode,
-						Descriptor = new TextDescriptor { Name = "Finalizer added", Message = nowDestructor.ToCode() }
-					});
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FinalizersAdded, new TextDescriptor { Name = "Finalizer added", Message = nowDestructor.ToCode() }));
 				}
 			}
 		}

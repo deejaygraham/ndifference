@@ -11,7 +11,7 @@ namespace NDifference.Inspectors
 {
 	public class SourceOutputTypeInspector : ITypeInspector
 	{
-		public bool Enabled { get; set; }
+		public bool Enabled { get { return false; } set { } }
 
 		public string ShortCode { get { return "TI00SEC"; } }
 
@@ -21,13 +21,9 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(new IdentifiedChange
-			{
-				Description = "This shows source code",
-				Priority = 1,// need value... for type taxonomy-like changes,
-				Inspector = this.ShortCode,
-				Descriptor = new DeltaDescriptor { Name = "Code", Was = first.ToCode(), IsNow = second.ToCode() }
-			});
+			changes.Add(WellKnownTypeCategories.TypeDebug);
+
+			changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeDebug, new DeltaDescriptor { Name = "Code", Was = first.ToCode(), IsNow = second.ToCode() }));
 		}
 	}
 }

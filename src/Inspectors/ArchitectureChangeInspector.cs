@@ -20,25 +20,17 @@ namespace NDifference.Inspectors
 
 		public void Inspect(IAssemblyInfo first, IAssemblyInfo second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownTypeCategories.AssemblyInternal);
+			changes.Add(WellKnownAssemblyCategories.AssemblyInternal);
 
 			if (first.Architecture != second.Architecture)
 			{
 				// need to report this change...
-				changes.Add(new IdentifiedChange
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new DeltaDescriptor
 				{
-					Description = String.Format("Architecture has changed from {0} to {1}",
-						first.Architecture,
-						second.Architecture),
-					Priority = WellKnownChangePriorities.AssemblyInternal,
-					Inspector = this.ShortCode,
-					Descriptor = new DeltaDescriptor
-					{
-						Name = "Architecture has changed",
-						Was = first.Architecture,
-						IsNow = second.Architecture
-					}
-				});
+					Name = "Architecture has changed",
+					Was = first.Architecture,
+					IsNow = second.Architecture
+				}));
 			}
 		}
 	}

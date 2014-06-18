@@ -24,7 +24,7 @@ namespace NDifference.Inspectors
 			Debug.Assert(second != null, "Second list of assemblies cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownAssemblyCategories.ChangedAssemblies);
+			changes.Add(WellKnownSummaryCategories.ChangedAssemblies);
 //			changes.Add(WellKnownAssemblyCategories.UnchangedAssemblies);
 
 			var comparer = new AssemblyNameComparer();
@@ -61,19 +61,12 @@ namespace NDifference.Inspectors
 				{
 					// most common files need to be analysed 
 					// further to check for API changes...
-					changes.Add(new IdentifiedChange 
-					{ 
-						Description = oldVersion.Name, 
-						Priority = WellKnownAssemblyCategories.ChangedAssemblies.Priority.Value,
-						Descriptor = new DocumentLink 
-						{ 
-							LinkText = oldVersion.Name, 
-							LinkUrl = oldVersion.Name, 
-							Identifier = newVersion.Identifier 
-						},
-						Inspector = this.ShortCode
-
-					});
+					changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.ChangedAssemblies, oldVersion.Name, new DocumentLink
+					{
+						LinkText = oldVersion.Name,
+						LinkUrl = oldVersion.Name,
+						Identifier = newVersion.Identifier
+					}));
 				}
 			}
 

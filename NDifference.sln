@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inspectors", "src\Inspector
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reporting", "src\Reporting\Reporting.csproj", "{2FAF3E71-11FB-4E51-A4F0-A9F47E5649D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "src\UI\UI.csproj", "{A061A21E-8377-4849-AAA6-DB55E7EDC29E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{2FAF3E71-11FB-4E51-A4F0-A9F47E5649D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FAF3E71-11FB-4E51-A4F0-A9F47E5649D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FAF3E71-11FB-4E51-A4F0-A9F47E5649D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A061A21E-8377-4849-AAA6-DB55E7EDC29E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A061A21E-8377-4849-AAA6-DB55E7EDC29E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A061A21E-8377-4849-AAA6-DB55E7EDC29E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A061A21E-8377-4849-AAA6-DB55E7EDC29E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

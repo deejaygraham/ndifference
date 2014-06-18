@@ -25,6 +25,8 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
 				return;
 
+			changes.Add(WellKnownTypeCategories.TypeInternal);
+
 			ClassDefinition firstClass = first as ClassDefinition;
 			ClassDefinition secondClass = second as ClassDefinition;
 
@@ -33,14 +35,7 @@ namespace NDifference.Inspectors
 
 			if (!firstClass.IsSealed && secondClass.IsSealed)
 			{
-				changes.Add(new IdentifiedChange
-				{
-					Description = "Class is now marked as sealed",
-					Priority = 1,// need value... for type taxonomy-like changes,
-					Inspector = this.ShortCode,
-					Descriptor = new DeltaDescriptor { Name = "Class is now marked as sealed", Was = first.ToCode(), IsNow = second.ToCode() }
-
-				});
+				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new DeltaDescriptor { Name = "Class is now marked as sealed", Was = first.ToCode(), IsNow = second.ToCode() }));
 			}
 		}
 	}

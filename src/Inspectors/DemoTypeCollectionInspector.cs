@@ -11,7 +11,7 @@ namespace NDifference.Inspectors
 	/// </summary>
 	public class DemoTypeCollectionInspector : ITypeCollectionInspector
 	{
-		public bool Enabled { get; set; }
+		public bool Enabled { get { return false; } set { } }
 
 		public string ShortCode { get { return "TCI003"; } }
 
@@ -21,7 +21,7 @@ namespace NDifference.Inspectors
 
 		public void Inspect(IEnumerable<ITypeInfo> first, IEnumerable<ITypeInfo> second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownTypeCategories.ChangedTypes);
+			changes.Add(WellKnownAssemblyCategories.ChangedTypes);
 
 			var comparer = new TypeNameComparer();
 
@@ -35,8 +35,8 @@ namespace NDifference.Inspectors
 
 				changes.Add(new IdentifiedChange 
 				{ 
-					Description = newVersion.FullName, 
-					Priority = WellKnownTypeCategories.ChangedTypes.Priority.Value,
+					Description = newVersion.FullName,
+					Priority = WellKnownAssemblyCategories.ChangedTypes.Priority.Value,
 					Descriptor = new DocumentLink
 					{
 						LinkText = oldVersion.Name,

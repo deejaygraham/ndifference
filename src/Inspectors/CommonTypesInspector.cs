@@ -25,7 +25,7 @@ namespace NDifference.Inspectors
 			Debug.Assert(second != null, "Second list of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownTypeCategories.ChangedTypes);
+			changes.Add(WellKnownAssemblyCategories.ChangedTypes);
 //			changes.Add(WellKnownTypeCategories.UnchangedTypes);
 
 			var comparer = new TypeNameComparer();
@@ -58,19 +58,12 @@ namespace NDifference.Inspectors
 				//}
 				if (!oldHash.Equals(newHash))
                 {
-					changes.Add(new IdentifiedChange 
-					{ 
-						Description = newVersion.FullName, 
-						Priority = WellKnownTypeCategories.ChangedTypes.Priority.Value,
-						Descriptor = new DocumentLink
-						{
-							LinkText = oldVersion.Name,
-							LinkUrl = oldVersion.FullName,
-							Identifier = newVersion.Identifier
-						},
-						Inspector = this.ShortCode
-
-					});
+					changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.ChangedTypes, newVersion.FullName, new DocumentLink
+					{
+						LinkText = oldVersion.Name,
+						LinkUrl = oldVersion.FullName,
+						Identifier = newVersion.Identifier
+					}));
                 }
 			}
 		}

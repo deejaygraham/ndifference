@@ -1,5 +1,4 @@
 ﻿using NDifference.Inspectors;
-using NDifference.UnitTests.TestDataBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,62 +6,65 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NDifference.UnitTests
+namespace NDifference.UnitTests.Inspectors.Types
 {
-	public class ClassAbstractionInspectorFacts
+	public class ConstantsObsoleteFacts
 	{
 		[Fact]
-		public void ClassAbstractionInspector_Identifies_When_Class_Is_Made_Abstract()
+		public void ConstantsObsolete_Identifies_When_Constant_Made_Obsolete()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
-										.Named("Account");
+										.Named("Account")
+										.WithConstant("string", "MyField", "\"Hello World\"");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.IsAbstract();
+										.WithConstant("[Obsolete] public const string MyField = \"Hello World\";");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new ClassAbstractionInspector())
+				.InspectedBy(new ConstantsObsolete())
 				.Build();
 
 			Assert.Equal(1, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void ClassAbstractionInspector_Ignores_When_Class_Is_Always_Abstract()
+		public void ConstantsObsolete_Identifies_When_Constant_Made_Obsolete_With_Message()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.IsAbstract();
+										.WithConstant("string", "MyField", "\"Hello World\"");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.IsAbstract();
+										.WithConstant("[Obsolete(\"Do not use\")] public const string MyField = \"Hello World\";");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new ClassAbstractionInspector())
+				.InspectedBy(new ConstantsObsolete())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Equal(1, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void ClassAbstractionInspector_Ignores_When_Not_Abstract()
+		public void ConstantsObsolete_Ignores_When_Constants_Not_Obsolete()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
-										.Named("Account");
+										.Named("Account")
+										.WithConstant("string", "MyField", "\"Hello World\"");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
-										.Named("Account");
+										.Named("Account")
+										.WithConstant("string", "MyField", "\"Hello World\"");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new ClassAbstractionInspector())
+				.InspectedBy(new ConstantsObsolete())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);

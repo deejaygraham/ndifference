@@ -24,6 +24,9 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
+			// TODO new category - hierarchy changes ???
+			changes.Add(WellKnownTypeCategories.TypeInternal);
+
 			if (first.Taxonomy == TypeTaxonomy.Class
 				|| first.Taxonomy == TypeTaxonomy.Interface
 				|| second.Taxonomy == TypeTaxonomy.Class
@@ -38,13 +41,7 @@ namespace NDifference.Inspectors
 				{
 					foreach (var add in added)
 					{
-						changes.Add(new IdentifiedChange
-						{
-							Description = "Interface list changes",
-							Priority = 1,// need value... for type taxonomy-like changes,
-							Inspector = this.ShortCode,
-							Descriptor = new TextDescriptor { Name = "Now implements", Message = add.ToCode() }
-						});
+						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new TextDescriptor { Name = "Now implements", Message = add.ToCode() }));
 					}
 				}
 			}

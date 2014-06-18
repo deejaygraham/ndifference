@@ -23,20 +23,14 @@ namespace NDifference.Inspectors
 			Debug.Assert(second != null, "Second list of assemblies cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownAssemblyCategories.RemovedAssemblies);
+			changes.Add(WellKnownSummaryCategories.RemovedAssemblies);
 			
 			var comparer = new AssemblyNameComparer();
 
 			// REVIEW - need well known categories for each item... assemblies added, changed, removed, unchanged.
 			foreach (var added in first.RemovedFrom(second, comparer))
 			{
-				changes.Add(new IdentifiedChange 
-				{ 
-					Description = added.Name,
-					Priority = WellKnownAssemblyCategories.RemovedAssemblies.Priority.Value,
-					Inspector = this.ShortCode
-
-				});
+				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.RemovedAssemblies, added.Name)); 
 			}
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using NDifference.Inspectors;
+﻿using NDifference.Exceptions;
+using NDifference.Inspectors;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -65,23 +66,36 @@ namespace NDifference.Plugins
 				}
 			}
 
-			// debug !!!
-			HashSet<string> codes = new HashSet<string>();
+			bool validateCodes = false;
 
-			foreach(var item in found)
+			if (validateCodes)
 			{
-				IInspector insp = item as IInspector;
+				// debug !!!
+				HashSet<string> codes = new HashSet<string>();
 
-				if (insp != null)
+				PluginLoadException ex = null;
+
+				foreach (var item in found)
 				{
-					if (codes.Contains(insp.ShortCode))
-					{
-						throw new Exception("Duplicate found for " + insp.ShortCode + "  " + insp.DisplayName);
-					}
+					IInspector insp = item as IInspector;
 
-					codes.Add(insp.ShortCode);
+					if (insp != null)
+					{
+						if (codes.Contains(insp.ShortCode))
+						{
+							ex = new PluginLoadException("Duplicate found for " + insp.ShortCode + "  " + insp.DisplayName);
+						}
+
+						codes.Add(insp.ShortCode);
+					}
+				}
+
+				if (ex != null)
+				{
+					throw ex;
 				}
 			}
+
 			return found;
 		}
 

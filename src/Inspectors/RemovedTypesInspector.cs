@@ -24,17 +24,11 @@ namespace NDifference.Inspectors
 			Debug.Assert(second != null, "Second list of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownTypeCategories.RemovedTypes);
+			changes.Add(WellKnownAssemblyCategories.RemovedTypes);
 
 			foreach (var removed in first.RemovedFrom(second))
 			{
-				changes.Add(new IdentifiedChange
-				{
-					Description = removed.Name,
-					Priority = WellKnownTypeCategories.RemovedTypes.Priority.Value,
-					Inspector = this.ShortCode
-
-				});
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.Name));
 			}
 
 		}

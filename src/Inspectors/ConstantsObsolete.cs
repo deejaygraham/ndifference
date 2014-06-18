@@ -25,6 +25,8 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
 				return;
 
+			changes.Add(WellKnownTypeCategories.ConstantsObsolete);
+
 			ClassDefinition firstClass = first as ClassDefinition;
 			ClassDefinition secondClass = second as ClassDefinition;
 
@@ -35,16 +37,7 @@ namespace NDifference.Inspectors
 
 			foreach(var o in obs)
 			{
-				changes.Add(new IdentifiedChange
-				{
-					Priority = 1,// need value... for type taxonomy-like changes,
-					Inspector = this.ShortCode,
-					Descriptor = new TextDescriptor
-					{
-						Name = o.ToString(),
-						Message = o.ToCode()
-					}
-				});
+				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstantsObsolete, new TextDescriptor { Name = o.ToString(), Message = o.ToCode() }));
 			}
 		}
 	}

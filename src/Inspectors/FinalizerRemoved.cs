@@ -1,11 +1,6 @@
 ﻿using NDifference.Analysis;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -21,6 +16,8 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
+			changes.Add(WellKnownTypeCategories.FinalizersRemoved);
+
 			if (first.Taxonomy == TypeTaxonomy.Class
 				&& second.Taxonomy == TypeTaxonomy.Class)
 			{
@@ -30,15 +27,9 @@ namespace NDifference.Inspectors
 				Finalizer wasDestructor = cd1.Finalizer;
 				Finalizer nowDestructor = cd2.Finalizer;
 
-				if (wasDestructor == null && nowDestructor != null)
+				if (wasDestructor != null && nowDestructor == null)
 				{
-					changes.Add(new IdentifiedChange
-					{
-						Description = "Finalizer changes",
-						Priority = 1,// need value... for type taxonomy-like changes,
-						Inspector = this.ShortCode,
-						Descriptor = new TextDescriptor { Name = "Finalizer removed", Message = wasDestructor.ToCode() }
-					});
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FinalizersRemoved, new TextDescriptor { Name = "Finalizer removed", Message = wasDestructor.ToCode() }));
 				}
 			}
 		}

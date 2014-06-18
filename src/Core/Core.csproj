@@ -43,6 +43,7 @@
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
     <Compile Include="Analysis\IAnalysisWorkflow.cs" />
+    <Compile Include="Exceptions\PluginLoadException.cs" />
     <Compile Include="ExtensionMethods\EventHandlerExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Files\AssemblyDiskInfoBuilder.cs" />
@@ -173,9 +174,7 @@
     <Compile Include="TypeSystem\TypeNameComparer.cs" />
     <Compile Include="TypeSystem\TypeTaxonomy.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

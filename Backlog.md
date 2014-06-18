@@ -115,7 +115,23 @@ Use a different dialog to browse to directory so that copy/paste of path can be 
 If highlighting multiple entries on either list, then the Delete key should perform the same job as clicking the - (minus) button.
 When clicking into a list of assemblies in the UI, allow Ctrl+A or add a select all button.
 
+Task libraries
+Completion token to cancel 
+Closing the app?
+
+Rules for attribute changes
+Reports by namespace and/or by assembly - full object model to query.
+
 # Examples
 
 using c#, vb.net, f# ???
+
+
+generate fragments of files used for sandcastle ui
+
+Do unit tests on built code and on itypeinfos?
+
+handle params arguments
+handle arrays[]
+
 

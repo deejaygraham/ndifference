@@ -23,16 +23,6 @@ namespace NDifference.Reflection
 			return discovered.BaseType != null && discovered.BaseType.FullName != BaseObjectName;
 		}
 
-		public static bool IsInternalType(this TypeDefinition td)
-		{
-			const string NetModuleType = "<Module>";
-			const string ExtenionsMethodSignature = "<"; // extension methods seem to show up as className/<blah>
-
-			return td.Name.StartsWith(NetModuleType)
-				|| (td.Name.StartsWith(ExtenionsMethodSignature)
-				&& td.IsNestedPrivate);
-		}
-
 		public static TypeTaxonomy ToTaxonomy(this TypeDefinition td)
 		{
 			Debug.Assert(td != null, "Type definition cannot be blank");

@@ -244,6 +244,10 @@ namespace NDifference.Reporting
 
 						html.WriteElement("tbody", () =>
 						{
+							// order changes...
+							var ordered = new List<IdentifiedChange>(changes);
+							ordered.Sort(new IdentifiedChangeComparer());
+
 							foreach (var change in changes)
 							{
 								html.WriteElement("tr", () =>

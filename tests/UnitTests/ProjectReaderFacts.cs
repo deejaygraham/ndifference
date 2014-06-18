@@ -16,6 +16,7 @@ namespace NDifference.UnitTests
 		public void ProjectReader_Reads_Project_As_Xml()
 		{
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
 
 			string xmlText = WriteProjectToString(project);
 
@@ -31,6 +32,8 @@ namespace NDifference.UnitTests
 			string folder = "C:\\MyDocuments";
 
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
+
 			project.FileName = Path.Combine(folder, "Example.okavango");
 
 			project.Product.Name = "Example";
@@ -64,6 +67,8 @@ namespace NDifference.UnitTests
 			string folder = "C:\\MyDocuments";
 
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
+
 			project.FileName = Path.Combine(folder, "Example.okavango");
 
 			project.Product.Name = "Example";

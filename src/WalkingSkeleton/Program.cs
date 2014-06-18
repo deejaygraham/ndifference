@@ -111,6 +111,7 @@ namespace WalkingSkeleton
 			nextVersion.AddRange(AssemblyDiskInfoBuilder.BuildFromFolder(secondFolder));
 
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
 
 			project.Product.Name = "Walking Skeleton";
 			project.Product.Add(previousVersion);

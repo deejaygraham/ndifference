@@ -1,5 +1,7 @@
 ﻿
 using NDifference.Inspectors;
+using NDifference.Reporting;
+using System.Collections.Generic;
 namespace NDifference.Analysis
 {
 	/// <summary>
@@ -50,4 +52,43 @@ namespace NDifference.Analysis
 		// descriptor object...
 	}
 
+	public class IdentifiedChangeComparer : IComparer<IdentifiedChange>
+	{
+		public int Compare(IdentifiedChange x, IdentifiedChange y)
+		{
+			if (x.Descriptor == null || y.Descriptor == null)
+				return x.Description.CompareTo(y.Description);
+
+			return 0;
+		}
+
+		private int CompareDescriptors(object x, object y)
+		{
+			IDocumentLink xlink = x as IDocumentLink;
+			IDocumentLink ylink = y as IDocumentLink;
+
+			if (xlink != null && ylink != null)
+			{
+				return xlink.LinkText.CompareTo(ylink.LinkText);
+			}
+			
+			IDeltaDescriptor xdelta = x as IDeltaDescriptor;
+			IDeltaDescriptor ydelta = y as IDeltaDescriptor;
+
+			if (xdelta != null && ydelta != null)
+			{
+				return xdelta.Name.CompareTo(ydelta.Name);
+			}
+
+			ITextDescriptor xtext = x as ITextDescriptor;
+			ITextDescriptor ytext = y as ITextDescriptor;
+
+			if (xtext != null && ytext != null)
+			{
+				return xtext.Name.CompareTo(ytext.Name);
+			}
+
+			return 0;
+		}
+	}
 }

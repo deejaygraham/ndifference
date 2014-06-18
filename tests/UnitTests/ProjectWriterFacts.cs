@@ -16,6 +16,7 @@ namespace NDifference.UnitTests
 		public void ProjectWriter_Writes_Project_As_Xml()
 		{
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
 
 			string xmlText = WriteProjectToString(project);
 
@@ -28,6 +29,7 @@ namespace NDifference.UnitTests
 		public void ProjectWriter_Writes_Product_Details()
 		{
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
 
 			project.Product.Name = "Example";
 
@@ -40,6 +42,7 @@ namespace NDifference.UnitTests
 		public void ProjectWriter_Writes_ProductVersion_Details()
 		{
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
 
 			project.Product.Name = "Example";
 			project.Product.Add(new ProductIncrement { Name = "1.0.0" });
@@ -59,6 +62,8 @@ namespace NDifference.UnitTests
 			string folder = "C:\\MyDocuments";
 
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
+
 			project.FileName = Path.Combine(folder, "Example.okavango");
 
 			project.Product.Name = "Example";
@@ -100,6 +105,8 @@ namespace NDifference.UnitTests
 			string folder = "C:\\MyDocuments";
 
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
+
 			project.FileName = Path.Combine(folder, "Example.okavango");
 
 			project.Product.Name = "Example";
@@ -145,6 +152,7 @@ namespace NDifference.UnitTests
 		public void ProjectWriter_Output_Includes_OutputFolder_Setting()
 		{
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
 
 			project.Settings.OutputFolder = @"C:\MyOutput";
 
@@ -157,6 +165,7 @@ namespace NDifference.UnitTests
 		public void ProjectWriter_Output_Includes_ConsolidateAssemblyTypes_Setting()
 		{
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
 
 			project.Settings.ConsolidateAssemblyTypes = true;
 

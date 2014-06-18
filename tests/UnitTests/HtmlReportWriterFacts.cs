@@ -19,6 +19,8 @@ namespace NDifference.UnitTests
 			var output = new InMemoryReportOutput();
 
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
+
 			project.Product.Name = "Example";
 			project.Product.Add(new ProductIncrement { Name = "1.0" });
 			project.Product.Add(new ProductIncrement { Name = "2.0" });
@@ -47,6 +49,8 @@ namespace NDifference.UnitTests
 			var output = new InMemoryReportOutput();
 
 			var project = ProjectBuilder.Default();
+			project.Product.Clear();
+
 			project.Product.Name = "Example";
 			project.Product.Add(new ProductIncrement { Name = "1.0" });
 			project.Product.Add(new ProductIncrement { Name = "2.0" });

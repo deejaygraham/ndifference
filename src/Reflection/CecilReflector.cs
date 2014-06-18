@@ -40,7 +40,7 @@ namespace NDifference.Reflection
 				foreach (var type in types.Where(x => option == AssemblyReflectionOption.All || x.IsPublic))
 			    {
 					// don't try to handle anonymous types or <Module>
-					if (type.IsInternalType())
+					if (type.IsNotPublic && type.Name.StartsWith("<")) 
 						continue;
 
 					ITypeInfo info = null;

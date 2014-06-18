@@ -1,5 +1,7 @@
 ﻿using NDifference.Analysis;
 using NDifference.Framework;
+using NDifference.Inspectors;
+using NDifference.Plugins;
 using NDifference.Projects;
 using NDifference.Reflection;
 using NDifference.UI.Controls;
@@ -43,6 +45,23 @@ namespace NDifference.UI
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			this.tvInspectors.Dock = DockStyle.Fill;
+			this.tvInspectors.CheckBoxes = true;
+			this.tvInspectors.AfterCheck += (s, arg) =>
+			{
+				if (arg.Action != TreeViewAction.Unknown)
+				{
+					if (arg.Node.Nodes.Count > 0)
+					{
+						foreach (TreeNode node in arg.Node.Nodes)
+						{
+							node.Checked = arg.Node.Checked;
+						}
+					}
+				}
+			};
+
+
 			this._project = ProjectBuilder.Default();
 
 			this.InitialiseUIFromProject(this._project);
@@ -62,7 +81,6 @@ namespace NDifference.UI
 
 			// find all inspectors and put them on tree view
 			// look for all inspectors...
-
 
 			//this._worker = new BackgroundWorker()
 			//{
@@ -244,6 +262,66 @@ namespace NDifference.UI
 			this.asNewVersion.Initialise(newRelease.Assemblies);
 
 			this.fsOutputFolder.FolderPath = project.Settings.OutputFolder;
+			
+			var finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
+
+			List<IAssemblyCollectionInspector> aci = new List<IAssemblyCollectionInspector>();
+			aci.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(finder).Find());
+
+			List<IAssemblyInspector> ai = new List<IAssemblyInspector>();
+			ai.AddRange(new AssemblyInspectorPluginDiscoverer(finder).Find());
+
+			List<ITypeCollectionInspector> tci = new List<ITypeCollectionInspector>();
+			tci.AddRange(new TypeCollectionInspectorPluginDiscoverer(finder).Find());
+
+			List<ITypeInspector> ti = new List<ITypeInspector>();
+			ti.AddRange(new TypeInspectorPluginDiscoverer(finder).Find());
+
+			this.tvInspectors.BeginUpdate();
+
+			this.tvInspectors.Nodes.Clear();
+
+			var aciNode = this.tvInspectors.Nodes.Add("Assembly Collection Inspectors");
+			aci.ForEach(x => aciNode.Nodes.Add(new TreeNode(x.ShortCode + " - " + x.DisplayName) { Tag = x.ShortCode, Checked = true }));
+
+			var aiNode = this.tvInspectors.Nodes.Add("Assembly Inspectors");
+			ai.ForEach(x => aiNode.Nodes.Add(new TreeNode(x.ShortCode + " - " + x.DisplayName) { Tag = x.ShortCode, Checked = true }));
+
+			var tciNode = this.tvInspectors.Nodes.Add("Type Collection Inspectors");
+			tci.ForEach(x => tciNode.Nodes.Add(new TreeNode(x.ShortCode + " - " + x.DisplayName) { Tag = x.ShortCode, Checked = true }));
+
+			var tiNode = this.tvInspectors.Nodes.Add("Type Inspectors");
+			ti.ForEach(x => tiNode.Nodes.Add(new TreeNode(x.ShortCode + " - " + x.DisplayName) { Tag = x.ShortCode, Checked = true }));
+			
+			if (!String.IsNullOrEmpty(project.Settings.IgnoreInspectors))
+			{
+				// deselect all current ignores.
+				string[] shortCodes = project.Settings.IgnoreInspectors.Split(';');
+
+				foreach(string code in shortCodes)
+				{
+					foreach (TreeNode n in this.tvInspectors.Nodes)
+					{
+						foreach (TreeNode child in n.Nodes)
+						{
+							if (child.Tag != null)
+							{
+								string candidateCode = child.Tag.ToString();
+
+								if (candidateCode == code)
+								{
+									child.Checked = false;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			this.tvInspectors.ExpandAll();
+
+			this.tvInspectors.EndUpdate();
 		}
 
 		private Project UpdateProjectFromUI()
@@ -263,6 +341,30 @@ namespace NDifference.UI
 			refreshedProject.Product.Add(newVersion);
 
 			refreshedProject.Settings.OutputFolder = this.fsOutputFolder.FolderPath;
+
+			var list = new List<string>();
+
+			// now look at what inspectors have been selected...
+			foreach (TreeNode n in this.tvInspectors.Nodes)
+			{
+				foreach (TreeNode child in n.Nodes)
+				{
+					if (!child.Checked && child.Tag != null)
+					{
+						string shortCode = child.Tag.ToString();
+
+						if (!String.IsNullOrEmpty(shortCode))
+						{
+							list.Add(shortCode);
+						}
+					}
+				}
+			}
+
+			if (list.Any())
+			{
+				refreshedProject.Settings.IgnoreInspectors = String.Join(";", list);
+			}
 
 			return refreshedProject;
 		}
@@ -725,27 +827,6 @@ namespace NDifference.UI
 			string validationMessage = string.IsNullOrEmpty(this.txtNewVersion.Text) ? "Please provide a name for the new version" : string.Empty;
 
 			this.newVersionErrorProvider.SetError(this.txtNewVersion, validationMessage);
-		}
-
-		private void DiscoverPlugins()
-		{
-
-		//			private List<IAssemblyCollectionInspector> AssemblyCollectionInspectors { get; set; }
-
-		//private List<IAssemblyInspector> AssemblyInspectors { get; set; }
-
-		//private List<ITypeCollectionInspector> TypeCollectionInspectors { get; set; }
-
-		//private List<ITypeInspector> TypeInspectors { get; set; }
-
-		//	this.AssemblyCollectionInspectors.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(this.Finder).Find());
-
-		//	this.AssemblyInspectors.AddRange(new AssemblyInspectorPluginDiscoverer(this.Finder).Find());
-
-		//	this.TypeCollectionInspectors.AddRange(new TypeCollectionInspectorPluginDiscoverer(this.Finder).Find());
-
-		//	this.TypeInspectors.AddRange(new TypeInspectorPluginDiscoverer(this.Finder).Find());
-
 		}
 	}
 }

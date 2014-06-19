@@ -45,6 +45,7 @@
     <Compile Include="AddedAssembliesInspector.cs" />
     <Compile Include="AddedTypesInspector.cs" />
     <Compile Include="ArchitectureChangeInspector.cs" />
+    <Compile Include="AssemblyReferenceInspector.cs" />
     <Compile Include="ClassAbstractionInspector.cs" />
     <Compile Include="ClassDerivationInspector.cs" />
     <Compile Include="ClassSealingInspector.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="InterfacesRemoved.cs" />
     <Compile Include="ObsoleteTypeInspector.cs" />
     <Compile Include="RemovedTypesInspector.cs" />
+    <Compile Include="RuntimeInspector.cs" />
     <Compile Include="SourceOutputTypeInspector.cs" />
     <Compile Include="WellKnownAssemblyCategories.cs" />
     <Compile Include="CommonAssembliesInspector.cs" />

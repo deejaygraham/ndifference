@@ -241,6 +241,19 @@ namespace NDifference.Reporting
 							});
 						}
 
+						if (cat.Headings != null && cat.Headings.Length > 0)
+						{
+							html.WriteElement("tr", () =>
+							{
+								foreach(var head in cat.Headings)
+								{
+									html.WriteElement("th", () =>
+									{
+										html.WriteRaw(head);
+									});
+								}
+							});
+						}
 
 						html.WriteElement("tbody", () =>
 						{
@@ -248,75 +261,9 @@ namespace NDifference.Reporting
 							var ordered = new List<IdentifiedChange>(changes);
 							ordered.Sort(new IdentifiedChangeComparer());
 
-							foreach (var change in changes)
+							foreach (var change in ordered)
 							{
-								html.WriteElement("tr", () =>
-								{
-									object descriptor = change.Descriptor;
-
-									if (descriptor != null)
-									{
-										IDocumentLink link = descriptor as IDocumentLink;
-
-										if (link != null && this.Map != null)
-										{
-											html.WriteElement("td", () =>
-											{
-												// look up correct path...
-												IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
-
-												html.WriteLink(this.Map.PathRelativeTo(link.Identifier, folder), link.LinkText + " " + change.Inspector);
-											});
-										}
-										else
-										{
-											IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
-
-											if (delta != null)
-											{
-												string wasText = delta.Was.ToString();
-												string isText = delta.IsNow.ToString();
-
-												ICoded was = delta.Was as ICoded;
-												ICoded isNow = delta.IsNow as ICoded;
-
-												if (was != null)
-												{
-													// do html format...
-													wasText = this._format.Format(was);
-												}
-
-												if (isNow != null)
-												{
-													isText = this._format.Format(isNow);
-													// get formatter to convert...
-												}
-
-												html.WriteTableRowRaw(delta.Name, wasText, isText);
-											}
-											else
-											{
-												ITextDescriptor textDesc = descriptor as ITextDescriptor;
-
-												if (textDesc != null)
-												{
-													string text = textDesc.Message.ToString();
-
-													ICoded code = textDesc.Message as ICoded;
-
-													if (code != null)
-														text = this._format.Format(code);
-
-													html.WriteTableRowRaw(textDesc.Name, text + " " + change.Inspector);
-												}
-											}
-										}
-									}
-									else if (!String.IsNullOrEmpty(change.Description))
-									{
-										html.WriteTableRow(change.Description + " " + change.Inspector);
-									}
-								});
+								RenderChange(change, html, output);
 							}
 						});
 					});
@@ -326,6 +273,51 @@ namespace NDifference.Reporting
 					html.WriteComment(" No " + cat.Name + " identified ");
 				}
 			});
+		}
+
+		private void RenderChange(IdentifiedChange change, XmlWriter html, IReportOutput output)
+		{
+			object descriptor = change.Descriptor;
+
+			if (descriptor != null)
+			{
+				RenderDescriptor(change, descriptor, html, output);
+			}
+			else if (!String.IsNullOrEmpty(change.Description))
+			{
+				html.WriteTableRow(change.Inspector, change.Description);
+			}
+		}
+
+		private void RenderDescriptor(IdentifiedChange change, object descriptor, XmlWriter html, IReportOutput output)
+		{
+			IDocumentLink link = descriptor as IDocumentLink;
+
+			if (link != null)
+			{
+				if (this.Map != null)
+				{
+					html.WriteTableRow(change.Inspector, link, output, this.Map);
+				}
+			}
+			else
+			{
+				IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
+
+				if (delta != null)
+				{
+					html.WriteTableRow(change.Inspector, delta, this._format);
+				}
+				else
+				{
+					ITextDescriptor textDesc = descriptor as ITextDescriptor;
+
+					if (textDesc != null)
+					{
+						html.WriteTableRow(change.Inspector, textDesc, this._format);
+					}
+				}
+			}
 		}
 	}
 }

@@ -18,5 +18,7 @@ namespace NDifference.Analysis
 		public string Description { get; set; }
 
 		public CategoryPriority Priority { get; set; }
+
+		public string[] Headings { get; set; }
 	}
 }

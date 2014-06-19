@@ -265,63 +265,71 @@ namespace NDifference.UI
 			
 			var finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
-			List<IAssemblyCollectionInspector> aci = new List<IAssemblyCollectionInspector>();
-			aci.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(finder).Find());
+			InspectorRepository ir = new InspectorRepository();
 
-			List<IAssemblyInspector> ai = new List<IAssemblyInspector>();
-			ai.AddRange(new AssemblyInspectorPluginDiscoverer(finder).Find());
+			ir.Find(finder);
 
-			List<ITypeCollectionInspector> tci = new List<ITypeCollectionInspector>();
-			tci.AddRange(new TypeCollectionInspectorPluginDiscoverer(finder).Find());
+			InspectorFilter filter = new InspectorFilter(project.Settings.IgnoreInspectors);
 
-			List<ITypeInspector> ti = new List<ITypeInspector>();
-			ti.AddRange(new TypeInspectorPluginDiscoverer(finder).Find());
+			ir.Filter(filter);
 
 			this.tvInspectors.BeginUpdate();
 
 			this.tvInspectors.Nodes.Clear();
 
 			var aciNode = this.tvInspectors.Nodes.Add("Assembly Collection Inspectors");
-			aci.ForEach(x => aciNode.Nodes.Add(new TreeNode(x.ShortCode + " - " + x.DisplayName) { Tag = x.ShortCode, Checked = true }));
+
+			PopulateNodeChildren(aciNode, ir.AssemblyCollectionInspectors);
 
 			var aiNode = this.tvInspectors.Nodes.Add("Assembly Inspectors");
-			ai.ForEach(x => aiNode.Nodes.Add(new TreeNode(x.ShortCode + " - " + x.DisplayName) { Tag = x.ShortCode, Checked = true }));
+			PopulateNodeChildren(aiNode, ir.AssemblyInspectors);
 
 			var tciNode = this.tvInspectors.Nodes.Add("Type Collection Inspectors");
-			tci.ForEach(x => tciNode.Nodes.Add(new TreeNode(x.ShortCode + " - " + x.DisplayName) { Tag = x.ShortCode, Checked = true }));
+			PopulateNodeChildren(tciNode, ir.TypeCollectionInspectors);
 
 			var tiNode = this.tvInspectors.Nodes.Add("Type Inspectors");
-			ti.ForEach(x => tiNode.Nodes.Add(new TreeNode(x.ShortCode + " - " + x.DisplayName) { Tag = x.ShortCode, Checked = true }));
+			PopulateNodeChildren(tiNode, ir.TypeInspectors);
 			
-			if (!String.IsNullOrEmpty(project.Settings.IgnoreInspectors))
+			this.tvInspectors.ExpandAll();
+
+			this.tvInspectors.EndUpdate();
+		}
+
+		private void PopulateNodeChildren(TreeNode node, IEnumerable<IInspector> inspectors)
+		{
+			foreach (var i in inspectors)
 			{
-				// deselect all current ignores.
-				string[] shortCodes = project.Settings.IgnoreInspectors.Split(';');
+				node.Nodes.Add(
+					new TreeNode(i.ShortCode + " - " + i.DisplayName) 
+					{ 
+						Tag = i.ShortCode, 
+						Checked = i.Enabled 
+					});
+			}
+		}
 
-				foreach(string code in shortCodes)
+		private IEnumerable<string> BuildIgnoreList(TreeView tv)
+		{
+			var list = new List<string>();
+
+			// now look at what inspectors have been selected...
+			foreach (TreeNode n in tv.Nodes)
+			{
+				foreach (TreeNode child in n.Nodes)
 				{
-					foreach (TreeNode n in this.tvInspectors.Nodes)
+					if (!child.Checked && child.Tag != null)
 					{
-						foreach (TreeNode child in n.Nodes)
-						{
-							if (child.Tag != null)
-							{
-								string candidateCode = child.Tag.ToString();
+						string shortCode = child.Tag.ToString();
 
-								if (candidateCode == code)
-								{
-									child.Checked = false;
-									break;
-								}
-							}
+						if (!String.IsNullOrEmpty(shortCode))
+						{
+							list.Add(shortCode);
 						}
 					}
 				}
 			}
 
-			this.tvInspectors.ExpandAll();
-
-			this.tvInspectors.EndUpdate();
+			return list;
 		}
 
 		private Project UpdateProjectFromUI()
@@ -616,11 +624,20 @@ namespace NDifference.UI
 
 			Task t = new Task(() =>
 			{
+				IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
+
 				AnalysisWorkflow workflow = new AnalysisWorkflow(
-					new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter),
+					finder,
 					new CecilReflectorFactory());
 
-				workflow.Analyse(this._project);
+				InspectorRepository ir = new InspectorRepository();
+				ir.Find(finder);
+
+				InspectorFilter filter = new InspectorFilter(this._project.Settings.IgnoreInspectors);
+
+				ir.Filter(filter);
+
+				workflow.RunAnalysis(this._project, ir);
 			});
 
 			Task t2 = t.ContinueWith((antecedent) =>

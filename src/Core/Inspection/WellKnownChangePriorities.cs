@@ -14,24 +14,28 @@ namespace NDifference.Inspection
 		// summary level
 		public static readonly int SummaryInternal = 0;
 
-		public static readonly int RemovedAssemblies = 1;
+		public static readonly int RemovedAssemblies = SummaryInternal + 1;
 
-		public static readonly int ChangedAssemblies = 2;
+		public static readonly int ChangedAssemblies = RemovedAssemblies + 1;
 
-		public static readonly int AddedAssemblies = 3;
+		public static readonly int AddedAssemblies = ChangedAssemblies + 1;
 
 		//public static readonly int UnchangedAssemblies = 4;
 
 		// assembly level
 		public static readonly int AssemblyInternal = 0;
 
-		public static readonly int RemovedTypes = 1;
+		public static readonly int RemovedReferences = AssemblyInternal + 1;
 
-		public static readonly int ObsoleteTypes = 2;
+		public static readonly int AddedReferences = RemovedReferences + 1;
 
-		public static readonly int ChangedTypes = 3;
+		public static readonly int RemovedTypes = AddedReferences + 1;
 
-		public static readonly int AddedTypes = 4;
+		public static readonly int ObsoleteTypes = RemovedTypes + 1;
+
+		public static readonly int ChangedTypes = ObsoleteTypes + 1;
+
+		public static readonly int AddedTypes = ChangedTypes + 1;
 
 		// public static readonly int UnchangedTypes = 5;
 
@@ -39,87 +43,87 @@ namespace NDifference.Inspection
 		public static readonly int TypeInternal = 0;
 
 		// constants
-		public static readonly int ConstantsRemoved = 1;
+		public static readonly int ConstantsRemoved = TypeInternal + 1;
 
-		public static readonly int ConstantsObsolete = 2;
+		public static readonly int ConstantsObsolete = ConstantsRemoved + 1;
 
-		public static readonly int ConstantsChanged = 3;
+		public static readonly int ConstantsChanged = ConstantsObsolete + 1;
 
-		public static readonly int ConstantsAdded = 4;
+		public static readonly int ConstantsAdded = ConstantsChanged + 1;
 		
 		// fields
-		public static readonly int FieldsRemoved = 5;
+		public static readonly int FieldsRemoved = ConstantsAdded + 1;
 
-		public static readonly int FieldsObsolete = 6;
+		public static readonly int FieldsObsolete = FieldsRemoved + 1;
 
-		public static readonly int FieldsChanged = 7;
+		public static readonly int FieldsChanged = FieldsObsolete + 1;
 
-		public static readonly int FieldsAdded = 8;
+		public static readonly int FieldsAdded = FieldsChanged + 1;
 
 		// constructors
-		public static readonly int ConstructorsRemoved = 9;
+		public static readonly int ConstructorsRemoved = FieldsAdded + 1;
 
-		public static readonly int ConstructorsObsolete = 10;
+		public static readonly int ConstructorsObsolete = ConstructorsRemoved + 1;
 
-		public static readonly int ConstructorsChanged = 11;
+		public static readonly int ConstructorsChanged = ConstructorsObsolete + 1;
 
-		public static readonly int ConstructorsAdded = 12;
+		public static readonly int ConstructorsAdded = ConstructorsChanged + 1;
 
 		// static constructors
 
 		// finalizers
-		public static readonly int FinalizersRemoved = 13;
+		public static readonly int FinalizersRemoved = ConstructorsAdded + 1;
 
-		public static readonly int FinalizersObsolete = 14;
+		public static readonly int FinalizersObsolete = FinalizersRemoved + 1;
 
-		public static readonly int FinalizersChanged = 15;
+		public static readonly int FinalizersChanged = FinalizersObsolete + 1;
 
-		public static readonly int FinalizersAdded = 16;
+		public static readonly int FinalizersAdded = FinalizersChanged + 1;
 
 		// delegates
-		public static readonly int DelegatesRemoved = 17;
+		public static readonly int DelegatesRemoved = FinalizersAdded + 1;
 
-		public static readonly int DelegatesObsolete = 18;
+		public static readonly int DelegatesObsolete = DelegatesRemoved + 1;
 
-		public static readonly int DelegatesChanged = 19;
+		public static readonly int DelegatesChanged = DelegatesObsolete + 1;
 
-		public static readonly int DelegatesAdded = 20;
+		public static readonly int DelegatesAdded = DelegatesChanged + 1;
 		
 		// events
-		public static readonly int EventsRemoved = 21;
+		public static readonly int EventsRemoved = DelegatesAdded + 1;
 
-		public static readonly int EventsObsolete = 22;
+		public static readonly int EventsObsolete = EventsRemoved + 1;
 
-		public static readonly int EventsChanged = 23;
+		public static readonly int EventsChanged = EventsObsolete + 1;
 
-		public static readonly int EventsAdded = 24;
+		public static readonly int EventsAdded = EventsChanged + 1;
 
 		// properties
-		public static readonly int PropertiesRemoved = 25;
+		public static readonly int PropertiesRemoved = EventsAdded + 1;
 
-		public static readonly int PropertiesObsolete = 26;
+		public static readonly int PropertiesObsolete = PropertiesRemoved + 1;
 
-		public static readonly int PropertiesChanged = 27;
+		public static readonly int PropertiesChanged = PropertiesObsolete + 1;
 
-		public static readonly int PropertiesAdded = 28;
+		public static readonly int PropertiesAdded = PropertiesChanged + 1;
 
 		// indexers
-		public static readonly int IndexersRemoved = 29;
+		public static readonly int IndexersRemoved = PropertiesAdded + 1;
 
-		public static readonly int IndexersObsolete = 30;
+		public static readonly int IndexersObsolete = IndexersRemoved + 1;
 
-		public static readonly int IndexersChanged = 31;
-	
-		public static readonly int IndexersAdded = 32;
+		public static readonly int IndexersChanged = IndexersObsolete + 1;
+
+		public static readonly int IndexersAdded = IndexersChanged + 1;
 
 		// methods
-		public static readonly int MethodsRemoved = 33;
+		public static readonly int MethodsRemoved = IndexersAdded + 1;
 
-		public static readonly int MethodsObsolete = 34;
+		public static readonly int MethodsObsolete = MethodsRemoved + 1;
 
-		public static readonly int MethodsChanged = 35;
+		public static readonly int MethodsChanged = MethodsObsolete + 1;
 
-		public static readonly int MethodsAdded = 36;
+		public static readonly int MethodsAdded = MethodsChanged + 1;
 
 		// enums
 

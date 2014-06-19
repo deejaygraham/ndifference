@@ -57,6 +57,8 @@
     <Compile Include="Inspection\WellKnownChangePriorities.cs" />
     <Compile Include="Inspectors\IAssemblyCollectionInspector.cs" />
     <Compile Include="Inspectors\IInspector.cs" />
+    <Compile Include="Inspectors\InspectorFilter.cs" />
+    <Compile Include="Inspectors\InspectorRepository.cs" />
     <Compile Include="Inspectors\ITypeCollectionInspector.cs" />
     <Compile Include="Plugins\AssemblyCollectionInspectorPluginDiscoverer.cs" />
     <Compile Include="Plugins\ReportingPluginDiscoverer.cs" />

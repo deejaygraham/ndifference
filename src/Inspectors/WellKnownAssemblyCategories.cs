@@ -15,6 +15,20 @@ namespace NDifference.Inspectors
 			Priority = new CategoryPriority(WellKnownChangePriorities.AssemblyInternal)
 		};
 
+		public static readonly Category RemovedReferences = new Category
+		{
+			Name = "Removed References",
+			Description = "These references were removed in the new version of the assembly",
+			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedReferences)
+		};
+
+		public static readonly Category AddedReferences = new Category
+		{
+			Name = "Added References",
+			Description = "These references were added to the new version of the assembly",
+			Priority = new CategoryPriority(WellKnownChangePriorities.AddedReferences)
+		};
+
 		public static readonly Category RemovedTypes = new Category
 		{
 			Name = "Removed Types",

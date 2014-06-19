@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NDifference.Analysis;
+using NDifference.SourceFormatting;
+using System;
 using System.Xml;
 
 namespace NDifference.Reporting
@@ -80,6 +82,100 @@ namespace NDifference.Reporting
 				writer.WriteElement("td", () =>
 				{
 					writer.WriteString(cell2);
+				});
+			});
+		}
+
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, IDocumentLink change, IReportOutput output, FileMap map)
+		{
+			writer.WriteElement("tr", () =>
+			{
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(shortCode);
+				});
+				writer.WriteElement("td", () =>
+				{
+					// look up correct path...
+					IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
+
+					string fullPath = map.PathFor(change.Identifier);
+
+					if (System.IO.File.Exists(fullPath))
+					{
+						string relativePath = map.PathRelativeTo(change.Identifier, folder);
+
+						writer.WriteLink(map.PathRelativeTo(change.Identifier, folder), change.LinkText);
+					}
+					else
+					{
+						writer.WriteRaw(change.LinkText);
+					}
+				});
+			});
+		}
+
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, ITextDescriptor change, IReportFormat format)
+		{
+			string text = change.Message.ToString();
+
+			ICoded code = change.Message as ICoded;
+
+			if (code != null)
+				text = format.Format(code);
+
+			writer.WriteElement("tr", () =>
+			{
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(shortCode);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(change.Name);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(text);
+				});
+			});
+		}
+
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, IDeltaDescriptor change, IReportFormat format)
+		{
+			string wasText = change.Was.ToString();
+			string isText = change.IsNow.ToString();
+
+			ICoded was = change.Was as ICoded;
+			ICoded isNow = change.IsNow as ICoded;
+
+			if (was != null)
+			{
+				wasText = format.Format(was);
+			}
+
+			if (isNow != null)
+			{
+				isText = format.Format(isNow);
+			}
+
+			writer.WriteElement("tr", () =>
+			{
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(shortCode);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(change.Name);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(wasText);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(isText);
 				});
 			});
 		}

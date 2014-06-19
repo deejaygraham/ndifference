@@ -44,12 +44,6 @@ namespace NDifference.Analysis
 		public object Descriptor { get; set; }
 
 		public string Inspector { get; set; }
-
-		// public ISourceCode Code { get; set; }
-
-		// public ISourceDelta Delta { get; set; }
-
-		// descriptor object...
 	}
 
 	public class IdentifiedChangeComparer : IComparer<IdentifiedChange>
@@ -59,7 +53,7 @@ namespace NDifference.Analysis
 			if (x.Descriptor == null || y.Descriptor == null)
 				return x.Description.CompareTo(y.Description);
 
-			return 0;
+			return CompareDescriptors(x.Descriptor, y.Descriptor);
 		}
 
 		private int CompareDescriptors(object x, object y)

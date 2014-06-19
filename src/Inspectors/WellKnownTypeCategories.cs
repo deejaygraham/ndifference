@@ -17,28 +17,32 @@ namespace NDifference.Inspectors
 		{
 			Name = "Removed Constants",
 			Description = "These constants were removed in the new version of this type",
-			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsRemoved)
+			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsRemoved),
+			Headings = new string[] { "Code", "Name" }
 		};
 
 		public static readonly Category ConstantsObsolete = new Category
 		{
 			Name = "Obsolete Constants",
 			Description = "These constants were made obsolete in the new version of this type",
-			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsObsolete)
+			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsObsolete),
+			Headings = new string[] { "Code", "Name" }
 		};
 
 		public static readonly Category ConstantsChanged = new Category
 		{
 			Name = "Changed Constants",
 			Description = "These constants were changed in the new version of this type",
-			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsChanged)
+			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsChanged),
+			Headings = new string[] { "Code", "Name", "Was", "Now" }
 		};
 
 		public static readonly Category ConstantsAdded = new Category
 		{
 			Name = "Added Constants",
 			Description = "These constants were added in the new version of this type",
-			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsAdded)
+			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsAdded),
+			Headings = new string[] { "Code", "Name", "Value" }
 		};
 
 		// fields

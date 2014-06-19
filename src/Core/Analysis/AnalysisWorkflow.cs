@@ -40,11 +40,6 @@ namespace NDifference.Analysis
 			this.Finder = finder;
 			this.ReflectorFactory = reflectorFactory;
 
-			this.AssemblyCollectionInspectors = new List<IAssemblyCollectionInspector>();
-			this.AssemblyInspectors = new List<IAssemblyInspector>();
-			this.TypeCollectionInspectors = new List<ITypeCollectionInspector>();
-			this.TypeInspectors = new List<ITypeInspector>();
-
 			this.ReportWriters = new List<IReportWriter>();
 		}
 
@@ -52,19 +47,11 @@ namespace NDifference.Analysis
 
 		private IAssemblyReflectorFactory ReflectorFactory { get; set; }
 
-		private List<IAssemblyCollectionInspector> AssemblyCollectionInspectors { get; set; }
-
-		private List<IAssemblyInspector> AssemblyInspectors { get; set; }
-
-		private List<ITypeCollectionInspector> TypeCollectionInspectors { get; set; }
-
-		private List<ITypeInspector> TypeInspectors { get; set; }
-
 		private List<IReportWriter> ReportWriters { get; set; }
 
 		// analysis result ???
 
-		public void Analyse(Project project)
+		public void RunAnalysis(Project project, InspectorRepository inspectors)
 		{
 			var cancelStart = new CancellableEventArgs();
 			this.AnalysisStarting.Fire(this, cancelStart);
@@ -76,12 +63,7 @@ namespace NDifference.Analysis
 
 			try
 			{
-				this.DiscoverPlugins();
-
-				this.AssemblyCollectionInspectors.ForEach(x => x.Enabled = !project.Settings.IgnoreInspectors.Contains(x.ShortCode));
-				this.AssemblyInspectors.ForEach(x => x.Enabled = !project.Settings.IgnoreInspectors.Contains(x.ShortCode));
-				this.TypeCollectionInspectors.ForEach(x => x.Enabled = !project.Settings.IgnoreInspectors.Contains(x.ShortCode));
-				this.TypeInspectors.ForEach(x => x.Enabled = !project.Settings.IgnoreInspectors.Contains(x.ShortCode));
+				DiscoverPlugins();
 
 				var cancelCompare = new CancellableEventArgs();
 				this.AssemblyComparisonStarting.Fire(this, cancelCompare);
@@ -93,8 +75,8 @@ namespace NDifference.Analysis
 
 				IdentifiedChangeCollection summaryChanges = new IdentifiedChangeCollection
 				{
-					Name = project.Product.Name,
-					Heading = project.Settings.SummaryTitle
+					Heading = project.Product.Name,
+					Name = project.Settings.SummaryTitle
 				};
 
 				summaryChanges.MetaBlocks.AddRange(project.Settings.GenerateMetaBlocks());
@@ -103,9 +85,8 @@ namespace NDifference.Analysis
 				var firstVersion = project.Product.ComparedIncrements.First;
 				var secondVersion = project.Product.ComparedIncrements.Second;
 
-				RunAssemblyCollectionInspectors(firstVersion.Assemblies, secondVersion.Assemblies, summaryChanges);
-
-
+				RunAssemblyCollectionInspectors(inspectors, firstVersion.Assemblies, secondVersion.Assemblies, summaryChanges);
+				
 				summaryChanges.SummaryBlocks.Add("Name", project.Product.Name);
 				summaryChanges.SummaryBlocks.Add("From", firstVersion.Name);
 				summaryChanges.SummaryBlocks.Add("To", secondVersion.Name);
@@ -136,8 +117,8 @@ namespace NDifference.Analysis
 
 						IdentifiedChangeCollection dllChanges = new IdentifiedChangeCollection
 						{
-							Name = dll1.Name,
-							Heading = dll1.Name,
+							//Heading = project.Product.Name,
+							Name = dll1.Name
 						};
 
 						dllChanges.SummaryBlocks.Add("Name", dll1.Name);
@@ -150,7 +131,7 @@ namespace NDifference.Analysis
 
 						// each inspector
 						// looking for general changes to the assembly...
-						foreach (var ai in this.AssemblyInspectors.Where(x => x.Enabled))
+						foreach (var ai in inspectors.AssemblyInspectors.Where(x => x.Enabled))
 						{
 							Trace.TraceInformation("Running assembly inspector {0}", ai.DisplayName);
 
@@ -158,7 +139,7 @@ namespace NDifference.Analysis
 						}
 
 						// looking for added/removed types...
-						foreach(var tci in this.TypeCollectionInspectors.Where(x => x.Enabled))
+						foreach (var tci in inspectors.TypeCollectionInspectors.Where(x => x.Enabled))
 						{
 							Trace.TraceInformation("Running type collection inspector {0}", tci.DisplayName);
 
@@ -175,8 +156,8 @@ namespace NDifference.Analysis
 							// find common types...
 							IdentifiedChangeCollection typeChanges = new IdentifiedChangeCollection
 							{
-								Name = commonType.Description,
-								Heading = dll1.Name
+								//Heading = project.Product.Name,
+								Name = commonType.Description
 							};
 
 							ITypeInfo t1 = typesIn1.FindMatchFor(commonType.Description);
@@ -188,8 +169,8 @@ namespace NDifference.Analysis
 							typeChanges.SummaryBlocks.Add("Name", t2.Name);
 							typeChanges.SummaryBlocks.Add("Namespace", t2.Namespace);
 							typeChanges.SummaryBlocks.Add("Assembly", t2.Assembly);
-							typeChanges.SummaryBlocks.Add("From", reflector1.GetAssemblyInfo().Version.ToString());
-							typeChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString());
+							typeChanges.SummaryBlocks.Add("From", reflector1.GetAssemblyInfo().Version.ToString() + " " + t1.CalculateHash());
+							typeChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString() + " " + t2.CalculateHash());
 							typeChanges.SummaryBlocks.Add("% Churn", "Not calculated yet");
 
 							typeChanges.CopyMetaFrom(summaryChanges);
@@ -197,7 +178,7 @@ namespace NDifference.Analysis
 							typeChanges.Parents.Add(new DocumentLink { Identifier = summaryChanges.Identifier, LinkText = summaryChanges.Name });
 							typeChanges.Parents.Add(new DocumentLink { Identifier = dllChanges.Identifier, LinkText = dllChanges.Name });
 
-							foreach (var ti in this.TypeInspectors.Where(x => x.Enabled))
+							foreach (var ti in inspectors.TypeInspectors.Where(x => x.Enabled))
 							{
 								Trace.TraceInformation("Running type inspector {0}", ti.DisplayName);
 
@@ -242,9 +223,13 @@ namespace NDifference.Analysis
 						}
 					}
 
-					IReportOutput output = new FileOutput(Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension));
+					// write in reverse order...so that files should exist when we write a link..
+					foreach (var typeChange in typeChangeCollection)
+					{
+						IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.HtmlSafeTypeName() + format.Extension));
 
-					writer.Write(summaryChanges, output, format);
+						writer.Write(typeChange, typeOutput, format);
+					}
 
 					foreach (var dllChange in dllChangeCollection)
 					{
@@ -253,12 +238,10 @@ namespace NDifference.Analysis
 						writer.Write(dllChange, dllOutput, format);
 					}
 
-					foreach(var typeChange in typeChangeCollection)
-					{
-						IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.HtmlSafeTypeName() + format.Extension));
+					// finally write out summary...
+					IReportOutput output = new FileOutput(Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension));
 
-						writer.Write(typeChange, typeOutput, format);
-					}
+					writer.Write(summaryChanges, output, format);
 				}
 			}
 			catch (PluginLoadException )
@@ -271,9 +254,9 @@ namespace NDifference.Analysis
 			}
 		}
 
-		private void RunAssemblyCollectionInspectors(IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
+		private void RunAssemblyCollectionInspectors(InspectorRepository inspectors, IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
 		{
-			foreach (var aci in this.AssemblyCollectionInspectors.Where(x => x.Enabled))
+			foreach (var aci in inspectors.AssemblyCollectionInspectors.Where(x => x.Enabled))
 			{
 				Trace.TraceInformation("Running assembly collection inspector {0}", aci.DisplayName);
 
@@ -290,15 +273,6 @@ namespace NDifference.Analysis
 			{
 				return;
 			}
-
-			// need to be turned on or off depending on project settings...
-			this.AssemblyCollectionInspectors.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(this.Finder).Find());
-
-			this.AssemblyInspectors.AddRange(new AssemblyInspectorPluginDiscoverer(this.Finder).Find());
-
-			this.TypeCollectionInspectors.AddRange(new TypeCollectionInspectorPluginDiscoverer(this.Finder).Find());
-
-			this.TypeInspectors.AddRange(new TypeInspectorPluginDiscoverer(this.Finder).Find());
 
 			this.ReportWriters.AddRange(new ReportingPluginDiscoverer(this.Finder).Find());
 

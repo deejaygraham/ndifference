@@ -1,6 +1,7 @@
 ﻿using NDifference;
 using NDifference.Analysis;
 using NDifference.Framework;
+using NDifference.Inspectors;
 using NDifference.Projects;
 using NDifference.Reflection;
 using System;
@@ -117,8 +118,10 @@ namespace WalkingSkeleton
 			project.Product.Add(previousVersion);
 			project.Product.Add(nextVersion);
 
+			IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
+
 			AnalysisWorkflow workflow = new AnalysisWorkflow(
-				new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter), 
+				finder,
 				new CecilReflectorFactory());
 
 			workflow.AnalysisStarting += (o, e) =>
@@ -151,8 +154,13 @@ namespace WalkingSkeleton
 				Console.WriteLine("Done.");
 			};
 
-			workflow.Analyse(project);
-		
+			InspectorRepository ir = new InspectorRepository();
+			ir.Find(finder);
+
+			InspectorFilter filter = new InspectorFilter(project.Settings.IgnoreInspectors);
+			ir.Filter(filter);
+
+			workflow.RunAnalysis(project, ir);
 		}
 
 #endif

@@ -57,10 +57,7 @@ namespace NDifference.TypeSystem
 
 		public bool ExactlyMatches(IMemberMethod other)
 		{
-			return string.Compare(
-				this.ToString(),
-				other.ToString(),
-				StringComparison.Ordinal) == 0;
+			return this.Signature.ExactlyMatches(other.Signature);
 		}
 
 		public bool FuzzyMatches(IMemberMethod other)

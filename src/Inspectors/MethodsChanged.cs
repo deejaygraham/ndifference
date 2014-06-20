@@ -60,6 +60,8 @@ namespace NDifference.Inspectors
 										IsNow = counterpart.ToCode()
 									}));
 						}
+
+						// other things have changed ???
 					}
 				}
 			}

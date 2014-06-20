@@ -86,6 +86,10 @@ namespace NDifference.TypeSystem
 		{
 			SourceCode code = new SourceCode();
 
+			code.Add(new IdentifierTag(this.Name));
+
+			code.Add(new PunctuationTag("("));
+
 			for (int i = 0; i < this.FormalParameters.Count; ++i)
 			{
 				Parameter p = this.FormalParameters[i];
@@ -97,6 +101,8 @@ namespace NDifference.TypeSystem
 					code.Add(new PunctuationTag(","));
 				}
 			}
+
+			code.Add(new PunctuationTag(")"));
 
 			return code;
 		}

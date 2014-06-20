@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
-	public interface IDeltaDescriptor
+	public class CodeDescriptor : ICodeDescriptor
 	{
-		string Name { get; }
-
-		object Was { get; }
-
-		object IsNow { get; }
-
+		public ICoded Code { get; set; }
 	}
 }

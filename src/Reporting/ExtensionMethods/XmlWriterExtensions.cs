@@ -180,6 +180,23 @@ namespace NDifference.Reporting
 			});
 		}
 
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, ICodeDescriptor change, IReportFormat format)
+		{
+			string text = format.Format(change.Code);
+
+			writer.WriteElement("tr", () =>
+			{
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(shortCode);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(text);
+				});
+			});
+		}
+
 		public static void WriteTableRowRaw(this XmlWriter writer, string cell1, string cell2)
 		{
 			writer.WriteElement("tr", () =>

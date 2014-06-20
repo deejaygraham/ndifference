@@ -126,8 +126,13 @@ namespace NDifference.Inspection
 		public static readonly int MethodsAdded = MethodsChanged + 1;
 
 		// enums
+		public static readonly int EnumValuesRemoved = MethodsAdded + 1;
 
+		public static readonly int EnumValuesChanged = EnumValuesRemoved + 1;
 
+		public static readonly int EnumValuesAdded = EnumValuesChanged + 1;
+
+		// debugging
 		public static readonly int TypeDebug = 999;
 
 	}

@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace NDifference.TypeSystem
 {
-	public interface IExactlyMatch<T>
+	public interface IMatchExactly<T>
 	{
-		bool Matches(T other);
+		bool ExactlyMatches(T other);
 	}
 
-	public static class IExactlyMatchExtensions
+	public static class IMatchExactlyExtensions
 	{
 		public static bool ContainsExactMatchFor<T>(this IEnumerable<T> collection, T matchCandidate)
-							where T : IExactlyMatch<T>
+							where T : IMatchExactly<T>
 		{
 			bool isExactMatch = false;
 
 			foreach (T item in collection)
 			{
-				if (item.Matches(matchCandidate))
+				if (item.ExactlyMatches(matchCandidate))
 				{
 					isExactMatch = true;
 					break;
@@ -31,13 +31,13 @@ namespace NDifference.TypeSystem
 		}
 
 		public static T FindExactMatchFor<T>(this IEnumerable<T> collection, T matchCandidate)
-					where T : IExactlyMatch<T>
+					where T : IMatchExactly<T>
 		{
 			T matched = default(T);
 
 			foreach (T item in collection)
 			{
-				if (item.Matches(matchCandidate))
+				if (item.ExactlyMatches(matchCandidate))
 				{
 					matched = item;
 					break;

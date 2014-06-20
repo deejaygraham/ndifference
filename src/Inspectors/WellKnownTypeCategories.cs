@@ -278,6 +278,26 @@ namespace NDifference.Inspectors
 		};
 
 		// enums
+		public static readonly Category EnumValuesRemoved = new Category
+		{
+			Name = "Values Removed",
+			Description = "These values were removed in the new version of this enum",
+			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesRemoved)
+		};
+
+		public static readonly Category EnumValuesChanged = new Category
+		{
+			Name = "Values Changed",
+			Description = "These values were changed in the new version of this enum",
+			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesChanged)
+		};
+
+		public static readonly Category EnumValuesAdded = new Category
+		{
+			Name = "Values Added",
+			Description = "These values were added to the new version of this enum",
+			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesAdded)
+		};
 
 
 

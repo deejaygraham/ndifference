@@ -11,7 +11,7 @@ namespace NDifference.TypeSystem
 	/// Represents a constant value
 	/// </summary>
 	[Serializable]
-	public class Constant : IMemberInfo, IExactlyMatch<Constant>
+	public class Constant : IMemberInfo, IMatchExactly<Constant>, IMatchFuzzily<Constant>
 	{
 		public string Name { get; set; }
 
@@ -44,7 +44,7 @@ namespace NDifference.TypeSystem
 			return builder.ToString();
 		}
 
-		public bool Matches(Constant other)
+		public bool ExactlyMatches(Constant other)
 		{
 			return string.Compare(
 				this.ToString(),
@@ -52,14 +52,13 @@ namespace NDifference.TypeSystem
 				StringComparison.Ordinal) == 0;
 		}
 
-		//public bool LooseMatchFor(Constant other)
-		//{
-		//	// matches if the names are the same
-		//	return string.Compare(
-		//		this.Name,
-		//		other.Name,
-		//		StringComparison.Ordinal) == 0;
-		//}
-
+		public bool FuzzyMatches(Constant other)
+		{
+			// matches if the names are the same
+			return string.Compare(
+				this.Name,
+				other.Name,
+				StringComparison.Ordinal) == 0;
+		}
 	}
 }

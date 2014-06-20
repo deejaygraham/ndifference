@@ -65,7 +65,15 @@ namespace NDifference.Analysis
 			{
 				return xlink.LinkText.CompareTo(ylink.LinkText);
 			}
-			
+
+			ICodeDescriptor xcode = x as ICodeDescriptor;
+			ICodeDescriptor ycode = y as ICodeDescriptor;
+
+			if (xcode != null && ycode != null)
+			{
+				return xcode.Code.ToString().CompareTo(ycode.Code.ToString());
+			}
+	
 			IDeltaDescriptor xdelta = x as IDeltaDescriptor;
 			IDeltaDescriptor ydelta = y as IDeltaDescriptor;
 

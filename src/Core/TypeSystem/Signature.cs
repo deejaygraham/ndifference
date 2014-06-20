@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.SourceFormatting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,24 +8,12 @@ using System.Threading.Tasks;
 
 namespace NDifference.TypeSystem
 {
-	///// <summary>
-	///// A method signature.
-	///// </summary>
-	//[DebuggerDisplay("sig {Name}(..)")]
-	//public class Signature
-	//{
-	//	public string Name { get; set; }
-
-	//	public int TypeParameterCount { get; set; }
-	//}
-
-
 	/// <summary>
 	/// Name, number, modifiers and types of formal parameters, number of generic type parameters.
 	/// </summary>
 	[DebuggerDisplay("sig {Name}(..)")]
 	[Serializable]
-	public class Signature
+	public class Signature : ISourceCodeProvider, IMatchExactly<Signature>, IMatchFuzzily<Signature>
 	{
 		public Signature()
 		{
@@ -76,6 +65,41 @@ namespace NDifference.TypeSystem
 			return builder.ToString();
 		}
 
+
+		public bool ExactlyMatches(Signature other)
+		{
+			return string.Compare(
+				this.ToString(),
+				other.ToString(),
+				StringComparison.Ordinal) == 0;
+		}
+
+		public bool FuzzyMatches(Signature other)
+		{
+			return string.Compare(
+				this.Name,
+				other.Name,
+				StringComparison.Ordinal) == 0;
+		}
+
+		public ICoded ToCode()
+		{
+			SourceCode code = new SourceCode();
+
+			for (int i = 0; i < this.FormalParameters.Count; ++i)
+			{
+				Parameter p = this.FormalParameters[i];
+
+				code.Add(p.ToCode());
+
+				if (i < this.FormalParameters.Count - 1)
+				{
+					code.Add(new PunctuationTag(","));
+				}
+			}
+
+			return code;
+		}
 	}
 
 	public class SignatureOverloadResolver

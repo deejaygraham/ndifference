@@ -15,11 +15,6 @@ namespace NDifference.TypeSystem
 	{
 		public MemberAccessibility Accessibility { get; set; }
 
-		public ICoded ToCode()
-		{
-			return null;
-		}
-
 		public Signature Signature { get; set; }
 
 		public FullyQualifiedName ReturnType { get; set; }
@@ -29,6 +24,48 @@ namespace NDifference.TypeSystem
 		public bool IsAbstract { get; set; }
 
 		public bool IsStatic { get; set; }
-	}
 
+		public override string ToString()
+		{
+			return string.Format(
+							"{0}{1} {2} {3}",
+							this.IsStatic ? "static " : string.Empty,
+							this.IsAbstract ? "abstract " : string.Empty,
+							this.ReturnType,
+							this.Signature);
+		}
+
+		public ICoded ToCode()
+		{
+			SourceCode code = new SourceCode();
+
+			if (this.IsStatic)
+			{
+				code.Add(new KeywordTag("static"));
+			}
+
+			if (this.IsAbstract)
+			{
+				code.Add(new KeywordTag("abstract"));
+			}
+
+			code.Add(this.ReturnType.ToCode());
+			code.Add(this.Signature.ToCode());
+
+			return code;
+		}
+
+		public bool ExactlyMatches(IMemberMethod other)
+		{
+			return string.Compare(
+				this.ToString(),
+				other.ToString(),
+				StringComparison.Ordinal) == 0;
+		}
+
+		public bool FuzzyMatches(IMemberMethod other)
+		{
+			return this.Signature.FuzzyMatches(other.Signature);
+		}
+	}
 }

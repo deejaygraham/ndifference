@@ -8,7 +8,7 @@ namespace NDifference.TypeSystem
 	/// A field belonging to a class.
 	/// </summary>
 	[Serializable]
-	public class MemberField : IMemberInfo, IExactlyMatch<MemberField>
+	public class MemberField : IMemberInfo, IMatchExactly<MemberField>, IMatchFuzzily<MemberField>
 	{
 		public string Name { get; set; }
 
@@ -78,13 +78,21 @@ namespace NDifference.TypeSystem
 			return this.ToString().GetHashCode();
 		}
 
-		public bool Matches(MemberField other)
+		public bool ExactlyMatches(MemberField other)
 		{
 			return string.Compare(
 				this.ToString(),
 				other.ToString(),
 				StringComparison.Ordinal) == 0;
 		}
-
+		
+		public bool FuzzyMatches(MemberField other)
+		{
+			// matches if the names are the same
+			return string.Compare(
+				this.Name,
+				other.Name,
+				StringComparison.Ordinal) == 0;
+		}
 	}
 }

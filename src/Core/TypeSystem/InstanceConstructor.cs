@@ -19,6 +19,10 @@ namespace NDifference.TypeSystem
 
 		public Obsolete ObsoleteMarker { get; set; }
 
+		public bool IsAbstract { get; set; }
+
+		public bool IsStatic { get; set; }
+
 		public bool IsDefault
 		{
 			get
@@ -41,12 +45,23 @@ namespace NDifference.TypeSystem
 		{
 			SourceCode code = new SourceCode();
 
-			//code.Add(this.TypeName.ToCode());
-			//code.Add(new PunctuationTag("("));
-			//code.Add(this.Signature.ToCode());
-			//code.Add(new PunctuationTag(")"));
+			code.Add(this.Signature.ToCode());
 
 			return code;
 		}
+
+		public bool ExactlyMatches(IMemberMethod other)
+		{
+			return string.Compare(
+				this.ToString(),
+				other.ToString(),
+				StringComparison.Ordinal) == 0;
+		}
+
+		public bool FuzzyMatches(IMemberMethod other)
+		{
+			return this.Signature.FuzzyMatches(other.Signature);
+		}
+
 	}
 }

@@ -70,9 +70,11 @@
     <Compile Include="Projects\ProjectReader.cs" />
     <Compile Include="Projects\ProjectSettings.cs" />
     <Compile Include="Projects\ProjectWriter.cs" />
+    <Compile Include="Reporting\CodeDescriptor.cs" />
     <Compile Include="Reporting\DeltaDescriptor.cs" />
     <Compile Include="Reporting\DocumentLink.cs" />
     <Compile Include="Reporting\FileOutput.cs" />
+    <Compile Include="Reporting\ICodeDescriptor.cs" />
     <Compile Include="Reporting\IDeltaDescriptor.cs" />
     <Compile Include="Reporting\IDocumentLink.cs" />
     <Compile Include="Reporting\IReportFormat.cs" />
@@ -114,7 +116,8 @@
     <Compile Include="TypeSystem\EnumDefinition.cs" />
     <Compile Include="TypeSystem\EnumValue.cs" />
     <Compile Include="TypeSystem\Finalizer.cs" />
-    <Compile Include="TypeSystem\IExactlyMatch.cs" />
+    <Compile Include="TypeSystem\IMatchExactly.cs" />
+    <Compile Include="TypeSystem\IMatchFuzzily.cs" />
     <Compile Include="TypeSystem\IMemberMethod.cs" />
     <Compile Include="TypeSystem\Indexer.cs" />
     <Compile Include="TypeSystem\InstanceConstructor.cs" />

@@ -302,19 +302,28 @@ namespace NDifference.Reporting
 			}
 			else
 			{
-				IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
+				ICodeDescriptor code = descriptor as ICodeDescriptor;
 
-				if (delta != null)
+				if (code != null)
 				{
-					html.WriteTableRow(change.Inspector, delta, this._format);
+					html.WriteTableRow(change.Inspector, code, this._format);
 				}
 				else
 				{
-					ITextDescriptor textDesc = descriptor as ITextDescriptor;
+					IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
 
-					if (textDesc != null)
+					if (delta != null)
 					{
-						html.WriteTableRow(change.Inspector, textDesc, this._format);
+						html.WriteTableRow(change.Inspector, delta, this._format);
+					}
+					else
+					{
+						ITextDescriptor textDesc = descriptor as ITextDescriptor;
+
+						if (textDesc != null)
+						{
+							html.WriteTableRow(change.Inspector, textDesc, this._format);
+						}
 					}
 				}
 			}

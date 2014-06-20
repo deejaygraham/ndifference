@@ -48,6 +48,8 @@
     <Compile Include="..\..\src\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="IMatchExactlyFacts.cs" />
+    <Compile Include="IMatchFuzzilyFacts.cs" />
     <Compile Include="Inspectors\Assemblies\AddedAssembliesInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\AddedTypesInspectorFacts.cs" />
     <Compile Include="Inspectors\Assemblies\ArchitectureChangeInspectorFacts.cs" />
@@ -58,9 +60,11 @@
     <Compile Include="Inspectors\Types\ClassSealingInspectorFacts.cs" />
     <Compile Include="Inspectors\Assemblies\CommonAssembliesInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\CommonTypesInspectorFacts.cs" />
-    <Compile Include="Inspectors\Types\ConstantsObsoleteFacts.cs" />
-    <Compile Include="Inspectors\Types\ConstantsAddedFacts.cs" />
-    <Compile Include="Inspectors\Types\ConstantsRemovedFacts.cs" />
+    <Compile Include="Inspectors\Types\EnumInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\MemberConstantFacts.cs" />
+    <Compile Include="Inspectors\Types\MemberFieldFacts.cs" />
+    <Compile Include="Inspectors\Types\MemberMethodFacts.cs" />
+    <Compile Include="Inspectors\Types\MemberPropertyFacts.cs" />
     <Compile Include="MemberFieldFacts.cs" />
     <Compile Include="FileExtensions.cs" />
     <Compile Include="FileMapFacts.cs" />

@@ -24,9 +24,9 @@ Create developer guide
  how to run a build and setup unit tests
  how to contribute - unit tests, documentation, checklist of things
 Add solution - done
-Add core project
+Add core project - done
 Add msbuild project
-Add gui project
+Add gui project - done
 Add console project
 Add powershell project binding?
 
@@ -41,7 +41,7 @@ Handle extension methods
 System.Runtime.CompilerServices.ExtensionAttribute
 
 * Graph of Assembly dependencies
-* Hashes
+* Hashes - done
 * Levenstein Distance for code
 
 # Namespaces
@@ -68,19 +68,19 @@ AssemblyFound
 
 # Rules
 
-Framework to load custom inspection rules
+Framework to load custom inspection rules - done
 
 # Reporting
 
-Framework to load custom reports
+Framework to load custom reports - done
 
 # Rule Implementation
 
 ## Product Inspection
 
-* Removed assemblies
-* Changed assemblies
-* Added assemblies
+* Removed assemblies - done
+* Changed assemblies - done
+* Added assemblies - done
 
 ## Assembly Inspection
 

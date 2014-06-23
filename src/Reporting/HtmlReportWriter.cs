@@ -285,7 +285,7 @@ namespace NDifference.Reporting
 			}
 			else if (!String.IsNullOrEmpty(change.Description))
 			{
-				html.WriteTableRow(change.Inspector, change.Description);
+				html.WriteTableRow(/*change.Inspector, */change.Description);
 			}
 		}
 

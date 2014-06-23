@@ -73,7 +73,7 @@ namespace NDifference.UnitTests
 		}
 
 		[Fact]
-		public void MethodsChanged_Ignores_Identical_Classes()
+		public void MethodsChanged_Ignores_Identical_Void_Method()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 							.Named("Account")
@@ -125,6 +125,27 @@ namespace NDifference.UnitTests
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 							.Named("Account")
 							.WithMethod("public static void DoStuff () { }");
+
+			var delta = IdentifiedChangeCollectionBuilder.Changes()
+				.From(oldClassBuilder)
+				.To(newClassBuilder)
+				.InspectedBy(new MethodsChanged())
+				.Build();
+
+			Assert.Equal(1, delta.Changes.Count);
+
+		}
+
+		[Fact]
+		public void MethodsChanged_Changing_Return_Type_Is_Identified()
+		{
+			var oldClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("public void DoStuff () { }");
+
+			var newClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("public int DoStuff () { return 1; }");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)

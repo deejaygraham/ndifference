@@ -16,15 +16,15 @@ namespace NDifference.TypeSystem
 	public static class IMemberInfoExtensions
 	{
 		public static Collection<T> FindRemovedMembers<T>(this IEnumerable<T> later, IEnumerable<T> earlier)
-			where T : IMatchExactly<T>
+			where T : IMatchFuzzily<T>
 		{
-			return new Collection<T>(earlier.Where(x => !later.ContainsExactMatchFor(x)).ToList());
+			return new Collection<T>(earlier.Where(x => !later.ContainsFuzzyMatchFor(x)).ToList());
 		}
 
 		public static Collection<T> FindAddedMembers<T>(this IEnumerable<T> later, IEnumerable<T> earlier)
-			where T : IMatchExactly<T>
+			where T : IMatchFuzzily<T>
 		{
-			return new Collection<T>(later.Where(x => !earlier.ContainsExactMatchFor(x)).ToList());
+			return new Collection<T>(later.Where(x => !earlier.ContainsFuzzyMatchFor(x)).ToList());
 		}
 
 		public static Collection<T> FindObsoleteMembers<T>(this IEnumerable<T> later)

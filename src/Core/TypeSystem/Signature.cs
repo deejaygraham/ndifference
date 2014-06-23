@@ -65,6 +65,10 @@ namespace NDifference.TypeSystem
 			return builder.ToString();
 		}
 
+		public override int GetHashCode()
+		{
+			return this.ToString().GetHashCode();
+		}
 
 		public bool ExactlyMatches(Signature other)
 		{

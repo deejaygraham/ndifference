@@ -40,7 +40,7 @@ namespace NDifference.Inspectors
 
 				foreach (var add in added)
 				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsAdded, new TextDescriptor { Name = add.ToString(), Message = add.ToCode() }));
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsAdded, new CodeDescriptor { Code = add.ToCode() }));
 				}
 			}
 		}

@@ -125,7 +125,12 @@ namespace NDifference.TypeSystem
 		{
 			SourceCode code = new SourceCode();
 
-			code.Add(new TypeNameTag(this.ToString()));
+			string type = this.ToString();
+
+			if (this.ContainingNamespace.IsSystem)
+				type = TypeAliasConverter.Convert(this);
+
+			code.Add(new TypeNameTag(type));
 
 			return code;
 		}

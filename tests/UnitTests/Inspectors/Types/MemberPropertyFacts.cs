@@ -28,7 +28,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 
 			Assert.Equal(1, delta.Changes.Count);
 		}
-
+		
         [Fact]
         public void PropertiesAdded_Identifies_Single_Property_Added()
         {
@@ -106,6 +106,28 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
 				.InspectedBy(new PropertiesChanged())
+				.Build();
+
+			Assert.Equal(1, delta.Changes.Count);
+		}
+
+		[Fact]
+		public void PropertyInspectors_Identify_Changing_Setter_To_Private()
+		{
+            var oldClassBuilder = CompilableClassBuilder.PublicClass()
+                                        .Named("Account")
+                                        .WithProperty("public string Text { get; set; }");
+
+            var newClassBuilder = CompilableClassBuilder.PublicClass()
+                                        .Named("Account")
+                                        .WithProperty("public string Text { get; private set; }");
+
+			var delta = IdentifiedChangeCollectionBuilder.Changes()
+				.From(oldClassBuilder)
+				.To(newClassBuilder)
+				.InspectedBy(new PropertiesAdded())
+				.InspectedBy(new PropertiesChanged())
+				.InspectedBy(new PropertiesRemoved())
 				.Build();
 
 			Assert.Equal(1, delta.Changes.Count);

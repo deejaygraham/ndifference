@@ -39,7 +39,7 @@ namespace NDifference.Inspectors
 
 				foreach (var rem in removed)
 				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsRemoved, new TextDescriptor { Name = rem.ToString(), Message = rem.ToCode() }));
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsRemoved, new CodeDescriptor { Code = rem.ToCode() }));
 				}
 			}
 		}

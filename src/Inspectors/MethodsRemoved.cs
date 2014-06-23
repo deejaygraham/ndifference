@@ -37,7 +37,7 @@ namespace NDifference.Inspectors
 
 					foreach (var rem in removed)
 					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsRemoved, new TextDescriptor { Name = rem.ToString(), Message = rem.ToCode() }));
+						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsRemoved, new CodeDescriptor { Code = rem.ToCode() }));
 					}
 				}
 			}

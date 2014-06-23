@@ -17,7 +17,7 @@ namespace NDifference.UnitTests
 
 		private AssemblyReflectorBuilder newBuilder = new AssemblyReflectorBuilder();
 
-		private IInspector inspector;
+		private List<IInspector> inspectors = new List<IInspector>();
 
 		private IAssemblyReflectorFactory introspectorFactory = new CecilReflectorFactory();
 
@@ -98,7 +98,7 @@ namespace NDifference.UnitTests
 
 		public IdentifiedChangeCollectionBuilder InspectedBy(IInspector inspector)
 		{
-			this.inspector = inspector;
+			this.inspectors.Add(inspector);
 
 			return this;
 		}
@@ -113,7 +113,8 @@ namespace NDifference.UnitTests
 		public IdentifiedChangeCollection Build()
 		{
 			Debug.Assert(this.introspectorFactory != null, "Introspector not set");
-			Debug.Assert(this.inspector != null, "Inspector not set");
+			Debug.Assert(this.inspectors != null, "Inspectors not set");
+			Debug.Assert(this.inspectors.Any(), "Inspectors not set");
 
 			var oldVersion = this.oldBuilder.Build();
 			var newVersion = this.newBuilder.Build();
@@ -122,42 +123,45 @@ namespace NDifference.UnitTests
 
 			// now try strategies to find correct interface to call..
 
-			IAssemblyInspector ai = this.inspector as IAssemblyInspector;
+			foreach(var inspector in this.inspectors)
+			{ 
+				IAssemblyInspector ai = inspector as IAssemblyInspector;
 
-			if (ai != null)
-			{
-				ai.Inspect(oldVersion.GetAssemblyInfo(), newVersion.GetAssemblyInfo(), collection);
-			}
-			else
-			{
-				ITypeCollectionInspector tci = this.inspector as ITypeCollectionInspector;
-
-				if (tci != null)
+				if (ai != null)
 				{
-					tci.Inspect(oldVersion.GetTypes(), newVersion.GetTypes(), collection);
+					ai.Inspect(oldVersion.GetAssemblyInfo(), newVersion.GetAssemblyInfo(), collection);
 				}
-
 				else
 				{
-					ITypeInspector ti = this.inspector as ITypeInspector;
+					ITypeCollectionInspector tci = inspector as ITypeCollectionInspector;
 
-					if (ti == null)
+					if (tci != null)
 					{
-						throw new Exception("Unsupported inspector for unit testing");
+						tci.Inspect(oldVersion.GetTypes(), newVersion.GetTypes(), collection);
 					}
 
-					var oldTypes = oldVersion.GetTypes();
-					var newTypes = newVersion.GetTypes();
+					else
+					{
+						ITypeInspector ti = inspector as ITypeInspector;
 
-					var commonTypes = oldTypes.InCommonWith(newTypes);
-					var fqn = commonTypes.First();
+						if (ti == null)
+						{
+							throw new Exception("Unsupported inspector for unit testing");
+						}
 
-					var comparer = new TypeNameComparer();
+						var oldTypes = oldVersion.GetTypes();
+						var newTypes = newVersion.GetTypes();
 
-					var firstType = oldTypes.FindMatchFor(fqn, comparer);
-					var secondType = newTypes.FindMatchFor(fqn, comparer);
+						var commonTypes = oldTypes.InCommonWith(newTypes);
+						var fqn = commonTypes.First();
 
-					ti.Inspect(firstType, secondType, collection);
+						var comparer = new TypeNameComparer();
+
+						var firstType = oldTypes.FindMatchFor(fqn, comparer);
+						var secondType = newTypes.FindMatchFor(fqn, comparer);
+
+						ti.Inspect(firstType, secondType, collection);
+					}
 				}
 			}
 

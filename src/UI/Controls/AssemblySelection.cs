@@ -97,6 +97,14 @@ namespace NDifference.UI.Controls
 
 			lvAssemblies.EndUpdate();
 
+			var first = files.FirstOrDefault();
+			
+			if (first != null)
+			{
+				this.Path = first.Path;
+				this.lblFolder.Text = this.Path;
+			}
+
 			btnRemove.Enabled = false;
 		}
 

@@ -63,6 +63,8 @@
     <Compile Include="FieldsRemoved.cs" />
     <Compile Include="FinalizerAdded.cs" />
     <Compile Include="FinalizerRemoved.cs" />
+    <Compile Include="InstanceConstructorsInspector.cs" />
+    <Compile Include="InstanceConstructorsObsolete.cs" />
     <Compile Include="InterfacesAdded.cs" />
     <Compile Include="InterfacesRemoved.cs" />
     <Compile Include="MethodsAdded.cs" />
@@ -77,6 +79,8 @@
     <Compile Include="RemovedTypesInspector.cs" />
     <Compile Include="RuntimeInspector.cs" />
     <Compile Include="SourceOutputTypeInspector.cs" />
+    <Compile Include="StaticConstructorAdded.cs" />
+    <Compile Include="StaticConstructorRemoved.cs" />
     <Compile Include="WellKnownAssemblyCategories.cs" />
     <Compile Include="CommonAssembliesInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

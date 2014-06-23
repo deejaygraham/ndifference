@@ -40,14 +40,14 @@ namespace NDifference.TypeSystem
 
 		public ICoded ToCode()
 		{
-			//SourceCode code = new SourceCode();
+			SourceCode code = new SourceCode();
 
-			//code.Add(new KeywordTag("static"));
-			////code.Add(this.TypeName.ToCode());
-			//code.Add(new PunctuationTag("("));
-			//code.Add(new PunctuationTag(")"));
+			code.Add(new KeywordTag("static"));
+			code.Add(this.Name.ToCode());
+			code.Add(new PunctuationTag("("));
+			code.Add(new PunctuationTag(")"));
 
-			return null;
+			return code;
 		}
 
 		public Obsolete ObsoleteMarker { get; set; }

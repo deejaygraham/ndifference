@@ -61,6 +61,23 @@ namespace NDifference.Inspectors
 									}));
 						}
 
+						MemberMethod mm = method as MemberMethod;
+						MemberMethod cm = counterpart as MemberMethod;
+
+						if (mm != null && cm != null)
+						{
+							if (mm.ReturnType != cm.ReturnType)
+							{
+								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
+										new DeltaDescriptor
+										{
+											Name = "Return type has changed",
+											Was = mm.ToCode(),
+											IsNow = cm.ToCode()
+										}));
+							}
+						}
+
 						// other things have changed ???
 					}
 				}

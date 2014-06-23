@@ -60,7 +60,9 @@
     <Compile Include="Inspectors\Types\ClassSealingInspectorFacts.cs" />
     <Compile Include="Inspectors\Assemblies\CommonAssembliesInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\CommonTypesInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\ConstructorInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\EnumInspectorFacts.cs" />
+    <Compile Include="Inspectors\Types\FinalizerInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\MemberConstantFacts.cs" />
     <Compile Include="Inspectors\Types\MemberFieldFacts.cs" />
     <Compile Include="Inspectors\Types\MemberMethodFacts.cs" />

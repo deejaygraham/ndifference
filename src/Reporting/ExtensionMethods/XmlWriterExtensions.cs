@@ -90,10 +90,10 @@ namespace NDifference.Reporting
 		{
 			writer.WriteElement("tr", () =>
 			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(shortCode);
-				});
+				//writer.WriteElement("td", () =>
+				//{
+				//	writer.WriteRaw(shortCode);
+				//});
 				writer.WriteElement("td", () =>
 				{
 					// look up correct path...
@@ -126,10 +126,10 @@ namespace NDifference.Reporting
 
 			writer.WriteElement("tr", () =>
 			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(shortCode);
-				});
+				//writer.WriteElement("td", () =>
+				//{
+				//	writer.WriteRaw(shortCode);
+				//});
 				writer.WriteElement("td", () =>
 				{
 					writer.WriteRaw(change.Name);
@@ -161,10 +161,10 @@ namespace NDifference.Reporting
 
 			writer.WriteElement("tr", () =>
 			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(shortCode);
-				});
+				//writer.WriteElement("td", () =>
+				//{
+				//	writer.WriteRaw(shortCode);
+				//});
 				writer.WriteElement("td", () =>
 				{
 					writer.WriteRaw(change.Name);
@@ -186,10 +186,10 @@ namespace NDifference.Reporting
 
 			writer.WriteElement("tr", () =>
 			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(shortCode);
-				});
+				//writer.WriteElement("td", () =>
+				//{
+				//	writer.WriteRaw(shortCode);
+				//});
 				writer.WriteElement("td", () =>
 				{
 					writer.WriteRaw(text);

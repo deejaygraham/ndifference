@@ -175,6 +175,7 @@
     <Compile Include="Analysis\CategoryPriority.cs" />
     <Compile Include="TypeSystem\Signature.cs" />
     <Compile Include="TypeSystem\StaticConstructor.cs" />
+    <Compile Include="TypeSystem\TypeAliasConverter.cs" />
     <Compile Include="TypeSystem\TypeName.cs" />
     <Compile Include="TypeSystem\TypeNameComparer.cs" />
     <Compile Include="TypeSystem\TypeTaxonomy.cs" />

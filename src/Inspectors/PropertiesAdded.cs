@@ -34,11 +34,11 @@ namespace NDifference.Inspectors
 
 				if (secondRef.Properties.Any())
 				{
-					var removed = secondRef.Properties.FindAddedMembers(firstRef.Properties);
+					var added = secondRef.Properties.FindAddedMembers(firstRef.Properties);
 
-					foreach (var rem in removed)
+					foreach (var add in added)
 					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesAdded, new TextDescriptor { Name = rem.ToString(), Message = rem.ToCode() }));
+						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesAdded, new CodeDescriptor { Code = add.ToCode() }));
 					}
 				}
 			}

@@ -25,13 +25,13 @@ namespace NDifference.Analysis
 
 		public event EventHandler AnalysisComplete;
 
-		public event EventHandler<CancellableEventArgs> PluginsLoading;
-
-		public event EventHandler PluginsComplete;
-
 		public event EventHandler<CancellableEventArgs> AssemblyComparisonStarting;
 
 		public event EventHandler AssemblyComparisonComplete;
+
+		public event EventHandler<CancellableEventArgs> TypeComparisonStarting;
+
+		public event EventHandler TypeComparisonComplete;
 
 		public AnalysisWorkflow(IFileFinder finder, IAssemblyReflectorFactory reflectorFactory)
 		{
@@ -39,65 +39,55 @@ namespace NDifference.Analysis
 
 			this.Finder = finder;
 			this.ReflectorFactory = reflectorFactory;
-
-			this.ReportWriters = new List<IReportWriter>();
 		}
 
 		private IFileFinder Finder { get; set; }
 
 		private IAssemblyReflectorFactory ReflectorFactory { get; set; }
 
-		private List<IReportWriter> ReportWriters { get; set; }
-
-		// analysis result ???
-
-		public void RunAnalysis(Project project, InspectorRepository inspectors)
+		public AnalysisResult RunAnalysis(Project project, InspectorRepository inspectors)
 		{
+			AnalysisResult result = new AnalysisResult();
+
 			var cancelStart = new CancellableEventArgs();
 			this.AnalysisStarting.Fire(this, cancelStart);
 
 			if (cancelStart.CancelAction)
 			{
-				return;
+				result.Cancelled = true;
+				return result;
 			}
-
+			
 			try
 			{
-				DiscoverPlugins();
+				result.Summary.Heading = project.Product.Name;
+				result.Summary.Name = project.Settings.SummaryTitle;
 
-				var cancelCompare = new CancellableEventArgs();
-				this.AssemblyComparisonStarting.Fire(this, cancelCompare);
-
-				if (cancelCompare.CancelAction)
-				{
-					return;
-				}
-
-				IdentifiedChangeCollection summaryChanges = new IdentifiedChangeCollection
-				{
-					Heading = project.Product.Name,
-					Name = project.Settings.SummaryTitle
-				};
-
-				summaryChanges.MetaBlocks.AddRange(project.Settings.GenerateMetaBlocks());
-				summaryChanges.FooterBlocks.AddRange(project.Settings.GenerateFooterBlocks());
+				result.Summary.MetaBlocks.AddRange(project.Settings.GenerateMetaBlocks());
+				result.Summary.FooterBlocks.AddRange(project.Settings.GenerateFooterBlocks());
 
 				var firstVersion = project.Product.ComparedIncrements.First;
 				var secondVersion = project.Product.ComparedIncrements.Second;
 
-				RunAssemblyCollectionInspectors(inspectors, firstVersion.Assemblies, secondVersion.Assemblies, summaryChanges);
-				
-				summaryChanges.SummaryBlocks.Add("Name", project.Product.Name);
-				summaryChanges.SummaryBlocks.Add("From", firstVersion.Name);
-				summaryChanges.SummaryBlocks.Add("To", secondVersion.Name);
-				summaryChanges.SummaryBlocks.Add("% Churn", "Not calculated yet");
+				RunAssemblyCollectionInspectors(inspectors, firstVersion.Assemblies, secondVersion.Assemblies, result.Summary);
+
+				result.Summary.SummaryBlocks.Add("Name", project.Product.Name);
+				result.Summary.SummaryBlocks.Add("From", firstVersion.Name);
+				result.Summary.SummaryBlocks.Add("To", secondVersion.Name);
+				result.Summary.SummaryBlocks.Add("% Churn", "Not calculated yet");
 				
 				// now get each assembly pair and compare them at the internal level...
-				List<IdentifiedChangeCollection> dllChangeCollection = new List<IdentifiedChangeCollection>();
-				List<IdentifiedChangeCollection> typeChangeCollection = new List<IdentifiedChangeCollection>();
-
-				foreach (var common in summaryChanges.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies))
+				foreach (var common in result.Summary.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies))
 				{
+					var cancelCompare = new CancellableEventArgs();
+					this.AssemblyComparisonStarting.Fire(this, cancelCompare);
+
+					if (cancelCompare.CancelAction)
+					{
+						result.Cancelled = true;
+						return result;
+					}
+
 					// description is the name of the assembly...
 					var dll1 = firstVersion.Assemblies.FindMatchFor(common.Description);
 					var dll2 = secondVersion.Assemblies.FindMatchFor(common.Description);
@@ -125,9 +115,9 @@ namespace NDifference.Analysis
 						dllChanges.SummaryBlocks.Add("From", reflector1.GetAssemblyInfo().Version.ToString());
 						dllChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString());
 						dllChanges.SummaryBlocks.Add("% Churn", "Not calculated yet");
-						
-						dllChanges.CopyMetaFrom(summaryChanges);
-						dllChanges.Parents.Add(new DocumentLink { Identifier = summaryChanges.Identifier, LinkText = summaryChanges.Name });
+
+						dllChanges.CopyMetaFrom(result.Summary);
+						dllChanges.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
 
 						// each inspector
 						// looking for general changes to the assembly...
@@ -148,11 +138,20 @@ namespace NDifference.Analysis
 
 						// hand this off to another container...
 						if (dllChanges.Changes.Any())
-							dllChangeCollection.Add(dllChanges);
+							result.Assembly(dllChanges);
 
 						// now inspect each type...
 						foreach (var commonType in dllChanges.ChangesInCategory(WellKnownChangePriorities.ChangedTypes))
 						{
+							var cancelTypeStart = new CancellableEventArgs();
+							this.TypeComparisonStarting.Fire(this, cancelTypeStart);
+
+							if (cancelStart.CancelAction)
+							{
+								result.Cancelled = true;
+								return result;
+							}
+
 							// find common types...
 							IdentifiedChangeCollection typeChanges = new IdentifiedChangeCollection
 							{
@@ -173,9 +172,9 @@ namespace NDifference.Analysis
 							typeChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString() + " " + t2.CalculateHash());
 							typeChanges.SummaryBlocks.Add("% Churn", "Not calculated yet");
 
-							typeChanges.CopyMetaFrom(summaryChanges);
+							typeChanges.CopyMetaFrom(result.Summary);
 
-							typeChanges.Parents.Add(new DocumentLink { Identifier = summaryChanges.Identifier, LinkText = summaryChanges.Name });
+							typeChanges.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
 							typeChanges.Parents.Add(new DocumentLink { Identifier = dllChanges.Identifier, LinkText = dllChanges.Name });
 
 							foreach (var ti in inspectors.TypeInspectors.Where(x => x.Enabled))
@@ -187,71 +186,22 @@ namespace NDifference.Analysis
 
 							if (typeChanges.Changes.Any())
 							{
-								typeChangeCollection.Add(typeChanges);
+								result.Type(typeChanges);
 							}
-						}
-					}
-				}
 
-				this.AssemblyComparisonComplete.Fire(this);
-				
-				var reportRepo = new ReportingRepository();
-				var reportFinder = new ReportingPluginDiscoverer(this.Finder);
-
-				reportRepo.AddRange(reportFinder.Find());
-
-				var writer = reportRepo.Find("html");
-
-				if (writer != null)
-				{
-					IReportFormat format = writer.SupportedFormats.First();
-
-					writer.Map = FileMapBuilder.Map()
-						.UsingProject(project)
-						.As(format)
-						.WithIndex(summaryChanges.Identifier)
-						.With(summaryChanges)
-						.With(dllChangeCollection)
-						.With(typeChangeCollection)
-						.Build();
-
-					if (!String.IsNullOrEmpty(project.Settings.SubFolder))
-					{
-						if (Directory.Exists(project.Settings.SubPath))
-						{
-							Directory.GetFiles(project.Settings.SubPath, "*" + format.Extension).ToList().ForEach(x => File.Delete(x));
+							this.TypeComparisonComplete.Fire(this);
 						}
 					}
 
-					// write in reverse order...so that files should exist when we write a link..
-					foreach (var typeChange in typeChangeCollection)
-					{
-						IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.HtmlSafeTypeName() + format.Extension));
-
-						writer.Write(typeChange, typeOutput, format);
-					}
-
-					foreach (var dllChange in dllChangeCollection)
-					{
-						IReportOutput dllOutput = new FileOutput(Path.Combine(project.Settings.SubPath, dllChange.Name + format.Extension));
-
-						writer.Write(dllChange, dllOutput, format);
-					}
-
-					// finally write out summary...
-					IReportOutput output = new FileOutput(Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension));
-
-					writer.Write(summaryChanges, output, format);
+					this.AssemblyComparisonComplete.Fire(this);
 				}
-			}
-			catch (PluginLoadException )
-			{
-				// add to list of errors.
 			}
 			finally
 			{
 				this.AnalysisComplete.Fire(this);
 			}
+
+			return result;
 		}
 
 		private void RunAssemblyCollectionInspectors(InspectorRepository inspectors, IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
@@ -262,21 +212,6 @@ namespace NDifference.Analysis
 
 				aci.Inspect(first, second, changes);
 			}
-		}
-
-		private void DiscoverPlugins()
-		{
-			var cancelSearch = new CancellableEventArgs();
-			this.PluginsLoading.Fire(this, cancelSearch);
-
-			if (cancelSearch.CancelAction)
-			{
-				return;
-			}
-
-			this.ReportWriters.AddRange(new ReportingPluginDiscoverer(this.Finder).Find());
-
-			this.PluginsComplete.Fire(this);
 		}
 	}
 }

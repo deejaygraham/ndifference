@@ -17,6 +17,8 @@ namespace NDifference.Reporting
 
 		IReportFormatRepository ReportFormats { get; }
 
+		void Find(IFileFinder finder);
+
 		IReportWriter Find(IReportFormat supportedFormat);
 
 		IReportWriter Find(string supportedFormat);

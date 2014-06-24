@@ -89,14 +89,21 @@ namespace NDifference.Reporting
 
 						html.WriteElement("body", () =>
 						{
-							if (!String.IsNullOrEmpty(changes.Heading))
+							string heading = changes.Heading;
+
+							if (String.IsNullOrEmpty(heading))
+							{
+								heading = changes.Name;
+							}
+
+							if (!String.IsNullOrEmpty(heading))
 							{
 								html.WriteElement("div", () =>
 								{
 									html.WriteAttributeString("id", "header");
 									html.WriteElement("h1", () =>
 									{
-										html.WriteString(changes.Heading);
+										html.WriteString(heading);
 									});
 
 									if (changes.Parents.Any())
@@ -130,10 +137,10 @@ namespace NDifference.Reporting
 							html.WriteElement("div", () =>
 							{
 								html.WriteAttributeString("id", "summary");
-								html.WriteElement("h2", () =>
-								{
-									html.WriteString(changes.Name);
-								});
+								//html.WriteElement("h2", () =>
+								//{
+								//	html.WriteString(changes.Name);
+								//});
 
 								html.WriteComment(" Summary Table ");
 

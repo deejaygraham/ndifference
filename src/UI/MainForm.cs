@@ -4,6 +4,7 @@ using NDifference.Inspectors;
 using NDifference.Plugins;
 using NDifference.Projects;
 using NDifference.Reflection;
+using NDifference.Reporting;
 using NDifference.UI.Controls;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,8 @@ namespace NDifference.UI
 {
 	public partial class MainForm : Form
 	{
-		//private BackgroundWorker _worker;
-
 		private ControlStateWrangler _dataEntryState = new ControlStateWrangler();
+
 		private ControlStateWrangler _progressState = new ControlStateWrangler();
 
 		private Project _project = null;
@@ -626,7 +626,7 @@ namespace NDifference.UI
 			{
 				IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
-				AnalysisWorkflow workflow = new AnalysisWorkflow(
+				AnalysisWorkflow analysis = new AnalysisWorkflow(
 					finder,
 					new CecilReflectorFactory());
 
@@ -637,7 +637,15 @@ namespace NDifference.UI
 
 				ir.Filter(filter);
 
-				workflow.RunAnalysis(this._project, ir);
+				var result = analysis.RunAnalysis(this._project, ir);
+
+				IReportingRepository rr = new ReportingRepository();
+				rr.Find(finder);
+
+				IReportingWorkflow reporting = new ReportingWorkflow();
+
+				reporting.RunReports(this._project, rr, result);
+
 			});
 
 			Task t2 = t.ContinueWith((antecedent) =>

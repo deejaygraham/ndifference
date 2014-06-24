@@ -11,11 +11,7 @@ namespace NDifference.Reflection
 	{
 		public static string FriendlyName(this TypeReference td)
 		{
-			if (td.IsGenericInstance)
-			{
-				return MakeGenericFriendlyName(td);
-			}
-			else if (td.HasGenericParameters)
+			if (td.IsGenericInstance || td.HasGenericParameters)
 			{
 				return MakeGenericFriendlyName(td);
 			}
@@ -61,7 +57,6 @@ namespace NDifference.Reflection
 
 				if (git != null)
 				{
-					//git.
 					builder.Append(CreateParameterList(git.GenericArguments));
 				}
 			}

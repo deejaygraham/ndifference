@@ -25,9 +25,9 @@ namespace NDifference.UI.Controls
 			this.DragEnter += AssemblySelection_DragEnter;
 			this.DragDrop += AssemblySelection_DragDrop;
 			this.lvAssemblies.View = View.Details;
+			this.lvAssemblies.ShowItemToolTips = true;
 
 			this.lvAssemblies.Columns.Add("Name", 250, HorizontalAlignment.Left);
-			this.lblFolder.Text = string.Empty;
 		}
 
 		void AssemblySelection_DragEnter(object sender, DragEventArgs e)
@@ -42,24 +42,7 @@ namespace NDifference.UI.Controls
 		{
 			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-			if (files.Length > 0)
-			{
-				this.lblFolder.Text = System.IO.Path.GetDirectoryName(files[0]);
-			}
-
-			lvAssemblies.BeginUpdate();
-
-			foreach (string file in files)
-			{
-				lvAssemblies.Items.Add(new AssemblyListViewItem(file));
-			}
-
-			lvAssemblies.EndUpdate();
-			
-			if (this.ListChanged != null)
-			{
-				this.ListChanged(this, EventArgs.Empty);
-			}
+			PopulateList(files);
 		}
 		
 		public ReadOnlyCollection<string> SelectedAssemblies
@@ -84,25 +67,15 @@ namespace NDifference.UI.Controls
 
 		public void Initialise(IEnumerable<IAssemblyDiskInfo> files)
 		{
-			//lvAssemblies.Clear();
-			lvAssemblies.BeginUpdate();
-			
 			lvAssemblies.Items.Clear();
 
-			// duplicates ???
-			foreach (var file in files)
-			{
-				lvAssemblies.Items.Add(new AssemblyListViewItem(file.Path));
-			}
-
-			lvAssemblies.EndUpdate();
+			PopulateList(files.ToList().Select(x => x.Path));
 
 			var first = files.FirstOrDefault();
 			
 			if (first != null)
 			{
 				this.Path = first.Path;
-				this.lblFolder.Text = this.Path;
 			}
 
 			btnRemove.Enabled = false;
@@ -124,24 +97,9 @@ namespace NDifference.UI.Controls
 				if (DialogResult.OK == dialog.ShowDialog())
 				{
 					this.Path = dialog.SelectedPath;
-
-					lvAssemblies.BeginUpdate();
-
 					FileFinder finder = new FileFinder { Filter = FileFilterConstants.AssemblyFilter, Folder = this.Path };
 
-					foreach (var file in finder.Find())
-					{
-						lvAssemblies.Items.Add(new AssemblyListViewItem(file.FullPath));
-					}
-
-					lvAssemblies.EndUpdate();
-
-					this.lblFolder.Text = this.Path;
-
-					if (this.ListChanged != null)
-					{
-						this.ListChanged(this, EventArgs.Empty);
-					}
+					PopulateList(finder.Find().ToList().Select( x => x.FullPath));
 				}
 			}
 		}
@@ -162,25 +120,7 @@ namespace NDifference.UI.Controls
 
 				if (DialogResult.OK == dialog.ShowDialog())
 				{
-					lvAssemblies.BeginUpdate();
-
-					// duplicates ???
-					foreach (var file in dialog.FileNames)
-					{
-						lvAssemblies.Items.Add(new AssemblyListViewItem(file));
-					}
-
-					if (dialog.FileNames.Length > 0)
-					{
-						this.lblFolder.Text = System.IO.Path.GetDirectoryName(dialog.FileNames[0]);
-					}
-
-					lvAssemblies.EndUpdate();
-
-					if (this.ListChanged != null)
-					{
-						this.ListChanged(this, EventArgs.Empty);
-					}
+					PopulateList(dialog.FileNames);
 				}
 			}
 		}
@@ -205,6 +145,23 @@ namespace NDifference.UI.Controls
 			}
 		}
 
+		private void PopulateList(IEnumerable<string> fullPaths)
+		{
+			lvAssemblies.BeginUpdate();
+
+			foreach (var file in fullPaths)
+			{
+				lvAssemblies.Items.Add(new AssemblyListViewItem(file));
+			}
+
+			lvAssemblies.EndUpdate();
+
+			if (this.ListChanged != null)
+			{
+				this.ListChanged(this, EventArgs.Empty);
+			}
+		}
+
 		private void lvAssemblies_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			btnRemove.Enabled = lvAssemblies.SelectedItems.Count > 0;
@@ -219,6 +176,7 @@ namespace NDifference.UI.Controls
 		{
 			this.FullPath = fullPath;
 			this.Text = System.IO.Path.GetFileName(this.FullPath);
+			this.ToolTipText = fullPath;
 		}
 
 		public string FullPath

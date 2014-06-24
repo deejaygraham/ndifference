@@ -4,6 +4,7 @@ using NDifference.Framework;
 using NDifference.Inspectors;
 using NDifference.Projects;
 using NDifference.Reflection;
+using NDifference.Reporting;
 using System;
 using System.IO;
 using System.Reflection;
@@ -120,36 +121,26 @@ namespace WalkingSkeleton
 
 			IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
-			AnalysisWorkflow workflow = new AnalysisWorkflow(
+			IAnalysisWorkflow analysis = new AnalysisWorkflow(
 				finder,
 				new CecilReflectorFactory());
 
-			workflow.AnalysisStarting += (o, e) =>
-				{
-					Console.WriteLine("Analysis starting...");
-				};
-
-			workflow.PluginsLoading += (o, e) =>
+			analysis.AnalysisStarting += (o, e) =>
 			{
-				Console.Write("Loading plugins...");
+				Console.WriteLine("Analysis starting...");
 			};
 
-			workflow.PluginsComplete += (o, e) =>
+			analysis.AssemblyComparisonStarting += (o, e) =>
 			{
-				Console.Write("done.");
+				Console.WriteLine(".");
 			};
 
-			workflow.AssemblyComparisonStarting += (o, e) =>
-				{
-					Console.WriteLine(".");
-				};
+			analysis.AssemblyComparisonComplete += (o, e) =>
+			{
+				Console.WriteLine(".");
+			};
 
-			workflow.AssemblyComparisonComplete += (o, e) =>
-				{
-					Console.WriteLine(".");
-				};
-
-			workflow.AnalysisComplete += (o, e) =>
+			analysis.AnalysisComplete += (o, e) =>
 			{
 				Console.WriteLine("Done.");
 			};
@@ -160,7 +151,14 @@ namespace WalkingSkeleton
 			InspectorFilter filter = new InspectorFilter(project.Settings.IgnoreInspectors);
 			ir.Filter(filter);
 
-			workflow.RunAnalysis(project, ir);
+			var result = analysis.RunAnalysis(project, ir);
+
+			IReportingRepository rr = new ReportingRepository();
+			rr.Find(finder);
+
+			IReportingWorkflow reporting = new ReportingWorkflow();
+
+			reporting.RunReports(project, rr, result);
 		}
 
 #endif

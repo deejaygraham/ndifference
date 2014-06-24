@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.btnRemove = new System.Windows.Forms.Button();
-			this.lblFolder = new System.Windows.Forms.Label();
 			this.btnBrowse = new System.Windows.Forms.Button();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lvAssemblies = new System.Windows.Forms.ListView();
@@ -45,17 +44,6 @@
 			this.btnRemove.Text = "-";
 			this.btnRemove.UseVisualStyleBackColor = true;
 			this.btnRemove.Click += new System.EventHandler(this.bntRemove_Click);
-			// 
-			// lblFolder
-			// 
-			this.lblFolder.AutoEllipsis = true;
-			this.lblFolder.AutoSize = true;
-			this.lblFolder.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.lblFolder.Location = new System.Drawing.Point(0, 248);
-			this.lblFolder.Name = "lblFolder";
-			this.lblFolder.Size = new System.Drawing.Size(80, 13);
-			this.lblFolder.TabIndex = 6;
-			this.lblFolder.Text = "<No Selection>";
 			// 
 			// btnBrowse
 			// 
@@ -96,7 +84,6 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.lblFolder);
 			this.Controls.Add(this.btnRemove);
 			this.Controls.Add(this.btnAdd);
 			this.Controls.Add(this.btnBrowse);
@@ -111,7 +98,6 @@
 		#endregion
 
 		private System.Windows.Forms.Button btnRemove;
-		private System.Windows.Forms.Label lblFolder;
 		private System.Windows.Forms.Button btnBrowse;
 		private System.Windows.Forms.Button btnAdd;
 		private System.Windows.Forms.ListView lvAssemblies;

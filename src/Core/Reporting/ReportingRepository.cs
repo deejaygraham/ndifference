@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -21,6 +22,11 @@ namespace NDifference.Reporting
 			{
 				return new ReadOnlyCollection<IReportWriter>(this.reportWriters);
 			}
+		}
+
+		public void Find(IFileFinder finder)
+		{
+			reportWriters.AddRange(new ReportingPluginDiscoverer(finder).Find());
 		}
 
 		public IReportWriter Find(IReportFormat supportedFormat)

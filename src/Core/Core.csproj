@@ -42,6 +42,7 @@
     <Compile Include="..\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\IAnalysisWorkflow.cs" />
     <Compile Include="Exceptions\PluginLoadException.cs" />
     <Compile Include="ExtensionMethods\EventHandlerExtensions.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Reporting\IReportFormat.cs" />
     <Compile Include="Reporting\IReportFormatRepository.cs" />
     <Compile Include="Reporting\IReportingRepository.cs" />
+    <Compile Include="Reporting\IReportingWorkflow.cs" />
     <Compile Include="Reporting\IReportOutput.cs" />
     <Compile Include="Reporting\IReportWriter.cs" />
     <Compile Include="Reporting\ITextDescriptor.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Reporting\FileMapBuilder.cs" />
     <Compile Include="Reporting\ReportFormatRepository.cs" />
     <Compile Include="Reporting\ReportingRepository.cs" />
+    <Compile Include="Reporting\ReportingWorkflow.cs" />
     <Compile Include="Reporting\TextDescriptor.cs" />
     <Compile Include="SourceFormatting\ClassDeclarationSourceCodeBuilder.cs" />
     <Compile Include="SourceFormatting\ICoded.cs" />

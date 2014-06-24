@@ -304,7 +304,7 @@ namespace NDifference.Inspectors
 
 		public static readonly Category MethodsAdded = new Category
 		{
-			Name = "Added Methods",
+			Name = "New Methods",
 			Description = "These methods were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsAdded),
 			Headings = new string[] { "Signature" }

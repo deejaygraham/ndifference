@@ -43,19 +43,19 @@ namespace NDifference.TypeSystem
 				{
 					code.Add(new KeywordTag("get;"));
 				}
-				else if (this.GetterAccessibility == MemberAccessibility.Private)
-				{
-					code.Add(new KeywordTag("private set;"));
-				}
+				//else if (this.GetterAccessibility == MemberAccessibility.Private)
+				//{
+				//	code.Add(new KeywordTag("private set;"));
+				//}
 
 				if (this.SetterAccessibility == MemberAccessibility.Public)
 				{
 					code.Add(new KeywordTag("set;"));
 				}
-				else if (this.SetterAccessibility == MemberAccessibility.Private)
-				{
-					code.Add(new KeywordTag("private set;"));
-				}
+				//else if (this.SetterAccessibility == MemberAccessibility.Private)
+				//{
+				//	code.Add(new KeywordTag("private set;"));
+				//}
 
 				code.Add(new PunctuationTag("}"));
 			}
@@ -78,19 +78,19 @@ namespace NDifference.TypeSystem
 				{
 					builder.Append("get; ");
 				}
-				else if (this.GetterAccessibility == MemberAccessibility.Private)
-				{
-					builder.Append("private get; ");
-				}
+				//else if (this.GetterAccessibility == MemberAccessibility.Private)
+				//{
+				//	builder.Append("private get; ");
+				//}
 
 				if (this.SetterAccessibility == MemberAccessibility.Public)
 				{
 					builder.Append("set; ");
 				}
-				else if (this.SetterAccessibility == MemberAccessibility.Private)
-				{
-					builder.Append("private set; ");
-				}
+				//else if (this.SetterAccessibility == MemberAccessibility.Private)
+				//{
+				//	builder.Append("private set; ");
+				//}
 
 				builder.Append("} ");
 			}

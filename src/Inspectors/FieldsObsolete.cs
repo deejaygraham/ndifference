@@ -37,7 +37,7 @@ namespace NDifference.Inspectors
 
 			foreach (var o in obs)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsObsolete, new TextDescriptor { Name = o.ToString(), Message = o.ToCode() }));
+				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsObsolete, new TextDescriptor { Name = o.ToString(), Message = o.ObsoleteMarker.Message }));
 			}
 		}
 	}

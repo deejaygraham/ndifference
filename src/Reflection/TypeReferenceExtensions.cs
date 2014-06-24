@@ -11,7 +11,11 @@ namespace NDifference.Reflection
 	{
 		public static string FriendlyName(this TypeReference td)
 		{
-			if (td.HasGenericParameters)
+			if (td.IsGenericInstance)
+			{
+				return MakeGenericFriendlyName(td);
+			}
+			else if (td.HasGenericParameters)
 			{
 				return MakeGenericFriendlyName(td);
 			}
@@ -47,7 +51,21 @@ namespace NDifference.Reflection
 
 			builder.Append(OpenTag);
 
-			builder.Append(CreateGenericParameterList(td.GenericParameters));
+			if (td.HasGenericParameters)
+			{
+				builder.Append(CreateGenericParameterList(td.GenericParameters));
+			}
+			else if (td.IsGenericInstance)
+			{
+				GenericInstanceType git = td as GenericInstanceType;
+
+				if (git != null)
+				{
+					//git.
+					builder.Append(CreateParameterList(git.GenericArguments));
+				}
+			}
+
 
 			builder.Append(CloseTag);
 
@@ -69,6 +87,20 @@ namespace NDifference.Reflection
 		}
 
 		private static string CreateGenericParameterList(IEnumerable<GenericParameter> parameters)
+		{
+			var list = new List<string>();
+
+			foreach (var p in parameters)
+			{
+				list.Add(p.Name);
+			}
+
+			const string CommaDelimiter = ",";
+
+			return string.Join(CommaDelimiter, list);
+		}
+
+		private static string CreateParameterList(IEnumerable<TypeReference> parameters)
 		{
 			var list = new List<string>();
 

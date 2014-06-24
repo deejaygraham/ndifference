@@ -166,5 +166,41 @@ namespace NDifference.UnitTests
 			}
 		}
 
+		[Fact]
+		public void CecilAssemblyReflector_Load_Class_With_Generic_Type_In_Method()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableClassBuilder.PublicClass()
+					.Named("Example")
+					.WithMethod("public List<string> GetValues() { return new List<string>(); }");
+
+				IBuildToCode wholeFile = CompilableSourceBuilder.CompilableCode()
+					.UsingDefaultNamespaces()
+					.HasNamespace("ex1")
+					.Includes(code);
+
+				var compiled = ofc.Compile(wholeFile);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes();
+
+				Assert.Equal(1, types.Count());
+				
+				var info = types.First();
+
+				Assert.Equal(TypeTaxonomy.Class, info.Taxonomy);
+				ClassDefinition cd = info as ClassDefinition;
+
+				Assert.NotNull(cd);
+				Assert.Equal(1, cd.Methods.Count);
+				
+				MemberMethod mm = cd.Methods.First() as MemberMethod;
+				Assert.Equal("List<String>", mm.ReturnType.Type.ToString());
+			}
+		}
 	}
 }

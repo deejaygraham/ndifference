@@ -1,5 +1,5 @@
 ﻿using NDifference.Analysis;
-using System.Collections.Generic;
+using NDifference.Inspection;
 using System.Diagnostics;
 
 namespace NDifference.Inspectors
@@ -17,20 +17,16 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for removed assemblies"; } }
 
-		public void Inspect(IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedAssemblies assemblies, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(first != null, "First list of assemblies cannot be null");
-			Debug.Assert(second != null, "Second list of assemblies cannot be null");
+			Debug.Assert(assemblies != null, "List of assemblies cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
 			changes.Add(WellKnownSummaryCategories.RemovedAssemblies);
-			
-			var comparer = new AssemblyNameComparer();
 
-			// REVIEW - need well known categories for each item... assemblies added, changed, removed, unchanged.
-			foreach (var added in first.RemovedFrom(second, comparer))
+			foreach (var removed in assemblies.InEarlierOnly)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.RemovedAssemblies, added.Name)); 
+				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.RemovedAssemblies, removed.First.Name)); 
 			}
 		}
 	}

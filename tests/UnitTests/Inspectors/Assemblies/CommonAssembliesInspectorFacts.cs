@@ -28,7 +28,7 @@ namespace NDifference.UnitTests
 
 			var changes = new IdentifiedChangeCollection();
 
-			inspector.Inspect(first, second, changes);
+			inspector.Inspect(CombinedAssemblyModel.BuildFrom(first, second), changes);
 
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);
@@ -54,7 +54,7 @@ namespace NDifference.UnitTests
 
 			var changes = new IdentifiedChangeCollection();
 
-			inspector.Inspect(first, second, changes);
+			inspector.Inspect(CombinedAssemblyModel.BuildFrom(first, second), changes);
 
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);
@@ -70,15 +70,15 @@ namespace NDifference.UnitTests
 			first.Add(new AssemblyDiskInfo("Third.dll", new DateTime(2014, 06, 03), 300, "ijkl"));
 
 			var second = new List<IAssemblyDiskInfo>();
-			second.Add(new AssemblyDiskInfo("First.dll", new DateTime(2014, 06, 06), 100, "abcd"));
+			second.Add(new AssemblyDiskInfo("First.dll", new DateTime(2014, 06, 06), 100, "abcde"));
 			second.Add(new AssemblyDiskInfo("Second.dll", new DateTime(2014, 06, 03), 200, "efgh"));
-			second.Add(new AssemblyDiskInfo("Third.dll", new DateTime(2014, 06, 07), 400, "ijkl"));
+			second.Add(new AssemblyDiskInfo("Third.dll", new DateTime(2014, 06, 07), 400, "iikl"));
 
 			IAssemblyCollectionInspector inspector = new CommonAssembliesInspector();
 
 			var changes = new IdentifiedChangeCollection();
 
-			inspector.Inspect(first, second, changes);
+			inspector.Inspect(CombinedAssemblyModel.BuildFrom(first, second), changes);
 
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);

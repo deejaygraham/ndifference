@@ -1,7 +1,9 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.TypeSystem;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NDifference.Inspectors
 {
@@ -18,17 +20,16 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for added types in an assembly"; } }
 
-		public void Inspect(IEnumerable<ITypeInfo> first, IEnumerable<ITypeInfo> second, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedTypes types, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(first != null, "First list of types cannot be null");
-			Debug.Assert(second != null, "Second list of types cannot be null");
+			Debug.Assert(types != null, "List of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
 			changes.Add(WellKnownAssemblyCategories.AddedTypes);
 
-			foreach (var added in first.AddedTo(second))
+			foreach (var added in types.InLaterOnly)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedTypes, added.Name));
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedTypes, added.Second.Name));
 			}
 			
 		}

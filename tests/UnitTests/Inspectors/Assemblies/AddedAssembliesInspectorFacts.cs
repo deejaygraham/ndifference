@@ -25,7 +25,7 @@ namespace NDifference.UnitTests
 
 			var changes = new IdentifiedChangeCollection();
 
-			inspector.Inspect(first, second, changes);
+			inspector.Inspect(CombinedAssemblyModel.BuildFrom(first, second), changes);
 
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);
@@ -51,7 +51,7 @@ namespace NDifference.UnitTests
 
 			var changes = new IdentifiedChangeCollection();
 
-			inspector.Inspect(first, second, changes);
+			inspector.Inspect(CombinedAssemblyModel.BuildFrom(first, second), changes);
 
 			Assert.Equal(2, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);

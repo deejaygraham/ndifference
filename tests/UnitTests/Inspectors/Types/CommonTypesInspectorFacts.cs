@@ -30,7 +30,7 @@ namespace NDifference.UnitTests
 
 			var changes = new IdentifiedChangeCollection();
 
-			inspector.Inspect(first, second, changes);
+			inspector.Inspect(CombinedObjectModel.BuildFrom(first, second), changes);
 
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes).Count);
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes).Count);
@@ -54,7 +54,7 @@ namespace NDifference.UnitTests
 
 			var changes = new IdentifiedChangeCollection();
 
-			inspector.Inspect(first, second, changes);
+			inspector.Inspect(CombinedObjectModel.BuildFrom(first, second), changes);
 
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes).Count);
 			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes).Count);

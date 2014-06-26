@@ -1,8 +1,10 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NDifference.Inspectors
 {
@@ -19,29 +21,23 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Used for debugging on reporting"; } }
 
-		public void Inspect(IEnumerable<ITypeInfo> first, IEnumerable<ITypeInfo> second, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedTypes types, IdentifiedChangeCollection changes)
 		{
 			changes.Add(WellKnownAssemblyCategories.ChangedTypes);
 
 			var comparer = new TypeNameComparer();
 
-			foreach (var common in first.InCommonWith(second))
+			foreach (var common in types.InCommon)
 			{
-				var oldVersion = first.FindMatchFor(common, comparer);
-				var newVersion = second.FindMatchFor(common, comparer);
-
-				string oldHash = oldVersion.CalculateHash();
-				string newHash = newVersion.CalculateHash();
-
 				changes.Add(new IdentifiedChange 
-				{ 
-					Description = newVersion.FullName,
+				{
+					Description = common.Second.FullName,
 					Priority = WellKnownAssemblyCategories.ChangedTypes.Priority.Value,
 					Descriptor = new DocumentLink
 					{
-						LinkText = oldVersion.Name,
-						LinkUrl = oldVersion.FullName,
-						Identifier = newVersion.Identifier
+						LinkText = common.First.Name,
+						LinkUrl = common.First.FullName,
+						Identifier = common.Second.Identifier
 					},
 					Inspector = this.ShortCode
 

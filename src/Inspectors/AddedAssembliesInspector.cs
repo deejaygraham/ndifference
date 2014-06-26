@@ -1,5 +1,5 @@
 ﻿using NDifference.Analysis;
-using System.Collections.Generic;
+using NDifference.Inspection;
 using System.Diagnostics;
 
 namespace NDifference.Inspectors
@@ -17,19 +17,18 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for added assemblies"; } }
 
-		public void Inspect(IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedAssemblies assemblies, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(first != null, "First list of assemblies cannot be null");
-			Debug.Assert(second != null, "Second list of assemblies cannot be null");
+			Debug.Assert(assemblies != null, "List of assemblies cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
 			changes.Add(WellKnownSummaryCategories.AddedAssemblies);
 
 			var comparer = new AssemblyNameComparer();
 
-			foreach (var added in first.AddedTo(second, comparer))
+			foreach (var added in assemblies.InLaterOnly)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.AddedAssemblies, added.Name)); 
+				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.AddedAssemblies, added.Second.Name)); 
 			}
 		}
 	}

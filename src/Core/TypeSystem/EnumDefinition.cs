@@ -16,6 +16,9 @@ namespace NDifference.TypeSystem
 		[NonSerialized]
 		private Identifier ident = new Identifier();
 
+		[NonSerialized]
+		private string _hashValue;
+
 		public EnumDefinition()
 		{
 			this.AllowedValues = new List<EnumValue>();
@@ -68,7 +71,10 @@ namespace NDifference.TypeSystem
 
 		public string CalculateHash()
 		{
-			return this.GetHash<SHA1Managed>();
+			if (String.IsNullOrEmpty(this._hashValue))
+				this._hashValue = this.GetHash<SHA1Managed>();
+
+			return this._hashValue;
 		}
 
 		public void Add(string name, long value)

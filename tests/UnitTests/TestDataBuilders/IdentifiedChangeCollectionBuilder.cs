@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Inspectors;
 using NDifference.Reflection;
 using NDifference.TypeSystem;
@@ -6,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.UnitTests
 {
@@ -137,7 +136,7 @@ namespace NDifference.UnitTests
 
 					if (tci != null)
 					{
-						tci.Inspect(oldVersion.GetTypes(), newVersion.GetTypes(), collection);
+						tci.Inspect(CombinedObjectModel.BuildFrom(oldVersion.GetTypes(), newVersion.GetTypes()), collection);
 					}
 
 					else

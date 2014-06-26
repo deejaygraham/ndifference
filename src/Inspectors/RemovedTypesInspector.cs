@@ -1,6 +1,5 @@
 ﻿using NDifference.Analysis;
-using NDifference.TypeSystem;
-using System.Collections.Generic;
+using NDifference.Inspection;
 using System.Diagnostics;
 
 namespace NDifference.Inspectors
@@ -18,17 +17,16 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for types removed from an assembly"; } }
 
-		public void Inspect(IEnumerable<ITypeInfo> first, IEnumerable<ITypeInfo> second, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedTypes types, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(first != null, "First list of types cannot be null");
-			Debug.Assert(second != null, "Second list of types cannot be null");
+			Debug.Assert(types != null, "List of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
 			changes.Add(WellKnownAssemblyCategories.RemovedTypes);
 
-			foreach (var removed in first.RemovedFrom(second))
+			foreach (var removed in types.InEarlierOnly)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.Name));
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.First.Name));
 			}
 
 		}

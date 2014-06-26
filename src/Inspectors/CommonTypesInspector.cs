@@ -1,8 +1,10 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NDifference.Inspectors
 {
@@ -19,52 +21,23 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for common types between two versions of the same assembly"; } }
 
-		public void Inspect(IEnumerable<ITypeInfo> first, IEnumerable<ITypeInfo> second, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedTypes types, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(first != null, "First list of types cannot be null");
-			Debug.Assert(second != null, "Second list of types cannot be null");
+			Debug.Assert(types != null, "List of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
 			changes.Add(WellKnownAssemblyCategories.ChangedTypes);
-//			changes.Add(WellKnownTypeCategories.UnchangedTypes);
 
 			var comparer = new TypeNameComparer();
 
-			foreach (var common in first.InCommonWith(second))
+			foreach (var common in types.ChangedInCommon)
 			{
-				var oldVersion = first.FindMatchFor(common, comparer);
-				var newVersion = second.FindMatchFor(common, comparer);
-
-				if (oldVersion == null || newVersion == null)
-                {
-                    Debug.Assert(oldVersion != null && newVersion != null, "Mismatch finding common objects");
-                    continue;
-                }
-
-				string oldHash = oldVersion.CalculateHash();
-				string newHash = newVersion.CalculateHash();
-
-				//if (oldHash.Equals(newHash))
-				//{
-				//	// if there's an exact match in all respects -
-				//	// this may be the case if we're using 
-				//	// the same version in two separate instances 
-				//	//bool reportUnchanged = false;
-
-				//	//if (reportUnchanged)
-				//	//{
-				//	//	changes.Add(new IdentifiedChange { Description = newVersion.Name, Priority = WellKnownTypeCategories.UnchangedTypes.Priority.Value });
-				//	//}
-				//}
-				if (!oldHash.Equals(newHash))
-                {
-					changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.ChangedTypes, newVersion.FullName, new DocumentLink
-					{
-						LinkText = oldVersion.Name,
-						LinkUrl = oldVersion.FullName,
-						Identifier = newVersion.Identifier
-					}));
-                }
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.ChangedTypes, common.Second.FullName, new DocumentLink
+				{
+					LinkText = common.First.Name,
+					LinkUrl = common.First.FullName,
+					Identifier = common.Second.Identifier
+				}));
 			}
 		}
 	}

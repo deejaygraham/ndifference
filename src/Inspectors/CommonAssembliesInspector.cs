@@ -1,7 +1,9 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NDifference.Inspectors
 {
@@ -18,56 +20,27 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for common assemblies between two versions"; } }
 
-		public void Inspect(IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedAssemblies assemblies, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(first != null, "First list of assemblies cannot be null");
-			Debug.Assert(second != null, "Second list of assemblies cannot be null");
-			Debug.Assert(changes != null, "Changes object cannot be null");
+			Debug.Assert(assemblies != null, "List of assemblies cannot be null");
 
 			changes.Add(WellKnownSummaryCategories.ChangedAssemblies);
-//			changes.Add(WellKnownAssemblyCategories.UnchangedAssemblies);
 
 			var comparer = new AssemblyNameComparer();
 
-			foreach (var common in first.InCommonWith(second, comparer))
+			foreach (var common in assemblies.ChangedInCommon)
 			{
-				var oldVersion = first.FindMatchFor(common);
-				var newVersion = second.FindMatchFor(common);
+				Debug.Assert(common.First != null);
+				Debug.Assert(common.Second != null);
 
-				if (oldVersion == null || newVersion == null)
+				// most common files need to be analysed 
+				// further to check for API changes...
+				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.ChangedAssemblies, common.First.Name, new DocumentLink
 				{
-					Debug.Assert(oldVersion != null && newVersion != null, "Mismatch finding common assemblies");
-					continue;
-				}
-
-				if (oldVersion.Equals(newVersion))
-				{
-					// if there's an exact match in all respects
-					// this may be the case if we're using 
-					// the same version of a third party library 
-					// REVIEW - don't add it...
-					//bool reportUnchanged = false;
-
-					//if (reportUnchanged)
-					//{
-					//	changes.Add(new IdentifiedChange
-					//	{
-					//		Description = oldVersion.Name,
-					//		Priority = WellKnownAssemblyCategories.UnchangedAssemblies.Priority.Value
-					//	});
-					//}
-				}
-				else
-				{
-					// most common files need to be analysed 
-					// further to check for API changes...
-					changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.ChangedAssemblies, oldVersion.Name, new DocumentLink
-					{
-						LinkText = oldVersion.Name,
-						LinkUrl = oldVersion.Name,
-						Identifier = newVersion.Identifier
-					}));
-				}
+					LinkText = common.First.Name,
+					LinkUrl = common.First.Name,
+					Identifier = common.Second.Identifier
+				}));
 			}
 
 		}

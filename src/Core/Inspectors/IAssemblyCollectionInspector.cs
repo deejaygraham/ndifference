@@ -1,10 +1,10 @@
 ﻿using NDifference.Analysis;
-using System.Collections.Generic;
+using NDifference.Inspection;
 
 namespace NDifference.Inspectors
 {
 	public interface IAssemblyCollectionInspector : IInspector
 	{
-		void Inspect(IEnumerable<IAssemblyDiskInfo> first, IEnumerable<IAssemblyDiskInfo> second, IdentifiedChangeCollection changes);
+		void Inspect(ICombinedAssemblies combined, IdentifiedChangeCollection changes);
 	}
 }

@@ -43,7 +43,9 @@
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
     <Compile Include="Analysis\AnalysisResult.cs" />
+    <Compile Include="Analysis\ChurnCalculator.cs" />
     <Compile Include="Analysis\IAnalysisWorkflow.cs" />
+    <Compile Include="Analysis\IChurnable.cs" />
     <Compile Include="Exceptions\PluginLoadException.cs" />
     <Compile Include="ExtensionMethods\EventHandlerExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
@@ -55,6 +57,10 @@
     <Compile Include="Framework\CancellableEventArgs.cs" />
     <Compile Include="Framework\Product.cs" />
     <Compile Include="Framework\ProductIncrement.cs" />
+    <Compile Include="Inspection\CombinedAssemblyModel.cs" />
+    <Compile Include="Inspection\CombinedObjectModel.cs" />
+    <Compile Include="Inspection\ICombinedAssemblies.cs" />
+    <Compile Include="Inspection\ICombinedTypes.cs" />
     <Compile Include="Inspection\WellKnownChangePriorities.cs" />
     <Compile Include="Inspectors\IAssemblyCollectionInspector.cs" />
     <Compile Include="Inspectors\IInspector.cs" />

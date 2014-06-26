@@ -2,6 +2,7 @@
 using NDifference.Inspectors;
 using NDifference.Reporting;
 using System.Collections.Generic;
+
 namespace NDifference.Analysis
 {
 	/// <summary>

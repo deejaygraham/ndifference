@@ -133,7 +133,6 @@ namespace NDifference
 
 		public string CalculateHash()
 		{
-			// REVIEW - Made up hash. 
 			if (String.IsNullOrEmpty(this.Checksum))
 			{
 				this.Checksum = Guid.NewGuid().ToString();

@@ -48,6 +48,9 @@
     <Compile Include="..\..\src\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="ChurnCalculatorFacts.cs" />
+    <Compile Include="ICombinedAssembliesFacts.cs" />
+    <Compile Include="ICombinedTypesFacts.cs" />
     <Compile Include="IMatchExactlyFacts.cs" />
     <Compile Include="IMatchFuzzilyFacts.cs" />
     <Compile Include="Inspectors\Assemblies\AddedAssembliesInspectorFacts.cs" />

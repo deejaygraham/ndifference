@@ -1,15 +1,8 @@
 ﻿using NDifference.Analysis;
-using NDifference.Exceptions;
-using NDifference.Framework;
-using NDifference.Plugins;
 using NDifference.Projects;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
@@ -25,14 +18,18 @@ namespace NDifference.Reporting
 				{
 					IReportFormat format = writer.SupportedFormats.First();
 
-					writer.Map = FileMapBuilder.Map()
+					var builder = FileMapBuilder.Map()
 						.UsingProject(project)
 						.As(format)
 						.WithIndex(results.Summary.Identifier)
-						.With(results.Summary)
-						.With(results.AssemblyLevelChanges)
-						.With(results.TypeLevelChanges)
-						.Build();
+						.With(results.Summary);
+
+					builder.With(results.AssemblyLevelChanges);
+
+					if (!project.Settings.ConsolidateAssemblyTypes)
+						builder.With(results.TypeLevelChanges);
+
+					writer.Map = builder.Build();
 
 					if (!String.IsNullOrEmpty(project.Settings.SubFolder))
 					{

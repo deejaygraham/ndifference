@@ -16,6 +16,9 @@ namespace NDifference.TypeSystem
 		[NonSerialized]
 		private Identifier ident = new Identifier();
 
+		[NonSerialized]
+		private string _hashValue;
+
 		public ClassDefinition()
 		{
 			this.Implements = new List<FullyQualifiedName>();
@@ -118,7 +121,10 @@ namespace NDifference.TypeSystem
 
 		public string CalculateHash()
 		{
-			return this.GetHash<SHA1Managed>();
+			if (String.IsNullOrEmpty(this._hashValue))
+				this._hashValue = this.GetHash<SHA1Managed>();
+
+			return this._hashValue;
 		}
 
 		public ICoded ToCode()

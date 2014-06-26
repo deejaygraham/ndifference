@@ -47,7 +47,7 @@ namespace NDifference.Reporting
 		{
 			writer.WriteElement("a", () =>
 			{
-				writer.WriteAttributeString("href", link);
+				writer.WriteAttributeString("href", link.Replace('\\', '/'));
 				writer.WriteString(text);
 			});
 		}

@@ -23,6 +23,7 @@ Create developer guide
  setting up the build system
  how to run a build and setup unit tests
  how to contribute - unit tests, documentation, checklist of things
+
 Add solution - done
 Add core project - done
 Add msbuild project
@@ -84,36 +85,36 @@ Framework to load custom reports - done
 
 ## Assembly Inspection
 
-* Changed target architecture
-* Changed assembly references
-* Removed types
-* Added types
-* Obsolete types
-* Changed types
+* Changed target architecture - done
+* Changed assembly references - done
+* Removed types - done
+* Added types - done
+* Obsolete types - done
+* Changed types - done
 
 ## Type Inspection
 
-* Constant values
-* Enum values
-* Abstraction
-* Constructors
-* Derivation
-* Events
-* Fields
-* Finalizers
-* Interface implementation
-* Methods
-* Properties
-* Sealing
-* Obsolete members
-* Taxonomy changes - class to interface, concrete to abstract class etc.
+* Constant values - done
+* Enum values - done
+* Abstraction - done
+* Constructors - done
+* Derivation - done
+* Events - done
+* Fields - done
+* Finalizers - done
+* Interface implementation - done
+* Methods - done
+* Properties - done
+* Sealing - done
+* Obsolete members - done
+* Taxonomy changes - class to interface, concrete to abstract class etc. - done
 
 # UI Issues
 
-Add textbox or lable to show directory for from and to folders.
+Add textbox or lable to show directory for from and to folders. - done
 Use a different dialog to browse to directory so that copy/paste of path can be used.
-If highlighting multiple entries on either list, then the Delete key should perform the same job as clicking the - (minus) button.
-When clicking into a list of assemblies in the UI, allow Ctrl+A or add a select all button.
+If highlighting multiple entries on either list, then the Delete key should perform the same job as clicking the - (minus) button. - done
+When clicking into a list of assemblies in the UI, allow Ctrl+A or add a select all button. - done
 
 Task libraries
 Completion token to cancel 

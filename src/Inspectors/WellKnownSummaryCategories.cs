@@ -17,21 +17,24 @@ namespace NDifference.Inspectors
 		{
 			Name = "Removed Assemblies",
 			Description = "These assemblies were removed from the new version of the product",
-			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedAssemblies)
+			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedAssemblies),
+			Headings = new string[] { "Assembly" }
 		};
 
 		public static readonly Category ChangedAssemblies = new Category
 		{
 			Name = "Changed Assemblies",
 			Description = "These assemblies have changed between the two versions of the product",
-			Priority = new CategoryPriority(WellKnownChangePriorities.ChangedAssemblies)
+			Priority = new CategoryPriority(WellKnownChangePriorities.ChangedAssemblies),
+			Headings = new string[] { "Assembly" }
 		};
 
 		public static readonly Category AddedAssemblies = new Category
 		{
 			Name = "Added Assemblies",
 			Description = "These assemblies have been added to the new version",
-			Priority = new CategoryPriority(WellKnownChangePriorities.AddedAssemblies)
+			Priority = new CategoryPriority(WellKnownChangePriorities.AddedAssemblies),
+			Headings = new string[] { "Assembly" }
 		};
 
 		//public static readonly Category UnchangedAssemblies = new Category 

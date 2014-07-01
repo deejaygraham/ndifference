@@ -25,12 +25,15 @@ namespace NDifference.TypeSystem
 
 		public bool IsStatic { get; set; }
 
+		public bool IsVirtual { get; set; }
+
 		public override string ToString()
 		{
 			return string.Format(
-							"{0}{1} {2} {3}",
+							"{0}{1} {2} {3} {4}",
 							this.IsStatic ? "static " : string.Empty,
 							this.IsAbstract ? "abstract " : string.Empty,
+							this.IsVirtual ? "virtual" : string.Empty,
 							this.ReturnType,
 							this.Signature);
 		}
@@ -47,6 +50,11 @@ namespace NDifference.TypeSystem
 			if (this.IsAbstract)
 			{
 				code.Add(new KeywordTag("abstract"));
+			}
+
+			if (this.IsVirtual)
+			{
+				code.Add(new KeywordTag("virtual"));
 			}
 
 			code.Add(this.ReturnType.ToCode());

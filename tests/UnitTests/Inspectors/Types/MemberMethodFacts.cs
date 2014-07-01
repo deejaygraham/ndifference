@@ -218,5 +218,27 @@ namespace NDifference.UnitTests
 
 		}
 
+
+		[Fact]
+		public void MethodsChanged_Making_Method_Virtual_Is_Identified()
+		{
+			var oldClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("public void DoStuff () { }");
+
+			var newClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("public virtual void DoStuff () { }");
+
+			var delta = IdentifiedChangeCollectionBuilder.Changes()
+				.From(oldClassBuilder)
+				.To(newClassBuilder)
+				.InspectedBy(new MethodsChanged())
+				.Build();
+
+			Assert.Equal(1, delta.Changes.Count);
+
+		}
+
 	}
 }

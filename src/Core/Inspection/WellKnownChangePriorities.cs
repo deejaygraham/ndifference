@@ -18,7 +18,7 @@ namespace NDifference.Inspection
 		//public static readonly int UnchangedAssemblies = 4;
 
 		// assembly level
-		public static readonly int AssemblyInternal = 0;
+		public static readonly int AssemblyInternal = 10;
 
 		public static readonly int RemovedReferences = AssemblyInternal + 1;
 
@@ -35,7 +35,7 @@ namespace NDifference.Inspection
 		// public static readonly int UnchangedTypes = 5;
 
 		// type level
-		public static readonly int TypeInternal = 0;
+		public static readonly int TypeInternal = 100;
 
 		// constants
 		public static readonly int ConstantsRemoved = TypeInternal + 1;

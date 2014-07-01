@@ -31,7 +31,7 @@ namespace NDifference.Inspectors
 				ITypeInfo t1 = s.First;
 				ITypeInfo ti = s.Second;
 
-				if (ti.ObsoleteMarker != null)
+				if (t1.ObsoleteMarker == null && ti.ObsoleteMarker != null)
 				{
 					changes.Add(
 						new IdentifiedChange(

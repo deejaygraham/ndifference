@@ -88,31 +88,38 @@ namespace NDifference.Reporting
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, IDocumentLink change, IReportOutput output, FileMap map)
 		{
-			writer.WriteElement("tr", () =>
+			bool outputDeadLinks = false;
+
+			// look up correct path...
+			IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
+
+			string fullPath = map.PathFor(change.Identifier);
+
+			bool linkIsGood = System.IO.File.Exists(fullPath);
+
+			if (linkIsGood || outputDeadLinks)
 			{
-				//writer.WriteElement("td", () =>
-				//{
-				//	writer.WriteRaw(shortCode);
-				//});
-				writer.WriteElement("td", () =>
+				writer.WriteElement("tr", () =>
 				{
-					// look up correct path...
-					IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
-
-					string fullPath = map.PathFor(change.Identifier);
-
-					if (System.IO.File.Exists(fullPath))
+					//writer.WriteElement("td", () =>
+					//{
+					//	writer.WriteRaw(shortCode);
+					//});
+					writer.WriteElement("td", () =>
 					{
-						string relativePath = map.PathRelativeTo(change.Identifier, folder);
+						if (linkIsGood)
+						{
+							string relativePath = map.PathRelativeTo(change.Identifier, folder);
 
-						writer.WriteLink(map.PathRelativeTo(change.Identifier, folder), change.LinkText);
-					}
-					else
-					{
-						writer.WriteRaw(change.LinkText);
-					}
+							writer.WriteLink(map.PathRelativeTo(change.Identifier, folder), change.LinkText);
+						}
+						else
+						{
+							writer.WriteRaw(change.LinkText);
+						}
+					});
 				});
-			});
+			}
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, ITextDescriptor change, IReportFormat format)

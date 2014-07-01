@@ -23,6 +23,8 @@ namespace NDifference.TypeSystem
 
 		public bool IsStatic { get; set; }
 
+		public bool IsVirtual { get { return false; } }
+
 		public bool IsDefault
 		{
 			get

@@ -39,7 +39,17 @@ namespace NDifference.Inspectors
 
 					if (counterpart != null)
 					{
-						if (!method.IsAbstract && counterpart.IsAbstract)
+						if (method.IsVirtual != counterpart.IsVirtual)
+						{
+							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
+									new DeltaDescriptor
+									{
+										Name = method.IsVirtual ? "Method is no longer virtual" : "Method is now virtual",
+										Was = method.ToCode(),
+										IsNow = counterpart.ToCode()
+									}));
+						}
+						else if (!method.IsAbstract && counterpart.IsAbstract)
 						{
 							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
 									new DeltaDescriptor

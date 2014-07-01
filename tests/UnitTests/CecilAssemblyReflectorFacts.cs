@@ -36,6 +36,67 @@ namespace NDifference.UnitTests
 		}
 
 		[Fact]
+		public void CecilAssemblyReflector_Abstract_Method_In_Class_Is_Abstract()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableClassBuilder.PublicClass()
+					.Named("Entity")
+					.IsAbstract()
+					.WithDefaultConstructor()
+					.WithMethod("public abstract int GetSerialNo();");
+
+				var compiled = ofc.Compile(code);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes();
+
+				Assert.Equal(1, types.Count());
+
+				var info = types.First();
+
+				Assert.Equal(TypeTaxonomy.Class, info.Taxonomy);
+
+				ClassDefinition cd = info as ClassDefinition;
+
+				Assert.True(cd.Methods[0].IsAbstract);
+			}
+		}
+
+		[Fact]
+		public void CecilAssemblyReflector_Virtual_Method_In_Class_Is_Virtual()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableClassBuilder.PublicClass()
+					.Named("Entity")
+					.WithDefaultConstructor()
+					.WithMethod("public virtual int GetSerialNo() { return 0; }");
+
+				var compiled = ofc.Compile(code);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes();
+
+				Assert.Equal(1, types.Count());
+
+				var info = types.First();
+
+				Assert.Equal(TypeTaxonomy.Class, info.Taxonomy);
+
+				ClassDefinition cd = info as ClassDefinition;
+
+				Assert.True(cd.Methods[0].IsVirtual);
+			}
+		}
+
+		[Fact]
 		public void CecilAssemblyReflector_Loads_Generic_Class_From_Assembly()
 		{
 			using (var ofc = new OnTheFlyCompiler())
@@ -85,6 +146,36 @@ namespace NDifference.UnitTests
 
 				Assert.Equal(TypeTaxonomy.Interface, info.Taxonomy);
 				Assert.Equal("IEntity", info.FullName);
+			}
+		}
+
+		[Fact]
+		public void CecilAssemblyReflector_Interface_Methods_Are_Not_Virtual()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableInterfaceBuilder.PublicInterface()
+					.Named("IEntity")
+					.WithMethod("int CalcValue();");
+
+				var compiled = ofc.Compile(code);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes();
+
+				Assert.Equal(1, types.Count());
+
+				var info = types.First();
+
+				Assert.Equal(TypeTaxonomy.Interface, info.Taxonomy);
+
+				InterfaceDefinition id = info as InterfaceDefinition;
+
+				Assert.False(id.Methods[0].IsVirtual);
+				Assert.False(id.Methods[0].IsAbstract);
 			}
 		}
 

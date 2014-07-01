@@ -14,6 +14,8 @@ namespace NDifference.TypeSystem
 		bool IsAbstract { get; }
 
 		bool IsStatic { get; }
+
+		bool IsVirtual { get; }
 	}
 
 	public static class IMemberMethodExtensions

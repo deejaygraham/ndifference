@@ -20,6 +20,11 @@ namespace NDifference.Reflection.Builders
 				Name = md.Name
 			};
 
+			if (md.IsSpecialName)
+			{
+				signature.Name = md.DeclaringType.Name;
+			}
+
 			if (md.HasParameters)
 			{
 				foreach (var parameter in md.Parameters)

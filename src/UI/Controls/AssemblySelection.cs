@@ -124,6 +124,11 @@ namespace NDifference.UI.Controls
 
 		private void btnAdd_Click(object sender, EventArgs e)
 		{
+			PromptToAddItems();
+		}
+
+		private void PromptToAddItems()
+		{
 			using (OpenFileDialog dialog = new OpenFileDialog())
 			{
 				dialog.Multiselect = true;
@@ -137,6 +142,11 @@ namespace NDifference.UI.Controls
 		}
 
 		private void bntRemove_Click(object sender, EventArgs e)
+		{
+			RemoveSelectedItems();
+		}
+
+		private void RemoveSelectedItems()
 		{
 			if (lvAssemblies.SelectedItems.Count > 0)
 			{
@@ -176,6 +186,35 @@ namespace NDifference.UI.Controls
 		private void lvAssemblies_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			btnRemove.Enabled = lvAssemblies.SelectedItems.Count > 0;
+		}
+
+		private void lvAssemblies_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.A && e.Control)
+			{
+				SelectAll();
+
+				e.SuppressKeyPress = true;
+			}
+			else if (e.KeyCode == Keys.Delete 
+				|| e.KeyCode == Keys.OemMinus 
+				|| e.KeyCode == Keys.Subtract)
+			{
+				RemoveSelectedItems();
+			}
+			else if (e.KeyCode == Keys.Insert 
+				|| e.KeyCode == Keys.Add)
+			{
+				PromptToAddItems();
+			}
+		}
+
+		private void SelectAll()
+		{
+			foreach (ListViewItem item in lvAssemblies.Items)
+			{
+				item.Selected = true;
+			}
 		}
 	}
 

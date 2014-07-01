@@ -34,7 +34,12 @@ namespace NDifference.Reflection.Builders
 			var propBuilder = new PropertyBuilder();
 			propBuilder.BuildFrom(discovered, id);
 
-			var methodBuilder = new MethodBuilder();
+			var methodBuilder = new MethodBuilder
+			{
+				SuppressAbstractModifier = true,
+				SuppressVirtualModifier = true
+			};
+
 			methodBuilder.BuildFrom(discovered, id);
 
 			if (discovered.HasInterfaces)

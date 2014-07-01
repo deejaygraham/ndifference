@@ -11,6 +11,10 @@ namespace NDifference.Reflection.Builders
 {
 	public class MethodBuilder
 	{
+		public bool SuppressAbstractModifier { get; set; }
+
+		public bool SuppressVirtualModifier { get; set; }
+
 		public void BuildFrom(TypeDefinition discovered, IReferenceTypeDefinition building)
 		{
 			Debug.Assert(discovered != null, "Type definition is null");
@@ -75,7 +79,7 @@ namespace NDifference.Reflection.Builders
 
 		private StaticConstructor BuildStaticConstructorFrom(MethodDefinition md)
 		{
-			var sc = new StaticConstructor(md.Name);
+			var sc = new StaticConstructor(md.DeclaringType.Name);
 
 			var obsBuilder = new ObsoleteBuilder();
 			obsBuilder.BuildFrom(md, sc);
@@ -85,7 +89,7 @@ namespace NDifference.Reflection.Builders
 
 		private Finalizer BuildFinalizerFrom(MethodDefinition md)
 		{
-			Finalizer fin = new Finalizer(md.Name);
+			Finalizer fin = new Finalizer(md.DeclaringType.Name);
 
 			var obsBuilder = new ObsoleteBuilder();
 			obsBuilder.BuildFrom(md, fin);
@@ -100,8 +104,9 @@ namespace NDifference.Reflection.Builders
 			im.Accessibility = md.IsProtected()
 				? MemberAccessibility.Protected
 				: MemberAccessibility.Public;
-			im.IsAbstract = md.IsAbstract && !md.DeclaringType.IsInterface;
+			im.IsAbstract = this.SuppressAbstractModifier ? false : md.IsAbstract;
 			im.IsStatic = md.IsStatic;
+			im.IsVirtual = this.SuppressVirtualModifier ? false : md.IsVirtual;
 
 			var sigBuild = new SignatureBuilder();
 			im.Signature = sigBuild.BuildFrom(md);

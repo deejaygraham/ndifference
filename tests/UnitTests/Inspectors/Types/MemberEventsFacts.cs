@@ -8,49 +8,29 @@ using Xunit;
 
 namespace NDifference.UnitTests.Inspectors.Types
 {
-	public class MemberFieldFacts
+	public class MemberEventsFacts
 	{
 		[Fact]
-		public void FieldsAdded_Identifies_When_Adding_New_Field()
+		public void EventsAdded_Identifies_When_Adding_New_Event()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsAdded())
+				.InspectedBy(new EventsAdded())
 				.Build();
 
 			Assert.Equal(1, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void ConstantsAdded_Identifies_When_Existing_Constant_Made_Field()
-		{
-			var oldClassBuilder = CompilableClassBuilder.PublicClass()
-										.Named("Account")
-										.WithConstant("string", "MyField", "\"Hello World\"");
-
-			var newClassBuilder = CompilableClassBuilder.PublicClass()
-										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"");
-
-			var delta = IdentifiedChangeCollectionBuilder.Changes()
-				.From(oldClassBuilder)
-				.To(newClassBuilder)
-				.InspectedBy(new FieldsAdded())
-				.Build();
-
-			Assert.Equal(1, delta.Changes.Count);
-		}
-
-		[Fact]
-		public void FieldsAdded_Ignores_When_No_Fields()
+		public void EventsAdded_Ignores_When_No_Events()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account");
@@ -61,121 +41,119 @@ namespace NDifference.UnitTests.Inspectors.Types
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsAdded())
+				.InspectedBy(new EventsAdded())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsAdded_Ignores_When_Fields_Unchanged()
+		public void EventsAdded_Ignores_When_Events_Unchanged()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("int", "MyInt", "1")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("int", "MyInt", "1")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsAdded())
+				.InspectedBy(new EventsAdded())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsAdded_Ignores_When_Field_Removed()
+		public void EventsAdded_Ignores_When_Event_Removed()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("int", "MyInt", "1")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler OpenComplete;")
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("int", "MyInt", "1");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsAdded())
+				.InspectedBy(new EventsAdded())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsObsolete_Identifies_When_Field_Made_Obsolete()
+		public void EventsObsolete_Identifies_When_Event_Made_Obsolete()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("[Obsolete] public string MyField = \"Hello World\";");
+										.WithEvent("[Obsolete] public event EventHandler SaveComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsObsolete())
+				.InspectedBy(new EventsObsolete())
 				.Build();
 
 			Assert.Equal(1, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsObsolete_Identifies_When_Field_Made_Obsolete_With_Message()
+		public void EventsObsolete_Identifies_When_Event_Made_Obsolete_With_Message()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("[Obsolete(\"Do not use\")] public string MyField = \"Hello World\";");
+										.WithEvent("[Obsolete(\"Do not use\")] public event EventHandler SaveComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsObsolete())
+				.InspectedBy(new EventsObsolete())
 				.Build();
 
 			Assert.Equal(1, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsObsolete_Ignores_When_Fields_Not_Obsolete()
+		public void EventsObsolete_Ignores_When_Events_Not_Obsolete()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsObsolete())
+				.InspectedBy(new EventsObsolete())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsRemoved_Identifies_When_Removing_Field()
+		public void EventsRemoved_Identifies_When_Removing_Event()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account");
@@ -183,14 +161,14 @@ namespace NDifference.UnitTests.Inspectors.Types
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsRemoved())
+				.InspectedBy(new EventsRemoved())
 				.Build();
 
 			Assert.Equal(1, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsRemoved_Ignores_When_No_Fields()
+		public void EventsRemoved_Ignores_When_No_Events()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account");
@@ -201,98 +179,94 @@ namespace NDifference.UnitTests.Inspectors.Types
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsRemoved())
+				.InspectedBy(new EventsRemoved())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsRemoved_Ignores_When_Fields_Unchanged()
+		public void EventsRemoved_Ignores_When_Events_Unchanged()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("int", "MyInt", "1")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("int", "MyInt", "1")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsRemoved())
+				.InspectedBy(new EventsRemoved())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsRemoved_Ignores_When_Field_Added()
+		public void EventsRemoved_Ignores_When_Event_Added()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler OpenComplete;");
+
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"")
-										.WithField("int", "MyInt", "1");
+										.WithEvent("public event EventHandler OpenComplete;")
+										.WithEvent("public event EventHandler SaveComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsRemoved())
+				.InspectedBy(new EventsRemoved())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsChanged_Identifies_When_Field_Changes_Type()
+		public void EventsChanged_Identifies_When_Event_Changes_Type()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("int", "MyInt", "1")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler OpenComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"")
-										.WithField("double", "MyInt", "1.0");
+										.WithEvent("public event EventHandler<EventArgs> OpenComplete;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsChanged())
+				.InspectedBy(new EventsChanged())
 				.Build();
 
 			Assert.Equal(1, delta.Changes.Count);
 		}
 
 		[Fact]
-		public void FieldsChanged_Ignores_When_Field_Name_Changes()
+		public void EventsChanged_Ignores_When_Event_Name_Changes()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("int", "MyInt", "1")
-										.WithField("string", "MyField", "\"Hello World\"");
+										.WithEvent("public event EventHandler OpenComplete;");
 
 			var newClassBuilder = CompilableClassBuilder.PublicClass()
 										.Named("Account")
-										.WithField("string", "MyField", "\"Hello World\"")
-										.WithField("int", "MyOtherInt", "1");
+										.WithEvent("public event EventHandler OpenComplete2;");
 
 			var delta = IdentifiedChangeCollectionBuilder.Changes()
 				.From(oldClassBuilder)
 				.To(newClassBuilder)
-				.InspectedBy(new FieldsChanged())
+				.InspectedBy(new EventsChanged())
 				.Build();
 
 			Assert.Equal(0, delta.Changes.Count);
 		}
 
 	}
+
 }

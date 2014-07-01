@@ -55,6 +55,7 @@
     <Compile Include="Files\PhysicalFile.cs" />
     <Compile Include="Files\PhysicalFolder.cs" />
     <Compile Include="Framework\CancellableEventArgs.cs" />
+    <Compile Include="Framework\FileProgessEventArgs.cs" />
     <Compile Include="Framework\Product.cs" />
     <Compile Include="Framework\ProductIncrement.cs" />
     <Compile Include="Inspection\CombinedAssemblyModel.cs" />

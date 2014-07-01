@@ -61,6 +61,17 @@ namespace NDifference.Inspectors
 									}));
 						}
 
+						if (method.Accessibility != counterpart.Accessibility)
+						{
+							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
+									new DeltaDescriptor
+									{
+										Name = "Accessibility has changed",
+										Was = method.Accessibility.ToDescription(),
+										IsNow = counterpart.Accessibility.ToDescription()
+									}));
+						}
+
 						MemberMethod mm = method as MemberMethod;
 						MemberMethod cm = counterpart as MemberMethod;
 

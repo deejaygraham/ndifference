@@ -67,6 +67,7 @@
     <Compile Include="Inspectors\Types\EnumInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\FinalizerInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\MemberConstantFacts.cs" />
+    <Compile Include="Inspectors\Types\MemberEventsFacts.cs" />
     <Compile Include="Inspectors\Types\MemberFieldFacts.cs" />
     <Compile Include="Inspectors\Types\MemberMethodFacts.cs" />
     <Compile Include="Inspectors\Types\MemberPropertyFacts.cs" />

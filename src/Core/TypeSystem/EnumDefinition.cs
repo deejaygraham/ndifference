@@ -17,6 +17,9 @@ namespace NDifference.TypeSystem
 		private Identifier ident = new Identifier();
 
 		[NonSerialized]
+		private string assemblyName;
+
+		[NonSerialized]
 		private string _hashValue;
 
 		public EnumDefinition()
@@ -55,7 +58,7 @@ namespace NDifference.TypeSystem
 
 		public string FullName { get; set; }
 
-		public string Assembly { get; set; }
+		public string Assembly { get { return assemblyName; } set { assemblyName = value; } }
 
 		public Obsolete ObsoleteMarker { get; set; }
 

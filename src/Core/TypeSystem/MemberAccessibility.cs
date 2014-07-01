@@ -32,4 +32,42 @@ namespace NDifference.TypeSystem
 		/// </summary>
 		ProtectedInternal
 	}
+
+	public static class MemberAccessibilityExtensions
+	{
+		public static string ToDescription(this MemberAccessibility e)
+		{
+			string description = string.Empty;
+
+			switch(e)
+			{
+				case MemberAccessibility.Private:
+					description = "private";
+					break;
+
+				case MemberAccessibility.Public:
+					description = "public";
+					break;
+
+				case MemberAccessibility.Protected:
+					description = "protected";
+					break;
+
+				case MemberAccessibility.Internal:
+					description = "internal";
+					break;
+
+				case MemberAccessibility.ProtectedInternal:
+					description = "protected internal";
+					break;
+
+				default:
+
+					description = "Unknown value";
+					break;
+			}
+
+			return description;
+		}
+	}
 }

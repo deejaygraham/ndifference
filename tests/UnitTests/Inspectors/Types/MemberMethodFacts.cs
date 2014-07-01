@@ -32,6 +32,67 @@ namespace NDifference.UnitTests
 		}
 
 		[Fact]
+		public void MethodsAdded_Adding_Protected_Method_Is_Identified()
+		{
+			var oldClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("public void DoStuff () { }");
+
+			var newClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("public void DoStuff () { }")
+							.WithMethod("protected void DoStuff2 () { }");
+
+			var delta = IdentifiedChangeCollectionBuilder.Changes()
+				.From(oldClassBuilder)
+				.To(newClassBuilder)
+				.InspectedBy(new MethodsAdded())
+				.Build();
+
+			Assert.Equal(1, delta.Changes.Count);
+		}
+
+		[Fact]
+		public void MethodsChanged_Changing_Method_Public_To_Protected_Is_Identified()
+		{
+			var oldClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("public void DoStuff () { }");
+
+			var newClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("protected void DoStuff () { }");
+
+			var delta = IdentifiedChangeCollectionBuilder.Changes()
+				.From(oldClassBuilder)
+				.To(newClassBuilder)
+				.InspectedBy(new MethodsChanged())
+				.Build();
+
+			Assert.Equal(1, delta.Changes.Count);
+		}
+
+		[Fact]
+		public void MethodsChanged_Changing_Method_Protected_To_Public_Is_Identified()
+		{
+			var oldClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("protected void DoStuff () { }");
+
+			var newClassBuilder = CompilableClassBuilder.PublicClass()
+							.Named("Account")
+							.WithMethod("public void DoStuff () { }");
+
+			var delta = IdentifiedChangeCollectionBuilder.Changes()
+				.From(oldClassBuilder)
+				.To(newClassBuilder)
+				.InspectedBy(new MethodsChanged())
+				.Build();
+
+			Assert.Equal(1, delta.Changes.Count);
+		}
+
+		[Fact]
 		public void MethodsRemoved_Removing_Method_Is_Identified()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()

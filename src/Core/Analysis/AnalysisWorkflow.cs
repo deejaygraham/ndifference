@@ -23,6 +23,10 @@ namespace NDifference.Analysis
 
 		public event EventHandler AssemblyComparisonComplete;
 
+		public event EventHandler<FileProgessEventArgs> AnalysingAssembly;
+
+		public event EventHandler AssemblyAnalysisComplete;
+
 		public event EventHandler<CancellableEventArgs> TypeComparisonStarting;
 
 		public event EventHandler TypeComparisonComplete;
@@ -72,7 +76,7 @@ namespace NDifference.Analysis
 				RunAssemblyCollectionInspectors(inspectors, assemblyModel, result.Summary);
 
 				// now get each assembly pair and compare them at the internal level...
-				foreach (var common in assemblyModel.ChangedInCommon)
+				foreach (var commonAssemblyPair in assemblyModel.ChangedInCommon)
 				{
 					var cancelCompare = new CancellableEventArgs();
 					this.AssemblyComparisonStarting.Fire(this, cancelCompare);
@@ -83,50 +87,45 @@ namespace NDifference.Analysis
 						return result;
 					}
 
-					var dll1 = common.First;
-					var dll2 = common.Second;
+					var previousAssembly = commonAssemblyPair.First;
+					var currentAssembly = commonAssemblyPair.Second;
+										
+					this.AnalysingAssembly.Fire(this, new FileProgessEventArgs { FileName = currentAssembly.Name });
 
 					// inspect each assembly...
-					var reflector1 = this.ReflectorFactory.LoadAssembly(dll1.Path);
-					var reflector2 = this.ReflectorFactory.LoadAssembly(dll2.Path);
+					var previousVersionReflection = this.ReflectorFactory.LoadAssembly(previousAssembly.Path);
+					var currentVersionReflection = this.ReflectorFactory.LoadAssembly(currentAssembly.Path);
 
-					var typesIn1 = reflector1.GetTypes(AssemblyReflectionOption.Public);
-					var typesIn2 = reflector2.GetTypes(AssemblyReflectionOption.Public);
-
-					// do all comparisons...
-
-					IdentifiedChangeCollection dllChanges = new IdentifiedChangeCollection
+					IdentifiedChangeCollection changesToThisAssembly = new IdentifiedChangeCollection
 					{
-						//Heading = project.Product.Name,
-						Name = dll1.Name
+						Name = previousAssembly.Name
 					};
 
-					dllChanges.SummaryBlocks.Add("Name", dll1.Name);
-					dllChanges.SummaryBlocks.Add("From", reflector1.GetAssemblyInfo().Version.ToString());
-					dllChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString());
+					changesToThisAssembly.SummaryBlocks.Add("Name", previousAssembly.Name);
+					changesToThisAssembly.SummaryBlocks.Add("From", previousVersionReflection.GetAssemblyInfo().Version.ToString());
+					changesToThisAssembly.SummaryBlocks.Add("To", currentVersionReflection.GetAssemblyInfo().Version.ToString());
 
-					dllChanges.CopyMetaFrom(result.Summary);
-					dllChanges.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
+					changesToThisAssembly.CopyMetaFrom(result.Summary);
+					changesToThisAssembly.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
 
-					// each inspector
 					// looking for general changes to the assembly...
 					foreach (var ai in inspectors.AssemblyInspectors.Where(x => x.Enabled))
 					{
-						ai.Inspect(reflector1.GetAssemblyInfo(), reflector2.GetAssemblyInfo(), dllChanges);
+						ai.Inspect(previousVersionReflection.GetAssemblyInfo(), currentVersionReflection.GetAssemblyInfo(), changesToThisAssembly);
 					}
 
-					var firstTypes = reflector1.GetTypes(AssemblyReflectionOption.Public);
-					var secondTypes = reflector1.GetTypes(AssemblyReflectionOption.Public);
+					var previousTypeCollection = previousVersionReflection.GetTypes(AssemblyReflectionOption.Public);
+					var currentTypeCollection = currentVersionReflection.GetTypes(AssemblyReflectionOption.Public);
 
-					ICombinedTypes typeModel = CombinedObjectModel.BuildFrom(firstTypes, secondTypes);
+					ICombinedTypes typeModel = CombinedObjectModel.BuildFrom(previousTypeCollection, currentTypeCollection);
 
 					foreach (var tci in inspectors.TypeCollectionInspectors.Where(x => x.Enabled))
 					{
-						tci.Inspect(typeModel, dllChanges);
+						tci.Inspect(typeModel, changesToThisAssembly);
 					}
 
 					// now inspect each type...
-					foreach (var commonType in typeModel.ChangedInCommon)
+					foreach (var commonTypePair in typeModel.ChangedInCommon)
 					{
 						var cancelTypeStart = new CancellableEventArgs();
 						this.TypeComparisonStarting.Fire(this, cancelTypeStart);
@@ -137,41 +136,41 @@ namespace NDifference.Analysis
 							return result;
 						}
 
-						ITypeInfo t1 = commonType.First;
-						ITypeInfo t2 = commonType.Second;
+						ITypeInfo previousType = commonTypePair.First;
+						ITypeInfo currentType = commonTypePair.Second;
 
 						// find common types...
-						IdentifiedChangeCollection typeChanges = new IdentifiedChangeCollection
+						IdentifiedChangeCollection changesToThisType = new IdentifiedChangeCollection
 						{
 							//Heading = project.Product.Name,
-							Name = t1.Name
+							Name = previousType.FullName
 						};
 
-						typeChanges.SummaryBlocks.Add("Name", t2.Name);
-						typeChanges.SummaryBlocks.Add("Namespace", t2.Namespace);
-						typeChanges.SummaryBlocks.Add("Assembly", t2.Assembly);
-						typeChanges.SummaryBlocks.Add("From", reflector1.GetAssemblyInfo().Version.ToString() + " " + t1.CalculateHash());
-						typeChanges.SummaryBlocks.Add("To", reflector2.GetAssemblyInfo().Version.ToString() + " " + t2.CalculateHash());
+						changesToThisType.SummaryBlocks.Add("Name", currentType.Name);
+						changesToThisType.SummaryBlocks.Add("Namespace", currentType.Namespace);
+						changesToThisType.SummaryBlocks.Add("Assembly", currentType.Assembly);
+						changesToThisType.SummaryBlocks.Add("From", previousVersionReflection.GetAssemblyInfo().Version.ToString() + " " + previousType.CalculateHash());
+						changesToThisType.SummaryBlocks.Add("To", currentVersionReflection.GetAssemblyInfo().Version.ToString() + " " + currentType.CalculateHash());
 
-						typeChanges.CopyMetaFrom(result.Summary);
+						changesToThisType.CopyMetaFrom(result.Summary);
 
-						typeChanges.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
-						typeChanges.Parents.Add(new DocumentLink { Identifier = dllChanges.Identifier, LinkText = dllChanges.Name });
+						changesToThisType.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
+						changesToThisType.Parents.Add(new DocumentLink { Identifier = changesToThisAssembly.Identifier, LinkText = changesToThisAssembly.Name });
 
 						foreach (var ti in inspectors.TypeInspectors.Where(x => x.Enabled))
 						{
-							ti.Inspect(t1, t2, typeChanges);
+							ti.Inspect(previousType, currentType, changesToThisType);
 						}
 
-						if (typeChanges.Changes.Any())
+						if (changesToThisType.Changes.Any())
 						{
 							if (project.Settings.ConsolidateAssemblyTypes)
 							{
-								typeChanges.Changes.ForEach(x => dllChanges.Add(x));
+								changesToThisType.Changes.ForEach(x => changesToThisAssembly.Add(x));
 							}
 							else
 							{
-								result.Type(typeChanges);
+								result.Type(changesToThisType);
 							}
 						}
 
@@ -180,15 +179,17 @@ namespace NDifference.Analysis
 
 					ChurnCalculator calc2 = new ChurnCalculator(typeModel);
 
-					dllChanges.SummaryBlocks.Add("Churn", calc2.Calculate().ToString() + " %");
+					changesToThisAssembly.SummaryBlocks.Add("Churn", calc2.Calculate().ToString() + " %");
 
 					this.AssemblyComparisonComplete.Fire(this);
 
 					// hand this off to another container...
-					if (dllChanges.Changes.Any())
+					if (changesToThisAssembly.Changes.Any())
 					{
-						result.Assembly(dllChanges);
+						result.Assembly(changesToThisAssembly);
 					}
+
+					this.AssemblyAnalysisComplete.Fire(this);
 				}
 
 				var overallChurn = new ChurnCalculator(assemblyModel);

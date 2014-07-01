@@ -46,6 +46,7 @@
     <Compile Include="AddedTypesInspector.cs" />
     <Compile Include="ArchitectureChangeInspector.cs" />
     <Compile Include="AssemblyReferenceInspector.cs" />
+    <Compile Include="AssemblyStatisticsInspector.cs" />
     <Compile Include="ClassAbstractionInspector.cs" />
     <Compile Include="ClassDerivationInspector.cs" />
     <Compile Include="ClassSealingInspector.cs" />
@@ -57,6 +58,10 @@
     <Compile Include="DemoTypeCollectionInspector.cs" />
     <Compile Include="DemoTypeInspector.cs" />
     <Compile Include="EnumInspector.cs" />
+    <Compile Include="EventsAdded.cs" />
+    <Compile Include="EventsChanged.cs" />
+    <Compile Include="EventsObsolete.cs" />
+    <Compile Include="EventsRemoved.cs" />
     <Compile Include="FieldsAdded.cs" />
     <Compile Include="FieldsChanged.cs" />
     <Compile Include="FieldsObsolete.cs" />

@@ -622,6 +622,9 @@ namespace NDifference.UI
 			this.progressBar1.Value = 0;
 			this.progressBar1.Maximum = steps;
 
+			try
+			{
+
 			Task t = new Task(() =>
 			{
 				IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
@@ -680,6 +683,11 @@ namespace NDifference.UI
 				TaskScheduler.FromCurrentSynchronizationContext());
 
 			t.Start();
+			}
+			catch(Exception)
+			{
+
+			}
 		}
 
 		private void RunReportingProcess(object sender, DoWorkEventArgs e)

@@ -13,15 +13,19 @@ namespace NDifference.Analysis
 	{
 		event EventHandler<CancellableEventArgs> AnalysisStarting;
 
-		event EventHandler AnalysisComplete;
-
 		event EventHandler<CancellableEventArgs> AssemblyComparisonStarting;
+
+		event EventHandler<FileProgessEventArgs> AnalysingAssembly;
+
+		event EventHandler AssemblyAnalysisComplete;
 
 		event EventHandler AssemblyComparisonComplete;
 
 		event EventHandler<CancellableEventArgs> TypeComparisonStarting;
 
 		event EventHandler TypeComparisonComplete;
+
+		event EventHandler AnalysisComplete;
 
 		AnalysisResult RunAnalysis(Project project, InspectorRepository inspectors);
 	}

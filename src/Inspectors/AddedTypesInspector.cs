@@ -29,7 +29,7 @@ namespace NDifference.Inspectors
 
 			foreach (var added in types.InLaterOnly)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedTypes, added.Second.Name));
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedTypes, added.Second.FullName));
 			}
 			
 		}

@@ -34,9 +34,9 @@ namespace NDifference.Inspectors
 			{
 				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.ChangedTypes, common.Second.FullName, new DocumentLink
 				{
-					LinkText = common.First.Name,
+					LinkText = common.First.FullName,
 					LinkUrl = common.First.FullName,
-					Identifier = common.Second.Identifier
+					Identifier = common.First.Identifier
 				}));
 			}
 		}

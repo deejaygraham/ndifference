@@ -26,7 +26,7 @@ namespace NDifference.Inspectors
 
 			foreach (var removed in types.InEarlierOnly)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.First.Name));
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.First.FullName));
 			}
 
 		}

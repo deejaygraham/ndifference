@@ -31,7 +31,7 @@
 			this.btnRemove = new System.Windows.Forms.Button();
 			this.btnBrowse = new System.Windows.Forms.Button();
 			this.btnAdd = new System.Windows.Forms.Button();
-			this.lvAssemblies = new System.Windows.Forms.ListView();
+			this.lvAssemblies = new EmptyListView();
 			this.SuspendLayout();
 			// 
 			// btnRemove
@@ -72,6 +72,7 @@
 			this.lvAssemblies.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.lvAssemblies.MessageWhenEmpty = "No assemblies selected";
 			this.lvAssemblies.Location = new System.Drawing.Point(3, 3);
 			this.lvAssemblies.Name = "lvAssemblies";
 			this.lvAssemblies.Size = new System.Drawing.Size(247, 234);
@@ -100,6 +101,6 @@
 		private System.Windows.Forms.Button btnRemove;
 		private System.Windows.Forms.Button btnBrowse;
 		private System.Windows.Forms.Button btnAdd;
-		private System.Windows.Forms.ListView lvAssemblies;
+		private EmptyListView lvAssemblies;
 	}
 }

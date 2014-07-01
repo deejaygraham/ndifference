@@ -26,8 +26,19 @@ namespace NDifference.UI.Controls
 			this.DragDrop += AssemblySelection_DragDrop;
 			this.lvAssemblies.View = View.Details;
 			this.lvAssemblies.ShowItemToolTips = true;
+			this.lvAssemblies.FullRowSelect = true;
 
-			this.lvAssemblies.Columns.Add("Name", 250, HorizontalAlignment.Left);
+			this.lvAssemblies.HeaderStyle = ColumnHeaderStyle.None;
+
+			ColumnHeader header = new ColumnHeader();
+			header.Text = "Name";
+			header.Name = "Name";
+			header.Width = this.lvAssemblies.ClientSize.Width;
+			header.TextAlign = HorizontalAlignment.Left;
+
+			this.lvAssemblies.Columns.Add(header);
+
+			this.lvAssemblies.Sorting = SortOrder.Ascending;
 		}
 
 		void AssemblySelection_DragEnter(object sender, DragEventArgs e)

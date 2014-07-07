@@ -20,5 +20,16 @@ namespace NDifference.Analysis
 		public CategoryPriority Priority { get; set; }
 
 		public string[] Headings { get; set; }
+
+		public CategoryType CategoryType { get; set; }
+	}
+
+	public enum CategoryType
+	{
+		Unknown,
+		Information,
+		Warning,
+		Error,
+		Critical
 	}
 }

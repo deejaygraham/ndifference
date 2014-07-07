@@ -13,7 +13,8 @@ namespace NDifference.Inspectors
 			Name = "Assembly Changes",
 			Description = "These changes were made to the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AssemblyInternal),
-			Headings = new string[] { "Change" }
+			Headings = new string[] { "Change" },
+			CategoryType = CategoryType.Information
 		};
 
 		public static readonly Category RemovedReferences = new Category
@@ -21,7 +22,8 @@ namespace NDifference.Inspectors
 			Name = "Removed References",
 			Description = "These references were removed in the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedReferences),
-			Headings = new string[] { "Reference" }
+			Headings = new string[] { "Reference" },
+			CategoryType = CategoryType.Information
 		};
 
 		public static readonly Category AddedReferences = new Category
@@ -29,7 +31,8 @@ namespace NDifference.Inspectors
 			Name = "Added References",
 			Description = "These references were added to the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedReferences),
-			Headings = new string[] { "Reference" }
+			Headings = new string[] { "Reference" },
+			CategoryType = CategoryType.Information
 		};
 
 		public static readonly Category RemovedTypes = new Category
@@ -37,7 +40,8 @@ namespace NDifference.Inspectors
 			Name = "Removed Types",
 			Description = "These typers were removed from the new version of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedTypes),
-			Headings = new string[] { "Type" }
+			Headings = new string[] { "Type" },
+			CategoryType = CategoryType.Error
 		};
 
 		public static readonly Category ObsoleteTypes = new Category
@@ -45,7 +49,8 @@ namespace NDifference.Inspectors
 			Name = "Obsolete Types",
 			Description = "These types were marked as deprecated in the new version of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ObsoleteTypes),
-			Headings = new string[] { "Type", "Message" }
+			Headings = new string[] { "Type", "Message" },
+			CategoryType = CategoryType.Warning
 		};
 
 		public static readonly Category ChangedTypes = new Category
@@ -53,7 +58,8 @@ namespace NDifference.Inspectors
 			Name = "Changed Types",
 			Description = "These types have changed between the two versions of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ChangedTypes),
-			Headings = new string[] { "Type" }
+			Headings = new string[] { "Type" },
+			CategoryType = CategoryType.Warning
 		};
 
 		public static readonly Category AddedTypes = new Category
@@ -61,7 +67,8 @@ namespace NDifference.Inspectors
 			Name = "Added Types",
 			Description = "These types have been added to the new version",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedTypes),
-			Headings = new string[] { "Type" }
+			Headings = new string[] { "Type" },
+			CategoryType = CategoryType.Information
 		};
 
 		//public static readonly Category UnchangedTypes = new Category 

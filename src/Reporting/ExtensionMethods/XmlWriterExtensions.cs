@@ -12,6 +12,19 @@ namespace NDifference.Reporting
 	{
 		const int MaxLineLength = 80;
 
+		public static void WriteHtml4DocType(this XmlWriter writer)
+		{
+			writer.WriteRaw("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\r\n");
+		}
+
+		public static void WriteContentType(this XmlWriter writer, string contentType)
+		{
+			writer.WriteRaw("\r\n");
+			writer.WriteRaw("<meta http-equiv=\"Content-Type\" content=\"");
+			writer.WriteRaw(contentType);
+			writer.WriteRaw("\" >\r\n");
+		}
+
 		public static void WriteElement(this XmlWriter writer, string name, Action action)
 		{
 			writer.WriteStartElement(name);
@@ -40,15 +53,6 @@ namespace NDifference.Reporting
 			{
 				writer.WriteAttributeString("id", id);
 				writer.WriteString(heading);
-			});
-		}
-
-		public static void WriteLink(this XmlWriter writer, string link, string text)
-		{
-			writer.WriteElement("a", () =>
-			{
-				writer.WriteAttributeString("href", link.Replace('\\', '/'));
-				writer.WriteString(text);
 			});
 		}
 
@@ -111,7 +115,7 @@ namespace NDifference.Reporting
 						{
 							string relativePath = map.PathRelativeTo(change.Identifier, folder);
 
-							writer.WriteLink(map.PathRelativeTo(change.Identifier, folder), change.LinkText);
+							writer.RenderLink(map.PathRelativeTo(change.Identifier, folder), change.LinkText, change.LinkText);
 						}
 						else
 						{
@@ -244,19 +248,11 @@ namespace NDifference.Reporting
 			{
 				writer.WriteElement("td", () =>
 				{
-					writer.WriteElement("a", () =>
-					{
-						writer.WriteAttributeString("href", link);
-						writer.WriteString(cell1);
-					});
+					writer.RenderLink(link, cell1, cell1);
 				});
 				writer.WriteElement("td", () =>
 				{
-					writer.WriteElement("a", () =>
-					{
-						writer.WriteAttributeString("href", link);
-						writer.WriteString(cell2);
-					});
+					writer.RenderLink(link, cell2, cell2);
 				});
 			});
 		}
@@ -269,6 +265,16 @@ namespace NDifference.Reporting
 		public static void WriteTableRow(this XmlWriter writer, string cell1, int cell2, string link)
 		{
 			writer.WriteTableRowLink(cell1, cell2.ToString(), link);
+		}
+
+		public static void RenderLink(this XmlWriter writer, string href, string title, string anchorText)
+		{
+			writer.WriteElement("a", () =>
+			{
+				writer.WriteAttributeString("href", href.Replace('\\', '/'));
+				writer.WriteAttributeString("title", title);
+				writer.WriteString(anchorText);
+			});
 		}
 	}
 }

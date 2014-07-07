@@ -11,8 +11,8 @@ namespace NDifference.Reporting
 	/// </summary>
 	public interface IDocumentLink : IUniquelyIdentifiable
 	{
-		string LinkText { get; }
+		string LinkText { get; set; }
 
-		string LinkUrl { get; }
+		string LinkUrl { get; set; }
 	}
 }

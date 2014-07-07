@@ -79,6 +79,8 @@
     <Compile Include="Projects\ProjectSettings.cs" />
     <Compile Include="Projects\ProjectWriter.cs" />
     <Compile Include="Reporting\CodeDescriptor.cs" />
+    <Compile Include="Reporting\DefaultHtml5Style.cs" />
+    <Compile Include="Reporting\DefaultHtmlStyle.cs" />
     <Compile Include="Reporting\DeltaDescriptor.cs" />
     <Compile Include="Reporting\DocumentLink.cs" />
     <Compile Include="Reporting\FileOutput.cs" />

@@ -133,6 +133,14 @@ generate fragments of files used for sandcastle ui
 Do unit tests on built code and on itypeinfos?
 
 handle params arguments
+in out ref arguments
 handle arrays[]
+
+# Metrics
+(see http://www.cppdepend.com/Metrics.aspx#MetricsOnApplication)
+Efferent coupling 
+Afferent coupling
+Dependencies between assemblies and objects
+(http://raygun.io)
 
 

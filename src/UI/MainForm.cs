@@ -340,10 +340,34 @@ namespace NDifference.UI
 			refreshedProject.Product.Name = txtProductName.Text;
 
 			var oldVersion = new ProductIncrement { Name = this.txtPreviousVersion.Text };
-			this.asPreviousVersion.SelectedAssemblies.ToList().ForEach(x => oldVersion.Add(AssemblyDiskInfoBuilder.BuildFromFile(x)));
+
+			foreach (var file in this.asPreviousVersion.SelectedAssemblies)
+			{
+				try
+				{
+					var info = AssemblyDiskInfoBuilder.BuildFromFile(file);
+					oldVersion.Add(info);
+				}
+				catch(FileNotFoundException)
+				{
+					// don't care if the file doesn't exist.
+				}
+			}
 
 			var newVersion = new ProductIncrement { Name = this.txtNewVersion.Text };
-			this.asNewVersion.SelectedAssemblies.ToList().ForEach(x => newVersion.Add(AssemblyDiskInfoBuilder.BuildFromFile(x)));
+
+			foreach (var file in this.asNewVersion.SelectedAssemblies)
+			{
+				try
+				{
+					var info = AssemblyDiskInfoBuilder.BuildFromFile(file);
+					newVersion.Add(info);
+				}
+				catch (FileNotFoundException)
+				{
+					// don't care if the file doesn't exist.
+				}
+			}
 
 			refreshedProject.Product.Add(oldVersion);
 			refreshedProject.Product.Add(newVersion);

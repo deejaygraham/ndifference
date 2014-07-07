@@ -117,7 +117,7 @@ namespace NDifference.Reporting
 											{
 												html.WriteElement("li", () =>
 												{
-													html.WriteLink(this.Map.PathRelativeTo(x.Identifier, new PhysicalFolder(currentFolder)), x.LinkText);
+													html.RenderLink(this.Map.PathRelativeTo(x.Identifier, new PhysicalFolder(currentFolder)), x.LinkText, x.LinkText);
 												});
 											});
 										});

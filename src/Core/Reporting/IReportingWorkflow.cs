@@ -19,6 +19,6 @@ namespace NDifference.Reporting
 
 		event EventHandler ReportsComplete;
 
-		void RunReports(Project project, IReportingRepository reporters, AnalysisResult results);
+		void RunReports(Project project, IReportingRepository reporters, AnalysisResult results, IProgress<ProgressValue> progressIndicator);
 	}
 }

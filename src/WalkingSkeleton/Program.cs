@@ -151,14 +151,14 @@ namespace WalkingSkeleton
 			InspectorFilter filter = new InspectorFilter(project.Settings.IgnoreInspectors);
 			ir.Filter(filter);
 
-			var result = analysis.RunAnalysis(project, ir);
+			var result = analysis.RunAnalysis(project, ir, null);
 
 			IReportingRepository rr = new ReportingRepository();
 			rr.Find(finder);
 
 			IReportingWorkflow reporting = new ReportingWorkflow();
 
-			reporting.RunReports(project, rr, result);
+			reporting.RunReports(project, rr, result, null);
 		}
 
 #endif

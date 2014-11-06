@@ -27,6 +27,6 @@ namespace NDifference.Analysis
 
 		event EventHandler AnalysisComplete;
 
-		AnalysisResult RunAnalysis(Project project, InspectorRepository inspectors);
+		AnalysisResult RunAnalysis(Project project, InspectorRepository inspectors, IProgress<ProgressValue> progressIndicator);
 	}
 }

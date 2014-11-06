@@ -71,6 +71,7 @@
     <Compile Include="Plugins\AssemblyCollectionInspectorPluginDiscoverer.cs" />
     <Compile Include="Plugins\ReportingPluginDiscoverer.cs" />
     <Compile Include="Plugins\TypeCollectionInspectorPluginDiscoverer.cs" />
+    <Compile Include="ProgressValue.cs" />
     <Compile Include="Projects\Project.cs" />
     <Compile Include="Projects\PersistableProject.cs" />
     <Compile Include="Projects\PersistableProjectSettings.cs" />

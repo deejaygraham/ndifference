@@ -41,7 +41,7 @@
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.buildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.buildToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.progressBar = new System.Windows.Forms.ProgressBar();
 			this.btnStart = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.productNameErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
@@ -59,6 +59,7 @@
 			this.asPreviousVersion = new NDifference.UI.Controls.AssemblySelection();
 			this.tpInspectors = new System.Windows.Forms.TabPage();
 			this.tvInspectors = new System.Windows.Forms.TreeView();
+			this.progressLabel = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.productNameErrorProvider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.previousVersionErrorProvider)).BeginInit();
@@ -160,16 +161,17 @@
 			this.buildToolStripMenuItem1.Text = "Build";
 			this.buildToolStripMenuItem1.Click += new System.EventHandler(this.buildToolStripMenuItem1_Click);
 			// 
-			// progressBar1
+			// progressBar
 			// 
-			this.progressBar1.Location = new System.Drawing.Point(15, 514);
-			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(708, 23);
-			this.progressBar1.TabIndex = 15;
+			this.progressBar.Location = new System.Drawing.Point(12, 612);
+			this.progressBar.Name = "progressBar";
+			this.progressBar.Size = new System.Drawing.Size(741, 23);
+			this.progressBar.TabIndex = 15;
+			this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
 			// 
 			// btnStart
 			// 
-			this.btnStart.Location = new System.Drawing.Point(15, 558);
+			this.btnStart.Location = new System.Drawing.Point(12, 641);
 			this.btnStart.Name = "btnStart";
 			this.btnStart.Size = new System.Drawing.Size(75, 23);
 			this.btnStart.TabIndex = 16;
@@ -179,7 +181,7 @@
 			// 
 			// btnCancel
 			// 
-			this.btnCancel.Location = new System.Drawing.Point(648, 558);
+			this.btnCancel.Location = new System.Drawing.Point(678, 641);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
 			this.btnCancel.TabIndex = 17;
@@ -312,15 +314,25 @@
 			this.tvInspectors.Size = new System.Drawing.Size(180, 52);
 			this.tvInspectors.TabIndex = 0;
 			// 
+			// progressLabel
+			// 
+			this.progressLabel.AutoSize = true;
+			this.progressLabel.Location = new System.Drawing.Point(12, 596);
+			this.progressLabel.Name = "progressLabel";
+			this.progressLabel.Size = new System.Drawing.Size(16, 13);
+			this.progressLabel.TabIndex = 19;
+			this.progressLabel.Text = "...";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(765, 676);
+			this.Controls.Add(this.progressLabel);
 			this.Controls.Add(this.tcContents);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnStart);
-			this.Controls.Add(this.progressBar1);
+			this.Controls.Add(this.progressBar);
 			this.Controls.Add(this.fsOutputFolder);
 			this.Controls.Add(this.txtNewVersion);
 			this.Controls.Add(this.txtPreviousVersion);
@@ -359,7 +371,7 @@
 		private NDifference.UI.Controls.WatermarkedTextBox txtPreviousVersion;
 		private NDifference.UI.Controls.WatermarkedTextBox txtNewVersion;
 		private NDifference.UI.Controls.FolderSelect fsOutputFolder;
-		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.ProgressBar progressBar;
 		private System.Windows.Forms.Button btnStart;
 		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.ToolStripMenuItem saveProjectToolStripMenuItem;
@@ -377,6 +389,7 @@
 		private System.Windows.Forms.TreeView tvInspectors;
 		private Controls.AssemblySelection asNewVersion;
 		private Controls.AssemblySelection asPreviousVersion;
+		private System.Windows.Forms.Label progressLabel;
 	}
 }
 

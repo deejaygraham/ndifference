@@ -74,7 +74,8 @@ namespace NDifference.UI
 			this._dataEntryState.Add(this.fsOutputFolder);
 			this._dataEntryState.Add(this.btnStart);
 
-			this._progressState.Add(this.progressBar1);
+			this._progressState.Add(this.progressLabel);
+			this._progressState.Add(this.progressBar);
 			this._progressState.Add(this.btnCancel);
 
 			this._progressState.Invisible();
@@ -207,7 +208,9 @@ namespace NDifference.UI
 
 		private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			string fileName = this._project.FileName;
 			this._project = UpdateProjectFromUI();
+			this._project.FileName = fileName;
 
 			if (string.IsNullOrEmpty(this._project.FileName))
 			{
@@ -232,7 +235,9 @@ namespace NDifference.UI
 
 		private void saveProjectAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			string fileName = this._project.FileName;
 			this._project = UpdateProjectFromUI();
+			this._project.FileName = fileName;
 
 			string saveProject = PromptForFileNameToSaveProject(this._project.Product.Name + "-" + this._project.Product.ComparedIncrements.First.Name + "-" + this._project.Product.ComparedIncrements.Second.Name);
 
@@ -561,7 +566,9 @@ namespace NDifference.UI
 
 			if (result == DialogResult.Yes)
 			{
+				string fileName = this._project.FileName;
 				this._project = UpdateProjectFromUI();
+				this._project.FileName = fileName;
 
 				if (string.IsNullOrEmpty(this._project.FileName))
 				{
@@ -605,7 +612,9 @@ namespace NDifference.UI
 
 		private void Build()
 		{
+			string fileName = this._project.FileName;
 			this._project = UpdateProjectFromUI();
+			this._project.FileName = fileName;
 
 			var errors = this.ValidateProject(this._project);
 
@@ -632,81 +641,91 @@ namespace NDifference.UI
 			this._dataEntryState.Disable();
 			this._progressState.Visible();
 
-			int steps = 5; // find rules, analyse folders...
-
-			// analysis & reporting
-			steps += this.asPreviousVersion.SelectedAssemblies.Count * 2;
-			steps += this.asNewVersion.SelectedAssemblies.Count * 2;
-
-			// need to know how many classes have changed !
-
-			++steps; // final report summary
-
-			this.progressBar1.Minimum = 0;
-			this.progressBar1.Value = 0;
-			this.progressBar1.Maximum = steps;
+			this.progressBar.Minimum = 0;
+			this.progressBar.Value = 0;
+			this.progressBar.Maximum = 100;
 
 			try
 			{
-
-			Task t = new Task(() =>
-			{
-				IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
-
-				AnalysisWorkflow analysis = new AnalysisWorkflow(
-					finder,
-					new CecilReflectorFactory());
-
-				InspectorRepository ir = new InspectorRepository();
-				ir.Find(finder);
-
-				InspectorFilter filter = new InspectorFilter(this._project.Settings.IgnoreInspectors);
-
-				ir.Filter(filter);
-
-				var result = analysis.RunAnalysis(this._project, ir);
-
-				IReportingRepository rr = new ReportingRepository();
-				rr.Find(finder);
-
-				IReportingWorkflow reporting = new ReportingWorkflow();
-
-				reporting.RunReports(this._project, rr, result);
-
-			});
-
-			Task t2 = t.ContinueWith((antecedent) =>
+				IProgress<ProgressValue> progressIndicator = new Progress<ProgressValue>(value =>
 				{
-					this._progressState.Invisible();
+					if (!String.IsNullOrEmpty(value.Description))
+					{
+						this.progressLabel.Visible = true;
+						this.progressLabel.Text = value.Description;
+					}
+					else
+						this.progressLabel.Visible = false;
 
-					//if (args.Error != null)
-					//{
-					//	MessageBox.Show(
-					//		args.Error.Message,
-					//		"NDifference",
-					//		MessageBoxButtons.OK,
-					//		MessageBoxIcon.Error);
-					//}
+					// this.progressBar.Value = value.Percent;
+				});
 
-					this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = true;
-					this._dataEntryState.Enable();
+				Task t = new Task(() =>
+				{
+					progressIndicator.Report(new ProgressValue { Description = "Starting..." });
 
-					//if (!args.Cancelled && args.Error == null)
-					//{
-					//    if (this._project.ReportFormat == ReportFormat.Html || this._project.ReportFormat == ReportFormat.Html4)
-					//    {
-					//        string launchPath = Path.Combine(this._project.OutputFolder, this._project.Name + ".html");
+					IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
-					//        if (System.IO.File.Exists(launchPath))
-					//        {
-					//            Process.Start(launchPath);
-					//        }
-					//    }
-					//}
-				},
-				TaskScheduler.FromCurrentSynchronizationContext());
+					AnalysisWorkflow analysis = new AnalysisWorkflow(
+						finder,
+						new CecilReflectorFactory());
 
-			t.Start();
+					progressIndicator.Report(new ProgressValue { Description = "Loading Plugins..." });
+
+					InspectorRepository ir = new InspectorRepository();
+					ir.Find(finder);
+
+					InspectorFilter filter = new InspectorFilter(this._project.Settings.IgnoreInspectors);
+
+					ir.Filter(filter);
+
+					progressIndicator.Report(new ProgressValue { Description = "Starting Analysis..." });
+
+					var result = analysis.RunAnalysis(this._project, ir, progressIndicator);
+
+					IReportingRepository rr = new ReportingRepository();
+					rr.Find(finder);
+
+					IReportingWorkflow reporting = new ReportingWorkflow();
+
+					progressIndicator.Report(new ProgressValue { Description = "Starting Reports..." });
+
+					reporting.RunReports(this._project, rr, result, progressIndicator);
+
+				});
+
+				Task t2 = t.ContinueWith((antecedent) =>
+					{
+						this._progressState.Invisible();
+
+						//if (args.Error != null)
+						//{
+						//	MessageBox.Show(
+						//		args.Error.Message,
+						//		"NDifference",
+						//		MessageBoxButtons.OK,
+						//		MessageBoxIcon.Error);
+						//}
+
+						this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = true;
+						this._dataEntryState.Enable();
+
+						//if (!args.Cancelled && args.Error == null)
+						//{
+						//    if (this._project.ReportFormat == ReportFormat.Html || this._project.ReportFormat == ReportFormat.Html4)
+						//    {
+						//        string launchPath = Path.Combine(this._project.OutputFolder, this._project.Name + ".html");
+
+						//        if (System.IO.File.Exists(launchPath))
+						//        {
+						//            Process.Start(launchPath);
+						//        }
+						//    }
+						//}
+					},
+					TaskScheduler.FromCurrentSynchronizationContext());
+
+				t.Start();
 			}
 			catch(Exception)
 			{

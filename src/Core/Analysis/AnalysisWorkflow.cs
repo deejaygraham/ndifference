@@ -105,7 +105,7 @@ namespace NDifference.Analysis
 						Name = previousAssembly.Name
 					};
 
-					changesToThisAssembly.SummaryBlocks.Add("Name", previousAssembly.Name);
+					//changesToThisAssembly.SummaryBlocks.Add("Name", previousAssembly.Name);
 					changesToThisAssembly.SummaryBlocks.Add("From", previousVersionReflection.GetAssemblyInfo().Version.ToString());
 					changesToThisAssembly.SummaryBlocks.Add("To", currentVersionReflection.GetAssemblyInfo().Version.ToString());
 

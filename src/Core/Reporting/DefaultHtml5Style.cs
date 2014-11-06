@@ -117,6 +117,10 @@ namespace NDifference.Reporting
 			styleBuilder.AppendLine("table.warning { border-left: 12px solid $(table-warning-border-left-color); }");
 			styleBuilder.AppendLine("table.error { border-left: 12px solid $(table-error-border-left-color); }");
 			styleBuilder.AppendLine("table.critical { border-left: 12px solid $(table-critical-border-left-color); }");
+
+			// zebra stripe tables.
+			styleBuilder.AppendLine("tbody tr:nth-child(even) { background-color: #F5F3F2; }");
+
 			styleBuilder.AppendLine("</style>");
 
 			return styleBuilder.ToString();
@@ -132,7 +136,7 @@ namespace NDifference.Reporting
 
 			styleBuilder.AppendLine("#container { padding: 1em; }");
 			styleBuilder.AppendLine("header, #header { margin-bottom: 0; }");
-			styleBuilder.AppendLine("header > hgroup, #header { padding: 1em; }");
+			styleBuilder.AppendLine("header > hgroup, #header { padding: 2em; }");
 
 			styleBuilder.AppendLine("section > p, nav { padding: 1em; }");
 			styleBuilder.AppendLine("section, nav { margin-bottom: 2em; }");
@@ -157,6 +161,11 @@ namespace NDifference.Reporting
 			styleBuilder.AppendLine(".kw { margin-left: 0.2em; margin-right: 0.2em; }");
 			styleBuilder.AppendLine(".tn { padding-left: 0.2em; padding-right: 0.2em; }");
 			styleBuilder.AppendLine(".ident { padding-left: 0.2em; padding-right: 0.2em; }");
+
+			styleBuilder.AppendLine(".diff-container { padding: 2em; }");
+			styleBuilder.AppendLine(".diff-table td { border: 1px solid #F5F3F2; }");
+			styleBuilder.AppendLine(".diff-table th { border: 1px solid #F5F3F2; background-color: #F5F3F2; }");
+
 			styleBuilder.AppendLine("</style>");
 
 			return styleBuilder.ToString();

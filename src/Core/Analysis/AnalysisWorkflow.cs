@@ -101,6 +101,7 @@ namespace NDifference.Analysis
 
 					IdentifiedChangeCollection changesToThisAssembly = new IdentifiedChangeCollection
 					{
+						Heading = previousAssembly.Name,
 						Name = previousAssembly.Name
 					};
 
@@ -150,6 +151,7 @@ namespace NDifference.Analysis
 						IdentifiedChangeCollection changesToThisType = new IdentifiedChangeCollection
 						{
 							//Heading = project.Product.Name,
+							Heading = previousType.Name,
 							Name = previousType.FullName
 						};
 

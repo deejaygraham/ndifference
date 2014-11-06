@@ -186,9 +186,14 @@ namespace NDifference.Analysis
 						this.TypeComparisonComplete.Fire(this);
 					}
 
-					ChurnCalculator calc2 = new ChurnCalculator(typeModel);
+					bool outputAssemblyChurn = false;
 
-					changesToThisAssembly.SummaryBlocks.Add("Churn", calc2.Calculate().ToString() + " %");
+					if (outputAssemblyChurn)
+					{
+						ChurnCalculator calc2 = new ChurnCalculator(typeModel);
+
+						changesToThisAssembly.SummaryBlocks.Add("Churn", calc2.Calculate().ToString() + " %");
+					}
 
 					this.AssemblyComparisonComplete.Fire(this);
 
@@ -201,9 +206,14 @@ namespace NDifference.Analysis
 					this.AssemblyAnalysisComplete.Fire(this);
 				}
 
-				var overallChurn = new ChurnCalculator(assemblyModel);
+				bool calculateOverallChurn = false;
 
-				result.Summary.SummaryBlocks.Add("Churn", overallChurn.Calculate().ToString() + " %");
+				if (calculateOverallChurn)
+				{
+					var overallChurn = new ChurnCalculator(assemblyModel);
+
+					result.Summary.SummaryBlocks.Add("Churn", overallChurn.Calculate().ToString() + " %");
+				}
 			}
 			finally
 			{

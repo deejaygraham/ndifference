@@ -47,19 +47,21 @@
 			this.productNameErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.previousVersionErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.newVersionErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+			this.tcContents = new System.Windows.Forms.TabControl();
+			this.tpAssemblies = new System.Windows.Forms.TabPage();
+			this.tpInspectors = new System.Windows.Forms.TabPage();
+			this.tvInspectors = new System.Windows.Forms.TreeView();
+			this.progressLabel = new System.Windows.Forms.Label();
+			this.folder1Label = new System.Windows.Forms.Label();
+			this.folder2Label = new System.Windows.Forms.Label();
+			this.asNewVersion = new NDifference.UI.Controls.AssemblySelection();
+			this.asPreviousVersion = new NDifference.UI.Controls.AssemblySelection();
 			this.fsOutputFolder = new NDifference.UI.Controls.FolderSelect();
 			this.txtNewVersion = new NDifference.UI.Controls.WatermarkedTextBox();
 			this.txtPreviousVersion = new NDifference.UI.Controls.WatermarkedTextBox();
 			this.lblVersionInfo = new NDifference.UI.Controls.EmphasisLabel();
 			this.txtProductName = new NDifference.UI.Controls.WatermarkedTextBox();
 			this.lblProductInformation = new NDifference.UI.Controls.EmphasisLabel();
-			this.tcContents = new System.Windows.Forms.TabControl();
-			this.tpAssemblies = new System.Windows.Forms.TabPage();
-			this.asNewVersion = new NDifference.UI.Controls.AssemblySelection();
-			this.asPreviousVersion = new NDifference.UI.Controls.AssemblySelection();
-			this.tpInspectors = new System.Windows.Forms.TabPage();
-			this.tvInspectors = new System.Windows.Forms.TreeView();
-			this.progressLabel = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.productNameErrorProvider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.previousVersionErrorProvider)).BeginInit();
@@ -166,8 +168,8 @@
 			this.progressBar.Location = new System.Drawing.Point(12, 612);
 			this.progressBar.Name = "progressBar";
 			this.progressBar.Size = new System.Drawing.Size(741, 23);
-			this.progressBar.TabIndex = 15;
 			this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+			this.progressBar.TabIndex = 15;
 			// 
 			// btnStart
 			// 
@@ -201,100 +203,29 @@
 			// 
 			this.newVersionErrorProvider.ContainerControl = this;
 			// 
-			// fsOutputFolder
-			// 
-			this.fsOutputFolder.FolderLabel = "Output Folder";
-			this.fsOutputFolder.FolderPath = "";
-			this.fsOutputFolder.Location = new System.Drawing.Point(15, 441);
-			this.fsOutputFolder.Name = "fsOutputFolder";
-			this.fsOutputFolder.Size = new System.Drawing.Size(708, 30);
-			this.fsOutputFolder.TabIndex = 8;
-			// 
-			// txtNewVersion
-			// 
-			this.txtNewVersion.Location = new System.Drawing.Point(375, 79);
-			this.txtNewVersion.Name = "txtNewVersion";
-			this.txtNewVersion.Size = new System.Drawing.Size(100, 20);
-			this.txtNewVersion.TabIndex = 5;
-			this.txtNewVersion.WatermarkText = "New Version";
-			this.txtNewVersion.TextChanged += new System.EventHandler(this.txtNewVersion_TextChanged);
-			this.txtNewVersion.Validated += new System.EventHandler(this.txtNewVersion_Validated);
-			// 
-			// txtPreviousVersion
-			// 
-			this.txtPreviousVersion.Location = new System.Drawing.Point(12, 79);
-			this.txtPreviousVersion.Name = "txtPreviousVersion";
-			this.txtPreviousVersion.Size = new System.Drawing.Size(100, 20);
-			this.txtPreviousVersion.TabIndex = 4;
-			this.txtPreviousVersion.WatermarkText = "Previous Version";
-			this.txtPreviousVersion.TextChanged += new System.EventHandler(this.txtPreviousVersion_TextChanged);
-			this.txtPreviousVersion.Validated += new System.EventHandler(this.txtPreviousVersion_Validated);
-			// 
-			// lblVersionInfo
-			// 
-			this.lblVersionInfo.AutoSize = true;
-			this.lblVersionInfo.Location = new System.Drawing.Point(12, 63);
-			this.lblVersionInfo.Name = "lblVersionInfo";
-			this.lblVersionInfo.Size = new System.Drawing.Size(138, 13);
-			this.lblVersionInfo.TabIndex = 3;
-			this.lblVersionInfo.Text = "<b>Version</b> Information";
-			// 
-			// txtProductName
-			// 
-			this.txtProductName.Location = new System.Drawing.Point(12, 40);
-			this.txtProductName.Name = "txtProductName";
-			this.txtProductName.Size = new System.Drawing.Size(100, 20);
-			this.txtProductName.TabIndex = 2;
-			this.txtProductName.WatermarkText = "Product Name";
-			this.txtProductName.TextChanged += new System.EventHandler(this.txtProductName_TextChanged);
-			this.txtProductName.Validated += new System.EventHandler(this.txtProductName_Validated);
-			// 
-			// lblProductInformation
-			// 
-			this.lblProductInformation.AutoSize = true;
-			this.lblProductInformation.Location = new System.Drawing.Point(9, 24);
-			this.lblProductInformation.Name = "lblProductInformation";
-			this.lblProductInformation.Size = new System.Drawing.Size(140, 13);
-			this.lblProductInformation.TabIndex = 1;
-			this.lblProductInformation.Text = "<b>Product</b> Information";
-			// 
 			// tcContents
 			// 
 			this.tcContents.Controls.Add(this.tpAssemblies);
 			this.tcContents.Controls.Add(this.tpInspectors);
-			this.tcContents.Location = new System.Drawing.Point(12, 105);
+			this.tcContents.Location = new System.Drawing.Point(12, 138);
 			this.tcContents.Name = "tcContents";
 			this.tcContents.SelectedIndex = 0;
-			this.tcContents.Size = new System.Drawing.Size(738, 294);
+			this.tcContents.Size = new System.Drawing.Size(741, 381);
 			this.tcContents.TabIndex = 18;
 			// 
 			// tpAssemblies
 			// 
+			this.tpAssemblies.Controls.Add(this.folder2Label);
+			this.tpAssemblies.Controls.Add(this.folder1Label);
 			this.tpAssemblies.Controls.Add(this.asNewVersion);
 			this.tpAssemblies.Controls.Add(this.asPreviousVersion);
 			this.tpAssemblies.Location = new System.Drawing.Point(4, 22);
 			this.tpAssemblies.Name = "tpAssemblies";
 			this.tpAssemblies.Padding = new System.Windows.Forms.Padding(3);
-			this.tpAssemblies.Size = new System.Drawing.Size(730, 268);
+			this.tpAssemblies.Size = new System.Drawing.Size(733, 355);
 			this.tpAssemblies.TabIndex = 0;
 			this.tpAssemblies.Text = "Assemblies";
 			this.tpAssemblies.UseVisualStyleBackColor = true;
-			// 
-			// asNewVersion
-			// 
-			this.asNewVersion.AllowDrop = true;
-			this.asNewVersion.Location = new System.Drawing.Point(356, 16);
-			this.asNewVersion.Name = "asNewVersion";
-			this.asNewVersion.Size = new System.Drawing.Size(335, 237);
-			this.asNewVersion.TabIndex = 8;
-			// 
-			// asPreviousVersion
-			// 
-			this.asPreviousVersion.AllowDrop = true;
-			this.asPreviousVersion.Location = new System.Drawing.Point(6, 16);
-			this.asPreviousVersion.Name = "asPreviousVersion";
-			this.asPreviousVersion.Size = new System.Drawing.Size(335, 237);
-			this.asPreviousVersion.TabIndex = 7;
 			// 
 			// tpInspectors
 			// 
@@ -302,7 +233,7 @@
 			this.tpInspectors.Location = new System.Drawing.Point(4, 22);
 			this.tpInspectors.Name = "tpInspectors";
 			this.tpInspectors.Padding = new System.Windows.Forms.Padding(3);
-			this.tpInspectors.Size = new System.Drawing.Size(730, 268);
+			this.tpInspectors.Size = new System.Drawing.Size(733, 355);
 			this.tpInspectors.TabIndex = 1;
 			this.tpInspectors.Text = "Inspectors";
 			this.tpInspectors.UseVisualStyleBackColor = true;
@@ -322,6 +253,101 @@
 			this.progressLabel.Size = new System.Drawing.Size(16, 13);
 			this.progressLabel.TabIndex = 19;
 			this.progressLabel.Text = "...";
+			// 
+			// folder1Label
+			// 
+			this.folder1Label.AutoEllipsis = true;
+			this.folder1Label.AutoSize = true;
+			this.folder1Label.Location = new System.Drawing.Point(0, 26);
+			this.folder1Label.Name = "folder1Label";
+			this.folder1Label.Size = new System.Drawing.Size(155, 13);
+			this.folder1Label.TabIndex = 9;
+			this.folder1Label.Text = "<Please select a source folder>";
+			// 
+			// folder2Label
+			// 
+			this.folder2Label.AutoEllipsis = true;
+			this.folder2Label.AutoSize = true;
+			this.folder2Label.Location = new System.Drawing.Point(370, 26);
+			this.folder2Label.Name = "folder2Label";
+			this.folder2Label.Size = new System.Drawing.Size(150, 13);
+			this.folder2Label.TabIndex = 10;
+			this.folder2Label.Text = "<Please select a target folder>";
+			// 
+			// asNewVersion
+			// 
+			this.asNewVersion.AllowDrop = true;
+			this.asNewVersion.Location = new System.Drawing.Point(373, 42);
+			this.asNewVersion.Name = "asNewVersion";
+			this.asNewVersion.Size = new System.Drawing.Size(354, 310);
+			this.asNewVersion.TabIndex = 8;
+			this.asNewVersion.ListChanged += new System.EventHandler(this.asNewVersion_ListChanged_1);
+			// 
+			// asPreviousVersion
+			// 
+			this.asPreviousVersion.AllowDrop = true;
+			this.asPreviousVersion.Location = new System.Drawing.Point(3, 42);
+			this.asPreviousVersion.Name = "asPreviousVersion";
+			this.asPreviousVersion.Size = new System.Drawing.Size(354, 310);
+			this.asPreviousVersion.TabIndex = 7;
+			this.asPreviousVersion.ListChanged += new System.EventHandler(this.asPreviousVersion_ListChanged_1);
+			// 
+			// fsOutputFolder
+			// 
+			this.fsOutputFolder.FolderLabel = "Output Folder";
+			this.fsOutputFolder.FolderPath = "";
+			this.fsOutputFolder.Location = new System.Drawing.Point(12, 525);
+			this.fsOutputFolder.Name = "fsOutputFolder";
+			this.fsOutputFolder.Size = new System.Drawing.Size(741, 30);
+			this.fsOutputFolder.TabIndex = 8;
+			// 
+			// txtNewVersion
+			// 
+			this.txtNewVersion.Location = new System.Drawing.Point(389, 112);
+			this.txtNewVersion.Name = "txtNewVersion";
+			this.txtNewVersion.Size = new System.Drawing.Size(315, 20);
+			this.txtNewVersion.TabIndex = 5;
+			this.txtNewVersion.WatermarkText = "New Version";
+			this.txtNewVersion.TextChanged += new System.EventHandler(this.txtNewVersion_TextChanged);
+			this.txtNewVersion.Validated += new System.EventHandler(this.txtNewVersion_Validated);
+			// 
+			// txtPreviousVersion
+			// 
+			this.txtPreviousVersion.Location = new System.Drawing.Point(12, 112);
+			this.txtPreviousVersion.Name = "txtPreviousVersion";
+			this.txtPreviousVersion.Size = new System.Drawing.Size(325, 20);
+			this.txtPreviousVersion.TabIndex = 4;
+			this.txtPreviousVersion.WatermarkText = "Previous Version";
+			this.txtPreviousVersion.TextChanged += new System.EventHandler(this.txtPreviousVersion_TextChanged);
+			this.txtPreviousVersion.Validated += new System.EventHandler(this.txtPreviousVersion_Validated);
+			// 
+			// lblVersionInfo
+			// 
+			this.lblVersionInfo.AutoSize = true;
+			this.lblVersionInfo.Location = new System.Drawing.Point(9, 96);
+			this.lblVersionInfo.Name = "lblVersionInfo";
+			this.lblVersionInfo.Size = new System.Drawing.Size(138, 13);
+			this.lblVersionInfo.TabIndex = 3;
+			this.lblVersionInfo.Text = "<b>Version</b> Information";
+			// 
+			// txtProductName
+			// 
+			this.txtProductName.Location = new System.Drawing.Point(12, 59);
+			this.txtProductName.Name = "txtProductName";
+			this.txtProductName.Size = new System.Drawing.Size(100, 20);
+			this.txtProductName.TabIndex = 2;
+			this.txtProductName.WatermarkText = "Product Name";
+			this.txtProductName.TextChanged += new System.EventHandler(this.txtProductName_TextChanged);
+			this.txtProductName.Validated += new System.EventHandler(this.txtProductName_Validated);
+			// 
+			// lblProductInformation
+			// 
+			this.lblProductInformation.AutoSize = true;
+			this.lblProductInformation.Location = new System.Drawing.Point(9, 43);
+			this.lblProductInformation.Name = "lblProductInformation";
+			this.lblProductInformation.Size = new System.Drawing.Size(140, 13);
+			this.lblProductInformation.TabIndex = 1;
+			this.lblProductInformation.Text = "<b>Product</b> Information";
 			// 
 			// MainForm
 			// 
@@ -352,6 +378,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.newVersionErrorProvider)).EndInit();
 			this.tcContents.ResumeLayout(false);
 			this.tpAssemblies.ResumeLayout(false);
+			this.tpAssemblies.PerformLayout();
 			this.tpInspectors.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -390,6 +417,8 @@
 		private Controls.AssemblySelection asNewVersion;
 		private Controls.AssemblySelection asPreviousVersion;
 		private System.Windows.Forms.Label progressLabel;
+		private System.Windows.Forms.Label folder2Label;
+		private System.Windows.Forms.Label folder1Label;
 	}
 }
 

@@ -76,6 +76,10 @@ namespace NDifference.UI.Controls
 			}
 		}
 
+		public string Folder { get; private set; }
+
+		public int AssemblyCount { get; private set; }
+
 		public void Initialise(IEnumerable<IAssemblyDiskInfo> files)
 		{
 			lvAssemblies.Items.Clear();
@@ -120,8 +124,7 @@ namespace NDifference.UI.Controls
 			get;
 			set;
 		}
-
-
+		
 		private void btnAdd_Click(object sender, EventArgs e)
 		{
 			PromptToAddItems();
@@ -159,10 +162,21 @@ namespace NDifference.UI.Controls
 
 				lvAssemblies.EndUpdate();
 
-				if (this.ListChanged != null)
+				if (lvAssemblies.Items.Count > 0)
 				{
-					this.ListChanged(this, EventArgs.Empty);
+					ListViewItem lvi = lvAssemblies.Items[0];
+
+					AssemblyListViewItem item = lvi as AssemblyListViewItem;
+
+					if (item != null)
+					{
+						this.Folder = System.IO.Path.GetDirectoryName(item.FullPath);
+					}
 				}
+
+				this.AssemblyCount = this.lvAssemblies.Items.Count;
+
+				FireListChanged();
 			}
 		}
 
@@ -177,10 +191,21 @@ namespace NDifference.UI.Controls
 
 			lvAssemblies.EndUpdate();
 
-			if (this.ListChanged != null)
+			if (lvAssemblies.Items.Count > 0)
 			{
-				this.ListChanged(this, EventArgs.Empty);
+				ListViewItem lvi = lvAssemblies.Items[0];
+
+				AssemblyListViewItem item = lvi as AssemblyListViewItem;
+
+				if (item != null)
+				{
+					this.Folder = System.IO.Path.GetDirectoryName(item.FullPath);
+				}
 			}
+
+			this.AssemblyCount = lvAssemblies.Items.Count;
+
+			FireListChanged();
 		}
 
 		private void lvAssemblies_SelectedIndexChanged(object sender, EventArgs e)
@@ -214,6 +239,16 @@ namespace NDifference.UI.Controls
 			foreach (ListViewItem item in lvAssemblies.Items)
 			{
 				item.Selected = true;
+			}
+		}
+
+		private void FireListChanged()
+		{
+			var changed = this.ListChanged;
+
+			if (changed != null)
+			{
+				changed(this, EventArgs.Empty);
 			}
 		}
 	}

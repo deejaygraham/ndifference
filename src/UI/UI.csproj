@@ -90,6 +90,9 @@
     <EmbeddedResource Include="Controls\AssemblySelection.resx">
       <DependentUpon>AssemblySelection.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FolderSelect.resx">
+      <DependentUpon>FolderSelect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

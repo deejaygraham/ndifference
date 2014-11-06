@@ -904,5 +904,15 @@ namespace NDifference.UI
 
 			this.newVersionErrorProvider.SetError(this.txtNewVersion, validationMessage);
 		}
+
+		private void asNewVersion_ListChanged_1(object sender, EventArgs e)
+		{
+			this.folder2Label.Text = asNewVersion.Folder;
+		}
+
+		private void asPreviousVersion_ListChanged_1(object sender, EventArgs e)
+		{
+			this.folder1Label.Text = asPreviousVersion.Folder;
+		}
 	}
 }

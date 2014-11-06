@@ -34,18 +34,19 @@
 			// 
 			// watermarkedTextBox1
 			// 
-			this.watermarkedTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.watermarkedTextBox1.Location = new System.Drawing.Point(3, 3);
+			this.watermarkedTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.watermarkedTextBox1.Location = new System.Drawing.Point(0, 3);
+			this.watermarkedTextBox1.Margin = new System.Windows.Forms.Padding(0);
 			this.watermarkedTextBox1.Name = "watermarkedTextBox1";
-			this.watermarkedTextBox1.Size = new System.Drawing.Size(265, 20);
+			this.watermarkedTextBox1.Size = new System.Drawing.Size(268, 20);
 			this.watermarkedTextBox1.TabIndex = 0;
 			this.watermarkedTextBox1.WatermarkText = "<Watermark>";
 			// 
 			// btnBrowser
 			// 
 			this.btnBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnBrowser.Location = new System.Drawing.Point(274, 1);
+			this.btnBrowser.Location = new System.Drawing.Point(284, 1);
 			this.btnBrowser.Name = "btnBrowser";
 			this.btnBrowser.Size = new System.Drawing.Size(26, 23);
 			this.btnBrowser.TabIndex = 1;

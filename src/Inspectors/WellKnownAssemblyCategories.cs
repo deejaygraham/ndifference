@@ -13,7 +13,7 @@ namespace NDifference.Inspectors
 			Name = "Assembly Changes",
 			Description = "These changes were made to the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AssemblyInternal),
-			Headings = new string[] { "Change" },
+			Headings = new string[] { "Change", "From", "To" },
 			CategoryType = CategoryType.Information
 		};
 

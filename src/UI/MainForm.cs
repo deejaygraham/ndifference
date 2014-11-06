@@ -69,8 +69,8 @@ namespace NDifference.UI
 			this._dataEntryState.Add(this.txtProductName);
 			this._dataEntryState.Add(this.txtPreviousVersion);
 			this._dataEntryState.Add(this.txtNewVersion);
-			this._dataEntryState.Add(this.asPreviousVersion);
-			this._dataEntryState.Add(this.asNewVersion);
+			this._dataEntryState.Add(this.tpAssemblies);
+			this._dataEntryState.Add(this.tpInspectors);
 			this._dataEntryState.Add(this.fsOutputFolder);
 			this._dataEntryState.Add(this.btnStart);
 
@@ -311,6 +311,9 @@ namespace NDifference.UI
 						Checked = i.Enabled 
 					});
 			}
+
+			if (inspectors.All(x => x.Enabled))
+				node.Checked = true;
 		}
 
 		private IEnumerable<string> BuildIgnoreList(TreeView tv)

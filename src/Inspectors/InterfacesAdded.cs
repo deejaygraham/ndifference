@@ -18,7 +18,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TI004"; } }
 
-		public string DisplayName { get { return "Added Interfaces"; } }
+		public string DisplayName { get { return "New Interfaces"; } }
 
 		public string Description { get { return "Looks for new interfaces added to a type."; } }
 

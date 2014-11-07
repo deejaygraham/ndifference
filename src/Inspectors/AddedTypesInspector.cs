@@ -16,9 +16,9 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TCI_ATI"; } }
 
-		public string DisplayName { get { return "Added Types"; } }
+		public string DisplayName { get { return "New Types"; } }
 
-		public string Description { get { return "Checks for added types in an assembly"; } }
+		public string Description { get { return "Checks for new types in an assembly"; } }
 
 		public void Inspect(ICombinedTypes types, IdentifiedChangeCollection changes)
 		{

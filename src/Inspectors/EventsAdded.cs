@@ -11,7 +11,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TI_EAI"; } }
 
-		public string DisplayName { get { return "Added Events"; } }
+		public string DisplayName { get { return "New Events"; } }
 
 		public string Description { get { return "Checks for new events added in the new version"; } }
 

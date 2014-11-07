@@ -17,7 +17,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TI_FAI"; } }
 
-		public string DisplayName { get { return "Added Fields"; } }
+		public string DisplayName { get { return "New Fields"; } }
 
 		public string Description { get { return "Checks for new fields added in the new version"; } }
 

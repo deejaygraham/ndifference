@@ -30,6 +30,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,13 +50,13 @@
 			this.newVersionErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.tcContents = new System.Windows.Forms.TabControl();
 			this.tpAssemblies = new System.Windows.Forms.TabPage();
+			this.folder2Label = new System.Windows.Forms.Label();
+			this.folder1Label = new System.Windows.Forms.Label();
+			this.asNewVersion = new NDifference.UI.Controls.AssemblySelection();
+			this.asPreviousVersion = new NDifference.UI.Controls.AssemblySelection();
 			this.tpInspectors = new System.Windows.Forms.TabPage();
 			this.tvInspectors = new System.Windows.Forms.TreeView();
 			this.progressLabel = new System.Windows.Forms.Label();
-			this.folder1Label = new System.Windows.Forms.Label();
-			this.folder2Label = new System.Windows.Forms.Label();
-			this.asNewVersion = new NDifference.UI.Controls.AssemblySelection();
-			this.asPreviousVersion = new NDifference.UI.Controls.AssemblySelection();
 			this.fsOutputFolder = new NDifference.UI.Controls.FolderSelect();
 			this.txtNewVersion = new NDifference.UI.Controls.WatermarkedTextBox();
 			this.txtPreviousVersion = new NDifference.UI.Controls.WatermarkedTextBox();
@@ -227,6 +228,44 @@
 			this.tpAssemblies.Text = "Assemblies";
 			this.tpAssemblies.UseVisualStyleBackColor = true;
 			// 
+			// folder2Label
+			// 
+			this.folder2Label.AutoEllipsis = true;
+			this.folder2Label.AutoSize = true;
+			this.folder2Label.Location = new System.Drawing.Point(370, 26);
+			this.folder2Label.Name = "folder2Label";
+			this.folder2Label.Size = new System.Drawing.Size(150, 13);
+			this.folder2Label.TabIndex = 10;
+			this.folder2Label.Text = "<Please select a target folder>";
+			// 
+			// folder1Label
+			// 
+			this.folder1Label.AutoEllipsis = true;
+			this.folder1Label.AutoSize = true;
+			this.folder1Label.Location = new System.Drawing.Point(0, 26);
+			this.folder1Label.Name = "folder1Label";
+			this.folder1Label.Size = new System.Drawing.Size(155, 13);
+			this.folder1Label.TabIndex = 9;
+			this.folder1Label.Text = "<Please select a source folder>";
+			// 
+			// asNewVersion
+			// 
+			this.asNewVersion.AllowDrop = true;
+			this.asNewVersion.Location = new System.Drawing.Point(373, 42);
+			this.asNewVersion.Name = "asNewVersion";
+			this.asNewVersion.Size = new System.Drawing.Size(354, 310);
+			this.asNewVersion.TabIndex = 8;
+			this.asNewVersion.ListChanged += new System.EventHandler(this.asNewVersion_ListChanged_1);
+			// 
+			// asPreviousVersion
+			// 
+			this.asPreviousVersion.AllowDrop = true;
+			this.asPreviousVersion.Location = new System.Drawing.Point(3, 42);
+			this.asPreviousVersion.Name = "asPreviousVersion";
+			this.asPreviousVersion.Size = new System.Drawing.Size(354, 310);
+			this.asPreviousVersion.TabIndex = 7;
+			this.asPreviousVersion.ListChanged += new System.EventHandler(this.asPreviousVersion_ListChanged_1);
+			// 
 			// tpInspectors
 			// 
 			this.tpInspectors.Controls.Add(this.tvInspectors);
@@ -253,44 +292,6 @@
 			this.progressLabel.Size = new System.Drawing.Size(16, 13);
 			this.progressLabel.TabIndex = 19;
 			this.progressLabel.Text = "...";
-			// 
-			// folder1Label
-			// 
-			this.folder1Label.AutoEllipsis = true;
-			this.folder1Label.AutoSize = true;
-			this.folder1Label.Location = new System.Drawing.Point(0, 26);
-			this.folder1Label.Name = "folder1Label";
-			this.folder1Label.Size = new System.Drawing.Size(155, 13);
-			this.folder1Label.TabIndex = 9;
-			this.folder1Label.Text = "<Please select a source folder>";
-			// 
-			// folder2Label
-			// 
-			this.folder2Label.AutoEllipsis = true;
-			this.folder2Label.AutoSize = true;
-			this.folder2Label.Location = new System.Drawing.Point(370, 26);
-			this.folder2Label.Name = "folder2Label";
-			this.folder2Label.Size = new System.Drawing.Size(150, 13);
-			this.folder2Label.TabIndex = 10;
-			this.folder2Label.Text = "<Please select a target folder>";
-			// 
-			// asNewVersion
-			// 
-			this.asNewVersion.AllowDrop = true;
-			this.asNewVersion.Location = new System.Drawing.Point(373, 42);
-			this.asNewVersion.Name = "asNewVersion";
-			this.asNewVersion.Size = new System.Drawing.Size(354, 310);
-			this.asNewVersion.TabIndex = 8;
-			this.asNewVersion.ListChanged += new System.EventHandler(this.asNewVersion_ListChanged_1);
-			// 
-			// asPreviousVersion
-			// 
-			this.asPreviousVersion.AllowDrop = true;
-			this.asPreviousVersion.Location = new System.Drawing.Point(3, 42);
-			this.asPreviousVersion.Name = "asPreviousVersion";
-			this.asPreviousVersion.Size = new System.Drawing.Size(354, 310);
-			this.asPreviousVersion.TabIndex = 7;
-			this.asPreviousVersion.ListChanged += new System.EventHandler(this.asPreviousVersion_ListChanged_1);
 			// 
 			// fsOutputFolder
 			// 
@@ -367,6 +368,7 @@
 			this.Controls.Add(this.lblProductInformation);
 			this.Controls.Add(this.menuStrip1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.Text = "NDifference";

@@ -16,7 +16,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TI_MAI"; } }
 
-		public string DisplayName { get { return "Added Methods"; } }
+		public string DisplayName { get { return "New Methods"; } }
 
 		public string Description { get { return "Checks for new methods added in the new version"; } }
 

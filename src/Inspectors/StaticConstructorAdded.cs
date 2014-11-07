@@ -15,7 +15,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TI_D006"; } }
 
-		public string DisplayName { get { return "Added Static Constructor"; } }
+		public string DisplayName { get { return "New Static Constructor"; } }
 
 		public string Description { get { return "Looks for new static constructor."; } }
 

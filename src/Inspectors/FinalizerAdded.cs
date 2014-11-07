@@ -15,7 +15,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TI006"; } }
 
-		public string DisplayName { get { return "Added Finalizer"; } }
+		public string DisplayName { get { return "New Finalizer"; } }
 
 		public string Description { get { return "Looks for new finalizer for a type."; } }
 		

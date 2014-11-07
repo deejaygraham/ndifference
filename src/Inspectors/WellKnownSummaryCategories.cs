@@ -33,7 +33,7 @@ namespace NDifference.Inspectors
 
 		public static readonly Category AddedAssemblies = new Category
 		{
-			Name = "Added Assemblies",
+			Name = "New Assemblies",
 			Description = "These assemblies have been added to the new version",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedAssemblies),
 			Headings = new string[] { "Assembly" },

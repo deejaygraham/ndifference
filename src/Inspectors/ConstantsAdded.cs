@@ -16,7 +16,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TI_CAI"; } }
 
-		public string DisplayName { get { return "Added Constants"; } }
+		public string DisplayName { get { return "New Constants"; } }
 
 		public string Description { get { return "Checks for new constants added in the new version"; } }
 

@@ -28,7 +28,7 @@ namespace NDifference.Inspectors
 
 		public static readonly Category AddedReferences = new Category
 		{
-			Name = "Added References",
+			Name = "New References",
 			Description = "These references were added to the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedReferences),
 			Headings = new string[] { "Reference" },
@@ -64,7 +64,7 @@ namespace NDifference.Inspectors
 
 		public static readonly Category AddedTypes = new Category
 		{
-			Name = "Added Types",
+			Name = "New Types",
 			Description = "These types have been added to the new version",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedTypes),
 			Headings = new string[] { "Type" },

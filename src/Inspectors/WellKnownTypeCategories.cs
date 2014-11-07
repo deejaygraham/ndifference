@@ -271,7 +271,7 @@ namespace NDifference.Inspectors
 
 		public static readonly Category IndexersAdded = new Category
 		{
-			Name = "Added Indexers",
+			Name = "New Indexers",
 			Description = "These indexers were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersAdded),
 			Headings = new string[] { "Signature" }

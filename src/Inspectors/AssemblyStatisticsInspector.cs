@@ -27,19 +27,19 @@ namespace NDifference.Inspectors
 		{
 			changes.Add(WellKnownAssemblyCategories.AssemblyInternal);
 
-			var oldNamespaces = types.Types
+			int oldNamespaces = types.Types
 				.Where(x => x.First != null)
 				.Select(x => x.First.Namespace)
 				.Distinct()
 				.Count();
 
-			var newNamespaces = types.Types
+			int newNamespaces = types.Types
 				.Where(x => x.Second != null)
 				.Select(x => x.Second.Namespace)
 				.Distinct()
 				.Count();
 			
-			//if (oldNamespaces != newNamespaces)
+			if (oldNamespaces != newNamespaces)
 			{
 				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new DeltaDescriptor
 				{
@@ -49,15 +49,15 @@ namespace NDifference.Inspectors
 				}));
 			}
 
-			var oldTypes = types.Types
+			int oldTypes = types.Types
 						.Where(x => x.First != null)
 						.Count();
 
-			var newTypes = types.Types
+			int newTypes = types.Types
 						.Where(x => x.Second != null)
 						.Count();
 
-			//if (oldTypes != newTypes)
+			if (oldTypes != newTypes)
 			{
 				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new DeltaDescriptor
 				{

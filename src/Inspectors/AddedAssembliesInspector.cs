@@ -13,9 +13,9 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "ACI_AAI"; } }
 
-		public string DisplayName { get { return "Added Assemblies";  } }
+		public string DisplayName { get { return "New Assemblies";  } }
 
-		public string Description { get { return "Checks for added assemblies"; } }
+		public string Description { get { return "Checks for new assemblies"; } }
 
 		public void Inspect(ICombinedAssemblies assemblies, IdentifiedChangeCollection changes)
 		{

@@ -21,7 +21,7 @@ namespace NDifference.Reporting
 			var cssReplace = new CssVariableRepository();
 
 			string white = "#fff";
-			string veryLightGrey = "#eee";
+			string veryLightGrey = "#F9F9F9"; // "#eee";
 			string lightGrey = "#ccc";
 			string darkGrey = "#333";
 			string black = "#000";
@@ -57,6 +57,10 @@ namespace NDifference.Reporting
 			cssReplace.Declare("$(table-warning-border-left-color)", "#F18D05");
 			cssReplace.Declare("$(table-error-border-left-color)", "#E54028");
 			cssReplace.Declare("$(table-critical-border-left-color)", "#D70060");
+
+			cssReplace.Declare("$(table-zebra-stripe-color)", veryLightGrey);
+			cssReplace.Declare("$(table-head-color)", veryLightGrey);
+			cssReplace.Declare("$(table-border-color)", "#ddd");
 
 			return cssReplace.Process(styleBuilder.ToString());
 		}

@@ -15,7 +15,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "TI_PAI"; } }
 
-		public string DisplayName { get { return "Added Properties"; } }
+		public string DisplayName { get { return "New Properties"; } }
 
 		public string Description { get { return "Checks for new properties added in the new version"; } }
 

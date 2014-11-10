@@ -41,6 +41,14 @@ namespace NDifference.Framework
 			}
 		}
 
+		public ProductIncrement this[int index]
+		{
+			get
+			{
+				return this.increments[index];
+			}
+		}
+
 		/// <summary>
 		/// Index of "from" increment.
 		/// </summary>

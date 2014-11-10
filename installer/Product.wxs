@@ -91,7 +91,15 @@
 						KeyPath="yes"
 						/>
 			</Component>
-			
+
+			<Component Id="CMP_MsBuildTasks"
+						Guid="{20FADA27-206A-4581-9642-6F2148348AC9}">
+				<File Id="MsBuildDll"
+						Source="$(var.MsBuildTaskBinariesPath)\NDifference.Tasks.dll"
+						KeyPath="yes"
+						/>
+			</Component>
+
 		</DirectoryRef>
 
 		<DirectoryRef Id="ProgramShortcutsDirectory">
@@ -128,6 +136,7 @@
 			<ComponentRef Id="CMP_InspectionAssembly" />
 			<ComponentRef Id="CMP_CecilAssembly" />
 			<ComponentRef Id="CMP_ApplicationShortcut" />
+			<ComponentRef Id="CMP_MsBuildTasks" />
 		</Feature>
 
 		<!--        <PropertyRef Id="NETFRAMEWORK40" /> -->

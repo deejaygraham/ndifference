@@ -5,4 +5,7 @@
 	<?define MsBuildTaskBinariesPath = "..\src\MsBuild\bin\Release"?>
 	<?define SamplesPath = "..\samples"?>
 	<?define IconFilePath = "..\src\UI\ndifference.ico"?>
+
+	<?define Version="1.0.0.0" ?>
+	<?define UpgradeCode="d73c1b74-0456-409a-9a66-f4366410ad29" ?>
 </Include>

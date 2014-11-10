@@ -6,9 +6,9 @@
 	<Product Id="*" 
 			 Name="NDifference" 
 			 Language="1033" 
-			 Version="1.0.0.0" 
 			 Manufacturer="deejaygraham" 
-			 UpgradeCode="d73c1b74-0456-409a-9a66-f4366410ad29"
+			 Version="$(var.Version)" 
+			 UpgradeCode="$(var.UpgradeCode)"
 			 >
 		
 		<Package Id="*" 
@@ -174,12 +174,6 @@
 			<ComponentRef Id="CMP_NDiff" />
 		</Feature>
 
-		<!--        <PropertyRef Id="NETFRAMEWORK40" /> -->
-		<!-- <Condition Message="The .NET Framework 4.0 must be installed ([NETFRAMEWORK40])">
-            Installed OR NETFRAMEWORK40
-        </Condition>
--->
-
 		<Icon Id="NDifferenceIcon" SourceFile="$(var.IconFilePath)" />
 
 		<Property Id="ARPPRODUCTICON" Value="NDifferenceIcon" />
@@ -205,6 +199,26 @@
 					 Order="2">1</Publish>
 		</UI>
 		
+		<Upgrade Id="$(var.UpgradeCode)">
+		
+			<UpgradeVersion Property="NEWPRODUCTFOUND"
+				Language="1033"
+				OnlyDetect="yes"
+				IncludeMinimum="no"
+				Minimum="$(var.Version)"
+				/>
+
+			<UpgradeVersion Property="OLDPRODUCTFOUND"
+				Language="1033"
+				OnlyDetect="no"
+				IncludeMaximum="no"
+				Maximum="$(var.Version)"
+				/>
+			
+		</Upgrade>
+	
+		<MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
+
 	</Product>
 	
 </Wix>

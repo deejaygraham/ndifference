@@ -3,5 +3,6 @@
 	<!-- Variable definitions for installer -->
 	<?define NDifferenceBinariesPath = "..\src\UI\bin\Release"?>
 	<?define MsBuildTaskBinariesPath = "..\src\MsBuild\bin\Release"?>
+	<?define SamplesPath = "..\samples"?>
 	<?define IconFilePath = "..\src\UI\ndifference.ico"?>
 </Include>

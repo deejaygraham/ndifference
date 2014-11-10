@@ -26,7 +26,10 @@
 					Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
 				<Directory Id="APPLICATIONROOTDIRECTORY"
-							Name="NDifference" />
+							Name="NDifference" >
+					<Directory Id="SamplesDirectory"
+								Name="Samples" />
+				</Directory>
 			</Directory>
 			<Directory Id="ProgramMenuFolder">
 				<Directory Id="ProgramShortcutsDirectory"
@@ -123,6 +126,35 @@
 			</Component>
 		</DirectoryRef>
 
+		<!-- Samples -->
+		<DirectoryRef Id="SamplesDirectory">
+		
+			<Component Id="CMP_MsBuild"
+						Guid="{6EA2381A-6DEB-4132-8B19-DEF7D7B02BF6}">
+				<File Id="MsBuild"
+						Source="$(var.SamplesPath)\example.msbuild"
+						KeyPath="yes"
+						/>
+			</Component>
+
+			<Component Id="CMP_Batch"
+						Guid="{04A17823-2473-426F-B447-5AA460287156}">
+				<File Id="Batch"
+						Source="$(var.SamplesPath)\run-msbuild-example.cmd"
+						KeyPath="yes"
+						/>
+			</Component>
+
+			<Component Id="CMP_NDiff"
+						Guid="{F3046CCE-2A60-4848-9DBC-1500699F6EFF}">
+				<File Id="NDiff"
+						Source="$(var.SamplesPath)\example-project.ndiffproj"
+						KeyPath="yes"
+						/>
+			</Component>
+			
+		</DirectoryRef>
+
 		<!-- 3. Install -->
 
 		<Feature Id="Complete"
@@ -137,6 +169,9 @@
 			<ComponentRef Id="CMP_CecilAssembly" />
 			<ComponentRef Id="CMP_ApplicationShortcut" />
 			<ComponentRef Id="CMP_MsBuildTasks" />
+			<ComponentRef Id="CMP_MsBuild" />
+			<ComponentRef Id="CMP_Batch" />
+			<ComponentRef Id="CMP_NDiff" />
 		</Feature>
 
 		<!--        <PropertyRef Id="NETFRAMEWORK40" /> -->

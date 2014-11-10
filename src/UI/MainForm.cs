@@ -1,7 +1,6 @@
 ﻿using NDifference.Analysis;
 using NDifference.Framework;
 using NDifference.Inspectors;
-using NDifference.Plugins;
 using NDifference.Projects;
 using NDifference.Reflection;
 using NDifference.Reporting;
@@ -9,8 +8,6 @@ using NDifference.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -79,67 +76,6 @@ namespace NDifference.UI
 			this._progressState.Add(this.btnCancel);
 
 			this._progressState.Invisible();
-
-			// find all inspectors and put them on tree view
-			// look for all inspectors...
-
-			//this._worker = new BackgroundWorker()
-			//{
-			//	WorkerReportsProgress = true,
-			//	WorkerSupportsCancellation = true
-			//};
-
-			//this._worker.DoWork +=
-			//	(obj, args) =>
-			//	{
-			//		RunReportingProcess(obj, args);
-			//	};
-
-			//this._worker.ProgressChanged +=
-			//	(obj, args) =>
-			//	{
-			//		if (this.progressBar1.Maximum < args.ProgressPercentage)
-			//		{
-			//			this.progressBar1.Style = ProgressBarStyle.Marquee;
-			//		}
-			//		else
-			//		{
-			//			this.progressBar1.Value = args.ProgressPercentage;
-			//		}
-			//	};
-
-			//this._worker.RunWorkerCompleted +=
-			//	(obj, args) =>
-			//	{
-			//		this._progressState.Invisible();
-
-			//		if (args.Error != null)
-			//		{
-			//			MessageBox.Show(
-			//				args.Error.Message,
-			//				"Sai.Net",
-			//				MessageBoxButtons.OK,
-			//				MessageBoxIcon.Error);
-			//		}
-
-			//		this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = true;
-			//		this._dataEntryState.Enable();
-
-			//		//if (!args.Cancelled && args.Error == null)
-			//		//{
-			//		//    if (this._project.ReportFormat == ReportFormat.Html || this._project.ReportFormat == ReportFormat.Html4)
-			//		//    {
-			//		//        string launchPath = Path.Combine(this._project.OutputFolder, this._project.Name + ".html");
-
-			//		//        if (System.IO.File.Exists(launchPath))
-			//		//        {
-			//		//            Process.Start(launchPath);
-			//		//        }
-			//		//    }
-			//		//}
-			//	};
-
-
 		}
 
 		private void btnStart_Click(object sender, EventArgs e)
@@ -149,33 +85,13 @@ namespace NDifference.UI
 
 		private void btnCancel_Click(object sender, EventArgs e)
 		{
-			//if (this._worker.IsBusy)
-			//{
-			//	this._worker.CancelAsync();
-			//}
-			//else
-			{
-				// check that project should be saved...
-
-				this.Close();
-			}
+			this.Close();
 		}
 
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			// check if dirty ???
-			// before closing...
-			//if (this._worker.IsBusy)
-			//{
-			//	// set pending flag...
-			//	this._worker.CancelAsync();
-			//}
-			//else
-			{
-				// check with 
-				this.Close();
-			}
+			this.Close();
 		}
 
 		private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -263,7 +179,10 @@ namespace NDifference.UI
 			this.txtPreviousVersion.Text = oldRelease.Name;
 			this.txtNewVersion.Text = newRelease.Name;
 
+			this.asPreviousVersion.MessageWhenEmpty = "Add \"previous\" assemblies here";
 			this.asPreviousVersion.Initialise(oldRelease.Assemblies);
+
+			this.asNewVersion.MessageWhenEmpty = "Add \"new\" assemblies here";
 			this.asNewVersion.Initialise(newRelease.Assemblies);
 
 			this.fsOutputFolder.FolderPath = project.Settings.OutputFolder;
@@ -701,30 +620,8 @@ namespace NDifference.UI
 					{
 						this._progressState.Invisible();
 
-						//if (args.Error != null)
-						//{
-						//	MessageBox.Show(
-						//		args.Error.Message,
-						//		"NDifference",
-						//		MessageBoxButtons.OK,
-						//		MessageBoxIcon.Error);
-						//}
-
 						this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = true;
 						this._dataEntryState.Enable();
-
-						//if (!args.Cancelled && args.Error == null)
-						//{
-						//    if (this._project.ReportFormat == ReportFormat.Html || this._project.ReportFormat == ReportFormat.Html4)
-						//    {
-						//        string launchPath = Path.Combine(this._project.OutputFolder, this._project.Name + ".html");
-
-						//        if (System.IO.File.Exists(launchPath))
-						//        {
-						//            Process.Start(launchPath);
-						//        }
-						//    }
-						//}
 					},
 					TaskScheduler.FromCurrentSynchronizationContext());
 
@@ -735,158 +632,7 @@ namespace NDifference.UI
 
 			}
 		}
-
-		private void RunReportingProcess(object sender, DoWorkEventArgs e)
-		{
-			BackgroundWorker worker = sender as BackgroundWorker;
-			Project project = e.Argument as Project;
-
-			int pcDone = 0;
-
-			worker.ReportProgress(pcDone);
-
-			////try
-			////{
-			//var workflow = new DefaultAnalysisWorkflow
-			//{
-			//	Introspector = DefaultIntrospectorFactory.Introspector
-			//};
-
-			//logger.Info("Loading project...");
-			//workflow.Project = project;
-
-			//Assembly thisAssembly = Assembly.GetExecutingAssembly();
-			//AssemblyName thisApplication = thisAssembly.GetName();
-			//string searchFolder = Path.GetDirectoryName(thisAssembly.Location);
-
-			//workflow.PluginFinder = new InspectorPluginFinder(searchFolder);
-			//workflow.PluginRepository = new InspectorRepository();
-			//workflow.ReportingFinder = new DefaultReportWriterPluginFinder(searchFolder);
-			//workflow.ReportingRepository = new DefaultReportRepository();
-
-			//workflow.PluginsLoading += (obj, args) =>
-			//{
-			//	logger.Info("Loading plugins...");
-			//	worker.ReportProgress(++pcDone, "Started at " + DateTime.Now);
-
-			//	args.CancelAction = worker.CancellationPending;
-			//};
-
-			//workflow.AssemblyComparisonStarting += (obj, args) =>
-			//{
-			//	logger.Info("Comparing folders...");
-			//};
-
-			//workflow.AnalysisComplete += (obj, args) =>
-			//{
-			//	logger.Info("Done.");
-			//	worker.ReportProgress(++pcDone);
-			//	e.Result = "Sai Done.";
-			//};
-
-			//workflow.Run();
-
-
-			//   folderComparisonBuilder.LoadingFolder += (obj, args) =>
-			//{
-			//    worker.ReportProgress(++pcDone, "Loading folder");
-			//    logger.InfoFormat("Loading assemblies from {0}", args.FolderName);
-
-			//    args.CancelAction = worker.CancellationPending;
-			//};
-
-			//folderComparisonBuilder.BuildError += (obj, args) =>
-			//{
-			//    throw new Exception(args.Message);
-			//};
-
-			//folderComparisonBuilder.BuildComplete += (obj, args) =>
-			//{
-			//    worker.ReportProgress(++pcDone);
-			//};
-
-			// comparison results needs packaging with summary info and changed assemblies to report on it.
-			//    var comparisonResults = folderComparisonBuilder.Build(new NullProgressReporter());
-
-			//    IWalkTypeDifferencesFactory typeDifferenceWalkerFactory = new TypeDifferenceWalkerFactory(repository);
-			//    IWalkIntrospectedAssembliesFactory assemblyDifferenceWalkerFactory = new AssemblyIntrospectionWalkerFactory(repository);
-			//    IProductReleaseDifferenceFactory releaseDifferenceFactory = new ProductReleaseDifferenceFactory(project);
-
-			//    IAssemblyDifferenceFactory assemblyDifferenceFactory = new AssemblyDifferenceFactory();
-
-			//    var introspectionBuilder = new TypeIntrospectionBuilder(
-			//                                new MonoCecilAssemblyIntrospector(),
-			//                                assemblyDifferenceWalkerFactory,
-			//                                typeDifferenceWalkerFactory,
-			//                                releaseDifferenceFactory,
-			//                                assemblyDifferenceFactory,
-			//                                comparisonResults,
-			//                                project);
-
-			//    introspectionBuilder.AnalysingAssembly += (obj, args) =>
-			//    {
-			//        worker.ReportProgress(++pcDone);
-			//        args.CancelAction = worker.CancellationPending;
-			//    };
-
-			//    introspectionBuilder.BuildError += (obj, args) =>
-			//    {
-			//        throw new Exception(args.Message);
-			//    };
-
-			//    introspectionBuilder.Build(new NullProgressReporter());
-
-			//    IReportFormatterFactory reportFactory = new ReportFormatterFactory(project);
-
-			//    if (introspectionBuilder.ProductReleaseDifference != null)
-			//    {
-			//        var reporter = new ReportBuilder(
-			//            introspectionBuilder.ProductReleaseDifference,
-			//            introspectionBuilder.AssemblyDifferences,
-			//            project,
-			//            reportFactory);
-
-			//        reporter.CreatingReport += (obj, args) =>
-			//        {
-			//            worker.ReportProgress(++pcDone);
-			//            args.CancelAction = worker.CancellationPending;
-			//        };
-
-			//        reporter.CreatingReport += (obj, args) =>
-			//        {
-			//            args.CancelAction = worker.CancellationPending;
-			//        };
-
-			//        reporter.ReportComplete += (obj, args) =>
-			//        {
-			//            args.CancelAction = worker.CancellationPending;
-			//        };
-
-			//        reporter.BuildError += (obj, args) =>
-			//        {
-			//            throw new Exception(args.Message);
-			//        };
-
-			//        reporter.BuildEvent += (obj, args) =>
-			//        {
-			//            args.CancelAction = worker.CancellationPending;
-			//        };
-
-			//        reporter.BuildComplete += (obj, args) =>
-			//        {
-			//            e.Result = "Sai Done.";
-			//        };
-
-			//        reporter.Build(new NullProgressReporter());
-			//    }
-			//}
-			//catch (BuildCancelledException)
-			//{
-			//    // don't need to report this.
-			//    e.Cancel = true;
-			//}
-		}
-
+		
 		private void txtProductName_Validated(object sender, EventArgs e)
 		{
 			string validationMessage = string.IsNullOrEmpty(this.txtProductName.Text) ? "Please provide a name for the product" : string.Empty;

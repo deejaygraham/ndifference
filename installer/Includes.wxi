@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<!-- Variable definitions for installer -->
+	<?define NDifferenceBinariesPath = "..\src\UI\bin\Release"?>
+	<?define IconFilePath = "..\src\UI\ndifference.ico"?>
+</Include>

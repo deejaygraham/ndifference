@@ -917,5 +917,12 @@ namespace NDifference.UI
 		{
 			this.folder1Label.Text = asPreviousVersion.Folder;
 		}
+
+		private void aboutNDifferenceToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			AboutBox about = new AboutBox();
+
+			about.ShowDialog(this);
+		}
 	}
 }

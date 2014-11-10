@@ -63,6 +63,8 @@
 			this.lblVersionInfo = new NDifference.UI.Controls.EmphasisLabel();
 			this.txtProductName = new NDifference.UI.Controls.WatermarkedTextBox();
 			this.lblProductInformation = new NDifference.UI.Controls.EmphasisLabel();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutNDifferenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.productNameErrorProvider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.previousVersionErrorProvider)).BeginInit();
@@ -76,7 +78,8 @@
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.buildToolStripMenuItem});
+            this.buildToolStripMenuItem,
+            this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(765, 24);
@@ -160,7 +163,7 @@
 			// 
 			this.buildToolStripMenuItem1.Name = "buildToolStripMenuItem1";
 			this.buildToolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.F6;
-			this.buildToolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
+			this.buildToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.buildToolStripMenuItem1.Text = "Build";
 			this.buildToolStripMenuItem1.Click += new System.EventHandler(this.buildToolStripMenuItem1_Click);
 			// 
@@ -350,6 +353,21 @@
 			this.lblProductInformation.TabIndex = 1;
 			this.lblProductInformation.Text = "<b>Product</b> Information";
 			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutNDifferenceToolStripMenuItem});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.helpToolStripMenuItem.Text = "Help";
+			// 
+			// aboutNDifferenceToolStripMenuItem
+			// 
+			this.aboutNDifferenceToolStripMenuItem.Name = "aboutNDifferenceToolStripMenuItem";
+			this.aboutNDifferenceToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.aboutNDifferenceToolStripMenuItem.Text = "About NDifference";
+			this.aboutNDifferenceToolStripMenuItem.Click += new System.EventHandler(this.aboutNDifferenceToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -421,6 +439,8 @@
 		private System.Windows.Forms.Label progressLabel;
 		private System.Windows.Forms.Label folder2Label;
 		private System.Windows.Forms.Label folder1Label;
+		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem aboutNDifferenceToolStripMenuItem;
 	}
 }
 

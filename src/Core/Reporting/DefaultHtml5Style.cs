@@ -143,6 +143,7 @@ namespace NDifference.Reporting
 			styleBuilder.AppendLine("#container { padding: 1em; }");
 			styleBuilder.AppendLine("header, #header { margin-bottom: 0; }");
 			styleBuilder.AppendLine("header > hgroup, #header { padding: 2em; }");
+			styleBuilder.AppendLine("#exp { padding: 2em; }");
 
 			styleBuilder.AppendLine("section > p, nav { padding: 1em; }");
 			styleBuilder.AppendLine("section, nav { margin-bottom: 2em; }");
@@ -151,7 +152,7 @@ namespace NDifference.Reporting
 
 			styleBuilder.AppendLine("table { border-collapse:collapse; border-width:0; empty-cells:show; margin:0 0 1em; padding:0; width: 100%; }");
 			styleBuilder.AppendLine("th, td { padding:6px 12px; text-align:left; vertical-align:top; }");
-			styleBuilder.AppendLine("td > p:last-child { margin:0; }");
+			styleBuilder.AppendLine("td > p:last-child { margin: 0; }");
 			styleBuilder.AppendLine("caption { display: none; }");
 
 			styleBuilder.AppendLine("a:link { text-decoration: none; }");

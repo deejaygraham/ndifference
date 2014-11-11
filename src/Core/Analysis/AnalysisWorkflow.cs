@@ -59,6 +59,7 @@ namespace NDifference.Analysis
 			try
 			{
 				result.Summary.Heading = project.Product.Name;
+				result.Summary.HeadingBlock = project.Settings.HeadingText;
 				result.Summary.Name = project.Settings.SummaryTitle;
 				result.Summary.SummaryBlocks.Add("Name", project.Product.Name);
 
@@ -158,8 +159,20 @@ namespace NDifference.Analysis
 						changesToThisType.SummaryBlocks.Add("Name", currentType.Name);
 						changesToThisType.SummaryBlocks.Add("Namespace", currentType.Namespace);
 						changesToThisType.SummaryBlocks.Add("Assembly", currentType.Assembly);
-						changesToThisType.SummaryBlocks.Add("From", previousVersionReflection.GetAssemblyInfo().Version.ToString() + " " + previousType.CalculateHash());
-						changesToThisType.SummaryBlocks.Add("To", currentVersionReflection.GetAssemblyInfo().Version.ToString() + " " + currentType.CalculateHash());
+
+						string fromVersion = previousVersionReflection.GetAssemblyInfo().Version.ToString();
+						string toVersion = currentVersionReflection.GetAssemblyInfo().Version.ToString();
+
+						bool includeTypeHash = false;
+
+						if (includeTypeHash)
+						{
+							fromVersion += " " + previousType.CalculateHash();
+							toVersion += " " + currentType.CalculateHash();
+						}
+
+						changesToThisType.SummaryBlocks.Add("From", fromVersion);
+						changesToThisType.SummaryBlocks.Add("To", toVersion);
 
 						changesToThisType.CopyMetaFrom(result.Summary);
 

@@ -124,9 +124,9 @@ namespace NDifference.UI
 
 		private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			string fileName = this._project.FileName;
-			this._project = UpdateProjectFromUI();
-			this._project.FileName = fileName;
+			var newProject = UpdateProjectFromUI();
+			newProject.CopyMetaFrom(this._project);
+			this._project = newProject;
 
 			if (string.IsNullOrEmpty(this._project.FileName))
 			{
@@ -151,9 +151,9 @@ namespace NDifference.UI
 
 		private void saveProjectAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			string fileName = this._project.FileName;
-			this._project = UpdateProjectFromUI();
-			this._project.FileName = fileName;
+			var newProject = UpdateProjectFromUI();
+			newProject.CopyMetaFrom(this._project);
+			this._project = newProject;
 
 			string saveProject = PromptForFileNameToSaveProject(this._project.Product.Name + "-" + this._project.Product.ComparedIncrements.First.Name + "-" + this._project.Product.ComparedIncrements.Second.Name);
 
@@ -488,9 +488,9 @@ namespace NDifference.UI
 
 			if (result == DialogResult.Yes)
 			{
-				string fileName = this._project.FileName;
-				this._project = UpdateProjectFromUI();
-				this._project.FileName = fileName;
+				var newProject = UpdateProjectFromUI();
+				newProject.CopyMetaFrom(this._project);
+				this._project = newProject;
 
 				if (string.IsNullOrEmpty(this._project.FileName))
 				{
@@ -534,9 +534,9 @@ namespace NDifference.UI
 
 		private void Build()
 		{
-			string fileName = this._project.FileName;
-			this._project = UpdateProjectFromUI();
-			this._project.FileName = fileName;
+			var newProject = UpdateProjectFromUI();
+			newProject.CopyMetaFrom(this._project);
+			this._project = newProject;
 
 			var errors = this.ValidateProject(this._project);
 

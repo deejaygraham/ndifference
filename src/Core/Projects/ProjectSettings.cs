@@ -300,5 +300,24 @@ namespace NDifference.Projects
 
 			return blocks;
 		}
+
+		public void CopyMetaFrom(ProjectSettings other)
+		{
+			if (other == null)
+				return;
+
+			this.IndexName = other.IndexName;
+			this.HeadTag = other.HeadTag;
+			this.HeadingText = other.HeadingText;
+			this.FooterText = other.FooterText;
+
+			this.ReportFormat = other.ReportFormat;
+			this.StyleTag = other.StyleTag;
+			this.SubFolder = other.SubFolder;
+			this.SummaryTitle = other.SummaryTitle;
+			this.FromIndex = other.FromIndex;
+			this.ToIndex = other.ToIndex;
+			this.IgnoreInspectors = other.IgnoreInspectors;
+		}
 	}
 }

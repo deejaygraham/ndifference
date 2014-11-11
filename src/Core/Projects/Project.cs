@@ -174,6 +174,15 @@ namespace NDifference.Projects
 
 			return project;
 		}
+
+		public void CopyMetaFrom(Project other)
+		{
+			if (other == null)
+				return;
+
+			this.FileName = other.FileName;
+			this.Settings.CopyMetaFrom(other.Settings);
+		}
 	}
 
 }

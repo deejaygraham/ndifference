@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NDifference.Exceptions;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace NDifference.Projects
@@ -31,10 +28,17 @@ namespace NDifference.Projects
 
 		public static Project LoadFrom(TextReader reader, string baseFolder)
 		{
-			XmlSerializer serial = new XmlSerializer(typeof(PersistableProject));
-			PersistableProject pff = (PersistableProject)serial.Deserialize(reader);
+			try
+			{
+				XmlSerializer serial = new XmlSerializer(typeof(PersistableProject));
+				PersistableProject pff = (PersistableProject)serial.Deserialize(reader);
 
-			return Project.FromPersistableFormat(pff, baseFolder);
+				return Project.FromPersistableFormat(pff, baseFolder);
+			}
+			catch (InvalidOperationException)
+			{
+				throw new InvalidProjectFileFormatException();
+			}
 		}
 	}
 }

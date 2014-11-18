@@ -10,12 +10,12 @@ using System.Runtime.InteropServices;
 #endif 
 
 [assembly: AssemblyCopyright("Copyright © 2011-2014")]
-[assembly: AssemblyFileVersion("0.0.0.1")]
-[assembly: AssemblyInformationalVersion("0.1.0.1")] 
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0.0")] 
 [assembly: AssemblyProduct("NDifference")]
 [assembly: AssemblyTrademark("")]
 
 // All assemblies should have matching versions
-[assembly: AssemblyVersion("0.0.0.1")]
+[assembly: AssemblyVersion("1.0.0.0")]
 
 [assembly: ComVisible(false)]

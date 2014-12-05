@@ -134,7 +134,7 @@ namespace NDifference.Reporting
 									html.WriteElement("div", () =>
 									{
 										html.WriteAttributeString("id", "exp");
-										html.WriteString(changes.HeadingBlock);
+										html.WriteRaw(changes.HeadingBlock);
 									});
 								}
 							});

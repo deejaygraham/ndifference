@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDifference.Inspection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,13 @@ namespace NDifference.TypeSystem
 	{
 		List<FullyQualifiedName> Implements { get; set; }
 
-		List<IMemberMethod> Methods { get; set; }
+		List<IMemberMethod> AllMethods { get; set; }
 
-		List<MemberProperty> Properties { get; set; }
+		List<IMemberMethod> Methods(MemberVisibilityOption accessibility);
+
+		List<MemberProperty> AllProperties { get; set; }
+
+		List<MemberProperty> Properties(MemberVisibilityOption accessibility);
 
 		List<MemberEvent> Events { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace NDifference.Analysis
 {
@@ -22,6 +23,8 @@ namespace NDifference.Analysis
 		public string[] Headings { get; set; }
 
 		public CategoryType CategoryType { get; set; }
+
+		public int Columns { get { return this.Headings.Length; } }
 	}
 
 	public enum CategoryType

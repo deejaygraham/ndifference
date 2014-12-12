@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -31,9 +32,9 @@ namespace NDifference.Inspectors
 				IReferenceTypeDefinition firstRef = first as IReferenceTypeDefinition;
 				IReferenceTypeDefinition secondRef = second as IReferenceTypeDefinition;
 
-				if (firstRef.Methods.Any())
+				if (firstRef.AllMethods.Any())
 				{
-					var removed = secondRef.Methods.FindRemovedMembers(firstRef.Methods);
+					var removed = secondRef.Methods(MemberVisibilityOption.Public).FindRemovedMembers(firstRef.Methods(MemberVisibilityOption.Public));
 
 					foreach (var rem in removed)
 					{

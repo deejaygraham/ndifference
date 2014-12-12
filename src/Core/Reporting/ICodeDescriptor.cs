@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
-	public interface ICodeDescriptor
+	public interface ICodeDescriptor : IDescriptor
 	{
 		ICoded Code { get; }
 	}

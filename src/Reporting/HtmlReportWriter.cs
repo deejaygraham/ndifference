@@ -247,10 +247,6 @@ namespace NDifference.Reporting
 
 					html.WriteComment("Category P" + cat.Priority.Value);
 
-					// work out how wide table needs to be...?
-					bool implementsIDeltaDescriptor = changes.Any(x => x.Descriptor != null && (x.Descriptor as IDeltaDescriptor != null));
-					int columns = implementsIDeltaDescriptor ? 3 : 2;
-
 					html.WriteElement("table", () =>
 					{
 						html.WriteAttributeString("class", "diff-table");
@@ -338,19 +334,55 @@ namespace NDifference.Reporting
 				}
 				else
 				{
-					IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
+					INameValueDescriptor nvd = descriptor as INameValueDescriptor;
 
-					if (delta != null)
+					if (nvd != null)
 					{
-						html.WriteTableRow(change.Inspector, delta, this._format);
+						html.WriteTableRow(change.Inspector, nvd, this._format);
 					}
 					else
 					{
-						ITextDescriptor textDesc = descriptor as ITextDescriptor;
+						INamedDeltaDescriptor nd = descriptor as INamedDeltaDescriptor;
 
-						if (textDesc != null)
+						if (nd != null)
 						{
-							html.WriteTableRow(change.Inspector, textDesc, this._format);
+							html.WriteTableRow(change.Inspector, nd, this._format);
+						}
+						else
+						{
+							IValueDescriptor vd = descriptor as IValueDescriptor;
+
+							if (vd != null)
+							{
+								html.WriteTableRow(change.Inspector, vd, this._format);
+							}
+							else
+							{
+								INamedDeltaDescriptor ndd = descriptor as INamedDeltaDescriptor;
+
+								if (ndd != null)
+								{
+									html.WriteTableRow(change.Inspector, ndd, this._format);
+								}
+								else
+								{
+									IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
+
+									if (delta != null)
+									{
+										html.WriteTableRow(change.Inspector, delta, this._format);
+									}
+									//else
+									//{
+									//	INameValueDescriptor textDesc = descriptor as INameValueDescriptor;
+
+									//	if (textDesc != null)
+									//	{
+									//		html.WriteTableRow(change.Inspector, textDesc, this._format);
+									//	}
+									//}
+								}
+							}
 						}
 					}
 				}

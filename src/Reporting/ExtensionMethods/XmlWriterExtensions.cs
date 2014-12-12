@@ -126,11 +126,40 @@ namespace NDifference.Reporting
 			}
 		}
 
-		public static void WriteTableRow(this XmlWriter writer, string shortCode, ITextDescriptor change, IReportFormat format)
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, INameDescriptor change, IReportFormat format)
 		{
-			string text = change.Message.ToString();
+			writer.WriteElement("tr", () =>
+			{
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(change.Name);
+				});
+			});
+		}
 
-			ICoded code = change.Message as ICoded;
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, IValueDescriptor change, IReportFormat format)
+		{
+			string text = change.Value.ToString();
+
+			ICoded code = change.Value as ICoded;
+
+			if (code != null)
+				text = format.Format(code);
+
+			writer.WriteElement("tr", () =>
+			{
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(text);
+				});
+			});
+		}
+
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, INameValueDescriptor change, IReportFormat format)
+		{
+			string text = change.Value.ToString();
+
+			ICoded code = change.Value as ICoded;
 
 			if (code != null)
 				text = format.Format(code);
@@ -153,6 +182,45 @@ namespace NDifference.Reporting
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, IDeltaDescriptor change, IReportFormat format)
+		{
+			string wasText = change.Was.ToString();
+			string isText = change.IsNow.ToString();
+
+			ICoded was = change.Was as ICoded;
+			ICoded isNow = change.IsNow as ICoded;
+
+			if (was != null)
+			{
+				wasText = format.Format(was);
+			}
+
+			if (isNow != null)
+			{
+				isText = format.Format(isNow);
+			}
+
+			writer.WriteElement("tr", () =>
+			{
+				//writer.WriteElement("td", () =>
+				//{
+				//	writer.WriteRaw(shortCode);
+				//});
+				//writer.WriteElement("td", () =>
+				//{
+				//	writer.WriteRaw(change.Name);
+				//});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(wasText);
+				});
+				writer.WriteElement("td", () =>
+				{
+					writer.WriteRaw(isText);
+				});
+			});
+		}
+
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, INamedDeltaDescriptor change, IReportFormat format)
 		{
 			string wasText = change.Was.ToString();
 			string isText = change.IsNow.ToString();

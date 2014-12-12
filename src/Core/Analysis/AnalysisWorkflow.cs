@@ -97,128 +97,143 @@ namespace NDifference.Analysis
 					this.AnalysingAssembly.Fire(this, new FileProgessEventArgs { FileName = currentAssembly.Name });
 
 					// inspect each assembly...
-					var previousVersionReflection = this.ReflectorFactory.LoadAssembly(previousAssembly.Path);
-					var currentVersionReflection = this.ReflectorFactory.LoadAssembly(currentAssembly.Path);
-
-					IdentifiedChangeCollection changesToThisAssembly = new IdentifiedChangeCollection
+					try
 					{
-						Heading = previousAssembly.Name,
-						Name = previousAssembly.Name
-					};
+						var previousVersionReflection = this.ReflectorFactory.LoadAssembly(previousAssembly.Path);
+						var currentVersionReflection = this.ReflectorFactory.LoadAssembly(currentAssembly.Path);
 
-					//changesToThisAssembly.SummaryBlocks.Add("Name", previousAssembly.Name);
-					changesToThisAssembly.SummaryBlocks.Add("From", previousVersionReflection.GetAssemblyInfo().Version.ToString());
-					changesToThisAssembly.SummaryBlocks.Add("To", currentVersionReflection.GetAssemblyInfo().Version.ToString());
-
-					changesToThisAssembly.CopyMetaFrom(result.Summary);
-					changesToThisAssembly.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
-
-					// looking for general changes to the assembly...
-					progressIndicator.Report(new ProgressValue { Description = "Inspecting " + previousAssembly.Name });
-
-					foreach (var ai in inspectors.AssemblyInspectors.Where(x => x.Enabled))
-					{
-						ai.Inspect(previousVersionReflection.GetAssemblyInfo(), currentVersionReflection.GetAssemblyInfo(), changesToThisAssembly);
-					}
-
-					var previousTypeCollection = previousVersionReflection.GetTypes(AssemblyReflectionOption.Public);
-					var currentTypeCollection = currentVersionReflection.GetTypes(AssemblyReflectionOption.Public);
-
-					ICombinedTypes typeModel = CombinedObjectModel.BuildFrom(previousTypeCollection, currentTypeCollection);
-
-					progressIndicator.Report(new ProgressValue { Description = "Comparing types in assembly " + previousAssembly.Name });
-
-					foreach (var tci in inspectors.TypeCollectionInspectors.Where(x => x.Enabled))
-					{
-						tci.Inspect(typeModel, changesToThisAssembly);
-					}
-
-					// now inspect each type...
-					foreach (var commonTypePair in typeModel.ChangedInCommon)
-					{
-						var cancelTypeStart = new CancellableEventArgs();
-						this.TypeComparisonStarting.Fire(this, cancelTypeStart);
-
-						if (cancelStart.CancelAction)
+						IdentifiedChangeCollection changesToThisAssembly = new IdentifiedChangeCollection
 						{
-							result.Cancelled = true;
-							return result;
-						}
-
-						ITypeInfo previousType = commonTypePair.First;
-						ITypeInfo currentType = commonTypePair.Second;
-
-						// find common types...
-						IdentifiedChangeCollection changesToThisType = new IdentifiedChangeCollection
-						{
-							//Heading = project.Product.Name,
-							Heading = previousType.Name,
-							Name = previousType.FullName
+							Heading = previousAssembly.Name,
+							Name = previousAssembly.Name
 						};
 
-						changesToThisType.SummaryBlocks.Add("Name", currentType.Name);
-						changesToThisType.SummaryBlocks.Add("Namespace", currentType.Namespace);
-						changesToThisType.SummaryBlocks.Add("Assembly", currentType.Assembly);
+						//changesToThisAssembly.SummaryBlocks.Add("Name", previousAssembly.Name);
+						changesToThisAssembly.SummaryBlocks.Add("From", previousVersionReflection.GetAssemblyInfo().Version.ToString());
+						changesToThisAssembly.SummaryBlocks.Add("To", currentVersionReflection.GetAssemblyInfo().Version.ToString());
 
-						string fromVersion = previousVersionReflection.GetAssemblyInfo().Version.ToString();
-						string toVersion = currentVersionReflection.GetAssemblyInfo().Version.ToString();
+						changesToThisAssembly.CopyMetaFrom(result.Summary);
+						changesToThisAssembly.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
 
-						bool includeTypeHash = false;
+						// looking for general changes to the assembly...
+						progressIndicator.Report(new ProgressValue { Description = "Inspecting " + previousAssembly.Name });
 
-						if (includeTypeHash)
+						foreach (var ai in inspectors.AssemblyInspectors.Where(x => x.Enabled))
 						{
-							fromVersion += " " + previousType.CalculateHash();
-							toVersion += " " + currentType.CalculateHash();
+							ai.Inspect(previousVersionReflection.GetAssemblyInfo(), currentVersionReflection.GetAssemblyInfo(), changesToThisAssembly);
 						}
 
-						changesToThisType.SummaryBlocks.Add("From", fromVersion);
-						changesToThisType.SummaryBlocks.Add("To", toVersion);
+						var previousTypeCollection = previousVersionReflection.GetTypes(AssemblyReflectionOption.Public);
+						var currentTypeCollection = currentVersionReflection.GetTypes(AssemblyReflectionOption.Public);
 
-						changesToThisType.CopyMetaFrom(result.Summary);
+						// filter according to namespace, other criteria - build in plugin architecture
+						// public types/members or include private, protected, internal ????
 
-						changesToThisType.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
-						changesToThisType.Parents.Add(new DocumentLink { Identifier = changesToThisAssembly.Identifier, LinkText = changesToThisAssembly.Name });
+						ICombinedTypes typeModel = CombinedObjectModel.BuildFrom(previousTypeCollection, currentTypeCollection);
 
-						progressIndicator.Report(new ProgressValue { Description = "Inspecting type " + currentType.Name });
+						progressIndicator.Report(new ProgressValue { Description = "Comparing types in assembly " + previousAssembly.Name });
 
-						foreach (var ti in inspectors.TypeInspectors.Where(x => x.Enabled))
+						foreach (var tci in inspectors.TypeCollectionInspectors.Where(x => x.Enabled))
 						{
-							ti.Inspect(previousType, currentType, changesToThisType);
+							tci.Inspect(typeModel, changesToThisAssembly);
 						}
 
-						if (changesToThisType.Changes.Any())
+						// now inspect each type...
+						foreach (var commonTypePair in typeModel.ChangedInCommon)
 						{
-							if (project.Settings.ConsolidateAssemblyTypes)
+							var cancelTypeStart = new CancellableEventArgs();
+							this.TypeComparisonStarting.Fire(this, cancelTypeStart);
+
+							if (cancelStart.CancelAction)
 							{
-								changesToThisType.Changes.ForEach(x => changesToThisAssembly.Add(x));
+								result.Cancelled = true;
+								return result;
 							}
-							else
+
+							ITypeInfo previousType = commonTypePair.First;
+							ITypeInfo currentType = commonTypePair.Second;
+
+							// find common types...
+							IdentifiedChangeCollection changesToThisType = new IdentifiedChangeCollection
 							{
-								result.Type(changesToThisType);
+								//Heading = project.Product.Name,
+								Heading = previousType.Name,
+								Name = previousType.FullName
+							};
+
+							changesToThisType.SummaryBlocks.Add("Name", currentType.Name);
+							changesToThisType.SummaryBlocks.Add("Namespace", currentType.Namespace);
+							changesToThisType.SummaryBlocks.Add("Assembly", currentType.Assembly);
+
+							string fromVersion = previousVersionReflection.GetAssemblyInfo().Version.ToString();
+							string toVersion = currentVersionReflection.GetAssemblyInfo().Version.ToString();
+
+							bool includeTypeHash = false;
+
+							if (includeTypeHash)
+							{
+								fromVersion += " " + previousType.CalculateHash();
+								toVersion += " " + currentType.CalculateHash();
 							}
+
+							changesToThisType.SummaryBlocks.Add("From", fromVersion);
+							changesToThisType.SummaryBlocks.Add("To", toVersion);
+
+							changesToThisType.CopyMetaFrom(result.Summary);
+
+							changesToThisType.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
+							changesToThisType.Parents.Add(new DocumentLink { Identifier = changesToThisAssembly.Identifier, LinkText = changesToThisAssembly.Name });
+
+							progressIndicator.Report(new ProgressValue { Description = "Inspecting type " + currentType.Name });
+
+							foreach (var ti in inspectors.TypeInspectors.Where(x => x.Enabled))
+							{
+								ti.Inspect(previousType, currentType, changesToThisType);
+							}
+
+							if (changesToThisType.Changes.Any())
+							{
+								if (project.Settings.ConsolidateAssemblyTypes)
+								{
+									changesToThisType.Changes.ForEach(x => changesToThisAssembly.Add(x));
+								}
+								else
+								{
+									result.Type(changesToThisType);
+								}
+							}
+
+							this.TypeComparisonComplete.Fire(this);
 						}
 
-						this.TypeComparisonComplete.Fire(this);
+						bool outputAssemblyChurn = false;
+
+						if (outputAssemblyChurn)
+						{
+							ChurnCalculator calc2 = new ChurnCalculator(typeModel);
+
+							changesToThisAssembly.SummaryBlocks.Add("Churn", calc2.Calculate().ToString() + " %");
+						}
+
+						this.AssemblyComparisonComplete.Fire(this);
+
+						// hand this off to another container...
+						if (changesToThisAssembly.Changes.Any())
+						{
+							result.Assembly(changesToThisAssembly);
+						}
 					}
-
-					bool outputAssemblyChurn = false;
-
-					if (outputAssemblyChurn)
+					catch (BadImageFormatException)
 					{
-						ChurnCalculator calc2 = new ChurnCalculator(typeModel);
-
-						changesToThisAssembly.SummaryBlocks.Add("Churn", calc2.Calculate().ToString() + " %");
 					}
-
-					this.AssemblyComparisonComplete.Fire(this);
-
-					// hand this off to another container...
-					if (changesToThisAssembly.Changes.Any())
+					catch(Exception)
 					{
-						result.Assembly(changesToThisAssembly);
+						// huh ?
 					}
-
-					this.AssemblyAnalysisComplete.Fire(this);
+					finally
+					{
+						this.AssemblyAnalysisComplete.Fire(this);
+					}
 				}
 
 				bool calculateOverallChurn = false;

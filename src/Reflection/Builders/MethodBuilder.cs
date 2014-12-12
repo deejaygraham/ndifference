@@ -52,7 +52,7 @@ namespace NDifference.Reflection.Builders
 						else if (method.IsInPublicApi())
 						{
 							MemberMethod im = BuildInstanceMethodFrom(method);
-							building.Methods.Add(im);
+							building.AllMethods.Add(im);
 						}
 					}
 				}

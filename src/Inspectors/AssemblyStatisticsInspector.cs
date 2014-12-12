@@ -41,7 +41,7 @@ namespace NDifference.Inspectors
 			
 			if (oldNamespaces != newNamespaces)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new DeltaDescriptor
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
 				{
 					Name = "Namespaces",
 					Was = oldNamespaces.ToString(),
@@ -59,7 +59,7 @@ namespace NDifference.Inspectors
 
 			if (oldTypes != newTypes)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new DeltaDescriptor
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
 				{
 					Name = "Types",
 					Was = oldTypes.ToString(),

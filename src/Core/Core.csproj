@@ -63,6 +63,7 @@
     <Compile Include="Inspection\CombinedObjectModel.cs" />
     <Compile Include="Inspection\ICombinedAssemblies.cs" />
     <Compile Include="Inspection\ICombinedTypes.cs" />
+    <Compile Include="Inspection\MemberVisibilityOption.cs" />
     <Compile Include="Inspection\WellKnownChangePriorities.cs" />
     <Compile Include="Inspectors\IAssemblyCollectionInspector.cs" />
     <Compile Include="Inspectors\IInspector.cs" />
@@ -90,7 +91,11 @@
     <Compile Include="Reporting\HtmlStyleReset.cs" />
     <Compile Include="Reporting\ICodeDescriptor.cs" />
     <Compile Include="Reporting\IDeltaDescriptor.cs" />
+    <Compile Include="Reporting\IDescriptor.cs" />
     <Compile Include="Reporting\IDocumentLink.cs" />
+    <Compile Include="Reporting\INamedDeltaDescriptor.cs" />
+    <Compile Include="Reporting\INameDescriptor.cs" />
+    <Compile Include="Reporting\INameValueDescriptor.cs" />
     <Compile Include="Reporting\IReportFormat.cs" />
     <Compile Include="Reporting\IReportFormatRepository.cs" />
     <Compile Include="Reporting\IReportingRepository.cs" />
@@ -100,10 +105,13 @@
     <Compile Include="Reporting\ITextDescriptor.cs" />
     <Compile Include="Reporting\FileMap.cs" />
     <Compile Include="Reporting\FileMapBuilder.cs" />
+    <Compile Include="Reporting\IValueDescriptor.cs" />
+    <Compile Include="Reporting\NamedDeltaDescriptor.cs" />
     <Compile Include="Reporting\ReportFormatRepository.cs" />
     <Compile Include="Reporting\ReportingRepository.cs" />
     <Compile Include="Reporting\ReportingWorkflow.cs" />
-    <Compile Include="Reporting\TextDescriptor.cs" />
+    <Compile Include="Reporting\NameValueDescriptor.cs" />
+    <Compile Include="Reporting\ValueDescriptor.cs" />
     <Compile Include="SourceFormatting\ClassDeclarationSourceCodeBuilder.cs" />
     <Compile Include="SourceFormatting\ICoded.cs" />
     <Compile Include="SourceFormatting\IdentifierTag.cs" />

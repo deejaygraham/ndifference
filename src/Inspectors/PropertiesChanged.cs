@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -32,7 +33,7 @@ namespace NDifference.Inspectors
 				IReferenceTypeDefinition firstRef = first as IReferenceTypeDefinition;
 				IReferenceTypeDefinition secondRef = second as IReferenceTypeDefinition;
 
-				var commonProperties = firstRef.Properties.FuzzyInCommonWith(secondRef.Properties);
+				var commonProperties = firstRef.Properties(MemberVisibilityOption.Public).FuzzyInCommonWith(secondRef.Properties(MemberVisibilityOption.Public));
 
 				if (commonProperties.Any())
 				{
@@ -49,7 +50,7 @@ namespace NDifference.Inspectors
 							if (oldProperty.GetterAccessibility == MemberAccessibility.Public && newProperty.GetterAccessibility != MemberAccessibility.Public)
 							{
 								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesChanged,
-									new DeltaDescriptor
+									new NamedDeltaDescriptor
 									{
 										Name = "Get removed",
 										Was = oldProperty.ToCode(),
@@ -60,7 +61,7 @@ namespace NDifference.Inspectors
 							if (oldProperty.SetterAccessibility == MemberAccessibility.Public && newProperty.SetterAccessibility != MemberAccessibility.Public)
 							{
 								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesChanged,
-									new DeltaDescriptor
+									new NamedDeltaDescriptor
 									{
 										Name = "Set removed",
 										Was = oldProperty.ToCode(),
@@ -76,7 +77,7 @@ namespace NDifference.Inspectors
 									&& oldProperty.PropertyType.Type == newProperty.PropertyType.Type)
 								{
 									changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesChanged,
-										new DeltaDescriptor
+										new NamedDeltaDescriptor
 										{
 											Name = string.Format(
 												"Property changed namespace from {0} to {1}",
@@ -90,7 +91,7 @@ namespace NDifference.Inspectors
 								else
 								{
 									changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesChanged,
-										new DeltaDescriptor
+										new NamedDeltaDescriptor
 										{
 											Name = string.Format(
 												"Property changed from from {0} to {1}",

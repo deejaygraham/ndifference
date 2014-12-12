@@ -48,7 +48,7 @@ namespace NDifference.Inspectors
 						if (oldField.FieldType != newField.FieldType)
 						{
 							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsChanged,
-								new DeltaDescriptor
+								new NamedDeltaDescriptor
 								{
 									Name = string.Format("Changed type from {0} to {1}", oldField.FieldType, newField.FieldType),
 									Was = oldField.ToCode(),

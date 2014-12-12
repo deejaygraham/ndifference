@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
-	public interface ITextDescriptor
-	{
-		string Name { get; }
+	//public interface INameValueDescriptor : IDescriptor
+	//{
+	//	string Name { get; }
 
-		object Message { get; }
-	}
+	//	object Message { get; }
+	//}
 }

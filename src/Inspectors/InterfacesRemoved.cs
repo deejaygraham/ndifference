@@ -43,7 +43,7 @@ namespace NDifference.Inspectors
 					// or for each - no longer implements...
 					foreach (var remove in removed)
 					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new TextDescriptor { Name = "No longer implements", Message = remove.ToCode() }));
+						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor { Name = "No longer implements", Was = remove.ToCode(), IsNow = string.Empty }));
 					}
 				}
 			}

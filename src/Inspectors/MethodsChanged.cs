@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -33,16 +34,16 @@ namespace NDifference.Inspectors
 				IReferenceTypeDefinition secondRef = second as IReferenceTypeDefinition;
 
 				// look for non-overloaded methods that have a counterpart in the new version...
-				foreach(var method in firstRef.Methods)
+				foreach (var method in firstRef.Methods(MemberVisibilityOption.Public))
 				{
-					var counterpart = secondRef.Methods.FindExactMatchFor(method);
+					var counterpart = secondRef.Methods(MemberVisibilityOption.Public).FindExactMatchFor(method);
 
 					if (counterpart != null)
 					{
 						if (method.IsVirtual != counterpart.IsVirtual)
 						{
 							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-									new DeltaDescriptor
+									new NamedDeltaDescriptor
 									{
 										Name = method.IsVirtual ? "Method is no longer virtual" : "Method is now virtual",
 										Was = method.ToCode(),
@@ -52,7 +53,7 @@ namespace NDifference.Inspectors
 						else if (!method.IsAbstract && counterpart.IsAbstract)
 						{
 							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-									new DeltaDescriptor
+									new NamedDeltaDescriptor
 									{
 										Name = "Method is now abstract",
 										Was = method.ToCode(),
@@ -63,7 +64,7 @@ namespace NDifference.Inspectors
 						if (method.IsStatic != counterpart.IsStatic)
 						{
 							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-									new DeltaDescriptor
+									new NamedDeltaDescriptor
 									{
 										Name = method.IsStatic ? "Method is no longer static" : "Method is now static",
 										Was = method.ToCode(),
@@ -74,7 +75,7 @@ namespace NDifference.Inspectors
 						if (method.Accessibility != counterpart.Accessibility)
 						{
 							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-									new DeltaDescriptor
+									new NamedDeltaDescriptor
 									{
 										Name = "Accessibility has changed",
 										Was = method.Accessibility.ToDescription(),
@@ -90,7 +91,7 @@ namespace NDifference.Inspectors
 							if (mm.ReturnType != cm.ReturnType)
 							{
 								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-										new DeltaDescriptor
+										new NamedDeltaDescriptor
 										{
 											Name = "Return type has changed",
 											Was = mm.ToCode(),

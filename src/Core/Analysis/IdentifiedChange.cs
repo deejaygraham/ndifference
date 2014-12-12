@@ -21,6 +21,7 @@ namespace NDifference.Analysis
 			this.Inspector = inspector.ShortCode;
 			this.Priority = cat.Priority.Value;
 			this.Description = name;
+			this.Category = cat;
 		}
 
 		public IdentifiedChange(IInspector inspector, Category cat, object descriptor)
@@ -28,6 +29,7 @@ namespace NDifference.Analysis
 			this.Inspector = inspector.ShortCode;
 			this.Priority = cat.Priority.Value;
 			this.Descriptor = descriptor;
+			this.Category = cat;
 		}
 
 		public IdentifiedChange(IInspector inspector, Category cat, string name, object descriptor)
@@ -36,6 +38,7 @@ namespace NDifference.Analysis
 			this.Priority = cat.Priority.Value;
 			this.Description = name;
 			this.Descriptor = descriptor;
+			this.Category = cat;
 		}
 
 		public string Description { get; set; }
@@ -45,6 +48,8 @@ namespace NDifference.Analysis
 		public object Descriptor { get; set; }
 
 		public string Inspector { get; set; }
+
+		public Category Category { get; set; }
 	}
 
 	public class IdentifiedChangeComparer : IComparer<IdentifiedChange>
@@ -75,16 +80,16 @@ namespace NDifference.Analysis
 				return xcode.Code.ToString().CompareTo(ycode.Code.ToString());
 			}
 	
-			IDeltaDescriptor xdelta = x as IDeltaDescriptor;
-			IDeltaDescriptor ydelta = y as IDeltaDescriptor;
+			//IDeltaDescriptor xdelta = x as IDeltaDescriptor;
+			//IDeltaDescriptor ydelta = y as IDeltaDescriptor;
 
-			if (xdelta != null && ydelta != null)
-			{
-				return xdelta.Name.CompareTo(ydelta.Name);
-			}
+			//if (xdelta != null && ydelta != null)
+			//{
+			//	return xdelta.Name.CompareTo(ydelta.Name);
+			//}
 
-			ITextDescriptor xtext = x as ITextDescriptor;
-			ITextDescriptor ytext = y as ITextDescriptor;
+			INameValueDescriptor xtext = x as INameValueDescriptor;
+			INameValueDescriptor ytext = y as INameValueDescriptor;
 
 			if (xtext != null && ytext != null)
 			{

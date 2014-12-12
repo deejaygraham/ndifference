@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NDifference.SourceFormatting
+namespace NDifference.Reporting
 {
-	public interface ICoded
+	public interface INameDescriptor : IDescriptor
 	{
-		// syntax tree of objects
-		string ToXml();
+		string Name { get; set; }
 	}
 }

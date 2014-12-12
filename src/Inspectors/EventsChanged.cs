@@ -43,7 +43,7 @@ namespace NDifference.Inspectors
 						if (oldEvent.EventType != newEvent.EventType)
 						{
 							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EventsChanged,
-								new DeltaDescriptor
+								new NamedDeltaDescriptor
 								{
 									Name = string.Format("Changed type from {0} to {1}", oldEvent.EventType, newEvent.EventType),
 									Was = oldEvent.ToCode(),

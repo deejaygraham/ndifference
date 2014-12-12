@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
-	public interface IDeltaDescriptor
+	public interface IDeltaDescriptor : IDescriptor
 	{
-		string Name { get; }
+		// string Name { get; }
 
 		object Was { get; }
 
 		object IsNow { get; }
-
 	}
+
 }

@@ -50,7 +50,6 @@ namespace NDifference.Inspectors
 					{
 						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsChanged, new DeltaDescriptor 
 						{ 
-							Name = "Constructor signature changed", 
 							Was = oldCtor.ToCode(),
 							IsNow = newCtor.ToCode() 
 						}));

@@ -49,14 +49,28 @@ namespace NDifference.SourceFormatting
 
 		public override string ToString()
 		{
-			using (TextWriter writer = new StringWriter())
+			string output = string.Empty;
+
+			TextWriter writer = new StringWriter();
+
+			try
 			{
 				using (XmlWriter xmlWriter = new XmlTextWriter(writer))
 				{
 					this.WriteXml(xmlWriter);
-					return writer.ToString();
+					output = writer.ToString();
 				}
 			}
+			finally
+			{
+				if (writer != null)
+				{
+					writer.Dispose();
+					writer = null;
+				}
+			}
+
+			return output;
 		}
 
 		public override int GetHashCode()

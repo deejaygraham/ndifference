@@ -62,7 +62,7 @@ namespace NDifference.UnitTests
 
 				ClassDefinition cd = info as ClassDefinition;
 
-				Assert.True(cd.Methods[0].IsAbstract);
+				Assert.True(cd.AllMethods[0].IsAbstract);
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace NDifference.UnitTests
 
 				ClassDefinition cd = info as ClassDefinition;
 
-				Assert.True(cd.Methods[0].IsVirtual);
+				Assert.True(cd.AllMethods[0].IsVirtual);
 			}
 		}
 
@@ -174,8 +174,8 @@ namespace NDifference.UnitTests
 
 				InterfaceDefinition id = info as InterfaceDefinition;
 
-				Assert.False(id.Methods[0].IsVirtual);
-				Assert.False(id.Methods[0].IsAbstract);
+				Assert.False(id.AllMethods[0].IsVirtual);
+				Assert.False(id.AllMethods[0].IsAbstract);
 			}
 		}
 
@@ -287,9 +287,9 @@ namespace NDifference.UnitTests
 				ClassDefinition cd = info as ClassDefinition;
 
 				Assert.NotNull(cd);
-				Assert.Equal(1, cd.Methods.Count);
+				Assert.Equal(1, cd.AllMethods.Count);
 				
-				MemberMethod mm = cd.Methods.First() as MemberMethod;
+				MemberMethod mm = cd.AllMethods.First() as MemberMethod;
 				Assert.Equal("List<String>", mm.ReturnType.Type.ToString());
 			}
 		}

@@ -114,7 +114,7 @@ namespace NDifference.UnitTests
 
 		public CompilableClassBuilder WithProperty(string propertyType, string propertyName)
 		{
-			this.properties.Add(string.Format("public {0} {1} { get; set; }", propertyType, propertyName));
+			this.properties.Add(string.Format("public {0} {1} {{ get; set; }}", propertyType, propertyName));
 
 			return this;
 		}

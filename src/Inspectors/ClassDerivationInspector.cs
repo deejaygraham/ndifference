@@ -40,7 +40,7 @@ namespace NDifference.Inspectors
 					// check for heirarchy change
 					if (firstClass.InheritsFrom != secondClass.InheritsFrom)
 					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new DeltaDescriptor
+						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor
 							{
 								Name = String.Format("Class was derived from {0}, now derived from {1}", firstClass.InheritsFrom, secondClass.InheritsFrom),
 								Was = first.ToCode(),
@@ -51,7 +51,7 @@ namespace NDifference.Inspectors
 				else
 				{
 					// no longer derived...
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new DeltaDescriptor 
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor 
 						{ 
 							Name = "Class no longer derives from " + firstClass.InheritsFrom.ToString(), 
 							Was = first.ToCode(), 

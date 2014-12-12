@@ -34,7 +34,7 @@ namespace NDifference.Inspectors
 
 				if (wasDestructor == null && nowDestructor != null)
 				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FinalizersAdded, new TextDescriptor { Name = "Finalizer added", Message = nowDestructor.ToCode() }));
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FinalizersAdded, new ValueDescriptor { Value = nowDestructor.ToCode() }));
 				}
 			}
 		}

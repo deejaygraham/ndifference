@@ -41,7 +41,7 @@ namespace NDifference.Inspectors
 				{
 					foreach (var add in added)
 					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new TextDescriptor { Name = "Now implements", Message = add.ToCode() }));
+						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor { Name = "Now implements", Was = string.Empty, IsNow = add.ToCode() }));
 					}
 				}
 			}

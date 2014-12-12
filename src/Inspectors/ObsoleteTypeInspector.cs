@@ -37,10 +37,10 @@ namespace NDifference.Inspectors
 						new IdentifiedChange(
 							this, 
 							WellKnownAssemblyCategories.ObsoleteTypes, 
-							new TextDescriptor 
+							new NameValueDescriptor 
 							{ 
 								Name = ti.FullName, 
-								Message = ti.ObsoleteMarker.Message 
+								Value = ti.ObsoleteMarker.Message 
 							}));
 				}
 			}

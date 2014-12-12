@@ -28,7 +28,7 @@ namespace NDifference.Inspectors
             if (first.RuntimeVersion != second.RuntimeVersion)
 			{
 				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, 
-					new DeltaDescriptor 
+					new NamedDeltaDescriptor 
 					{ 
 						Name = ".Net Runtime", 
 						Was = first.RuntimeVersion, 

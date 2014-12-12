@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Runtime.Serialization;
 
 namespace NDifference.UI.Controls
 {
@@ -264,6 +265,11 @@ namespace NDifference.UI.Controls
 			this.FullPath = fullPath;
 			this.Text = System.IO.Path.GetFileName(this.FullPath);
 			this.ToolTipText = fullPath;
+		}
+
+		protected AssemblyListViewItem(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
 		}
 
 		public string FullPath

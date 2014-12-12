@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -32,11 +33,11 @@ namespace NDifference.Inspectors
 				IReferenceTypeDefinition firstRef = first as IReferenceTypeDefinition;
 				IReferenceTypeDefinition secondRef = second as IReferenceTypeDefinition;
 
-				var obs = secondRef.Properties.FindObsoleteMembers();
+				var obs = secondRef.Properties(MemberVisibilityOption.Public).FindObsoleteMembers();
 
 				foreach (var o in obs)
 				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesObsolete, new TextDescriptor { Name = o.ToString(), Message = o.ObsoleteMarker.Message }));
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
 				}
 			}
 

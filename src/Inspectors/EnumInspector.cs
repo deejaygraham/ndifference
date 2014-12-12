@@ -98,7 +98,7 @@ namespace NDifference.Inspectors
 							if (firstValue.Value != secondValue.Value)
 							{
 								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EnumValuesChanged,
-								new DeltaDescriptor { Name = "Value changed", Was = firstValue.ToCode(), IsNow = secondValue.ToCode() }));
+								new DeltaDescriptor { Was = firstValue.ToCode(), IsNow = secondValue.ToCode() }));
 							}
 						}
 					}

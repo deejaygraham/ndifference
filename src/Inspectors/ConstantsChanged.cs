@@ -47,8 +47,8 @@ namespace NDifference.Inspectors
 						// property type has changed.
 						if (oldConstant.ConstantType != newConstant.ConstantType)
 						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstantsChanged, 
-								new DeltaDescriptor 
+							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstantsChanged,
+								new NamedDeltaDescriptor 
 								{ 
 									Name = string.Format("Changed type from {0} to {1}", oldConstant.ConstantType, newConstant.ConstantType), 
 									Was = oldConstant.ToCode(), 

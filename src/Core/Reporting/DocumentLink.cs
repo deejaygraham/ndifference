@@ -8,5 +8,7 @@ namespace NDifference.Reporting
 		public string LinkText { get; set; }
 
 		public string LinkUrl { get; set; }
+
+		public int Columns { get { return 1; } }
 	}
 }

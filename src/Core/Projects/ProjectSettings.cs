@@ -317,7 +317,8 @@ namespace NDifference.Projects
 			this.SummaryTitle = other.SummaryTitle;
 			this.FromIndex = other.FromIndex;
 			this.ToIndex = other.ToIndex;
-			this.IgnoreInspectors = other.IgnoreInspectors;
+
+			// this.IgnoreInspectors = other.IgnoreInspectors;
 		}
 	}
 }

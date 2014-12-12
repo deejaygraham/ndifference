@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -32,9 +33,9 @@ namespace NDifference.Inspectors
 				IReferenceTypeDefinition firstRef = first as IReferenceTypeDefinition;
 				IReferenceTypeDefinition secondRef = second as IReferenceTypeDefinition;
 
-				if (secondRef.Methods.Any())
+				if (secondRef.AllMethods.Any())
 				{
-					var added = secondRef.Methods.FindAddedMembers(firstRef.Methods);
+					var added = secondRef.Methods(MemberVisibilityOption.Public).FindAddedMembers(firstRef.Methods(MemberVisibilityOption.Public));
 
 					foreach (var add in added)
 					{

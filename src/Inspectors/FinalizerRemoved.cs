@@ -29,7 +29,7 @@ namespace NDifference.Inspectors
 
 				if (wasDestructor != null && nowDestructor == null)
 				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FinalizersRemoved, new TextDescriptor { Name = "Finalizer removed", Message = wasDestructor.ToCode() }));
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FinalizersRemoved, new ValueDescriptor { Value = wasDestructor.ToCode() }));
 				}
 			}
 		}

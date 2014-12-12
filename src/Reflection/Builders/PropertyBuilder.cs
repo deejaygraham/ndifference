@@ -22,7 +22,7 @@ namespace NDifference.Reflection.Builders
 					x.GetterAccessibility() != MemberAccessibility.Private
 					|| x.SetterAccessibility() != MemberAccessibility.Private))
 				{
-					building.Properties.Add(BuildFrom(property));
+					building.AllProperties.Add(BuildFrom(property));
 				}
 			}
 		}

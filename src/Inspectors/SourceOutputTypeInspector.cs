@@ -23,7 +23,7 @@ namespace NDifference.Inspectors
 		{
 			changes.Add(WellKnownTypeCategories.TypeDebug);
 
-			changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeDebug, new DeltaDescriptor { Name = "Code", Was = first.ToCode(), IsNow = second.ToCode() }));
+			changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeDebug, new DeltaDescriptor { Was = first.ToCode(), IsNow = second.ToCode() }));
 		}
 	}
 }

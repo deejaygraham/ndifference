@@ -10,7 +10,7 @@ namespace NDifference.Inspectors
 			Name = "Type Changes",
 			Description = "These changes were made to the new version of the type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.TypeInternal),
-			Headings = new string[] { "Code", "Name" }
+			Headings = new string[] { "Message", "Was", "Now" }
 		};
 
 		// constants
@@ -35,7 +35,7 @@ namespace NDifference.Inspectors
 			Name = "Changed Constants",
 			Description = "These constants were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsChanged),
-			Headings = new string[] { "Was", "Now" }
+			Headings = new string[] { "Message", "Was", "Now" }
 		};
 
 		public static readonly Category ConstantsAdded = new Category
@@ -68,7 +68,7 @@ namespace NDifference.Inspectors
 			Name = "Changed Fields",
 			Description = "These fields were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsChanged),
-			Headings = new string[] { "Was", "Now" }
+			Headings = new string[] { "Message", "Was", "Now" }
 		};
 
 		public static readonly Category FieldsAdded = new Category
@@ -200,7 +200,7 @@ namespace NDifference.Inspectors
 			Name = "Changed Events",
 			Description = "These events were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsChanged),
-			Headings = new string[] { "Was", "Now" }
+			Headings = new string[] { "Message", "Was", "Now" }
 		};
 
 		public static readonly Category EventsAdded = new Category
@@ -233,7 +233,7 @@ namespace NDifference.Inspectors
 			Name = "Changed Properties",
 			Description = "These properties were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesChanged),
-			Headings = new string[] { "Was", "Now" }
+			Headings = new string[] { "Message", "Was", "Now" }
 		};
 
 		public static readonly Category PropertiesAdded = new Category
@@ -299,7 +299,7 @@ namespace NDifference.Inspectors
 			Name = "Changed Methods",
 			Description = "These methods were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsChanged),
-			Headings = new string[] { "Was", "Now" }
+			Headings = new string[] { "Message", "Was", "Now" }
 		};
 
 		public static readonly Category MethodsAdded = new Category

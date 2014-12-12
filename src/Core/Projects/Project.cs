@@ -63,19 +63,19 @@ namespace NDifference.Projects
 
 			persistableFormat.ProductName = this.Product.Name;
 
+			string baseFolder = string.IsNullOrEmpty(this.FileName) ? string.Empty : Path.GetDirectoryName(this.FileName);
+
+			bool writeAbsolutePaths = string.IsNullOrEmpty(baseFolder);
+
+			if (!baseFolder.EndsWith("\\"))
+			{
+				baseFolder += "\\";
+			}
+
 			if (this.Product.Increments.Count > 1)
 			{
 				persistableFormat.SourceName = this.Product.ComparedIncrements.First.Name;
 				persistableFormat.TargetName = this.Product.ComparedIncrements.Second.Name;
-
-				string baseFolder = string.IsNullOrEmpty(this.FileName) ? string.Empty : Path.GetDirectoryName(this.FileName);
-
-				bool writeAbsolutePaths = string.IsNullOrEmpty(baseFolder);
-
-				if (!baseFolder.EndsWith("\\"))
-				{
-					baseFolder += "\\";
-				}
 
 				foreach (var assembly in this.Product.ComparedIncrements.First.Assemblies)
 				{
@@ -91,6 +91,11 @@ namespace NDifference.Projects
 			}
 
 			persistableFormat.Settings = this.Settings.ToPersistableFormat();
+
+			if (Path.IsPathRooted(persistableFormat.Settings.OutputFolder))
+			{
+				persistableFormat.Settings.OutputFolder = writeAbsolutePaths ? persistableFormat.Settings.OutputFolder : baseFolder.MakeRelativePath(persistableFormat.Settings.OutputFolder);
+			}
 
 			return persistableFormat;
 		}
@@ -170,6 +175,11 @@ namespace NDifference.Projects
 			if (project.Settings.ToIndex < project.Product.Increments.Count)
 			{
 				project.Product.ToIncrement = project.Settings.ToIndex;
+			}
+
+			if (!Path.IsPathRooted(project.Settings.OutputFolder))
+			{
+				project.Settings.OutputFolder = baseFolder.MakeAbsolutePath(project.Settings.OutputFolder);
 			}
 
 			return project;

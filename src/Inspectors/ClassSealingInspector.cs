@@ -35,7 +35,7 @@ namespace NDifference.Inspectors
 
 			if (!firstClass.IsSealed && secondClass.IsSealed)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new DeltaDescriptor { Name = "Class is now marked as sealed", Was = first.ToCode(), IsNow = second.ToCode() }));
+				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor { Name = "Class is now marked as sealed", Was = first.ToCode(), IsNow = second.ToCode() }));
 			}
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using NDifference.SourceFormatting;
+﻿using NDifference.Inspection;
+using NDifference.SourceFormatting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,8 +28,8 @@ namespace NDifference.TypeSystem
 			this.Implements = new List<FullyQualifiedName>();
 			this.Constants = new List<Constant>();
 			this.Fields = new List<MemberField>();
-			this.Methods = new List<IMemberMethod>();
-			this.Properties = new List<MemberProperty>();
+			this.AllMethods = new List<IMemberMethod>();
+			this.AllProperties = new List<MemberProperty>();
 			this.Events = new List<MemberEvent>();
 			this.Indexers = new List<Indexer>();
 			this.Operators = new List<Operator>();
@@ -94,9 +95,25 @@ namespace NDifference.TypeSystem
 
 		public List<MemberField> Fields { get; set; }
 
-		public List<IMemberMethod> Methods { get; set; }
+		public List<IMemberMethod> AllMethods { get; set; }
 
-		public List<MemberProperty> Properties { get; set; }
+		public List<IMemberMethod> Methods(MemberVisibilityOption accessibility)
+		{
+			if (accessibility == MemberVisibilityOption.All)
+				return this.AllMethods;
+
+			return this.AllMethods.Where(x => x.Accessibility == MemberAccessibility.Public).ToList();
+		}
+
+		public List<MemberProperty> AllProperties { get; set; }
+
+		public List<MemberProperty> Properties(MemberVisibilityOption accessibility)
+		{
+			if (accessibility == MemberVisibilityOption.All)
+				return this.AllProperties;
+
+			return this.AllProperties.Where(x => x.Accessibility == MemberAccessibility.Public).ToList();
+		}
 
 		public List<MemberEvent> Events { get; set; }
 

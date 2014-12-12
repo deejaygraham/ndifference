@@ -1,4 +1,5 @@
-﻿using NDifference.SourceFormatting;
+﻿using NDifference.Inspection;
+using NDifference.SourceFormatting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,8 +28,8 @@ namespace NDifference.TypeSystem
 		
 		public InterfaceDefinition()
 		{
-			this.Methods = new List<IMemberMethod>();
-			this.Properties = new List<MemberProperty>();
+			this.AllMethods = new List<IMemberMethod>();
+			this.AllProperties = new List<MemberProperty>();
 			this.Events = new List<MemberEvent>();
 			this.Indexers = new List<Indexer>();
 			this.Implements = new List<FullyQualifiedName>();
@@ -61,9 +62,19 @@ namespace NDifference.TypeSystem
 
 		public Obsolete ObsoleteMarker { get; set; }
 
-		public List<IMemberMethod> Methods { get; set; }
+		public List<IMemberMethod> AllMethods { get; set; }
 
-		public List<MemberProperty> Properties { get; set; }
+		public List<IMemberMethod> Methods(MemberVisibilityOption accessibility)
+		{
+			return this.AllMethods;
+		}
+
+		public List<MemberProperty> AllProperties { get; set; }
+
+		public List<MemberProperty> Properties(MemberVisibilityOption accessibility)
+		{
+			return this.AllProperties;
+		}
 
 		public List<MemberEvent> Events { get; set; }
 

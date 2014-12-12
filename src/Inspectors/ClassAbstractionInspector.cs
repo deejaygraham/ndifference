@@ -38,7 +38,7 @@ namespace NDifference.Inspectors
 				changes.Add(WellKnownTypeCategories.TypeInternal);
 
 				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, 
-					new DeltaDescriptor 
+					new NamedDeltaDescriptor 
 					{ 
 						Name = "Class is now abstract", 
 						Was = first.ToCode(), 

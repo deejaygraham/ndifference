@@ -25,7 +25,7 @@ namespace NDifference.Inspectors
 			if (first.Architecture != second.Architecture)
 			{
 				// need to report this change...
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new DeltaDescriptor
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
 				{
 					Name = "Architecture has changed",
 					Was = first.Architecture,

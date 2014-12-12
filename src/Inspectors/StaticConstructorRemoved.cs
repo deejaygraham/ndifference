@@ -35,7 +35,7 @@ namespace NDifference.Inspectors
 
 				if (oldStatic != null && newStatic == null)
 				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsRemoved, new TextDescriptor { Name = "Static constructor removed", Message = oldStatic.ToCode() }));
+					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsRemoved, new ValueDescriptor { Value = oldStatic.ToCode() }));
 				}
 			}
 		}

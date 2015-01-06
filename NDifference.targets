@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<UsingTask AssemblyFile="packages\xunit.runners.1.9.2\tools\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
+	<UsingTask AssemblyFile="packages\xunit.runners.2.0.0-beta5-build2785\tools\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
 
 	<Target Name="Build" >
 
@@ -30,24 +30,11 @@
 			/>
 	
 		<xunit 
-			Assembly="$(UnitTestAssemblyPath)" 
+			Assemblies="@(UnitTests)" 
 			/>
 
 		<Message 
 			Text="=========== Unit Tests Done ===========" 
-			Importance="High" 
-			/>
-		
-		<Message 
-			Text="=========== Integration Tests ===========" 
-			Importance="High" 
-			/>
-		
-		<xunit 
-			Assembly="$(IntegrationTestAssemblyPath)" />
-
-		<Message 
-			Text="=========== Integration Tests Done ===========" 
 			Importance="High" 
 			/>
 

@@ -32,10 +32,9 @@
 	<!--
 		Output Binaries 
 	-->
-	<PropertyGroup>
-		<UnitTestAssemblyPath>$(UnitTestOutputFolder)$(ProjectName).Tests.dll</UnitTestAssemblyPath>
-		<IntegrationTestAssemblyPath>$(IntegrationTestOutputFolder)$(ProjectName).IntegrationTests.dll</IntegrationTestAssemblyPath>
-	</PropertyGroup>
+	<ItemGroup>
+		<UnitTests Include="$(RootFolder)tests\**\$(Configuration)\*Tests.dll" />
+	</ItemGroup>
 	
 	<Import Project="NDifference.targets" />
 

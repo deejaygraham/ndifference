@@ -27,16 +27,15 @@ namespace NDifference.Inspectors
 				|| second.Taxonomy == TypeTaxonomy.Class
 				|| second.Taxonomy == TypeTaxonomy.Interface)
 			{
-
 				changes.Add(WellKnownTypeCategories.MethodsChanged);
 
 				IReferenceTypeDefinition firstRef = first as IReferenceTypeDefinition;
 				IReferenceTypeDefinition secondRef = second as IReferenceTypeDefinition;
 
 				// look for non-overloaded methods that have a counterpart in the new version...
-				foreach (var method in firstRef.Methods(MemberVisibilityOption.Public))
+				foreach (var method in firstRef.AllMethods)
 				{
-					var counterpart = secondRef.Methods(MemberVisibilityOption.Public).FindExactMatchFor(method);
+					var counterpart = secondRef.AllMethods.FindExactMatchFor(method);
 
 					if (counterpart != null)
 					{

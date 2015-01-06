@@ -92,9 +92,12 @@ namespace NDifference.Projects
 
 			persistableFormat.Settings = this.Settings.ToPersistableFormat();
 
-			if (Path.IsPathRooted(persistableFormat.Settings.OutputFolder))
+			if (!String.IsNullOrEmpty(persistableFormat.Settings.OutputFolder))
 			{
-				persistableFormat.Settings.OutputFolder = writeAbsolutePaths ? persistableFormat.Settings.OutputFolder : baseFolder.MakeRelativePath(persistableFormat.Settings.OutputFolder);
+				if (Path.IsPathRooted(persistableFormat.Settings.OutputFolder))
+				{
+					persistableFormat.Settings.OutputFolder = writeAbsolutePaths ? persistableFormat.Settings.OutputFolder : baseFolder.MakeRelativePath(persistableFormat.Settings.OutputFolder);
+				}
 			}
 
 			return persistableFormat;
@@ -177,9 +180,12 @@ namespace NDifference.Projects
 				project.Product.ToIncrement = project.Settings.ToIndex;
 			}
 
-			if (!Path.IsPathRooted(project.Settings.OutputFolder))
+			if (!String.IsNullOrEmpty(project.Settings.OutputFolder))
 			{
-				project.Settings.OutputFolder = baseFolder.MakeAbsolutePath(project.Settings.OutputFolder);
+				if (!Path.IsPathRooted(project.Settings.OutputFolder))
+				{
+					project.Settings.OutputFolder = baseFolder.MakeAbsolutePath(project.Settings.OutputFolder);
+				}
 			}
 
 			return project;

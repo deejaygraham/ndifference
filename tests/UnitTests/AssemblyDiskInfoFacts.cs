@@ -9,7 +9,7 @@ namespace NDifference.UnitTests
 {
 	public class AssemblyDiskInfoFacts
 	{
-		[Fact]
+		[Fact] 
 		public void AssemblyDiskInfo_Identically_Named_Files_Are_Equal()
 		{
 			AssemblyDiskInfo i1 = new AssemblyDiskInfo { Name = "First.dll" };
@@ -18,7 +18,7 @@ namespace NDifference.UnitTests
 			Assert.Equal(i1, i2);
 		}
 
-		[Fact]
+		[Fact] 
 		public void AssemblyDiskInfo_File_Are_Case_Insensitive()
 		{
 			AssemblyDiskInfo i1 = new AssemblyDiskInfo { Name = "FIRST.dll" };
@@ -27,7 +27,7 @@ namespace NDifference.UnitTests
 			Assert.Equal(i1, i2);
 		}
 
-		[Fact]
+		[Fact] 
 		public void AssemblyDiskInfo_Differently_Named_Files_Are_Not_Equal()
 		{
 			AssemblyDiskInfo i1 = new AssemblyDiskInfo { Name = "First.dll" };
@@ -36,7 +36,7 @@ namespace NDifference.UnitTests
 			Assert.NotEqual(i1, i2);
 		}
 
-		[Fact]
+		[Fact] 
 		public void AssemblyDiskInfo_Equality_Files_Are_Equal()
 		{
 			AssemblyDiskInfo i1 = new AssemblyDiskInfo { Name = "First.dll" };
@@ -44,8 +44,7 @@ namespace NDifference.UnitTests
 
 			Assert.True(i1 == i2);
 		}
-
-
+		
 		[Fact]
 		public void AssemblyDiskInfo_Equality_Files_Are_Not_Equal()
 		{

@@ -15,7 +15,7 @@ namespace NDifference.Reflection.Builders
 		{
 			Debug.Assert(discovered != null, "TypeDefinition must be set");
 			Debug.Assert(discovered.IsInterface, "TypeDefinition must be an interface");
-			Debug.Assert(discovered.IsPublic, "TypeDefinition must be a public type");
+//			Debug.Assert(discovered.IsPublic, "TypeDefinition must be a public type");
 
 			var fqn = new FullyQualifiedName(discovered.FriendlyName());
 

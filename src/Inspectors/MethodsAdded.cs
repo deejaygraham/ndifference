@@ -35,7 +35,7 @@ namespace NDifference.Inspectors
 
 				if (secondRef.AllMethods.Any())
 				{
-					var added = secondRef.Methods(MemberVisibilityOption.Public).FindAddedMembers(firstRef.Methods(MemberVisibilityOption.Public));
+					var added = secondRef.AllMethods.FindAddedMembers(firstRef.AllMethods);
 
 					foreach (var add in added)
 					{
@@ -45,5 +45,4 @@ namespace NDifference.Inspectors
 			}
 		}
 	}
-
 }

@@ -293,5 +293,152 @@ namespace NDifference.UnitTests
 				Assert.Equal("List<String>", mm.ReturnType.Type.ToString());
 			}
 		}
+
+		[Fact]
+		public void CecilAssemblyReflector_Loads_Internal_Class()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableClassBuilder.InternalClass()
+					.Named("Example");
+
+				IBuildToCode wholeFile = CompilableSourceBuilder.CompilableCode()
+					.UsingDefaultNamespaces()
+					.HasNamespace("ex1")
+					.Includes(code);
+
+				var compiled = ofc.Compile(wholeFile);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes();
+
+				Assert.Equal(1, types.Count());
+
+				var info = types.First();
+
+				Assert.Equal(TypeTaxonomy.Class, info.Taxonomy);
+				ClassDefinition cd = info as ClassDefinition;
+
+				Assert.NotNull(cd);
+			}
+		}
+
+		[Fact]
+		public void CecilAssemblyReflector_Ignores_Internal_Class_When_Looking_For_Publics()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableClassBuilder.InternalClass()
+					.Named("Example");
+
+				IBuildToCode wholeFile = CompilableSourceBuilder.CompilableCode()
+					.UsingDefaultNamespaces()
+					.HasNamespace("ex1")
+					.Includes(code);
+
+				var compiled = ofc.Compile(wholeFile);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes(AssemblyReflectionOption.Public);
+
+				Assert.Equal(0, types.Count());
+			}
+		}
+
+		[Fact]
+		public void CecilAssemblyReflector_Finds_Public_Methods_In_Class()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableClassBuilder.PublicClass()
+					.Named("Entity")
+					.WithDefaultConstructor()
+					.WithMethod("public int GetSerialNo() { return 0; }");
+
+				var compiled = ofc.Compile(code);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes();
+
+				Assert.Equal(1, types.Count());
+
+				var info = types.First();
+
+				Assert.Equal(TypeTaxonomy.Class, info.Taxonomy);
+
+				ClassDefinition cd = info as ClassDefinition;
+
+				Assert.Equal(1, cd.AllMethods.Count());
+			}
+		}
+
+		[Fact]
+		public void CecilAssemblyReflector_Finds_Protected_Methods_In_Class()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableClassBuilder.PublicClass()
+					.Named("Entity")
+					.WithDefaultConstructor()
+					.WithMethod("protected int GetSerialNo() { return 0; }");
+
+				var compiled = ofc.Compile(code);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes();
+
+				Assert.Equal(1, types.Count());
+
+				var info = types.First();
+
+				Assert.Equal(TypeTaxonomy.Class, info.Taxonomy);
+
+				ClassDefinition cd = info as ClassDefinition;
+
+				Assert.Equal(1, cd.AllMethods.Count());
+			}
+		}
+
+		[Fact]
+		public void CecilAssemblyReflector_Ignores_Private_Methods_In_Class()
+		{
+			using (var ofc = new OnTheFlyCompiler())
+			{
+				IBuildToCode code = CompilableClassBuilder.PublicClass()
+					.Named("Entity")
+					.WithDefaultConstructor()
+					.WithMethod("private int GetSerialNo() { return 0; }");
+
+				var compiled = ofc.Compile(code);
+
+				var factory = new CecilReflectorFactory();
+
+				var reflector = factory.LoadAssembly(compiled.Path);
+
+				var types = reflector.GetTypes();
+
+				Assert.Equal(1, types.Count());
+
+				var info = types.First();
+
+				Assert.Equal(TypeTaxonomy.Class, info.Taxonomy);
+
+				ClassDefinition cd = info as ClassDefinition;
+
+				Assert.Equal(0, cd.AllMethods.Count());
+			}
+		}
 	}
 }

@@ -33,7 +33,7 @@
 		Output Binaries 
 	-->
 	<ItemGroup>
-		<UnitTests Include="$(RootFolder)tests\**\$(Configuration)\*Tests.dll" />
+		<UnitTests Include="$(RootFolder)tests\**\bin\$(Configuration)\*Tests.dll" />
 	</ItemGroup>
 	
 	<Import Project="NDifference.targets" />

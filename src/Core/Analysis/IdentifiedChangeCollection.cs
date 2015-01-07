@@ -83,9 +83,6 @@ namespace NDifference.Analysis
 					throw new Exception("Column mismatch " + c.Name + " " + change.Description);
 			}
 
-			if (change.Category.Name == "New Methods")
-				Debug.Assert(false, "Adding method change");
-
 			this.Changes.Add(change);
 		}
 

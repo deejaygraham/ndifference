@@ -1,20 +1,15 @@
 ## Travis CI Integration
 ## NDifference
+## Modified 25/02/2105 to switch to csharp according to http://docs.travis-ci.com/user/languages/csharp/
 
-language: c
 
-before_install:
-  - sudo apt-get update -qq > /dev/null
-  - sudo apt-get install -qq mono-devel > /dev/null
-  - mozroots --import --sync
-  ##- chmod +x packages/xunit.runners.1.9.2/tools/xunit.console.clr4.x86.exe
-  - export EnableNuGetPackageRestore=true
- 
-  
+language: csharp
+solution: NDiffference.sln
+
 install:
-  - sudo apt-get install mono-gmcs
+  - nuget restore NDifference.sln
+  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 
 script:
-  - xbuild NDifference.proj /t:TravisCI
- ## - mono packages/xunit.runners.1.9.2/tools/xunit.console.clr4.x86.exe tests/Core.Tests/bin/Release/NDifference.Tests.dll
- ## - mono packages/xunit.runners.1.9.2/tools/xunit.console.clr4.x86.exe tests/Core.IntegrationTests/bin/Release/NDifference.IntegrationTests.dll
+  - xbuild /p:Configuration=Release NDifference.sln
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.exe ./tests/UnitTests/bin/Release/NDifference.UnitTests.dll

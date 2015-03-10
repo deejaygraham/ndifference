@@ -59,27 +59,27 @@ namespace NDifference.UnitTests
 		[Fact]
 		public void ProjectWriter_Files_Are_Written_Relative_To_Project_Path()
 		{
-			string folder = "C:\\MyDocuments";
+            string baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 			var project = ProjectBuilder.Default();
 			project.Product.Clear();
 
-			project.FileName = Path.Combine(folder, "Example.okavango");
+            project.FileName = Path.Combine(baseFolder, "Example.ndiff");
 
 			project.Product.Name = "Example";
 
 			var firstVersion = new ProductIncrement { Name = "1.0.0" };
-			firstVersion.Add(new AssemblyDiskInfo(folder, "Old\\First.dll"));
-			firstVersion.Add(new AssemblyDiskInfo(folder, "Old\\Second.dll"));
-			firstVersion.Add(new AssemblyDiskInfo(folder, "Old\\Third.dll"));
+            firstVersion.Add(new AssemblyDiskInfo(baseFolder, "Old", "First.dll"));
+            firstVersion.Add(new AssemblyDiskInfo(baseFolder, "Old", "Second.dll"));
+            firstVersion.Add(new AssemblyDiskInfo(baseFolder, "Old", "Third.dll"));
 
 			project.Product.Add(firstVersion);
 
 			var secondVersion = new ProductIncrement { Name = "2.0.0" };
-			secondVersion.Add(new AssemblyDiskInfo(folder, "New\\Second.dll"));
-			secondVersion.Add(new AssemblyDiskInfo(folder, "New\\Third.dll"));
-			secondVersion.Add(new AssemblyDiskInfo(folder, "New\\Fourth.dll"));
-			secondVersion.Add(new AssemblyDiskInfo(folder, "New\\Fifth.dll"));
+            secondVersion.Add(new AssemblyDiskInfo(baseFolder, "New", "Second.dll"));
+            secondVersion.Add(new AssemblyDiskInfo(baseFolder, "New", "Third.dll"));
+            secondVersion.Add(new AssemblyDiskInfo(baseFolder, "New", "Fourth.dll"));
+            secondVersion.Add(new AssemblyDiskInfo(baseFolder, "New", "Fifth.dll"));
 
 			project.Product.Add(secondVersion);
 
@@ -102,33 +102,33 @@ namespace NDifference.UnitTests
 		[Fact]
 		public void ProjectWriter_File_Paths_Do_Not_Include_Full_Paths()
 		{
-			string folder = "C:\\MyDocuments";
+            string baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 			var project = ProjectBuilder.Default();
 			project.Product.Clear();
 
-			project.FileName = Path.Combine(folder, "Example.okavango");
+			project.FileName = Path.Combine(baseFolder, "Example.ndiff");
 
 			project.Product.Name = "Example";
 
 			var firstVersion = new ProductIncrement { Name = "1.0.0" };
-			firstVersion.Add(new AssemblyDiskInfo(folder, "Old\\First.dll"));
-			firstVersion.Add(new AssemblyDiskInfo(folder, "Old\\Second.dll"));
-			firstVersion.Add(new AssemblyDiskInfo(folder, "Old\\Third.dll"));
-
+            firstVersion.Add(new AssemblyDiskInfo(baseFolder, "Old", "First.dll"));
+            firstVersion.Add(new AssemblyDiskInfo(baseFolder, "Old", "Second.dll"));
+            firstVersion.Add(new AssemblyDiskInfo(baseFolder, "Old", "Third.dll"));
+                                                          
 			project.Product.Add(firstVersion);
 
 			var secondVersion = new ProductIncrement { Name = "2.0.0" };
-			secondVersion.Add(new AssemblyDiskInfo(folder, "New\\Second.dll"));
-			secondVersion.Add(new AssemblyDiskInfo(folder, "New\\Third.dll"));
-			secondVersion.Add(new AssemblyDiskInfo(folder, "New\\Fourth.dll"));
-			secondVersion.Add(new AssemblyDiskInfo(folder, "New\\Fifth.dll"));
+            secondVersion.Add(new AssemblyDiskInfo(baseFolder, "New", "Second.dll"));
+            secondVersion.Add(new AssemblyDiskInfo(baseFolder, "New", "Third.dll"));
+            secondVersion.Add(new AssemblyDiskInfo(baseFolder, "New", "Fourth.dll"));
+            secondVersion.Add(new AssemblyDiskInfo(baseFolder, "New", "Fifth.dll"));
 
 			project.Product.Add(secondVersion);
 
 			string xmlText = WriteProjectToString(project);
 
-			Assert.DoesNotContain(folder, xmlText);
+            Assert.DoesNotContain(baseFolder, xmlText);
 		}
 
 		[Fact]
@@ -154,11 +154,13 @@ namespace NDifference.UnitTests
 			var project = ProjectBuilder.Default();
 			project.Product.Clear();
 
-			project.Settings.OutputFolder = @"C:\MyOutput";
+            string baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            project.Settings.OutputFolder = baseFolder;
 
 			string xmlText = WriteProjectToString(project);
 
-			Assert.Contains(@"C:\MyOutput", xmlText);
+            Assert.Contains(baseFolder, xmlText);
 		}
 
 		[Fact]

@@ -26,6 +26,11 @@ namespace NDifference
 		{
 		}
 
+        public AssemblyDiskInfo(string folder, string subFolder, string file)
+            : this(System.IO.Path.Combine(folder, subFolder, file))
+        {
+        }
+
 		public AssemblyDiskInfo(string path, DateTime date, long size, string checksum)
 		{
 			Debug.Assert(!string.IsNullOrEmpty(path), "Path cannot be blank");

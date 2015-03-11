@@ -1,11 +1,7 @@
 ﻿using NDifference.Framework;
 using NDifference.Projects;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NDifference.UnitTests
@@ -87,16 +83,16 @@ namespace NDifference.UnitTests
 
 			Assert.Contains("<SourceName>1.0.0</SourceName>", xmlText);
 			Assert.Contains("<SourceAssemblies>", xmlText);
-			Assert.Contains("<Include>Old\\First.dll</Include>", xmlText);
-			Assert.Contains("<Include>Old\\Second.dll</Include>", xmlText);
-			Assert.Contains("<Include>Old\\Third.dll</Include>", xmlText);
+			Assert.Contains(string.Format("<Include>Old{0}First.dll</Include>", Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains(string.Format("<Include>Old{0}Second.dll</Include>", Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains(string.Format("<Include>Old{0}Third.dll</Include>", Path.DirectorySeparatorChar), xmlText);
 
 			Assert.Contains("<TargetName>2.0.0</TargetName>", xmlText);
 			Assert.Contains("<TargetAssemblies>", xmlText);
-			Assert.Contains("<Include>New\\Second.dll</Include>", xmlText);
-			Assert.Contains("<Include>New\\Third.dll</Include>", xmlText);
-			Assert.Contains("<Include>New\\Fourth.dll</Include>", xmlText);
-			Assert.Contains("<Include>New\\Fifth.dll</Include>", xmlText);
+            Assert.Contains(string.Format("<Include>New{0}Second.dll</Include>", Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains(string.Format("<Include>New{0}Third.dll</Include>", Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains(string.Format("<Include>New{0}Fourth.dll</Include>", Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains(string.Format("<Include>New{0}Fifth.dll</Include>", Path.DirectorySeparatorChar), xmlText);
 		}
 
 		[Fact]

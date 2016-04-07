@@ -33,7 +33,7 @@ namespace NDifference.UI.Controls
 		
 		private void SetWatermark(string watermark)
 		{
-			NativeMethods.SendMessage(this.Handle, EM_SETCUEBANNER, 0, watermark);
+			NativeMethods.SendMessage(this.Handle, EM_SETCUEBANNER, (IntPtr)0, watermark);
 		}
 
 		const uint ECM_FIRST = 0x1500;
@@ -42,7 +42,7 @@ namespace NDifference.UI.Controls
 		private static class NativeMethods
 		{
 			[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-			public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, UInt32 wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
+			public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
 		}
 	}
 }

@@ -58,12 +58,13 @@ namespace NDifference.Analysis
 			
 			try
 			{
-				result.Summary.Heading = project.Product.Name;
+				result.Summary.Heading = project.Settings.SummaryTitle;
 				result.Summary.HeadingBlock = project.Settings.HeadingText;
 				result.Summary.Name = project.Settings.SummaryTitle;
 				result.Summary.SummaryBlocks.Add("Name", project.Product.Name);
 
 				result.Summary.MetaBlocks.AddRange(project.Settings.GenerateMetaBlocks());
+				result.Summary.HeaderBlocks.AddRange(project.Settings.GenerateHeaderBlocks());
 				result.Summary.FooterBlocks.AddRange(project.Settings.GenerateFooterBlocks());
 
 				var firstVersion = project.Product.ComparedIncrements.First;

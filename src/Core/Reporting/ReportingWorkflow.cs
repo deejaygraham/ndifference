@@ -2,8 +2,10 @@
 using NDifference.Framework;
 using NDifference.Projects;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace NDifference.Reporting
 {
@@ -22,7 +24,7 @@ namespace NDifference.Reporting
 			try
 			{
 				//project.Settings.ConsolidateAssemblyTypes = true;
-
+				
 				var cancellable = new CancellableEventArgs();
 				this.ReportsStarting.Fire(this, cancellable);
 
@@ -109,6 +111,49 @@ namespace NDifference.Reporting
 					
 					writer.Write(results.Summary, output, format);
 
+					SiteMapTopic siteMap = new SiteMapTopic
+					{
+						Id = results.Summary.Identifier,
+						Title = results.Summary.Name,
+						Link = Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension)
+					};
+
+					foreach (var dllChange in results.AssemblyLevelChanges)
+					{
+						siteMap.Children.Add(new SiteMapTopic
+							{
+								Id = dllChange.Identifier,
+								Title = dllChange.Name,
+								Link = Path.Combine(project.Settings.SubPath, dllChange.Name + format.Extension),
+								Indent = siteMap.Indent + 1
+							});
+					}
+
+					foreach (var typeChange in results.TypeLevelChanges)
+					{
+						IDocumentLink parentLink = typeChange.Parents.LastOrDefault();
+
+						if (parentLink != null)
+						{
+							SiteMapTopic assemblyTopic = siteMap.Find(parentLink.Identifier);
+
+							if (assemblyTopic != null)
+							{
+								assemblyTopic.Children.Add(new SiteMapTopic
+									{
+										Id = typeChange.Identifier,
+										Title = typeChange.Name,
+										Link = Path.Combine(project.Settings.SubPath, typeChange.Name + format.Extension),
+										Indent = assemblyTopic.Indent + 1
+									});
+							}
+						}
+					}
+
+					string siteMapFragment = Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + ".sitemap");
+
+					File.WriteAllText(siteMapFragment, siteMap.ToString());
+
 					this.ReportComplete.Fire(this);
 				}
 			}
@@ -116,6 +161,83 @@ namespace NDifference.Reporting
 			{
 				this.ReportsComplete.Fire(this);
 			}
+		}
+	}
+
+	public class SiteMapTopic
+	{
+		public SiteMapTopic()
+		{
+			this.Children = new List<SiteMapTopic>();
+			this.Indent = 0;
+		}
+
+		public string Title { get; set; }
+		public string Link { get; set; }
+		public string Id { get; set; }
+
+		public int Indent { get; set; }
+
+		public List<SiteMapTopic> Children { get; private set; }
+
+		public SiteMapTopic Find(string id)
+		{
+			if (this.Id == id)
+				return this;
+
+			if (this.Children.Any())
+			{
+				foreach (var child in this.Children)
+				{
+					SiteMapTopic find = child.Find(id);
+
+					if (find != null)
+						return find;
+				}
+			}
+
+			return null;
+		}
+
+		public override string ToString()
+		{
+			StringBuilder builder = new StringBuilder();
+
+			if (this.Indent > 0)
+			{
+				for(int i = 0; i < this.Indent; ++i)
+				{
+					builder.Append("\t");
+				}
+			}
+
+			builder.AppendFormat("<siteMapNode title=\"{0}\" url=\"{1}\"", this.Title, this.Link);
+
+			if (this.Children.Any())
+			{
+				builder.AppendLine(" >");
+
+				foreach(var child in this.Children)
+				{
+					builder.Append(child.ToString());
+				}
+
+				if (this.Indent > 0)
+				{
+					for (int i = 0; i < this.Indent; ++i)
+					{
+						builder.Append("\t");
+					}
+				}
+
+				builder.AppendLine("</siteMapNode>");
+			}
+			else
+			{
+				builder.AppendLine(" />");
+			}
+
+			return builder.ToString();
 		}
 	}
 }

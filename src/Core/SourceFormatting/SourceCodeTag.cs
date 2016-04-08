@@ -50,14 +50,17 @@ namespace NDifference.SourceFormatting
 			writer.WriteEndElement();
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
 		public override string ToString()
 		{
 			string output = string.Empty;
 
-			TextWriter writer = new StringWriter();
+			TextWriter writer = null;
 
 			try
 			{
+				writer = new StringWriter();
+
 				using (XmlWriter xmlWriter = new XmlTextWriter(writer))
 				{
 					this.WriteXml(xmlWriter);

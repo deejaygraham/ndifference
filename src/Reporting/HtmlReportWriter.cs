@@ -45,9 +45,11 @@ namespace NDifference.Reporting
 					}
 				}
 
+				Encoding utf8 = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
 				var settings = new XmlWriterSettings
 				{
-					Encoding = Encoding.UTF8,
+					Encoding = utf8,
 					OmitXmlDeclaration = true,
 					Indent = true,
 					IndentChars = "\t"
@@ -57,7 +59,7 @@ namespace NDifference.Reporting
 				{
 					html.WriteStartDocument();
 
-					html.WriteRaw("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\r\n");
+					html.WriteRaw("<!DOCTYPE html>\r\n");
 
 					html.WriteElement("html", () =>
 					{
@@ -89,6 +91,13 @@ namespace NDifference.Reporting
 
 						html.WriteElement("body", () =>
 						{
+							foreach (var header in changes.HeaderBlocks)
+							{
+								html.WriteWhitespace("\r\n");
+								html.WriteRaw(header);
+								html.WriteWhitespace("\r\n");
+							}
+
 							html.WriteElement("div", () =>
 							{
 								html.WriteAttributeString("class", "diff-header");
@@ -100,34 +109,34 @@ namespace NDifference.Reporting
 									heading = changes.Name;
 								}
 
-								if (!String.IsNullOrEmpty(heading))
-								{
-									html.WriteElement("div", () =>
-									{
-										html.WriteAttributeString("id", "header");
-										html.WriteElement("h1", () =>
-										{
-											html.WriteString(heading);
-										});
+								//if (!String.IsNullOrEmpty(heading))
+								//{
+								//	html.WriteElement("div", () =>
+								//	{
+								//		html.WriteAttributeString("id", "header");
+								//		//html.WriteElement("h1", () =>
+								//		//{
+								//		//	html.WriteString(heading);
+								//		//});
 
-										if (changes.Parents.Any())
-										{
-											string currentFolder = Path.GetDirectoryName(output.Path);
+								//		//if (changes.Parents.Any())
+								//		//{
+								//		//	string currentFolder = Path.GetDirectoryName(output.Path);
 
-											// do breadcrumbs...
-											html.WriteElement("ul", () =>
-											{
-												changes.Parents.ForEach(x =>
-												{
-													html.WriteElement("li", () =>
-													{
-														html.RenderLink(this.Map.PathRelativeTo(x.Identifier, new PhysicalFolder(currentFolder)), x.LinkText, x.LinkText);
-													});
-												});
-											});
-										}
-									});
-								}
+								//		//	// do breadcrumbs...
+								//		//	html.WriteElement("ul", () =>
+								//		//	{
+								//		//		changes.Parents.ForEach(x =>
+								//		//		{
+								//		//			html.WriteElement("li", () =>
+								//		//			{
+								//		//				html.RenderLink(this.Map.PathRelativeTo(x.Identifier, new PhysicalFolder(currentFolder)), x.LinkText, x.LinkText);
+								//		//			});
+								//		//		});
+								//		//	});
+								//		//}
+								//	});
+								//}
 
 								if (!String.IsNullOrEmpty(changes.HeadingBlock))
 								{
@@ -201,17 +210,19 @@ namespace NDifference.Reporting
 								}
 							});
 
-							html.WriteElement("div", () =>
-							{
-								html.WriteAttributeString("class", "diff-footer");
+							//html.WriteElement("div", () =>
+							//{
+							//	html.WriteAttributeString("class", "diff-footer");
 
-								foreach (var footer in changes.FooterBlocks)
-								{
-									html.WriteWhitespace("\r\n");
-									html.WriteRaw(footer);
-									html.WriteWhitespace("\r\n");
-								}
-							});
+							foreach (var footer in changes.FooterBlocks)
+							{
+								html.WriteWhitespace("\r\n");
+								html.WriteRaw(footer);
+								html.WriteWhitespace("\r\n");
+							}
+							//});
+
+							// end of body
 						});
 					});
 

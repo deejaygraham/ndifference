@@ -20,8 +20,6 @@ namespace NDifference.Reflection.Builders
 			Debug.Assert(discovered != null, "Type definition is null");
 			Debug.Assert(building != null, "Class definition is null");
 
-			var obsoleteBuilder = new ObsoleteBuilder();
-
 			if (discovered.HasMethods)
 			{
 				ClassDefinition potentialClass = building as ClassDefinition;

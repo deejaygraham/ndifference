@@ -39,6 +39,11 @@ namespace NDifference.Projects
 		public string IndexName { get; set; }
 
 		/// <summary>
+		/// Title of the entry point of the report hierarchy (e.g. <title>My Thing</title>)
+		/// </summary>
+		public string IndexTitle { get; set; }
+
+		/// <summary>
 		/// Optional sub folder name for any reports beyond the index. Should be a name only, not a rooted path.
 		/// </summary>
 		public string SubFolder { get; set; }
@@ -77,6 +82,11 @@ namespace NDifference.Projects
 		/// Heading block in summary page.
 		/// </summary>
 		public string HeadingText { get; set; }
+
+		/// <summary>
+		/// Header to put on every page
+		/// </summary>
+		public string HeaderText { get; set; }
 
 		/// <summary>
 		/// Footer to put on every page
@@ -186,9 +196,11 @@ namespace NDifference.Projects
 				ApplicationLink = this.ApplicationLink,
 				ConsolidateAssemblyTypes = this.ConsolidateAssemblyTypes,
 				FooterText = this.FooterText,
+				HeaderText = this.HeaderText,
 				HeadingText = this.HeadingText,
 				HeadTag = this.HeadTag,
 				IndexName = this.IndexName,
+				IndexTitle = this.IndexTitle,
 				OutputFolder = this.OutputFolder,
 				ReportFormat = this.ReportFormat,
 				StyleTag = this.StyleTag,
@@ -215,9 +227,11 @@ namespace NDifference.Projects
 			{
 				ConsolidateAssemblyTypes = persistableSettings.ConsolidateAssemblyTypes,
 				FooterText = persistableSettings.FooterText,
+				HeaderText = persistableSettings.HeaderText,
 				HeadingText = persistableSettings.HeadingText,
 				HeadTag = persistableSettings.HeadTag,
 				IndexName = persistableSettings.IndexName,
+				IndexTitle = persistableSettings.IndexTitle,
 				OutputFolder = persistableSettings.OutputFolder,
 				ReportFormat = persistableSettings.ReportFormat,
 				StyleTag = persistableSettings.StyleTag,
@@ -283,6 +297,24 @@ namespace NDifference.Projects
 						 DateTime.Now.ToLongTimeString());
 		}
 
+		public IEnumerable<string> GenerateHeaderBlocks()
+		{
+			var blocks = new List<string>();
+
+			if (String.IsNullOrEmpty(this.HeaderText))
+			{
+				blocks.Add("<!-- No header block defined -->");
+			}
+			else
+			{
+				blocks.Add("<!-- Header block -->");
+				blocks.Add(this.HeaderText.SplitLongLines(MaxLineLength));
+				blocks.Add("<!-- End of Header block -->");
+			}
+
+			return blocks;
+		}
+
 		public IEnumerable<string> GenerateFooterBlocks()
 		{
 			var blocks = new List<string>();
@@ -307,9 +339,11 @@ namespace NDifference.Projects
 				return;
 
 			this.IndexName = other.IndexName;
+			this.IndexTitle = other.IndexTitle;
 			this.HeadTag = other.HeadTag;
 			this.HeadingText = other.HeadingText;
 			this.FooterText = other.FooterText;
+			this.HeaderText = other.HeaderText;
 
 			this.ReportFormat = other.ReportFormat;
 			this.StyleTag = other.StyleTag;

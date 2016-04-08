@@ -12,6 +12,8 @@ namespace NDifference.Projects
 
 		public string IndexName { get; set; }
 
+		public string IndexTitle { get; set; }
+
 		[XmlElement("SubFolder")]
 		public string Subfolder { get; set; }
 
@@ -76,6 +78,24 @@ namespace NDifference.Projects
 			set
 			{
 				this.HeadingText = FromCData(value);
+			}
+		}
+
+		[XmlIgnore]
+		public string HeaderText { get; set; }
+
+		[XmlElement("HeaderText")]
+		[SuppressMessage("Microsoft.Design", "CA1059:MembersShouldNotExposeCertainConcreteTypes", MessageId = "System.Xml.XmlNode")]
+		public XmlCDataSection HeaderTextAsCData
+		{
+			get
+			{
+				return ToCData(this.HeaderText);
+			}
+
+			set
+			{
+				this.HeaderText = FromCData(value);
 			}
 		}
 

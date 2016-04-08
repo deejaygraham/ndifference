@@ -14,6 +14,7 @@ namespace NDifference.Analysis
 			this.Identifier = new Identifier().ToString();
 
 			this.MetaBlocks = new List<string>();
+			this.HeaderBlocks = new List<string>();
 			this.FooterBlocks = new List<string>();
 			this.SummaryBlocks = new Dictionary<string, string>();
 
@@ -33,6 +34,11 @@ namespace NDifference.Analysis
 		// may need to be on another object filled in immediately before
 		// generating reports.
 		public List<string> MetaBlocks { get; private set; }
+
+		/// <summary>
+		/// List of markup to put at beginning of each page content.
+		/// </summary>
+		public List<string> HeaderBlocks { get; private set; }
 
 		public string Heading { get; set; }
 
@@ -114,6 +120,7 @@ namespace NDifference.Analysis
 		public void CopyMetaFrom(IdentifiedChangeCollection other)
 		{
 			this.MetaBlocks = new List<string>(other.MetaBlocks);
+			this.HeaderBlocks = new List<string>(other.HeaderBlocks);
 			this.FooterBlocks = new List<string>(other.FooterBlocks);
 		}
 	}

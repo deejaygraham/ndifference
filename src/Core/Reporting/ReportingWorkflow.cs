@@ -139,17 +139,29 @@ namespace NDifference.Reporting
 
 							if (assemblyTopic != null)
 							{
-								assemblyTopic.Children.Add(new SiteMapTopic
+								try
+								{
+									string fileName = typeChange.Name.Replace('<', '_').Replace('>', '_').Replace(',', '.');
+
+									string link = Path.Combine(project.Settings.SubPath, fileName + format.Extension);
+
+									assemblyTopic.Children.Add(new SiteMapTopic
 									{
 										Id = typeChange.Identifier,
 										Title = typeChange.Name,
-										Link = Path.Combine(project.Settings.SubPath, typeChange.Name + format.Extension),
+										Link = link,
 										Indent = assemblyTopic.Indent + 1
 									});
+								}
+								catch
+								{
+									// file name is badly mangled? 
+								}
 							}
 						}
 					}
 
+					// sitemap file for sandcastle help file builder menu
 					string siteMapFragment = Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + ".sitemap");
 
 					File.WriteAllText(siteMapFragment, siteMap.ToString());

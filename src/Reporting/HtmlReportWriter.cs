@@ -98,55 +98,58 @@ namespace NDifference.Reporting
 								html.WriteWhitespace("\r\n");
 							}
 
-							html.WriteElement("div", () =>
+							if (!String.IsNullOrEmpty(changes.HeadingBlock))
 							{
-								html.WriteAttributeString("class", "diff-header");
-
-								string heading = changes.Heading;
-
-								if (String.IsNullOrEmpty(heading))
+								html.WriteElement("div", () =>
 								{
-									heading = changes.Name;
-								}
+									html.WriteAttributeString("class", "diff-header");
 
-								//if (!String.IsNullOrEmpty(heading))
-								//{
-								//	html.WriteElement("div", () =>
-								//	{
-								//		html.WriteAttributeString("id", "header");
-								//		//html.WriteElement("h1", () =>
-								//		//{
-								//		//	html.WriteString(heading);
-								//		//});
+									string heading = changes.Heading;
 
-								//		//if (changes.Parents.Any())
-								//		//{
-								//		//	string currentFolder = Path.GetDirectoryName(output.Path);
-
-								//		//	// do breadcrumbs...
-								//		//	html.WriteElement("ul", () =>
-								//		//	{
-								//		//		changes.Parents.ForEach(x =>
-								//		//		{
-								//		//			html.WriteElement("li", () =>
-								//		//			{
-								//		//				html.RenderLink(this.Map.PathRelativeTo(x.Identifier, new PhysicalFolder(currentFolder)), x.LinkText, x.LinkText);
-								//		//			});
-								//		//		});
-								//		//	});
-								//		//}
-								//	});
-								//}
-
-								if (!String.IsNullOrEmpty(changes.HeadingBlock))
-								{
-									html.WriteElement("div", () =>
+									if (String.IsNullOrEmpty(heading))
 									{
-										html.WriteAttributeString("id", "exp");
-										html.WriteRaw(changes.HeadingBlock);
-									});
-								}
-							});
+										heading = changes.Name;
+									}
+
+									//if (!String.IsNullOrEmpty(heading))
+									//{
+									//	html.WriteElement("div", () =>
+									//	{
+									//		html.WriteAttributeString("id", "header");
+									//		//html.WriteElement("h1", () =>
+									//		//{
+									//		//	html.WriteString(heading);
+									//		//});
+
+									//		//if (changes.Parents.Any())
+									//		//{
+									//		//	string currentFolder = Path.GetDirectoryName(output.Path);
+
+									//		//	// do breadcrumbs...
+									//		//	html.WriteElement("ul", () =>
+									//		//	{
+									//		//		changes.Parents.ForEach(x =>
+									//		//		{
+									//		//			html.WriteElement("li", () =>
+									//		//			{
+									//		//				html.RenderLink(this.Map.PathRelativeTo(x.Identifier, new PhysicalFolder(currentFolder)), x.LinkText, x.LinkText);
+									//		//			});
+									//		//		});
+									//		//	});
+									//		//}
+									//	});
+									//}
+
+									if (!String.IsNullOrEmpty(changes.HeadingBlock))
+									{
+										html.WriteElement("div", () =>
+										{
+											html.WriteAttributeString("id", "exp");
+											html.WriteRaw(changes.HeadingBlock);
+										});
+									}
+								});
+							}
 
 							html.WriteElement("div", () =>
 							{

@@ -79,13 +79,21 @@ namespace NDifference.Projects
 
 				foreach (var assembly in this.Product.ComparedIncrements.First.Assemblies)
 				{
-					string include = writeAbsolutePaths ? assembly.Path : baseFolder.MakeRelativePath(assembly.Path);
+					string include = assembly.Path;
+
+					if (!writeAbsolutePaths && assembly.Path.StartsWith(baseFolder))
+						include = baseFolder.MakeRelativePath(assembly.Path);
+
 					persistableFormat.SourceAssemblies.Add(include);
 				}
 
 				foreach (var assembly in this.Product.ComparedIncrements.Second.Assemblies)
 				{
-					string include = writeAbsolutePaths ? assembly.Path : baseFolder.MakeRelativePath(assembly.Path);
+					string include = assembly.Path;
+
+					if (!writeAbsolutePaths && assembly.Path.StartsWith(baseFolder))
+						include = baseFolder.MakeRelativePath(assembly.Path);
+
 					persistableFormat.TargetAssemblies.Add(include);
 				}
 			}

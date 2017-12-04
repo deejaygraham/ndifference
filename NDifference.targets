@@ -4,81 +4,82 @@
 
 	<Target Name="Build" >
 
-		<Message 
-			Text="=========== $(Configuration) Build ===========" 
-			Importance="High" 
+		<Message
+			Text="=========== $(Configuration) Build ==========="
+			Importance="High"
 			/>
-	
-		<MSBuild 
-			Projects="$(SolutionFile)" 
-			Targets="Build" 
-			Properties="Configuration=$(Configuration)" 
+
+		<MSBuild
+			Projects="$(SolutionFile)"
+			Targets="Build"
+			Properties="Configuration=$(Configuration)"
 			/>
-		
-		<Message 
-			Text="=========== $(Configuration) Build Done ===========" 
-			Importance="High" 
+
+		<Message
+			Text="=========== $(Configuration) Build Done ==========="
+			Importance="High"
 			/>
-	
+
 	</Target>
-	
-	<Target Name="UnitTest" AfterTargets="Build" >
 
-		<Message 
-			Text="=========== Unit Tests ===========" 
-			Importance="High" 
-			/>
-	
-		<xunit 
-			Assemblies="@(UnitTests)" 
+	<!-- Turned off for now -->
+	<Target Name="UnitTest" Condition="false" AfterTargets="Build" >
+
+		<Message
+			Text="=========== Unit Tests ==========="
+			Importance="High"
 			/>
 
-		<Message 
-			Text="=========== Unit Tests Done ===========" 
-			Importance="High" 
+		<xunit
+			Assemblies="@(UnitTests)"
+			/>
+
+		<Message
+			Text="=========== Unit Tests Done ==========="
+			Importance="High"
 			/>
 
     </Target>
-	
+
 	<Target Name="TravisCI">
-	
+
 		<Message Text="=========== Travis Building Source (NO UNIT TESTS YET) ===========" Importance="High" />
 
-		<MSBuild 
-			Projects="@(TravisCIProjects)" 
-			Targets="Build" 
-			Properties="Configuration=$(Configuration)" 
+		<MSBuild
+			Projects="@(TravisCIProjects)"
+			Targets="Build"
+			Properties="Configuration=$(Configuration)"
 			/>
-		
+
 		<Message Text="=========== Travis Build Complete ===========" Importance="High" />
-		
+
 	</Target>
 
-	<!-- 
-		Execute source environment checks before trying to compile  
+	<!--
+		Execute source environment checks before trying to compile
 	-->
 	<Target Name="ValidateBuildEnvironment" BeforeTargets="$(BuildDependsOn)">
-		
+
 		<ItemGroup>
 			<!-- Put required property values here -->
 			<_MandatoryProperty Remove="@(_MandatoryProperty)" />
-			<_MandatoryProperty Include="SolutionFile"><Value>$(SolutionFile)</Value></_MandatoryProperty>  
-			<_MandatoryProperty Include="UnitTestAssemblyPath"><Value>$(UnitTestAssemblyPath)</Value></_MandatoryProperty>  
-			<_MandatoryProperty Include="IntegrationTestAssemblyPath"><Value>$(IntegrationTestAssemblyPath)</Value></_MandatoryProperty>  
-			<_MandatoryProperty Include="TravisCIProjects"><Value>$(TravisCIProjects)</Value></_MandatoryProperty>  
+			<_MandatoryProperty Include="SolutionFile"><Value>$(SolutionFile)</Value></_MandatoryProperty>
+			<_MandatoryProperty Include="UnitTestAssemblyPath"><Value>$(UnitTestAssemblyPath)</Value></_MandatoryProperty>
+			<_MandatoryProperty Include="IntegrationTestAssemblyPath"><Value>$(IntegrationTestAssemblyPath)</Value></_MandatoryProperty>
+			<_MandatoryProperty Include="TravisCIProjects"><Value>$(TravisCIProjects)</Value></_MandatoryProperty>
 			<!-- Put required property values here -->
-			
+
 			<!-- Put required files here -->
 			<!-- Put required files here -->
 		</ItemGroup>
-		
+
 		<!-- Validate properties -->
-		<Error 
+		<Error
 			Condition=" '%(_MandatoryProperty.Value)' == '' "
 			Text="Property [%(_MandatoryProperty.Identity)] has not been set" />
- 
+
 		<!-- Validate files -->
-		<Error 
+		<Error
 			Condition=" !Exists('%(_MandatoryPath.Value)') "
 			Text = "Path [%(_MandatoryPath.Value)] does not exist - [%(_MandatoryPath.Identity)] " />
 	</Target>

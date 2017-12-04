@@ -57,7 +57,7 @@ The original inspiration for this project came from Microsoft's unsupported
 [libcheck](http://www.microsoft.com/en-us/download/details.aspx?id=11287) tool.
 
 ## CI Status
-The project builds on Travis: [![Build Status](https://travis-ci.org/deejaygraham/ndifference.png?branch=master)](https://travis-ci.org/deejaygraham/ndifference).
+The project builds on AppVeryor: [![Build status](https://ci.appveyor.com/api/projects/status/j669wh11qrhwbq6b?svg=true)](https://ci.appveyor.com/project/deejaygraham/ndifference).
 
 ## Get Involved!
 Have an idea about improving the project? Please get involved. NDifference is an open source project (of course) and we accept 
@@ -66,5 +66,5 @@ contributions! Contribute a patch or let us know how to improve.
 ### Thank You's !
 * The [Mono.Cecil](http://www.mono-project.com/Cecil) Project for the reflection engine
 * The fine folks at [xunit](http://xunit.codeplex.com) for their unit testing framework.
-* [Travis-ci](https://travis-ci.org/) for the CI support.
+* [AppVeyor](https://appveyor.com/) for the CI support.
 

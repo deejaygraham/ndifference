@@ -9,7 +9,7 @@ namespace NDifference.UnitTests
 {
 	public class PhysicalFileFacts
 	{
-		[Fact(Skip = "Not working on mono deployments - investigate")]
+		[Fact]
 		public void PhysicalFile_Parent_Relative_To_Child_Is_Relative()
 		{
 			IFile parent = new PhysicalFile("C:\\Reports\\Summary.html");
@@ -18,7 +18,7 @@ namespace NDifference.UnitTests
 			Assert.Equal("Sub\\Detail.html", child.RelativeTo(parent));
 		}
 
-		[Fact(Skip = "Not working on mono deployments - investigate")]
+		[Fact]
 		public void PhysicalFile_Child_Relative_To_Parent_Is_Relative()
 		{
 			IFile parent = new PhysicalFile("C:\\Reports\\Summary.html");

@@ -6,7 +6,7 @@ namespace NDifference.UnitTests
 {
 	public class PathExtensionFacts
 	{
-		[Fact(Skip = "Not working on mono deployments - investigate")]
+		[Fact]
 		public void PathExtensions_File_In_Folder_Is_Relative_To_Folder()
 		{
 			const string filename = "Hello.world";
@@ -18,7 +18,7 @@ namespace NDifference.UnitTests
 			Assert.Equal(expectedRelativePath, baseFolder.MakeRelativePath(absolutePath));
 		}
 
-		[Fact(Skip = "Not working on mono deployments - investigate")]
+		[Fact]
 		public void PathExtensions_File_In_SubFolder_Is_Relative_To_Folder()
 		{
 			const string filename = "World.txt";
@@ -30,7 +30,7 @@ namespace NDifference.UnitTests
 			Assert.Equal(expectedRelativePath, baseFolder.MakeRelativePath(absolutePath));
 		}
 
-		[Fact(Skip = "Not working on mono deployments - investigate")]
+		[Fact]
 		public void PathExtensions_File_In_Different_Child_Folder_Is_Relative_To_Folder()
 		{
 			const string filename = "World.txt";
@@ -42,7 +42,7 @@ namespace NDifference.UnitTests
 			Assert.Equal(expectedRelativePath, baseFolder.MakeRelativePath(absolutePath));
 		}
 
-		[Fact(Skip = "Not working on mono deployments - investigate")]
+		[Fact]
 		public void PathExtensions_File_In_Parent_Folder_Is_Relative_To_Child()
 		{
 			string baseFolder = string.Format("C:{0}MyDocuments{0}Summary.txt", Path.DirectorySeparatorChar);

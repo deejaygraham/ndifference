@@ -8,7 +8,5 @@ namespace NDifference
 		string Folder { get; }
 
 		string FullPath { get; }
-
-		string RelativeTo(IFile other);
 	}
 }

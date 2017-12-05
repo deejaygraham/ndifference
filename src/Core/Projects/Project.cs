@@ -82,8 +82,8 @@ namespace NDifference.Projects
 					string include = assembly.Path;
 
 					if (!writeAbsolutePaths && assembly.Path.StartsWith(baseFolder))
-						include = baseFolder.MakeRelativePath(assembly.Path);
-
+						include = assembly.Path.MakeRelativeToFolder(baseFolder);
+                    
 					persistableFormat.SourceAssemblies.Add(include);
 				}
 
@@ -92,9 +92,9 @@ namespace NDifference.Projects
 					string include = assembly.Path;
 
 					if (!writeAbsolutePaths && assembly.Path.StartsWith(baseFolder))
-						include = baseFolder.MakeRelativePath(assembly.Path);
+                        include = assembly.Path.MakeRelativeToFolder(baseFolder);
 
-					persistableFormat.TargetAssemblies.Add(include);
+                    persistableFormat.TargetAssemblies.Add(include);
 				}
 			}
 
@@ -104,7 +104,9 @@ namespace NDifference.Projects
 			{
 				if (Path.IsPathRooted(persistableFormat.Settings.OutputFolder))
 				{
-					persistableFormat.Settings.OutputFolder = writeAbsolutePaths ? persistableFormat.Settings.OutputFolder : baseFolder.MakeRelativePath(persistableFormat.Settings.OutputFolder);
+					persistableFormat.Settings.OutputFolder = writeAbsolutePaths 
+                        ? persistableFormat.Settings.OutputFolder 
+                        : persistableFormat.Settings.OutputFolder.MakeFoldersRelative(baseFolder);
 				}
 			}
 

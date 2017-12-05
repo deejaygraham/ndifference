@@ -25,7 +25,7 @@ namespace NDifference
 		{
 			get
 			{
-				const string TrailingSlash = "\\";
+				string TrailingSlash = new string(Path.DirectorySeparatorChar, 1);
 
 				if (this.FullPath.EndsWith(TrailingSlash))
 					return this.FullPath;

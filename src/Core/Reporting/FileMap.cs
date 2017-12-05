@@ -39,7 +39,7 @@ namespace NDifference.Reporting
 
 			IFile value = this.identToFileMap[key];
 
-			return folder.TrailingSlashPath.MakeRelativePath(value.FullPath);
+			return value.FullPath.MakeRelativeToFolder(folder.TrailingSlashPath);
 		}
 	}
 }

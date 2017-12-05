@@ -26,10 +26,5 @@ namespace NDifference
 		public string Folder { get; private set; }
 
 		public string FullPath { get; private set; }
-
-		public string RelativeTo(IFile other)
-		{
-			return other.FullPath.MakeRelativePath(this.FullPath);
-		}
 	}
 }

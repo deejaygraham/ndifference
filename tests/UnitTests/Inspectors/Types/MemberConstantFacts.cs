@@ -26,10 +26,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsAdded_Identifies_When_Existing_Field_Made_Constant()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -46,10 +46,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsAdded_Ignores_When_No_Constants()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -64,10 +64,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsAdded_Ignores_When_Constants_Same()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -86,10 +86,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsAdded_Ignores_When_Constant_Removed()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -107,10 +107,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsObsolete_Identifies_When_Constant_Made_Obsolete()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -127,10 +127,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsObsolete())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsObsolete_Identifies_When_Constant_Made_Obsolete_With_Message()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -147,10 +147,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsObsolete())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsObsolete_Ignores_When_Constants_Not_Obsolete()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -167,10 +167,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsObsolete())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsRemoved_Identifies_When_Removing_Constant()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -186,10 +186,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsRemoved())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsRemoved_Identifies_When_Const_Removed_From_Field()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -206,10 +206,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsRemoved())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsRemoved_Ignores_When_No_Constants()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -224,10 +224,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsRemoved_Ignores_When_Constants_Same()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -246,10 +246,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsRemoved_Ignores_When_Constant_Added()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -267,10 +267,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsChanged_Identifies_When_Constant_Changes_Type()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -289,10 +289,10 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsChanged_Ignores_When_Constant_Name_Changes()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -311,8 +311,8 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ConstantsChanged())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-	}
+    }
 }

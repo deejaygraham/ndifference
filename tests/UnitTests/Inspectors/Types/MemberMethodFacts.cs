@@ -28,7 +28,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -49,7 +49,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -69,7 +69,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -89,7 +89,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -110,7 +110,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsRemoved())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -130,7 +130,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsObsolete())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -150,7 +150,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsChanged())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 
@@ -172,7 +172,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 
 		}
 
@@ -193,7 +193,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 
 		}
 
@@ -214,7 +214,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 
 		}
 
@@ -236,7 +236,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new MethodsChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 
 		}
 

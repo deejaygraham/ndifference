@@ -26,10 +26,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void ConstantsAdded_Identifies_When_Existing_Constant_Made_Field()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -46,10 +46,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsAdded_Ignores_When_No_Fields()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -64,10 +64,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsAdded_Ignores_When_Fields_Unchanged()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -86,10 +86,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsAdded_Ignores_When_Field_Removed()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -107,10 +107,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsObsolete_Identifies_When_Field_Made_Obsolete()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -127,10 +127,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsObsolete())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsObsolete_Identifies_When_Field_Made_Obsolete_With_Message()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -147,10 +147,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsObsolete())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsObsolete_Ignores_When_Fields_Not_Obsolete()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -167,10 +167,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsObsolete())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsRemoved_Identifies_When_Removing_Field()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -186,10 +186,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsRemoved())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsRemoved_Ignores_When_No_Fields()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -204,10 +204,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsRemoved_Ignores_When_Fields_Unchanged()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -226,7 +226,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 		[Fact]
@@ -247,10 +247,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsChanged_Identifies_When_Field_Changes_Type()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -269,10 +269,10 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
-		}
+            Assert.Single(delta.Changes);
+        }
 
-		[Fact]
+        [Fact]
 		public void FieldsChanged_Ignores_When_Field_Name_Changes()
 		{
 			var oldClassBuilder = CompilableClassBuilder.PublicClass()
@@ -291,8 +291,8 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new FieldsChanged())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
-		}
+            Assert.Empty(delta.Changes);
+        }
 
-	}
+    }
 }

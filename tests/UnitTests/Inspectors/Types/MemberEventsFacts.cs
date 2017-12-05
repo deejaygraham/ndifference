@@ -26,7 +26,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new EventsAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]

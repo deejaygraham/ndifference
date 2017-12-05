@@ -26,7 +26,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+				Assert.Single(types);
 
 				var info = types.First();
 
@@ -54,7 +54,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+				Assert.Single(types);
 
 				var info = types.First();
 
@@ -84,7 +84,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+				Assert.Single(types);
 
 				var info = types.First();
 
@@ -114,7 +114,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+				Assert.Single(types);
 				
 				var info = types.First();
 
@@ -140,9 +140,9 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+                Assert.Single(types);
 
-				var info = types.First();
+                var info = types.First();
 
 				Assert.Equal(TypeTaxonomy.Interface, info.Taxonomy);
 				Assert.Equal("IEntity", info.FullName);
@@ -166,9 +166,9 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+                Assert.Single(types);
 
-				var info = types.First();
+                var info = types.First();
 
 				Assert.Equal(TypeTaxonomy.Interface, info.Taxonomy);
 
@@ -196,9 +196,9 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+                Assert.Single(types);
 
-				var info = types.First();
+                var info = types.First();
 
 				Assert.Equal(TypeTaxonomy.Interface, info.Taxonomy);
 				Assert.Equal("IEntity<T>", info.FullName);
@@ -224,9 +224,9 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+                Assert.Single(types);
 
-				var info = types.First();
+                var info = types.First();
 
 				Assert.Equal(TypeTaxonomy.Enum, info.Taxonomy);
 				Assert.Equal("EntityValues", info.FullName);
@@ -279,15 +279,15 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
-				
-				var info = types.First();
+                Assert.Single(types);
+
+                var info = types.First();
 
 				Assert.Equal(TypeTaxonomy.Class, info.Taxonomy);
 				ClassDefinition cd = info as ClassDefinition;
 
 				Assert.NotNull(cd);
-				Assert.Equal(1, cd.AllMethods.Count);
+                Assert.Single(cd.AllMethods);
 				
 				MemberMethod mm = cd.AllMethods.First() as MemberMethod;
 				Assert.Equal("List<String>", mm.ReturnType.Type.ToString());
@@ -315,7 +315,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+                Assert.Single(types);
 
 				var info = types.First();
 
@@ -369,7 +369,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+                Assert.Single(types);
 
 				var info = types.First();
 
@@ -377,7 +377,7 @@ namespace NDifference.UnitTests
 
 				ClassDefinition cd = info as ClassDefinition;
 
-				Assert.Equal(1, cd.AllMethods.Count());
+				Assert.Single(cd.AllMethods);
 			}
 		}
 
@@ -399,7 +399,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+				Assert.Single(types);
 
 				var info = types.First();
 
@@ -407,7 +407,7 @@ namespace NDifference.UnitTests
 
 				ClassDefinition cd = info as ClassDefinition;
 
-				Assert.Equal(1, cd.AllMethods.Count());
+				Assert.Single(cd.AllMethods);
 			}
 		}
 
@@ -429,7 +429,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes();
 
-				Assert.Equal(1, types.Count());
+				Assert.Single(types);
 
 				var info = types.First();
 
@@ -437,7 +437,7 @@ namespace NDifference.UnitTests
 
 				ClassDefinition cd = info as ClassDefinition;
 
-				Assert.Equal(0, cd.AllMethods.Count());
+				Assert.Empty(cd.AllMethods);
 			}
 		}
 	}

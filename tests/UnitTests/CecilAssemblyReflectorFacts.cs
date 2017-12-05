@@ -347,7 +347,7 @@ namespace NDifference.UnitTests
 
 				var types = reflector.GetTypes(AssemblyReflectionOption.Public);
 
-				Assert.Equal(0, types.Count());
+				Assert.Empty(types);
 			}
 		}
 

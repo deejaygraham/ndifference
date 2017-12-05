@@ -36,9 +36,9 @@ namespace NDifference.UnitTests
 			var second = new List<IAssemblyDiskInfo>();
 			second.Add(new AssemblyDiskInfo { Name = "Third.dll" });
 
-			Assert.Equal(2, CombinedAssemblyModel.BuildFrom(first, second).InEarlierOnly.Count());
-			Assert.Equal(0, CombinedAssemblyModel.BuildFrom(first, second).InLaterOnly.Count());
-			Assert.Equal(1, CombinedAssemblyModel.BuildFrom(first, second).InCommon.Count());
+            Assert.Equal(2, CombinedAssemblyModel.BuildFrom(first, second).InEarlierOnly.Count());
+			Assert.Empty(CombinedAssemblyModel.BuildFrom(first, second).InLaterOnly);
+			Assert.Single(CombinedAssemblyModel.BuildFrom(first, second).InCommon);
 		}
 
 
@@ -53,9 +53,9 @@ namespace NDifference.UnitTests
 			second.Add(new AssemblyDiskInfo { Name = "Second.dll" });
 			second.Add(new AssemblyDiskInfo { Name = "Third.dll" });
 
-			Assert.Equal(0, CombinedAssemblyModel.BuildFrom(first, second).InEarlierOnly.Count());
+            Assert.Empty(CombinedAssemblyModel.BuildFrom(first, second).InEarlierOnly);
 			Assert.Equal(2, CombinedAssemblyModel.BuildFrom(first, second).InLaterOnly.Count());
-			Assert.Equal(1, CombinedAssemblyModel.BuildFrom(first, second).InCommon.Count());
+			Assert.Single(CombinedAssemblyModel.BuildFrom(first, second).InCommon);
 		}
 
 	}

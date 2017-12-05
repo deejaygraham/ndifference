@@ -53,7 +53,7 @@ namespace NDifference.UnitTests
 			var list2 = new List<FuzzyMatchItem>(Enumerable.Repeat(new FuzzyMatchItem(), 10));
 			list2.Add(new FuzzyMatchItem { AllowFuzzyMatch = true });
 
-			Assert.Equal(1, list1.FuzzyInCommonWith(list2).Count);
+			Assert.Single(list1.FuzzyInCommonWith(list2));
 		}
 
 		[Fact]
@@ -63,7 +63,7 @@ namespace NDifference.UnitTests
 
 			var list2 = new List<FuzzyMatchItem>(Enumerable.Repeat(new FuzzyMatchItem(), 10));
 
-			Assert.Equal(0, list1.FuzzyInCommonWith(list2).Count);
+			Assert.Empty(list1.FuzzyInCommonWith(list2));
 		}
 
 		[Fact]

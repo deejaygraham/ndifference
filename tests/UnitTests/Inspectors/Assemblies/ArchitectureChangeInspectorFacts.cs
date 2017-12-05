@@ -29,7 +29,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new ArchitectureChangeInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 	}
 

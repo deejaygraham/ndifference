@@ -38,9 +38,9 @@ namespace NDifference.UnitTests
 			var second = new List<ITypeInfo>();
 			second.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.First", Name = "First", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
 
-			Assert.Equal(0, CombinedObjectModel.BuildFrom(first, second).InLaterOnly.Count());
+			Assert.Empty(CombinedObjectModel.BuildFrom(first, second).InLaterOnly);
 			Assert.Equal(2, CombinedObjectModel.BuildFrom(first, second).InEarlierOnly.Count());
-			Assert.Equal(1, CombinedObjectModel.BuildFrom(first, second).InCommon.Count());
+			Assert.Single(CombinedObjectModel.BuildFrom(first, second).InCommon);
 		}
 
 
@@ -56,8 +56,8 @@ namespace NDifference.UnitTests
 			second.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Third", Name = "Third", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
 
 			Assert.Equal(2, CombinedObjectModel.BuildFrom(first, second).InLaterOnly.Count());
-			Assert.Equal(0, CombinedObjectModel.BuildFrom(first, second).InEarlierOnly.Count());
-			Assert.Equal(1, CombinedObjectModel.BuildFrom(first, second).InCommon.Count());
+			Assert.Empty(CombinedObjectModel.BuildFrom(first, second).InEarlierOnly);
+			Assert.Single(CombinedObjectModel.BuildFrom(first, second).InCommon);
 		}
 
 	}

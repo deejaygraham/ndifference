@@ -27,9 +27,9 @@ namespace NDifference.UnitTests
 
 			inspector.Inspect(CombinedAssemblyModel.BuildFrom(first, second), changes);
 
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies).Count);
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies));
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies));
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies));
 		}					
 
 		[Fact]
@@ -54,8 +54,8 @@ namespace NDifference.UnitTests
 			inspector.Inspect(CombinedAssemblyModel.BuildFrom(first, second), changes);
 
 			Assert.Equal(2, changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies).Count);
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies));
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies));
 		}
 
 	}

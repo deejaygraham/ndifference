@@ -31,7 +31,7 @@ namespace NDifference.UnitTests
 			collection.Add(new IdentifiedChange { Priority = 1 });
 			collection.Add(new IdentifiedChange { Priority = 1 });
 
-			Assert.Equal(0, collection.ChangesInCategory(2).Count);
+			Assert.Empty(collection.ChangesInCategory(2));
 		}
 
 		[Fact]

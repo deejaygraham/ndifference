@@ -26,19 +26,22 @@ namespace NDifference.Inspectors
 			Debug.Assert(types != null, "List of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownAssemblyCategories.ChangedTypes);
+            var changedInCommon = types.ChangedInCommon;
 
-			var comparer = new TypeNameComparer();
+            if (changedInCommon.Any())
+            {
+                changes.Add(WellKnownAssemblyCategories.ChangedTypes);
 
-			foreach (var common in types.ChangedInCommon)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.ChangedTypes, common.Second.FullName, new DocumentLink
-				{
-					LinkText = common.First.FullName,
-					LinkUrl = common.First.FullName,
-					Identifier = common.First.Identifier
-				}));
-			}
-		}
+                foreach (var common in changedInCommon)
+                {
+                    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.ChangedTypes, common.Second.FullName, new DocumentLink
+                    {
+                        LinkText = common.First.FullName,
+                        LinkUrl = common.First.FullName,
+                        Identifier = common.First.Identifier
+                    }));
+                }
+            }
+        }
 	}
 }

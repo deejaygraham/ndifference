@@ -32,9 +32,9 @@ namespace NDifference.UnitTests
 
 			inspector.Inspect(CombinedObjectModel.BuildFrom(first, second), changes);
 
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.ChangedTypes).Count);
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes));
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes));
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.ChangedTypes));
 		}
 
 		[Fact]
@@ -56,9 +56,9 @@ namespace NDifference.UnitTests
 
 			inspector.Inspect(CombinedObjectModel.BuildFrom(first, second), changes);
 
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes).Count);
-			Assert.Equal(0, changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes).Count);
-			Assert.Equal(1, changes.ChangesInCategory(WellKnownChangePriorities.ChangedTypes).Count);
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes));
+			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes));
+			Assert.Single(changes.ChangesInCategory(WellKnownChangePriorities.ChangedTypes));
 		}
 
 	}

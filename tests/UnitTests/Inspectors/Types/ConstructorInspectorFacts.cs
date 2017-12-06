@@ -27,7 +27,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new InstanceConstructorsInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -47,7 +47,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new InstanceConstructorsInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -67,7 +67,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new InstanceConstructorsInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -88,7 +88,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new InstanceConstructorsInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -109,7 +109,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new InstanceConstructorsInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -129,7 +129,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new InstanceConstructorsObsolete())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -149,7 +149,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new InstanceConstructorsObsolete())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 
@@ -169,7 +169,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new StaticConstructorAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -188,7 +188,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new StaticConstructorAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 		[Fact]
@@ -209,7 +209,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new StaticConstructorAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 		[Fact]
@@ -230,7 +230,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new StaticConstructorAdded())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 		[Fact]
@@ -249,7 +249,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new StaticConstructorRemoved())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -268,7 +268,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new StaticConstructorRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 		[Fact]
@@ -289,7 +289,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new StaticConstructorRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 		[Fact]
@@ -310,7 +310,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new StaticConstructorRemoved())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 	}

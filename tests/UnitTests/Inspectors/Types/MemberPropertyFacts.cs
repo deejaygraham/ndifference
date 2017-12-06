@@ -26,7 +26,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new PropertiesRemoved())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 		
         [Fact]
@@ -45,7 +45,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new PropertiesAdded())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
         [Fact]
@@ -65,7 +65,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new PropertiesChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
         
@@ -87,7 +87,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new PropertiesChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
         
@@ -108,7 +108,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new PropertiesChanged())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -130,7 +130,7 @@ namespace NDifference.UnitTests.Inspectors.Types
 				.InspectedBy(new PropertiesRemoved())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 	}
 }

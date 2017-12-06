@@ -32,7 +32,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new EnumInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -55,7 +55,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new EnumInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -78,7 +78,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new EnumInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -101,7 +101,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new EnumInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -125,7 +125,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new EnumInspector())
 				.Build();
 
-			Assert.Equal(1, delta.Changes.Count);
+			Assert.Single(delta.Changes);
 		}
 
 		[Fact]
@@ -149,7 +149,7 @@ namespace NDifference.UnitTests
 				.InspectedBy(new EnumInspector())
 				.Build();
 
-			Assert.Equal(0, delta.Changes.Count);
+			Assert.Empty(delta.Changes);
 		}
 
 	}

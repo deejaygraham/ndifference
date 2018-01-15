@@ -216,6 +216,11 @@ namespace NDifference.Analysis
 							changesToThisAssembly.SummaryBlocks.Add("Churn", calc2.Calculate().ToString() + " %");
 						}
 
+                        //if (changesToThisAssembly.Changes.Any(x => x.Category.Name != "Changed Types"))
+                        //{
+                        //    changesToThisAssembly.Changes.RemoveAll(x => x.Category.Name == "Changed Types");
+                        //}
+
 						this.AssemblyComparisonComplete.Fire(this);
 
 						// hand this off to another container...

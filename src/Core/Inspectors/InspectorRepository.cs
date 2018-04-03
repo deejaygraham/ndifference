@@ -1,4 +1,5 @@
-﻿using NDifference.Plugins;
+﻿using NDifference.Exceptions;
+using NDifference.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +18,6 @@ namespace NDifference.Inspectors
 		private List<ITypeCollectionInspector> tci = new List<ITypeCollectionInspector>();
 
 		private List<ITypeInspector> ti = new List<ITypeInspector>();
-
 
 		public ReadOnlyCollection<IAssemblyCollectionInspector> AssemblyCollectionInspectors 
 		{ 
@@ -77,7 +77,25 @@ namespace NDifference.Inspectors
 				this.ti.ForEach(x => x.Enabled = true);
 			});
 
-			Task.WaitAll(new Task[] { t1, t2, t3, t4 });
+            Task.Factory.ContinueWhenAll(new[] { t1, t2, t3, t4 }, tasks =>
+            {
+                StringBuilder builder = new StringBuilder();
+
+                foreach (var t in tasks)
+                {
+                    if (t.Status == TaskStatus.Faulted)
+                    {
+                        builder.AppendLine(t.Exception.GetBaseException().Message);
+                    }
+                }
+
+                string message = builder.ToString();
+
+                if (!String.IsNullOrEmpty(message))
+                {
+                    throw new PluginLoadException(message);
+                }
+            });
 		}
 
 		public void Filter(InspectorFilter filter)

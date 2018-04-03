@@ -189,37 +189,43 @@ namespace NDifference.UI
 			
 			var finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
-			InspectorRepository ir = new InspectorRepository();
+            this.tvInspectors.BeginUpdate();
 
-			ir.Find(finder);
+            this.tvInspectors.Nodes.Clear();
 
-			InspectorFilter filter = new InspectorFilter(project.Settings.IgnoreInspectors);
+            try
+            {
+                InspectorRepository ir = new InspectorRepository();
 
-			ir.Filter(filter);
+                ir.Find(finder);
+                InspectorFilter filter = new InspectorFilter(project.Settings.IgnoreInspectors);
 
-			this.tvInspectors.BeginUpdate();
+			    ir.Filter(filter);
 
-			this.tvInspectors.Nodes.Clear();
+			    var aciNode = this.tvInspectors.Nodes.Add("Assembly Collection Inspectors");
 
-			var aciNode = this.tvInspectors.Nodes.Add("Assembly Collection Inspectors");
+			    PopulateNodeChildren(aciNode, ir.AssemblyCollectionInspectors);
 
-			PopulateNodeChildren(aciNode, ir.AssemblyCollectionInspectors);
+			    var aiNode = this.tvInspectors.Nodes.Add("Assembly Inspectors");
+			    PopulateNodeChildren(aiNode, ir.AssemblyInspectors);
 
-			var aiNode = this.tvInspectors.Nodes.Add("Assembly Inspectors");
-			PopulateNodeChildren(aiNode, ir.AssemblyInspectors);
+			    var tciNode = this.tvInspectors.Nodes.Add("Type Collection Inspectors");
+			    PopulateNodeChildren(tciNode, ir.TypeCollectionInspectors);
 
-			var tciNode = this.tvInspectors.Nodes.Add("Type Collection Inspectors");
-			PopulateNodeChildren(tciNode, ir.TypeCollectionInspectors);
+			    var tiNode = this.tvInspectors.Nodes.Add("Type Inspectors");
+			    PopulateNodeChildren(tiNode, ir.TypeInspectors);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.GetBaseException().Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-			var tiNode = this.tvInspectors.Nodes.Add("Type Inspectors");
-			PopulateNodeChildren(tiNode, ir.TypeInspectors);
-			
-			this.tvInspectors.ExpandAll();
+            this.tvInspectors.ExpandAll();
 
-			this.tvInspectors.EndUpdate();
-		}
+            this.tvInspectors.EndUpdate();
+        }
 
-		private void PopulateNodeChildren(TreeNode node, IEnumerable<IInspector> inspectors)
+        private void PopulateNodeChildren(TreeNode node, IEnumerable<IInspector> inspectors)
 		{
 			foreach (var i in inspectors)
 			{
@@ -627,9 +633,9 @@ namespace NDifference.UI
 
 				t.Start();
 			}
-			catch(Exception)
+			catch(Exception ex)
 			{
-
+                MessageBox.Show(ex.GetBaseException().Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 		

@@ -79,9 +79,14 @@ namespace NDifference.Analysis
 
 				RunAssemblyCollectionInspectors(inspectors, assemblyModel, result.Summary);
 
+                int currentAssemblyNumber = 0;
+                int totalAssemblies = assemblyModel.ChangedInCommon.Count();
+
 				// now get each assembly pair and compare them at the internal level...
 				foreach (var commonAssemblyPair in assemblyModel.ChangedInCommon)
 				{
+                    ++currentAssemblyNumber;
+
 					var cancelCompare = new CancellableEventArgs();
 					this.AssemblyComparisonStarting.Fire(this, cancelCompare);
 
@@ -117,7 +122,7 @@ namespace NDifference.Analysis
 						changesToThisAssembly.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
 
 						// looking for general changes to the assembly...
-						progressIndicator.Report(new ProgressValue { Description = "Inspecting " + previousAssembly.Name });
+						progressIndicator.Report(new ProgressValue { Description = String.Format("Inspecting {0} {1} of {2}", previousAssembly.Name, currentAssemblyNumber, totalAssemblies) });
 
 						foreach (var ai in inspectors.AssemblyInspectors.Where(x => x.Enabled))
 						{
@@ -132,7 +137,7 @@ namespace NDifference.Analysis
 
 						ICombinedTypes typeModel = CombinedObjectModel.BuildFrom(previousTypeCollection, currentTypeCollection);
 
-						progressIndicator.Report(new ProgressValue { Description = "Comparing types in assembly " + previousAssembly.Name });
+						progressIndicator.Report(new ProgressValue { Description = string.Format("Comparing types in assembly {0} {1} of {2}", previousAssembly.Name, currentAssemblyNumber, totalAssemblies) });
 
 						foreach (var tci in inspectors.TypeCollectionInspectors.Where(x => x.Enabled))
 						{

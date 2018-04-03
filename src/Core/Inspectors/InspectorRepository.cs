@@ -53,52 +53,89 @@ namespace NDifference.Inspectors
 
 		public void Find(IFileFinder finder)
 		{
-			Task t1 = Task.Run(() => 
-			{
-				this.aci.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(finder).Find());
-				this.aci.ForEach(x => x.Enabled = true);
-			});
+            bool runInParallel = false;
 
-			Task t2 = Task.Run(() => 
-			{
-				this.ai.AddRange(new AssemblyInspectorPluginDiscoverer(finder).Find());
-				this.ai.ForEach(x => x.Enabled = true);
-			});
-
-			Task t3 = Task.Run(() => 
-			{
-				this.tci.AddRange(new TypeCollectionInspectorPluginDiscoverer(finder).Find());
-				this.tci.ForEach(x => x.Enabled = true);
-			});
-
-			Task t4 = Task.Run(() => 
-			{
-				this.ti.AddRange(new TypeInspectorPluginDiscoverer(finder).Find());
-				this.ti.ForEach(x => x.Enabled = true);
-			});
-
-            Task.Factory.ContinueWhenAll(new[] { t1, t2, t3, t4 }, tasks =>
+            if (runInParallel)
             {
-                StringBuilder builder = new StringBuilder();
-
-                foreach (var t in tasks)
+                Task t1 = Task.Run(() =>
                 {
-                    if (t.Status == TaskStatus.Faulted)
+                    this.aci.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(finder).Find());
+                    this.aci.ForEach(x => x.Enabled = true);
+                });
+
+                Task t2 = Task.Run(() =>
+                {
+                    this.ai.AddRange(new AssemblyInspectorPluginDiscoverer(finder).Find());
+                    this.ai.ForEach(x => x.Enabled = true);
+                });
+
+                Task t3 = Task.Run(() =>
+                {
+                    this.tci.AddRange(new TypeCollectionInspectorPluginDiscoverer(finder).Find());
+                    this.tci.ForEach(x => x.Enabled = true);
+                });
+
+                Task t4 = Task.Run(() =>
+                {
+                    this.ti.AddRange(new TypeInspectorPluginDiscoverer(finder).Find());
+                    this.ti.ForEach(x => x.Enabled = true);
+                });
+
+                Task.Factory.ContinueWhenAll(new[] { t1, t2, t3, t4 }, tasks =>
+                {
+                    StringBuilder builder = new StringBuilder();
+
+                    foreach (var t in tasks)
                     {
-                        builder.AppendLine(t.Exception.GetBaseException().Message);
+                        if (t.Status == TaskStatus.Faulted)
+                        {
+                            builder.AppendLine(t.Exception.GetBaseException().Message);
+                        }
                     }
-                }
 
-                string message = builder.ToString();
+                    string message = builder.ToString();
 
-                if (!String.IsNullOrEmpty(message))
+                    if (!String.IsNullOrEmpty(message))
+                    {
+                        throw new PluginLoadException(message);
+                    }
+                });
+            }
+            else
+            {
+                try
                 {
-                    throw new PluginLoadException(message);
-                }
-            });
-		}
+                    this.aci.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(finder).Find());
+                    this.aci.ForEach(x => x.Enabled = true);
 
-		public void Filter(InspectorFilter filter)
+                    this.ai.AddRange(new AssemblyInspectorPluginDiscoverer(finder).Find());
+                    this.ai.ForEach(x => x.Enabled = true);
+
+                    this.tci.AddRange(new TypeCollectionInspectorPluginDiscoverer(finder).Find());
+                    this.tci.ForEach(x => x.Enabled = true);
+
+                    this.ti.AddRange(new TypeInspectorPluginDiscoverer(finder).Find());
+                    this.ti.ForEach(x => x.Enabled = true);
+                }
+                catch (AggregateException ae)
+                {
+                    StringBuilder message = new StringBuilder();
+
+                    foreach (Exception e in ae.InnerExceptions)
+                    {
+                        message.AppendLine(e.GetBaseException().Message);
+                    }
+
+                    throw new PluginLoadException(message.ToString());
+                }
+                catch (Exception ex)
+                {
+                    throw new PluginLoadException(ex.GetBaseException().Message);
+                }
+            }
+        }
+
+        public void Filter(InspectorFilter filter)
 		{
 			filter.Filter(this.aci);
 			filter.Filter(this.ai);

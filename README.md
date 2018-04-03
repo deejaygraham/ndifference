@@ -57,7 +57,7 @@ The original inspiration for this project came from Microsoft's unsupported
 [libcheck](http://www.microsoft.com/en-us/download/details.aspx?id=11287) tool.
 
 ## CI Status
-The project builds on AppVeryor: [![Build status](https://ci.appveyor.com/api/projects/status/j669wh11qrhwbq6b?svg=true)](https://ci.appveyor.com/project/deejaygraham/ndifference).
+The project builds on AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/j669wh11qrhwbq6b?svg=true)](https://ci.appveyor.com/project/deejaygraham/ndifference).
 
 ## Get Involved!
 Have an idea about improving the project? Please get involved. NDifference is an open source project (of course) and we accept 

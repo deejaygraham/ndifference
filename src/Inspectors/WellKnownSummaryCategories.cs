@@ -31,7 +31,16 @@ namespace NDifference.Inspectors
 			CategoryType = CategoryType.Warning
 		};
 
-		public static readonly Category AddedAssemblies = new Category
+        public static readonly Category PotentiallyChangedAssemblies = new Category
+        {
+            Name = "Potentially Changed Assemblies",
+            Description = "These assemblies have failed a hash check between the two versions of the product",
+            Priority = new CategoryPriority(WellKnownChangePriorities.PotentiallyChangedAssemblies),
+            Headings = new string[] { "Assembly" },
+            CategoryType = CategoryType.Warning
+        };
+
+        public static readonly Category AddedAssemblies = new Category
 		{
 			Name = "New Assemblies",
 			Description = "These assemblies have been added to the new version",

@@ -53,7 +53,16 @@ namespace NDifference.Inspectors
 			CategoryType = CategoryType.Warning
 		};
 
-		public static readonly Category ChangedTypes = new Category
+        public static readonly Category PotentiallyChangedTypes = new Category
+        {
+            Name = "Potentially Changed Types",
+            Description = "These types MAY have changed between the two versions of the product",
+            Priority = new CategoryPriority(WellKnownChangePriorities.PotentiallyChangedTypes),
+            Headings = new string[] { "Type" },
+            CategoryType = CategoryType.Warning
+        };
+
+        public static readonly Category ChangedTypes = new Category
 		{
 			Name = "Changed Types",
 			Description = "These types have changed between the two versions of the product",

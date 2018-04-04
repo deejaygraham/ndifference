@@ -1,6 +1,7 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NDifference.Inspectors
 {
@@ -17,17 +18,22 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for removed assemblies"; } }
 
-		public void Inspect(ICombinedAssemblies assemblies, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedAssemblies combined, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(assemblies != null, "List of assemblies cannot be null");
+			Debug.Assert(combined != null, "List of assemblies cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownSummaryCategories.RemovedAssemblies);
+            var removedAssemblies = combined.InEarlierOnly;
 
-			foreach (var removed in assemblies.InEarlierOnly)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.RemovedAssemblies, removed.First.Name)); 
-			}
-		}
+            if (removedAssemblies.Any())
+            {
+                changes.Add(WellKnownSummaryCategories.RemovedAssemblies);
+
+                foreach (var removed in removedAssemblies)
+                {
+                    changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.RemovedAssemblies, removed.First.Name));
+                }
+            }
+        }
 	}
 }

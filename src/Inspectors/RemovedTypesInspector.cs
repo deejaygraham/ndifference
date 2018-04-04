@@ -1,6 +1,7 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NDifference.Inspectors
 {
@@ -22,12 +23,17 @@ namespace NDifference.Inspectors
 			Debug.Assert(types != null, "List of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownAssemblyCategories.RemovedTypes);
+            var removedTypes = types.InEarlierOnly;
 
-			foreach (var removed in types.InEarlierOnly)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.First.FullName));
-			}
+            if (removedTypes.Any())
+            {
+                changes.Add(WellKnownAssemblyCategories.RemovedTypes);
+
+                foreach (var removed in removedTypes)
+                {
+                    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.First.FullName));
+                }
+            }
 
 		}
 	}

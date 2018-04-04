@@ -35,8 +35,6 @@ namespace NDifference.Reporting
 			{
 				if (this.Map != null)
 				{
-					//output.Path = this.Map.Lookup(changes.Identifier);
-
 					string folder = Path.GetDirectoryName(output.Path);
 
 					if (!Directory.Exists(folder))
@@ -52,10 +50,10 @@ namespace NDifference.Reporting
 					Encoding = utf8,
 					OmitXmlDeclaration = true,
 					Indent = true,
-					IndentChars = "\t"
-				};
+                    NewLineOnAttributes = true
+                };
 
-				using (XmlWriter html = XmlTextWriter.Create(text, settings))
+				using (XmlWriter html = XmlWriter.Create(text, settings))
 				{
 					html.WriteStartDocument();
 
@@ -111,35 +109,6 @@ namespace NDifference.Reporting
 										heading = changes.Name;
 									}
 
-									//if (!String.IsNullOrEmpty(heading))
-									//{
-									//	html.WriteElement("div", () =>
-									//	{
-									//		html.WriteAttributeString("id", "header");
-									//		//html.WriteElement("h1", () =>
-									//		//{
-									//		//	html.WriteString(heading);
-									//		//});
-
-									//		//if (changes.Parents.Any())
-									//		//{
-									//		//	string currentFolder = Path.GetDirectoryName(output.Path);
-
-									//		//	// do breadcrumbs...
-									//		//	html.WriteElement("ul", () =>
-									//		//	{
-									//		//		changes.Parents.ForEach(x =>
-									//		//		{
-									//		//			html.WriteElement("li", () =>
-									//		//			{
-									//		//				html.RenderLink(this.Map.PathRelativeTo(x.Identifier, new PhysicalFolder(currentFolder)), x.LinkText, x.LinkText);
-									//		//			});
-									//		//		});
-									//		//	});
-									//		//}
-									//	});
-									//}
-
 									if (!String.IsNullOrEmpty(changes.HeadingBlock))
 									{
 										html.WriteElement("div", () =>
@@ -158,11 +127,6 @@ namespace NDifference.Reporting
 								html.WriteElement("div", () =>
 								{
 									html.WriteAttributeString("id", "summary");
-									//html.WriteElement("h2", () =>
-									//{
-									//	html.WriteString(changes.Name);
-									//});
-
 									html.WriteComment(" Summary Table ");
 
 									html.WriteElement("table", () =>
@@ -185,9 +149,11 @@ namespace NDifference.Reporting
 											// write each category
 											foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
 											{
-												if (changes.ChangesInCategory(cat.Priority.Value).Any())
+                                                var list = changes.ChangesInCategory(cat.Priority.Value);
+
+                                                if (list.Any())
 												{
-													html.WriteTableRow(cat.Name, changes.ChangesInCategory(cat.Priority.Value).Count, "#" + cat.Identifier);
+													html.WriteTableRow(cat.Name, list.Count, "#" + cat.Identifier);
 												}
 											}
 										});
@@ -198,7 +164,10 @@ namespace NDifference.Reporting
 
 								foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
 								{
-									RenderCategory(cat, changes.ChangesInCategory(cat.Priority.Value), html, output);
+                                    var list = changes.ChangesInCategory(cat.Priority.Value);
+
+                                    if (list.Any())
+                                        RenderCategory(cat, list, html, output);
 								}
 
 								var uncatChanges = changes.UnCategorisedChanges();
@@ -213,17 +182,12 @@ namespace NDifference.Reporting
 								}
 							});
 
-							//html.WriteElement("div", () =>
-							//{
-							//	html.WriteAttributeString("class", "diff-footer");
-
 							foreach (var footer in changes.FooterBlocks)
 							{
 								html.WriteWhitespace("\r\n");
 								html.WriteRaw(footer);
 								html.WriteWhitespace("\r\n");
 							}
-							//});
 
 							// end of body
 						});

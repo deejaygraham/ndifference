@@ -20,29 +20,30 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for common assemblies between two versions"; } }
 
-		public void Inspect(ICombinedAssemblies assemblies, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedAssemblies combined, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(assemblies != null, "List of assemblies cannot be null");
+			Debug.Assert(combined != null, "List of assemblies cannot be null");
 
-			changes.Add(WellKnownSummaryCategories.ChangedAssemblies);
+            var potentiallyChangedAssemblies = combined.ChangedInCommon;
 
-			var comparer = new AssemblyNameComparer();
+            if (potentiallyChangedAssemblies.Any())
+            {
+                changes.Add(WellKnownSummaryCategories.ChangedAssemblies);
 
-			foreach (var common in assemblies.ChangedInCommon)
-			{
-				Debug.Assert(common.First != null);
-				Debug.Assert(common.Second != null);
+                foreach (var common in potentiallyChangedAssemblies)
+                {
+                    Debug.Assert(common.First != null);
+                    Debug.Assert(common.Second != null);
 
-				// most common files need to be analysed 
-				// further to check for API changes...
-				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.ChangedAssemblies, common.First.Name, new DocumentLink
-				{
-					LinkText = common.First.Name,
-					LinkUrl = common.First.Name,
-					Identifier = common.Second.Identifier
-				}));
-			}
-
+                    // TODO - this is a wild guess - number may not reflect the actual number in the report. 
+                    changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.PotentiallyChangedAssemblies, common.First.Name, new DocumentLink
+                    {
+                        LinkText = common.First.Name,
+                        LinkUrl = common.First.Name,
+                        Identifier = common.Second.Identifier
+                    }));
+                }
+            }
 		}
 	}
 

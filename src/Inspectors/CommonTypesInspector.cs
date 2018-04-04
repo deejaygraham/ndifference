@@ -30,11 +30,11 @@ namespace NDifference.Inspectors
 
             if (changedInCommon.Any())
             {
-                changes.Add(WellKnownAssemblyCategories.ChangedTypes);
+                changes.Add(WellKnownAssemblyCategories.PotentiallyChangedTypes);
 
                 foreach (var common in changedInCommon)
                 {
-                    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.ChangedTypes, common.Second.FullName, new DocumentLink
+                    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.PotentiallyChangedTypes, common.Second.FullName, new DocumentLink
                     {
                         LinkText = common.First.FullName,
                         LinkUrl = common.First.FullName,

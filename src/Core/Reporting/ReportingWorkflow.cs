@@ -54,12 +54,9 @@ namespace NDifference.Reporting
 
 					writer.Map = builder.Build();
 
-					if (!String.IsNullOrEmpty(project.Settings.SubFolder))
+					if (!String.IsNullOrEmpty(project.Settings.SubFolder) && Directory.Exists(project.Settings.SubPath))
 					{
-						if (Directory.Exists(project.Settings.SubPath))
-						{
-							Directory.GetFiles(project.Settings.SubPath, "*" + format.Extension).ToList().ForEach(x => File.Delete(x));
-						}
+						Directory.GetFiles(project.Settings.SubPath, "*" + format.Extension).ToList().ForEach(x => File.Delete(x));
 					}
 
 					if (!project.Settings.ConsolidateAssemblyTypes)

@@ -25,13 +25,18 @@ namespace NDifference.Inspectors
 			Debug.Assert(types != null, "List of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
 
-			changes.Add(WellKnownAssemblyCategories.AddedTypes);
+            var addedTypes = types.InLaterOnly;
 
-			foreach (var added in types.InLaterOnly)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedTypes, added.Second.FullName));
-			}
-			
+            if (addedTypes.Any())
+            {
+                changes.Add(WellKnownAssemblyCategories.AddedTypes);
+
+                foreach (var added in addedTypes)
+                {
+                    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedTypes, added.Second.FullName));
+                }
+            }
+		
 		}
 	}
 }

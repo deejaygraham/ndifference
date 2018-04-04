@@ -49,13 +49,8 @@ namespace NDifference.Inspectors
 				}));
 			}
 
-			int oldTypes = types.Types
-						.Where(x => x.First != null)
-						.Count();
-
-			int newTypes = types.Types
-						.Where(x => x.Second != null)
-						.Count();
+			int oldTypes = types.Types.Count(x => x.First != null);
+			int newTypes = types.Types.Count(x => x.Second != null);
 
 			if (oldTypes != newTypes)
 			{

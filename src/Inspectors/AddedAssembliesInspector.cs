@@ -1,6 +1,7 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NDifference.Inspectors
 {
@@ -17,19 +18,22 @@ namespace NDifference.Inspectors
 
 		public string Description { get { return "Checks for new assemblies"; } }
 
-		public void Inspect(ICombinedAssemblies assemblies, IdentifiedChangeCollection changes)
+		public void Inspect(ICombinedAssemblies combined, IdentifiedChangeCollection changes)
 		{
-			Debug.Assert(assemblies != null, "List of assemblies cannot be null");
+			Debug.Assert(combined != null, "List of assemblies cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
+            
+            var addedAssemblies = combined.InLaterOnly;
 
-			changes.Add(WellKnownSummaryCategories.AddedAssemblies);
+            if (addedAssemblies.Any())
+            {
+                changes.Add(WellKnownSummaryCategories.AddedAssemblies);
 
-			var comparer = new AssemblyNameComparer();
-
-			foreach (var added in assemblies.InLaterOnly)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.AddedAssemblies, added.Second.Name)); 
-			}
-		}
+                foreach (var added in addedAssemblies)
+                {
+                    changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.AddedAssemblies, added.Second.Name));
+                }
+            }
+        }
 	}
 }

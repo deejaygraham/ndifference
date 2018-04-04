@@ -11,9 +11,11 @@ namespace NDifference.Inspection
 
 		public static readonly int RemovedAssemblies = SummaryInternal + 1;
 
-		public static readonly int ChangedAssemblies = RemovedAssemblies + 1;
+        public static readonly int ChangedAssemblies = RemovedAssemblies + 1;
 
-		public static readonly int AddedAssemblies = ChangedAssemblies + 1;
+        public static readonly int PotentiallyChangedAssemblies = ChangedAssemblies + 1;
+
+        public static readonly int AddedAssemblies = PotentiallyChangedAssemblies + 1;
 
 		//public static readonly int UnchangedAssemblies = 4;
 
@@ -28,9 +30,11 @@ namespace NDifference.Inspection
 
 		public static readonly int ObsoleteTypes = RemovedTypes + 1;
 
-		public static readonly int ChangedTypes = ObsoleteTypes + 1;
+        public static readonly int ChangedTypes = ObsoleteTypes + 1;
 
-		public static readonly int AddedTypes = ChangedTypes + 1;
+        public static readonly int PotentiallyChangedTypes = ChangedTypes + 1;
+
+		public static readonly int AddedTypes = PotentiallyChangedTypes + 1;
 
 		// public static readonly int UnchangedTypes = 5;
 

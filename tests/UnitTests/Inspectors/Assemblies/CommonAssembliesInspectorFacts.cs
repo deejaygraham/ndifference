@@ -82,7 +82,7 @@ namespace NDifference.UnitTests
 
 			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.AddedAssemblies));
 			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.RemovedAssemblies));
-			Assert.Equal(2, changes.ChangesInCategory(WellKnownChangePriorities.ChangedAssemblies).Count);
+			Assert.Equal(2, changes.ChangesInCategory(WellKnownChangePriorities.PotentiallyChangedAssemblies).Count);
 		}
 	}
 }

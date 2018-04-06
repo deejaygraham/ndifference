@@ -2,6 +2,7 @@
 using NDifference.Inspection;
 using NDifference.Inspectors;
 using NDifference.TypeSystem;
+using NDifference.UnitTests.TestDataBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +18,16 @@ namespace NDifference.UnitTests
 		public void CommonTypesInspector_Ignores_Identical_Lists()
 		{
 			var first = new List<ITypeInfo>();
-			first.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.First", Name = "First", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
-			first.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Second", Name = "Second", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
-			first.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Third", Name = "Third", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
+            first.Add(TypeBuilder.Class().Named("First").InNamespace("Example").Build());
+            first.Add(TypeBuilder.Class().Named("Second").InNamespace("Example").Build());
+            first.Add(TypeBuilder.Class().Named("Third").InNamespace("Example").Build());
 
 			var second = new List<ITypeInfo>();
-			second.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.First", Name = "First", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
-			second.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Second", Name = "Second", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
-			second.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Third", Name = "Third", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
+            second.Add(TypeBuilder.Class().Named("First").InNamespace("Example").Build());
+            second.Add(TypeBuilder.Class().Named("Second").InNamespace("Example").Build());
+            second.Add(TypeBuilder.Class().Named("Third").InNamespace("Example").Build());
 
-			ITypeCollectionInspector inspector = new CommonTypesInspector();
+            ITypeCollectionInspector inspector = new CommonTypesInspector();
 
 			var changes = new IdentifiedChangeCollection();
 
@@ -34,21 +35,22 @@ namespace NDifference.UnitTests
 
 			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes));
 			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes));
-			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.ChangedTypes));
-		}
+            Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.PotentiallyChangedTypes));
+        }
 
-		[Fact]
-		public void CommonTypesInspector_Identifies_Changed_Taxonomy()
+        [Fact]
+		public void CommonTypesInspector_Identifies_Change_From_Class_To_Enum()
 		{
 			var first = new List<ITypeInfo>();
-			first.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.First", Name = "First", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
-			first.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Second", Name = "Second", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
-			first.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Third", Name = "Third", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
+
+            first.Add(TypeBuilder.Class().Named("First").InNamespace("Example").Build());
+            first.Add(TypeBuilder.Class().Named("Second").InNamespace("Example").Build());
+            first.Add(TypeBuilder.Class().Named("Third").InNamespace("Example").Build());
 
 			var second = new List<ITypeInfo>();
-			second.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.First", Name = "First", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
-			second.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Second", Name = "Second", Namespace = "Example", Taxonomy = TypeTaxonomy.Class });
-			second.Add(new PocoType { Access = AccessModifier.Public, FullName = "Example.Third", Name = "Third", Namespace = "Example", Taxonomy = TypeTaxonomy.Enum });
+            second.Add(TypeBuilder.Class().Named("First").InNamespace("Example").Build());
+            second.Add(TypeBuilder.Class().Named("Second").InNamespace("Example").Build());
+            second.Add(TypeBuilder.Enum().Named("Third").InNamespace("Example").Build());
 
 			ITypeCollectionInspector inspector = new CommonTypesInspector();
 

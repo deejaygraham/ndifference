@@ -129,6 +129,7 @@
     <Compile Include="TestDataBuilders\IBuildable.cs" />
     <Compile Include="TestDataBuilders\IBuildToCode.cs" />
     <Compile Include="TestDataBuilders\IdentifiedChangeCollectionBuilder.cs" />
+    <Compile Include="TestDataBuilders\TypeBuilder.cs" />
     <Compile Include="TestDataBuilders\UsingStatementBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

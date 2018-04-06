@@ -88,12 +88,9 @@
     <Compile Include="SourceOutputTypeInspector.cs" />
     <Compile Include="StaticConstructorAdded.cs" />
     <Compile Include="StaticConstructorRemoved.cs" />
-    <Compile Include="WellKnownAssemblyCategories.cs" />
     <Compile Include="CommonAssembliesInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemovedAssembliesInspector.cs" />
-    <Compile Include="WellKnownSummaryCategories.cs" />
-    <Compile Include="WellKnownTypeCategories.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

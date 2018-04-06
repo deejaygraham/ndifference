@@ -1,7 +1,6 @@
-﻿using NDifference.Analysis;
-using NDifference.Inspection;
+﻿using NDifference.Inspection;
 
-namespace NDifference.Inspectors
+namespace NDifference.Analysis
 {
 	/// <summary>
 	/// Changes that apply at the assembly level

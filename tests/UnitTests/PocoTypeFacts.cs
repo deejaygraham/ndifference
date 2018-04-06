@@ -1,20 +1,15 @@
-﻿using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NDifference.UnitTests.TestDataBuilders;
 using Xunit;
 
 namespace NDifference.UnitTests
 {
-	public class PocoTypeFacts
+    public class PocoTypeFacts
 	{
 		[Fact]
 		public void PocoType_Hash_Is_Same_For_Identical_Objects()
 		{
-			var p1 = new PocoType { FullName = "Hello.World" };
-			var p2 = new PocoType { FullName = "Hello.World" };
+            var p1 = TypeBuilder.Class().Named("World").InNamespace("Hello").Build();
+            var p2 = TypeBuilder.Class().Named("World").InNamespace("Hello").Build();
 
 			Assert.Equal(p2.CalculateHash(), p1.CalculateHash());
 		}
@@ -22,8 +17,8 @@ namespace NDifference.UnitTests
 		[Fact]
 		public void PocoType_Hash_Is_Different_For_Different_Objects()
 		{
-			var p1 = new PocoType { FullName = "Hello.World", Access = AccessModifier.Internal };
-			var p2 = new PocoType { FullName = "Hello.World", Access = AccessModifier.Public };
+            var p1 = TypeBuilder.Class().Named("World").InNamespace("Hello").IsInternal().Build();
+            var p2 = TypeBuilder.Class().Named("World").InNamespace("Hello").Build();
 
 			Assert.NotEqual(p2.CalculateHash(), p1.CalculateHash());
 		}

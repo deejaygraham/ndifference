@@ -48,6 +48,9 @@
     <Compile Include="Analysis\IAnalysisWorkflow.cs" />
     <Compile Include="Analysis\IChurnable.cs" />
     <Compile Include="Analysis\Severity.cs" />
+    <Compile Include="Analysis\WellKnownAssemblyCategories.cs" />
+    <Compile Include="Analysis\WellKnownSummaryCategories.cs" />
+    <Compile Include="Analysis\WellKnownTypeCategories.cs" />
     <Compile Include="Exceptions\InvalidProjectFileFormatException.cs" />
     <Compile Include="Exceptions\PluginLoadException.cs" />
     <Compile Include="ExtensionMethods\EventHandlerExtensions.cs" />

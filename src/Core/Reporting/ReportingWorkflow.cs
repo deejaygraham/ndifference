@@ -19,7 +19,7 @@ namespace NDifference.Reporting
 
 		public event EventHandler ReportsComplete;
 
-		public void RunReports(Project project, IReportingRepository reportWriters, AnalysisResult results, IProgress<ProgressValue> progressIndicator)
+		public void RunReports(Project project, IReportingRepository reportWriters, AnalysisResult results, IProgress<Progress> progressIndicator)
 		{
 			try
 			{
@@ -39,7 +39,7 @@ namespace NDifference.Reporting
 				{
 					IReportFormat format = writer.SupportedFormats.First();
 
-					progressIndicator.Report(new ProgressValue { Description = "Building File Map" });
+					progressIndicator.Report(new Progress("Building File Map"));
 
 					var builder = FileMapBuilder.Map()
 						.UsingProject(project)
@@ -66,7 +66,7 @@ namespace NDifference.Reporting
 						{
 							IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.HtmlSafeTypeName() + format.Extension));
 
-							progressIndicator.Report(new ProgressValue { Description = "Generating report for " + typeChange.Name });
+							progressIndicator.Report(new Progress("Generating report for " + typeChange.Name));
 
 							this.ReportStarting.Fire(this, new FileProgessEventArgs { FileName = typeChange.Name });
 
@@ -82,7 +82,7 @@ namespace NDifference.Reporting
 
 						this.ReportStarting.Fire(this, new FileProgessEventArgs { FileName = dllChange.Name });
 
-						progressIndicator.Report(new ProgressValue { Description = "Generating report for " + dllChange.Name });
+						progressIndicator.Report(new Progress("Generating report for " + dllChange.Name));
 
 						writer.Write(dllChange, dllOutput, format);
 
@@ -104,7 +104,7 @@ namespace NDifference.Reporting
 
 					this.ReportStarting.Fire(this, new FileProgessEventArgs { FileName = project.Settings.IndexName });
 
-					progressIndicator.Report(new ProgressValue { Description = "Generating summary report" });
+					progressIndicator.Report(new Progress("Generating summary report"));
 					
 					writer.Write(results.Summary, output, format);
 

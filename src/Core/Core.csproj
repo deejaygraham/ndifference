@@ -73,7 +73,7 @@
     <Compile Include="Inspectors\InspectorFilter.cs" />
     <Compile Include="Inspectors\InspectorRepository.cs" />
     <Compile Include="Inspectors\ITypeCollectionInspector.cs" />
-    <Compile Include="ProgressValue.cs" />
+    <Compile Include="Progress.cs" />
     <Compile Include="Projects\Project.cs" />
     <Compile Include="Projects\PersistableProject.cs" />
     <Compile Include="Projects\PersistableProjectSettings.cs" />

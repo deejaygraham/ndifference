@@ -43,7 +43,7 @@ namespace NDifference.Analysis
 
 		private IAssemblyReflectorFactory ReflectorFactory { get; set; }
 
-		public AnalysisResult RunAnalysis(Project project, InspectorRepository inspectors, IProgress<ProgressValue> progressIndicator)
+		public AnalysisResult RunAnalysis(Project project, InspectorRepository inspectors, IProgress<Progress> progressIndicator)
 		{
 			AnalysisResult result = new AnalysisResult();
 
@@ -78,7 +78,7 @@ namespace NDifference.Analysis
 
 				ICombinedAssemblies assemblyModel = CombinedAssemblyModel.BuildFrom(firstVersion.Assemblies, secondVersion.Assemblies);
 				
-				progressIndicator.Report(new ProgressValue { Description = "Inspecting Release Differences" });
+				progressIndicator.Report(new Progress("Inspecting Release Differences"));
 
 				RunAssemblyCollectionInspectors(inspectors, assemblyModel, result.Summary);
 
@@ -99,7 +99,7 @@ namespace NDifference.Analysis
 						return result;
 					}
 
-					progressIndicator.Report(new ProgressValue { Description = "Comparing versions of " + commonAssemblyPair.First.Name });
+					progressIndicator.Report(new Progress("Comparing versions of " + commonAssemblyPair.First.Name));
 					var previousAssembly = commonAssemblyPair.First;
 					var currentAssembly = commonAssemblyPair.Second;
 										
@@ -131,7 +131,7 @@ namespace NDifference.Analysis
                         changesToThisAssembly.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
 
                         // looking for general changes to the assembly...
-                        progressIndicator.Report(new ProgressValue { Description = String.Format("Inspecting {0} {1} of {2}", previousAssembly.Name, currentAssemblyNumber, totalAssemblies) });
+                        progressIndicator.Report(new Progress("Inspecting " + previousAssembly.Name, currentAssemblyNumber, totalAssemblies));
 
                         RunAssemblyInspectors(inspectors, previousVersionReflection, currentVersionReflection, changesToThisAssembly);
 
@@ -143,7 +143,7 @@ namespace NDifference.Analysis
 
                         ICombinedTypes typeModel = CombinedObjectModel.BuildFrom(previousTypeCollection, currentTypeCollection);
 
-                        progressIndicator.Report(new ProgressValue { Description = string.Format("Comparing types in assembly {0} {1} of {2}", previousAssembly.Name, currentAssemblyNumber, totalAssemblies) });
+                        progressIndicator.Report(new Progress("Comparing types in assembly " + previousAssembly.Name, currentAssemblyNumber, totalAssemblies));
 
                         RunTypeCollectionInspectors(inspectors, typeModel, changesToThisAssembly);
 
@@ -200,7 +200,7 @@ namespace NDifference.Analysis
                             changesToThisType.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
                             changesToThisType.Parents.Add(new DocumentLink { Identifier = changesToThisAssembly.Identifier, LinkText = changesToThisAssembly.Name });
 
-                            progressIndicator.Report(new ProgressValue { Description = "Inspecting type " + currentType.Name });
+                            progressIndicator.Report(new Progress("Inspecting type " + currentType.Name));
 
                             foreach (var ti in inspectors.TypeInspectors.Where(x => x.Enabled))
                             {

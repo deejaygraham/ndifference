@@ -46,7 +46,7 @@ namespace NDifference.Cmdlets
                 // temporary folder !!!
                 // project.Settings.OutputFolder = this.OutputFolder.GetFullPath();
 
-                IProgress<ProgressValue> progressIndicator = new Progress<ProgressValue>(value =>
+                IProgress<Progress> progressIndicator = new Progress<Progress>(value =>
                 {
                     if (!String.IsNullOrEmpty(value.Description))
                     {
@@ -56,7 +56,7 @@ namespace NDifference.Cmdlets
 
                 System.Threading.Tasks.Task t = new System.Threading.Tasks.Task(() =>
                 {
-                    progressIndicator.Report(new ProgressValue { Description = "Starting..." });
+                    progressIndicator.Report(new Progress("Starting..."));
 
                     IFileFinder finder = new FileFinder(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
@@ -64,7 +64,7 @@ namespace NDifference.Cmdlets
                         finder,
                         new CecilReflectorFactory());
 
-                    progressIndicator.Report(new ProgressValue { Description = "Loading Plugins..." });
+                    progressIndicator.Report(new Progress("Loading Plugins..."));
 
                     InspectorRepository ir = new InspectorRepository();
                     ir.Find(finder);
@@ -73,7 +73,7 @@ namespace NDifference.Cmdlets
 
                     ir.Filter(filter);
 
-                    progressIndicator.Report(new ProgressValue { Description = "Starting Analysis..." });
+                    progressIndicator.Report(new Progress("Starting Analysis..."));
 
                     var result = analysis.RunAnalysis(project, ir, progressIndicator);
 
@@ -82,7 +82,7 @@ namespace NDifference.Cmdlets
 
                     IReportingWorkflow reporting = new ReportingWorkflow();
 
-                    progressIndicator.Report(new ProgressValue { Description = "Starting Reports..." });
+                    progressIndicator.Report(new Progress("Starting Reports..."));
 
                     reporting.RunReports(project, rr, result, progressIndicator);
 

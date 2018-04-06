@@ -45,6 +45,7 @@
     </Compile>
     <Compile Include="AddedAssembliesInspector.cs" />
     <Compile Include="AddedTypesInspector.cs" />
+    <Compile Include="AnalysisAggregationInspector.cs" />
     <Compile Include="ArchitectureChangeInspector.cs" />
     <Compile Include="AssemblyReferenceInspector.cs" />
     <Compile Include="AssemblyStatisticsInspector.cs" />

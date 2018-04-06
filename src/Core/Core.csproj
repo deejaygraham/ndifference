@@ -47,6 +47,7 @@
     <Compile Include="Analysis\ChurnCalculator.cs" />
     <Compile Include="Analysis\IAnalysisWorkflow.cs" />
     <Compile Include="Analysis\IChurnable.cs" />
+    <Compile Include="Analysis\Severity.cs" />
     <Compile Include="Exceptions\InvalidProjectFileFormatException.cs" />
     <Compile Include="Exceptions\PluginLoadException.cs" />
     <Compile Include="ExtensionMethods\EventHandlerExtensions.cs" />
@@ -66,14 +67,12 @@
     <Compile Include="Inspection\ICombinedTypes.cs" />
     <Compile Include="Inspection\MemberVisibilityOption.cs" />
     <Compile Include="Inspection\WellKnownChangePriorities.cs" />
+    <Compile Include="Inspectors\IAnalysisInspector.cs" />
     <Compile Include="Inspectors\IAssemblyCollectionInspector.cs" />
     <Compile Include="Inspectors\IInspector.cs" />
     <Compile Include="Inspectors\InspectorFilter.cs" />
     <Compile Include="Inspectors\InspectorRepository.cs" />
     <Compile Include="Inspectors\ITypeCollectionInspector.cs" />
-    <Compile Include="Plugins\AssemblyCollectionInspectorPluginDiscoverer.cs" />
-    <Compile Include="Plugins\ReportingPluginDiscoverer.cs" />
-    <Compile Include="Plugins\TypeCollectionInspectorPluginDiscoverer.cs" />
     <Compile Include="ProgressValue.cs" />
     <Compile Include="Projects\Project.cs" />
     <Compile Include="Projects\PersistableProject.cs" />
@@ -188,8 +187,6 @@
     <Compile Include="TypeSystem\Operator.cs" />
     <Compile Include="TypeSystem\Parameter.cs" />
     <Compile Include="Files\IFileFinder.cs" />
-    <Compile Include="Plugins\AssemblyInspectorPluginDiscoverer.cs" />
-    <Compile Include="Plugins\TypeInspectorPluginDiscoverer.cs" />
     <Compile Include="Plugins\ObjectInstantiator.cs" />
     <Compile Include="Files\FileFinder.cs" />
     <Compile Include="Plugins\PluginDiscoverer.cs" />

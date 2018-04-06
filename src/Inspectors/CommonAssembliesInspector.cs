@@ -28,7 +28,7 @@ namespace NDifference.Inspectors
 
             if (potentiallyChangedAssemblies.Any())
             {
-                changes.Add(WellKnownSummaryCategories.ChangedAssemblies);
+                changes.Add(WellKnownSummaryCategories.PotentiallyChangedAssemblies);
 
                 foreach (var common in potentiallyChangedAssemblies)
                 {

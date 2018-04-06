@@ -10,7 +10,7 @@ namespace NDifference.Plugins
 	/// Attempts to find assemblies on disk that contain implmentations of T.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class PluginDiscoverer<T> where T : class
+	public class PluginDiscoverer<T> where T : class
 	{
 		public PluginDiscoverer(IFileFinder finder)
 		{
@@ -62,36 +62,6 @@ namespace NDifference.Plugins
 					Debug.Assert(this.Instantiator != null, "Instantiator is not set");
 
 					found.AddRange(this.Instantiator.CreateTypesImplementingInterface(reflector));
-				}
-			}
-
-			bool validateCodes = false;
-
-			if (validateCodes)
-			{
-				// debug !!!
-				HashSet<string> codes = new HashSet<string>();
-
-				PluginLoadException ex = null;
-
-				foreach (var item in found)
-				{
-					IInspector insp = item as IInspector;
-
-					if (insp != null)
-					{
-						if (codes.Contains(insp.ShortCode))
-						{
-							ex = new PluginLoadException("Duplicate found for " + insp.ShortCode + "  " + insp.DisplayName);
-						}
-
-						codes.Add(insp.ShortCode);
-					}
-				}
-
-				if (ex != null)
-				{
-					throw ex;
 				}
 			}
 

@@ -19,6 +19,8 @@ namespace NDifference.Inspectors
 
 		private List<ITypeInspector> ti = new List<ITypeInspector>();
 
+        private List<IAnalysisInspector> iai = new List<IAnalysisInspector>();
+
 		public ReadOnlyCollection<IAssemblyCollectionInspector> AssemblyCollectionInspectors 
 		{ 
 			get
@@ -51,87 +53,51 @@ namespace NDifference.Inspectors
 			}
 		}
 
+
+        public ReadOnlyCollection<IAnalysisInspector> AnalysisInspectors
+        {
+            get
+            {
+                return new ReadOnlyCollection<IAnalysisInspector>(this.iai);
+            }
+        }
+
 		public void Find(IFileFinder finder)
 		{
-            bool runInParallel = false;
-
-            if (runInParallel)
+            try
             {
-                Task t1 = Task.Run(() =>
-                {
-                    this.aci.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(finder).Find());
-                    this.aci.ForEach(x => x.Enabled = true);
-                });
+                var pluginDiscoverer = new PluginDiscoverer<IInspector>(finder);
+                var plugins = pluginDiscoverer.Find();
 
-                Task t2 = Task.Run(() =>
-                {
-                    this.ai.AddRange(new AssemblyInspectorPluginDiscoverer(finder).Find());
-                    this.ai.ForEach(x => x.Enabled = true);
-                });
+                this.aci.AddRange(plugins.OfType<IAssemblyCollectionInspector>());
+                this.aci.ForEach(x => x.Enabled = true);
 
-                Task t3 = Task.Run(() =>
-                {
-                    this.tci.AddRange(new TypeCollectionInspectorPluginDiscoverer(finder).Find());
-                    this.tci.ForEach(x => x.Enabled = true);
-                });
+                this.ai.AddRange(plugins.OfType<IAssemblyInspector>());
+                this.ai.ForEach(x => x.Enabled = true);
 
-                Task t4 = Task.Run(() =>
-                {
-                    this.ti.AddRange(new TypeInspectorPluginDiscoverer(finder).Find());
-                    this.ti.ForEach(x => x.Enabled = true);
-                });
+                this.tci.AddRange(plugins.OfType<ITypeCollectionInspector>());
+                this.tci.ForEach(x => x.Enabled = true);
 
-                Task.Factory.ContinueWhenAll(new[] { t1, t2, t3, t4 }, tasks =>
-                {
-                    StringBuilder builder = new StringBuilder();
+                this.ti.AddRange(plugins.OfType<ITypeInspector>());
+                this.ti.ForEach(x => x.Enabled = true);
 
-                    foreach (var t in tasks)
-                    {
-                        if (t.Status == TaskStatus.Faulted)
-                        {
-                            builder.AppendLine(t.Exception.GetBaseException().Message);
-                        }
-                    }
-
-                    string message = builder.ToString();
-
-                    if (!String.IsNullOrEmpty(message))
-                    {
-                        throw new PluginLoadException(message);
-                    }
-                });
+                this.iai.AddRange(plugins.OfType<IAnalysisInspector>());
+                this.iai.ForEach(x => x.Enabled = true);
             }
-            else
+            catch (AggregateException ae)
             {
-                try
+                StringBuilder message = new StringBuilder();
+
+                foreach (Exception e in ae.InnerExceptions)
                 {
-                    this.aci.AddRange(new AssemblyCollectionInspectorPluginDiscoverer(finder).Find());
-                    this.aci.ForEach(x => x.Enabled = true);
-
-                    this.ai.AddRange(new AssemblyInspectorPluginDiscoverer(finder).Find());
-                    this.ai.ForEach(x => x.Enabled = true);
-
-                    this.tci.AddRange(new TypeCollectionInspectorPluginDiscoverer(finder).Find());
-                    this.tci.ForEach(x => x.Enabled = true);
-
-                    this.ti.AddRange(new TypeInspectorPluginDiscoverer(finder).Find());
-                    this.ti.ForEach(x => x.Enabled = true);
+                    message.AppendLine(e.GetBaseException().Message);
                 }
-                catch (AggregateException ae)
-                {
-                    StringBuilder message = new StringBuilder();
 
-                    foreach (Exception e in ae.InnerExceptions)
-                    {
-                        message.AppendLine(e.GetBaseException().Message);
-                    }
-
-                    throw new PluginLoadException(message.ToString());
-                }
-                catch (Exception ex)
-                {
-                    throw new PluginLoadException(ex.GetBaseException().Message);
-                }
+                throw new PluginLoadException(message.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new PluginLoadException(ex.GetBaseException().Message);
             }
         }
 

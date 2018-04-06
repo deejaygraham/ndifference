@@ -26,7 +26,10 @@ namespace NDifference.Reporting
 
 		public void Find(IFileFinder finder)
 		{
-			reportWriters.AddRange(new ReportingPluginDiscoverer(finder).Find());
+            var pluginDiscoverer = new PluginDiscoverer<IReportWriter>(finder);
+            var plugins = pluginDiscoverer.Find();
+
+			reportWriters.AddRange(plugins);
 		}
 
 		public IReportWriter Find(IReportFormat supportedFormat)

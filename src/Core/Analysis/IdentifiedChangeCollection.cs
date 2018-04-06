@@ -86,7 +86,7 @@ namespace NDifference.Analysis
 				}
 
 				if (columnsInData != columnsInTable)
-					throw new Exception("Column mismatch " + c.Name + " " + change.Description);
+					throw new Exception("Column mismatch " + c.Name);
 			}
 
 			this.Changes.Add(change);
@@ -100,7 +100,15 @@ namespace NDifference.Analysis
 			return this.Changes.Where(x => x.Priority == priority).ToList();
 		}
 
-		public List<IdentifiedChange> UnCategorisedChanges()
+        public List<IdentifiedChange> ChangesInCategory(string categoryName)
+        {
+            Debug.Assert(this.Categories != null, "Categories collection is null");
+            Debug.Assert(this.Changes != null, "Changes collection is null");
+
+            return this.Changes.Where(x => x.Category.Name == categoryName).ToList();
+        }
+
+        public List<IdentifiedChange> UnCategorisedChanges()
 		{
 			Debug.Assert(this.Categories != null, "Categories collection is null");
 			Debug.Assert(this.Changes != null, "Changes collection is null");

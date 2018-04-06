@@ -185,8 +185,15 @@ namespace NDifference.Analysis
                                 toVersion += " " + currentType.CalculateHash();
                             }
 
-                            changesToThisType.SummaryBlocks.Add("From", fromVersion);
-                            changesToThisType.SummaryBlocks.Add("To", toVersion);
+                            if (fromVersion == toVersion)
+                            {
+                                changesToThisType.SummaryBlocks.Add("Version", fromVersion);
+                            }
+                            else
+                            {
+                                changesToThisType.SummaryBlocks.Add("From", fromVersion);
+                                changesToThisType.SummaryBlocks.Add("To", toVersion);
+                            }
 
                             changesToThisType.CopyMetaFrom(result.Summary);
 
@@ -210,6 +217,38 @@ namespace NDifference.Analysis
                                 {
                                     result.Type(changesToThisType);
                                 }
+
+                                // back port to register a change to the assembly - change it's category///
+                                //changesToThisAssembly.Add(WellKnownSummaryCategories.PotentiallyChangedAssemblies);
+
+                                //foreach (var common in potentiallyChangedAssemblies)
+                                //{
+                                //    Debug.Assert(common.First != null);
+                                //    Debug.Assert(common.Second != null);
+
+                                //    // TODO - this is a wild guess - number may not reflect the actual number in the report. 
+                                //    changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.PotentiallyChangedAssemblies, common.First.Name, new DocumentLink
+                                //    {
+                                //        LinkText = common.First.Name,
+                                //        LinkUrl = common.First.Name,
+                                //        Identifier = common.Second.Identifier
+                                //    }));
+                                //}
+
+                                ////changes.Add(WellKnownAssemblyCategories.PotentiallyChangedTypes);
+
+                                //foreach (var common in changedInCommon)
+                                //{
+                                //    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.PotentiallyChangedTypes, common.Second.FullName, new DocumentLink
+                                //    {
+                                //        LinkText = common.First.FullName,
+                                //        LinkUrl = common.First.FullName,
+                                //        Identifier = common.First.Identifier
+                                //    }));
+
+                                //}
+                                // add an assembly change record...
+                                // add a type change record?
                             }
                             else
                             {
@@ -264,6 +303,11 @@ namespace NDifference.Analysis
 
 					result.Summary.SummaryBlocks.Add("Churn", overallChurn.Calculate().ToString() + " %");
 				}
+
+                foreach(var iai in inspectors.AnalysisInspectors.Where(x => x.Enabled))
+                {
+                    iai.Inspect(result);
+                }
 			}
 			finally
 			{

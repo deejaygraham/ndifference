@@ -19,7 +19,7 @@ namespace NDifference.Reporting
 
 		public static void WriteContentType(this XmlWriter writer, string contentType)
 		{
-			writer.WriteRaw("\r\n");
+			writer.WriteNewLine();
 			writer.WriteRaw("<meta http-equiv=\"Content-Type\" content=\"");
 			writer.WriteRaw(contentType);
 			writer.WriteRaw("\" >\r\n");
@@ -41,17 +41,17 @@ namespace NDifference.Reporting
 
 		public static void WriteHeading(this XmlWriter writer, int headingImportance, string heading)
 		{
-			writer.WriteElement(string.Format("h{0}", headingImportance), () =>
-			{
-				writer.WriteString(heading);
-			});
+            writer.WriteHeading(headingImportance, string.Empty, heading);
 		}
 
 		public static void WriteHeading(this XmlWriter writer, int headingImportance, string id, string heading)
 		{
-			writer.WriteElement(string.Format("h{0}", headingImportance), () =>
+            writer.WriteNewLine();
+            writer.WriteElement(string.Format("h{0}", headingImportance), () =>
 			{
-				writer.WriteAttributeString("id", id);
+                if (!string.IsNullOrEmpty(id))
+				    writer.WriteAttributeString("id", id);
+
 				writer.WriteString(heading);
 			});
 		}
@@ -64,31 +64,24 @@ namespace NDifference.Reporting
 			});
 		}
 
-		public static void WriteTableRow(this XmlWriter writer, string cell)
+		public static void WriteTableRow(this XmlWriter writer, params string[] cells)
 		{
-			writer.WriteElement("tr", () =>
+            writer.WriteNewLine();
+            writer.WriteElement("tr", () =>
 			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteString(cell);
-				});
-			});
-		}
+                writer.WriteNewLine();
 
-		public static void WriteTableRow(this XmlWriter writer, string cell1, string cell2)
-		{
-			writer.WriteElement("tr", () =>
-			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteString(cell1);
-				});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteString(cell2);
-				});
-			});
-		}
+                for (int i = 0; i < cells.Length; ++i)
+                {
+                    writer.WriteElement("td", () =>
+                    {
+                        writer.WriteString(cells[i]);
+                    });
+                }
+                writer.WriteNewLine();
+            });
+            writer.WriteNewLine();
+        }
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, IDocumentLink change, IReportOutput output, FileMap map)
 		{
@@ -105,11 +98,12 @@ namespace NDifference.Reporting
 			{
 				writer.WriteElement("tr", () =>
 				{
-					//writer.WriteElement("td", () =>
-					//{
-					//	writer.WriteRaw(shortCode);
-					//});
-					writer.WriteElement("td", () =>
+                    //writer.WriteElement("td", () =>
+                    //{
+                    //	writer.WriteRaw(shortCode);
+                    //});
+                    writer.WriteNewLine();
+                    writer.WriteElement("td", () =>
 					{
 						if (linkIsGood)
 						{
@@ -128,13 +122,7 @@ namespace NDifference.Reporting
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, INameDescriptor change, IReportFormat format)
 		{
-			writer.WriteElement("tr", () =>
-			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(change.Name);
-				});
-			});
+            writer.WriteTableRow(change.Name);
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, IValueDescriptor change, IReportFormat format)
@@ -146,13 +134,7 @@ namespace NDifference.Reporting
 			if (code != null)
 				text = format.Format(code);
 
-			writer.WriteElement("tr", () =>
-			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(text);
-				});
-			});
+            writer.WriteTableRow(text);
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, INameValueDescriptor change, IReportFormat format)
@@ -164,21 +146,7 @@ namespace NDifference.Reporting
 			if (code != null)
 				text = format.Format(code);
 
-			writer.WriteElement("tr", () =>
-			{
-				//writer.WriteElement("td", () =>
-				//{
-				//	writer.WriteRaw(shortCode);
-				//});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(change.Name);
-				});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(text);
-				});
-			});
+            writer.WriteTableRow(change.Name, text);
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, IDeltaDescriptor change, IReportFormat format)
@@ -199,25 +167,7 @@ namespace NDifference.Reporting
 				isText = format.Format(isNow);
 			}
 
-			writer.WriteElement("tr", () =>
-			{
-				//writer.WriteElement("td", () =>
-				//{
-				//	writer.WriteRaw(shortCode);
-				//});
-				//writer.WriteElement("td", () =>
-				//{
-				//	writer.WriteRaw(change.Name);
-				//});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(wasText);
-				});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(isText);
-				});
-			});
+            writer.WriteTableRow(wasText, isText);
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, INamedDeltaDescriptor change, IReportFormat format)
@@ -238,83 +188,22 @@ namespace NDifference.Reporting
 				isText = format.Format(isNow);
 			}
 
-			writer.WriteElement("tr", () =>
-			{
-				//writer.WriteElement("td", () =>
-				//{
-				//	writer.WriteRaw(shortCode);
-				//});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(change.Name);
-				});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(wasText);
-				});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(isText);
-				});
-			});
+            writer.WriteTableRow(change.Name, wasText, isText);
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, ICodeDescriptor change, IReportFormat format)
 		{
 			string text = format.Format(change.Code);
 
-			writer.WriteElement("tr", () =>
-			{
-				//writer.WriteElement("td", () =>
-				//{
-				//	writer.WriteRaw(shortCode);
-				//});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(text);
-				});
-			});
-		}
-
-		public static void WriteTableRowRaw(this XmlWriter writer, string cell1, string cell2)
-		{
-			writer.WriteElement("tr", () =>
-			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(cell1);
-				});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(cell2);
-				});
-			});
-		}
-
-		public static void WriteTableRowRaw(this XmlWriter writer, string cell1, string cell2, string cell3)
-		{
-			writer.WriteElement("tr", () =>
-			{
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(cell1);
-				});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(cell2);
-				});
-				writer.WriteElement("td", () =>
-				{
-					writer.WriteRaw(cell3);
-				});
-			});
+            writer.WriteTableRow(text);
 		}
 
 		public static void WriteTableRowLink(this XmlWriter writer, string cell1, string cell2, string link)
 		{
 			writer.WriteElement("tr", () =>
 			{
-				writer.WriteElement("td", () =>
+                writer.WriteNewLine();
+                writer.WriteElement("td", () =>
 				{
 					writer.RenderLink(link, cell1, cell1);
 				});
@@ -337,12 +226,19 @@ namespace NDifference.Reporting
 
 		public static void RenderLink(this XmlWriter writer, string href, string title, string anchorText)
 		{
-			writer.WriteElement("a", () =>
+            writer.WriteNewLine();
+            writer.WriteElement("a", () =>
 			{
 				writer.WriteAttributeString("href", href.Replace('\\', '/'));
 				writer.WriteAttributeString("title", title);
 				writer.WriteString(anchorText);
 			});
-		}
+            writer.WriteNewLine();
+        }
+
+        public static void WriteNewLine(this XmlWriter writer)
+        {
+            writer.WriteWhitespace("\r\n");
+        }
 	}
 }

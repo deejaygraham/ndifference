@@ -2,12 +2,14 @@
 using NDifference.Inspectors;
 using NDifference.Reporting;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace NDifference.Analysis
 {
-	/// <summary>
-	/// Represents a single change in an API.
-	/// </summary>
+    /// <summary>
+    /// Represents a single change in an API.
+    /// </summary>
+    [DebuggerDisplay("{Description}")]
 	public sealed class IdentifiedChange
 	{
 		public IdentifiedChange()
@@ -16,15 +18,15 @@ namespace NDifference.Analysis
 			this.Inspector = "No Inspector Specified";
 		}
 
-		public IdentifiedChange(IInspector inspector, Category cat, string name)
-		{
-			this.Inspector = inspector.ShortCode;
-			this.Priority = cat.Priority.Value;
-			this.Description = name;
-			this.Category = cat;
-		}
+        public IdentifiedChange(IInspector inspector, Category cat, string name)
+        {
+            this.Inspector = inspector.ShortCode;
+            this.Priority = cat.Priority.Value;
+            this.Description = name;
+            this.Category = cat;
+        }
 
-		public IdentifiedChange(IInspector inspector, Category cat, object descriptor)
+        public IdentifiedChange(IInspector inspector, Category cat, object descriptor)
 		{
 			this.Inspector = inspector.ShortCode;
 			this.Priority = cat.Priority.Value;
@@ -32,16 +34,16 @@ namespace NDifference.Analysis
 			this.Category = cat;
 		}
 
-		public IdentifiedChange(IInspector inspector, Category cat, string name, object descriptor)
-		{
-			this.Inspector = inspector.ShortCode;
-			this.Priority = cat.Priority.Value;
-			this.Description = name;
-			this.Descriptor = descriptor;
-			this.Category = cat;
-		}
+        public IdentifiedChange(IInspector inspector, Category cat, string name, object descriptor)
+        {
+            this.Inspector = inspector.ShortCode;
+            this.Priority = cat.Priority.Value;
+            this.Description = name;
+            this.Descriptor = descriptor;
+            this.Category = cat;
+        }
 
-		public string Description { get; set; }
+        public string Description { get; set; }
 
 		public int Priority { get; set; }
 
@@ -56,8 +58,8 @@ namespace NDifference.Analysis
 	{
 		public int Compare(IdentifiedChange x, IdentifiedChange y)
 		{
-			if (x.Descriptor == null || y.Descriptor == null)
-				return x.Description.CompareTo(y.Description);
+			//if (x.Descriptor == null || y.Descriptor == null)
+			//	return x.Description.CompareTo(y.Description);
 
 			return CompareDescriptors(x.Descriptor, y.Descriptor);
 		}

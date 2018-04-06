@@ -22,17 +22,10 @@ namespace NDifference.Analysis
 
 		public string[] Headings { get; set; }
 
-		public CategoryType CategoryType { get; set; }
+		public Severity Severity { get; set; }
 
 		public int Columns { get { return this.Headings.Length; } }
 	}
 
-	public enum CategoryType
-	{
-		Unknown,
-		Information,
-		Warning,
-		Error,
-		Critical
-	}
+	
 }

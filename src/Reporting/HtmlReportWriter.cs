@@ -49,8 +49,7 @@ namespace NDifference.Reporting
 				{
 					Encoding = utf8,
 					OmitXmlDeclaration = true,
-					Indent = true,
-                    NewLineOnAttributes = true
+					Indent = true
                 };
 
 				using (XmlWriter html = XmlWriter.Create(text, settings))
@@ -73,41 +72,34 @@ namespace NDifference.Reporting
 								});
 							}
 
-							html.WriteWhitespace("\r\n");
+							html.WriteNewLine();
 							html.WriteComment(" " + changes.Identifier + " ");
-							html.WriteWhitespace("\r\n");
+                            html.WriteNewLine();
 
-							if (changes.MetaBlocks != null)
+                            if (changes.MetaBlocks != null)
 							{
 								foreach (var meta in changes.MetaBlocks)
 								{
 									html.WriteRaw(meta);
-									html.WriteWhitespace("\r\n");
-								}
-							}
+                                    html.WriteNewLine();
+                                }
+                            }
 						});
 
 						html.WriteElement("body", () =>
 						{
 							foreach (var header in changes.HeaderBlocks)
 							{
-								html.WriteWhitespace("\r\n");
-								html.WriteRaw(header);
-								html.WriteWhitespace("\r\n");
-							}
+                                html.WriteNewLine();
+                                html.WriteRaw(header);
+                                html.WriteNewLine();
+                            }
 
-							if (!String.IsNullOrEmpty(changes.HeadingBlock))
+                            if (!String.IsNullOrEmpty(changes.HeadingBlock))
 							{
 								html.WriteElement("div", () =>
 								{
 									html.WriteAttributeString("class", "diff-header");
-
-									string heading = changes.Heading;
-
-									if (String.IsNullOrEmpty(heading))
-									{
-										heading = changes.Name;
-									}
 
 									if (!String.IsNullOrEmpty(changes.HeadingBlock))
 									{
@@ -127,21 +119,26 @@ namespace NDifference.Reporting
 								html.WriteElement("div", () =>
 								{
 									html.WriteAttributeString("id", "summary");
-									html.WriteComment(" Summary Table ");
+                                    html.WriteNewLine();
+                                    html.WriteComment(" Summary Table ");
 
-									html.WriteElement("table", () =>
+                                    html.WriteNewLine();
+                                    html.WriteElement("table", () =>
 									{
 										html.WriteAttributeString("class", "diff-table");
 										html.WriteAttributeString("summary", "Summary of changes between versions");
 
-										html.WriteElement("caption", () =>
+                                        html.WriteNewLine();
+                                        html.WriteElement("caption", () =>
 										{
 											html.WriteString("Summary of changes");
 										});
 
-										html.WriteElement("tbody", () =>
+                                        html.WriteNewLine();
+                                        html.WriteElement("tbody", () =>
 										{
-											foreach (var key in changes.SummaryBlocks.Keys)
+                                            html.WriteNewLine();
+                                            foreach (var key in changes.SummaryBlocks.Keys)
 											{
 												html.WriteTableRow(key, changes.SummaryBlocks[key]);
 											}
@@ -149,7 +146,7 @@ namespace NDifference.Reporting
 											// write each category
 											foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
 											{
-                                                var list = changes.ChangesInCategory(cat.Priority.Value);
+                                                var list = changes.ChangesInCategory(cat.Name);
 
                                                 if (list.Any())
 												{
@@ -157,14 +154,17 @@ namespace NDifference.Reporting
 												}
 											}
 										});
-									});
 
-									html.WriteComment(" End of Summary Table ");
+                                        html.WriteNewLine();
+                                    });
+
+                                    html.WriteNewLine();
+                                    html.WriteComment(" End of Summary Table ");
 								});
 
 								foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
 								{
-                                    var list = changes.ChangesInCategory(cat.Priority.Value);
+                                    var list = changes.ChangesInCategory(cat.Name);
 
                                     if (list.Any())
                                         RenderCategory(cat, list, html, output);
@@ -184,13 +184,13 @@ namespace NDifference.Reporting
 
 							foreach (var footer in changes.FooterBlocks)
 							{
-								html.WriteWhitespace("\r\n");
-								html.WriteRaw(footer);
-								html.WriteWhitespace("\r\n");
-							}
+                                html.WriteNewLine();
+                                html.WriteRaw(footer);
+                                html.WriteNewLine();
+                            }
 
-							// end of body
-						});
+                            // end of body
+                        });
 					});
 
 					html.WriteEndDocument();
@@ -212,20 +212,24 @@ namespace NDifference.Reporting
 
 		private void RenderCategory(Category cat, IEnumerable<IdentifiedChange> changes, XmlWriter html, IReportOutput output)
 		{
-			html.WriteElement("div", () =>
-			{
+            html.WriteNewLine();
+            html.WriteElement("div", () =>
+            {
 				html.WriteAttributeString("id", cat.Identifier.ToString());
 
 				if (changes.Any())
 				{
-					html.WriteElement("h2", () =>
+                    html.WriteNewLine();
+                    html.WriteElement("h2", () =>
 					{
 						html.WriteString(cat.Name);
 					});
+                    html.WriteNewLine();
 
-					html.WriteComment("Category P" + cat.Priority.Value);
+                    html.WriteComment("Category P" + cat.Priority.Value);
 
-					html.WriteElement("table", () =>
+                    html.WriteNewLine();
+                    html.WriteElement("table", () =>
 					{
 						html.WriteAttributeString("class", "diff-table");
 
@@ -233,16 +237,19 @@ namespace NDifference.Reporting
 						{
 							html.WriteAttributeString("summary", cat.Description);
 
-							html.WriteElement("caption", () =>
+                            html.WriteNewLine();
+                            html.WriteElement("caption", () =>
 							{
 								// new property on category - caption ?
 								html.WriteString(cat.Description);
 							});
-						}
+                            html.WriteNewLine();
+                        }
 
-						if (cat.Headings != null && cat.Headings.Length > 0)
+                        if (cat.Headings != null && cat.Headings.Length > 0)
 						{
-							html.WriteElement("thead", () =>
+                            html.WriteNewLine();
+                            html.WriteElement("thead", () =>
 							{
 								html.WriteElement("tr", () =>
 								{
@@ -255,26 +262,32 @@ namespace NDifference.Reporting
 									}
 								});
 							});
-						}
+                            html.WriteNewLine();
+                        }
 
-						html.WriteElement("tbody", () =>
+                        html.WriteElement("tbody", () =>
 						{
-							// order changes...
-							var ordered = new List<IdentifiedChange>(changes);
+                            html.WriteNewLine();
+                            // order changes...
+                            var ordered = new List<IdentifiedChange>(changes);
 							ordered.Sort(new IdentifiedChangeComparer());
 
 							foreach (var change in ordered)
 							{
 								RenderChange(change, html, output);
 							}
-						});
+
+                            html.WriteNewLine();
+                        });
 					});
 				}
 				else
 				{
 					html.WriteComment(" No " + cat.Name + " identified ");
 				}
-			});
+
+                html.WriteNewLine();
+            });
 		}
 
 		private void RenderChange(IdentifiedChange change, XmlWriter html, IReportOutput output)

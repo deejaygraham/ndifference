@@ -92,7 +92,7 @@ namespace NDifference.Analysis
 			this.Changes.Add(change);
 		}
 
-		public List<IdentifiedChange> ChangesInCategory(int priority)
+		public List<IdentifiedChange> ChangesInCategory(int priority) // and for a level ?
 		{
 			Debug.Assert(this.Categories != null, "Categories collection is null");
 			Debug.Assert(this.Changes != null, "Changes collection is null");
@@ -100,7 +100,7 @@ namespace NDifference.Analysis
 			return this.Changes.Where(x => x.Priority == priority).ToList();
 		}
 
-        public List<IdentifiedChange> ChangesInCategory(string categoryName)
+        public List<IdentifiedChange> ChangesInCategory(string categoryName) // and for a level ???
         {
             Debug.Assert(this.Categories != null, "Categories collection is null");
             Debug.Assert(this.Changes != null, "Changes collection is null");

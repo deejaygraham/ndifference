@@ -218,6 +218,7 @@ namespace NDifference.Analysis
                                     result.Type(changesToThisType);
                                 }
 
+                                // look at the assembly this is in and change the potentially
                                 // back port to register a change to the assembly - change it's category///
                                 //changesToThisAssembly.Add(WellKnownSummaryCategories.PotentiallyChangedAssemblies);
 

@@ -33,6 +33,14 @@ namespace NDifference.Analysis
 			}
 		}
 
+        public List<IdentifiedChangeCollection> AssemblyChangesModifiable
+        {
+            get
+            {
+                return this._assemblyLevelChanges;
+            }
+        }
+
 		public ReadOnlyCollection<IdentifiedChangeCollection> TypeLevelChanges
 		{
 			get

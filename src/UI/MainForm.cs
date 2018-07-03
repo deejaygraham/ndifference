@@ -575,7 +575,7 @@ namespace NDifference.UI
 
 			try
 			{
-				IProgress<ProgressValue> progressIndicator = new Progress<ProgressValue>(value =>
+				IProgress<Progress> progressIndicator = new Progress<Progress>(value =>
 				{
 					if (!String.IsNullOrEmpty(value.Description))
 					{
@@ -590,7 +590,7 @@ namespace NDifference.UI
 
 				Task t = new Task(() =>
 				{
-					progressIndicator.Report(new ProgressValue { Description = "Starting..." });
+					progressIndicator.Report(new Progress("Starting..."));
 
 					IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
 
@@ -598,7 +598,7 @@ namespace NDifference.UI
 						finder,
 						new CecilReflectorFactory());
 
-					progressIndicator.Report(new ProgressValue { Description = "Loading Plugins..." });
+					progressIndicator.Report(new Progress("Loading Plugins..."));
 
 					InspectorRepository ir = new InspectorRepository();
 					ir.Find(finder);
@@ -607,16 +607,27 @@ namespace NDifference.UI
 
 					ir.Filter(filter);
 
-					progressIndicator.Report(new ProgressValue { Description = "Starting Analysis..." });
+					progressIndicator.Report(new Progress("Starting Analysis..."));
 
 					var result = analysis.RunAnalysis(this._project, ir, progressIndicator);
+
+                    // now modify results.
+                    foreach(var r in result.TypeLevelChanges)
+                    {
+                        // if no changes .. set assembly level changes...
+                    }
+
+                    foreach(var a in result.AssemblyLevelChanges)
+                    {
+                        // if no assembly level changes set changed assemblies to zero.
+                    }
 
 					IReportingRepository rr = new ReportingRepository();
 					rr.Find(finder);
 
 					IReportingWorkflow reporting = new ReportingWorkflow();
 
-					progressIndicator.Report(new ProgressValue { Description = "Starting Reports..." });
+					progressIndicator.Report(new Progress("Starting Reports..."));
 
 					reporting.RunReports(this._project, rr, result, progressIndicator);
 

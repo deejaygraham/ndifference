@@ -19,19 +19,13 @@ namespace NDifference.Analysis
 		}
 
         public IdentifiedChange(IInspector inspector, Category cat, string name)
+            : this(inspector, cat, name, null)
         {
-            this.Inspector = inspector.ShortCode;
-            this.Priority = cat.Priority.Value;
-            this.Description = name;
-            this.Category = cat;
         }
 
         public IdentifiedChange(IInspector inspector, Category cat, object descriptor)
+            : this(inspector, cat, string.Empty, descriptor)
 		{
-			this.Inspector = inspector.ShortCode;
-			this.Priority = cat.Priority.Value;
-			this.Descriptor = descriptor;
-			this.Category = cat;
 		}
 
         public IdentifiedChange(IInspector inspector, Category cat, string name, object descriptor)
@@ -41,6 +35,7 @@ namespace NDifference.Analysis
             this.Description = name;
             this.Descriptor = descriptor;
             this.Category = cat;
+            this.Level = AnalysisLevel.Unknown;
         }
 
         public string Description { get; set; }
@@ -52,6 +47,8 @@ namespace NDifference.Analysis
 		public string Inspector { get; set; }
 
 		public Category Category { get; set; }
+
+        public AnalysisLevel Level { get; set; }
 	}
 
 	public class IdentifiedChangeComparer : IComparer<IdentifiedChange>

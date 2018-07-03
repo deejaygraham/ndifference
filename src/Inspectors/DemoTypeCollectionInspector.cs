@@ -39,7 +39,7 @@ namespace NDifference.Inspectors
 						LinkUrl = common.First.FullName,
 						Identifier = common.Second.Identifier
 					},
-					Inspector = this.ShortCode
+                    Inspector = this.ShortCode
 
 				});
 			}

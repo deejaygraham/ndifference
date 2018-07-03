@@ -23,8 +23,9 @@ namespace NDifference.Inspectors
             // look at each assembly identified as having a change - look for changes relating to that and modify the values. 
             // 
 
-            foreach(var a in result.AssemblyLevelChanges)
+            foreach(var a in result.AssemblyChangesModifiable)
             {
+                
                 foreach(var c in a.Changes.Where(x => x.Category.Identifier == WellKnownAssemblyCategories.PotentiallyChangedTypes.Identifier))
                 {
                     if (result.TypeLevelChanges.Any(t => AssembliesMatch(t.SummaryBlocks["Assembly"], a.Name)))

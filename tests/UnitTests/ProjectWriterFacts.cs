@@ -53,7 +53,7 @@ namespace NDifference.UnitTests
 		}
 
 		[Fact]
-		public void ProjectWriter_Files_Are_Written_Relative_To_Project_Path()
+		public void ProjectWriter_Files_Are_Written_Relative_To_Source_Path()
 		{
             string baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -82,21 +82,23 @@ namespace NDifference.UnitTests
 			string xmlText = WriteProjectToString(project);
 
 			Assert.Contains("<SourceName>1.0.0</SourceName>", xmlText);
-			Assert.Contains("<SourceAssemblies>", xmlText);
-			Assert.Contains(string.Format("<Include>Old{0}First.dll</Include>", Path.DirectorySeparatorChar), xmlText);
-            Assert.Contains(string.Format("<Include>Old{0}Second.dll</Include>", Path.DirectorySeparatorChar), xmlText);
-            Assert.Contains(string.Format("<Include>Old{0}Third.dll</Include>", Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains(string.Format("<SourceFolder>{0}{1}Old</SourceFolder>", baseFolder, Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains("<SourceAssemblies>", xmlText);
+			Assert.Contains("<Include>First.dll</Include>", xmlText);
+            Assert.Contains("<Include>Second.dll</Include>", xmlText);
+            Assert.Contains("<Include>Third.dll</Include>", xmlText);
 
 			Assert.Contains("<TargetName>2.0.0</TargetName>", xmlText);
-			Assert.Contains("<TargetAssemblies>", xmlText);
-            Assert.Contains(string.Format("<Include>New{0}Second.dll</Include>", Path.DirectorySeparatorChar), xmlText);
-            Assert.Contains(string.Format("<Include>New{0}Third.dll</Include>", Path.DirectorySeparatorChar), xmlText);
-            Assert.Contains(string.Format("<Include>New{0}Fourth.dll</Include>", Path.DirectorySeparatorChar), xmlText);
-            Assert.Contains(string.Format("<Include>New{0}Fifth.dll</Include>", Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains(string.Format("<TargetFolder>{0}{1}New</SourceFolder>", baseFolder, Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains("<TargetAssemblies>", xmlText);
+            Assert.Contains("<Include>Second.dll</Include>",  xmlText);
+            Assert.Contains("<Include>Third.dll</Include>", xmlText);
+            Assert.Contains("<Include>Fourth.dll</Include>",  xmlText);
+            Assert.Contains("<Include>Fifth.dll</Include>", xmlText);
 		}
 
 		[Fact]
-		public void ProjectWriter_File_Paths_Do_Not_Include_Full_Paths()
+		public void ProjectWriter_All_Files_In_Single_Folder_Includes_Source_Target_Folder()
 		{
             string baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -124,10 +126,12 @@ namespace NDifference.UnitTests
 
 			string xmlText = WriteProjectToString(project);
 
-            Assert.DoesNotContain(baseFolder, xmlText);
-		}
+            Assert.Contains(baseFolder, xmlText);
+            Assert.Contains("SourceFolder", xmlText);
+            Assert.Contains("TargetFolder", xmlText);
+        }
 
-		[Fact]
+        [Fact]
 		public void ProjectWriter_Output_Includes_Section_For_Settings()
 		{
 			string xmlText = WriteProjectToString(ProjectBuilder.Default());

@@ -10,10 +10,10 @@ if "%1" == "" goto DefaultTarget
 goto SpecificTarget
 
 :DefaultTarget
-%MsBuildPath% NDifference.proj 
+%MsBuildPath% NDifference.sln 
 goto End
 
 :SpecificTarget
-%MsBuildPath% NDifference.proj /t:%* 
+%MsBuildPath% NDifference.sln /t:%* 
 
 :End

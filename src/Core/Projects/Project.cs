@@ -77,26 +77,52 @@ namespace NDifference.Projects
 				persistableFormat.SourceName = this.Product.ComparedIncrements.First.Name;
 				persistableFormat.TargetName = this.Product.ComparedIncrements.Second.Name;
 
-				foreach (var assembly in this.Product.ComparedIncrements.First.Assemblies)
-				{
-					string include = assembly.Path;
+                if (this.Product.ComparedIncrements.First.Assemblies.AllAssembliesInSameFolder())
+                {
+                    persistableFormat.SourceFolder = System.IO.Path.GetDirectoryName(this.Product.ComparedIncrements.First.Assemblies[0].Path);
 
-					if (!writeAbsolutePaths && assembly.Path.StartsWith(baseFolder))
-						include = assembly.Path.MakeRelativeToFolder(baseFolder);
-                    
-					persistableFormat.SourceAssemblies.Add(include);
-				}
+                    foreach (var assembly in this.Product.ComparedIncrements.First.Assemblies)
+                    {
+                        string include = assembly.Path.MakeRelativeToFolder(persistableFormat.SourceFolder);
+                        persistableFormat.SourceAssemblies.Add(include);
+                    }
+                }
+                else
+                {
+                    foreach (var assembly in this.Product.ComparedIncrements.First.Assemblies)
+                    {
+                        string include = assembly.Path;
 
-				foreach (var assembly in this.Product.ComparedIncrements.Second.Assemblies)
-				{
-					string include = assembly.Path;
+                        if (!writeAbsolutePaths && include.StartsWith(baseFolder))
+                            include = include.MakeRelativeToFolder(baseFolder);
 
-					if (!writeAbsolutePaths && assembly.Path.StartsWith(baseFolder))
-                        include = assembly.Path.MakeRelativeToFolder(baseFolder);
+                        persistableFormat.SourceAssemblies.Add(include);
+                    }
+                }
 
-                    persistableFormat.TargetAssemblies.Add(include);
-				}
-			}
+                if (this.Product.ComparedIncrements.Second.Assemblies.AllAssembliesInSameFolder())
+                {
+                    persistableFormat.TargetFolder = System.IO.Path.GetDirectoryName(this.Product.ComparedIncrements.Second.Assemblies[0].Path);
+
+                    foreach (var assembly in this.Product.ComparedIncrements.Second.Assemblies)
+                    {
+                        string include = assembly.Path.MakeRelativeToFolder(persistableFormat.TargetFolder);
+                        persistableFormat.TargetAssemblies.Add(include);
+                    }
+                }
+                else
+                {
+                    foreach (var assembly in this.Product.ComparedIncrements.Second.Assemblies)
+                    {
+                        string include = assembly.Path;
+
+                        if (!writeAbsolutePaths && include.StartsWith(baseFolder))
+                            include = include.MakeRelativeToFolder(baseFolder);
+
+                        persistableFormat.TargetAssemblies.Add(include);
+                    }
+                }
+            }
 
 			persistableFormat.Settings = this.Settings.ToPersistableFormat();
 
@@ -140,12 +166,19 @@ namespace NDifference.Projects
 				{
 					string fullPath = file;
 
-					if (!string.IsNullOrEmpty(baseFolder))
-					{
-						fullPath = baseFolder.MakeAbsolutePath(file);
-					}
+                    if (string.IsNullOrEmpty(persistableFormat.SourceFolder))
+                    {
+                        if (!string.IsNullOrEmpty(baseFolder))
+                        {
+                            fullPath = baseFolder.MakeAbsolutePath(file);
+                        }
+                    }
+                    else
+                    {
+                        fullPath = persistableFormat.SourceFolder.MakeAbsolutePath(file);
+                    }
 
-					firstVersion.Add(new AssemblyDiskInfo(fullPath));
+                    firstVersion.Add(new AssemblyDiskInfo(fullPath));
 				}
 			}
 
@@ -164,12 +197,19 @@ namespace NDifference.Projects
 				{
 					string fullPath = file;
 
-					if (!string.IsNullOrEmpty(baseFolder))
-					{
-						fullPath = baseFolder.MakeAbsolutePath(file);
-					}
+                    if (string.IsNullOrEmpty(persistableFormat.TargetFolder))
+                    {
+                        if (!string.IsNullOrEmpty(baseFolder))
+                        {
+                            fullPath = baseFolder.MakeAbsolutePath(file);
+                        }
+                    }
+                    else
+                    {
+                        fullPath = persistableFormat.TargetFolder.MakeAbsolutePath(file);
+                    }
 
-					secondVersion.Add(new AssemblyDiskInfo(fullPath));
+                    secondVersion.Add(new AssemblyDiskInfo(fullPath));
 				}
 			}
 

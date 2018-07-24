@@ -31,11 +31,15 @@ namespace NDifference.Projects
 
 		public string TargetName { get; set; }
 
-		[XmlArrayItem("Include")]
+        public string SourceFolder { get; set; }
+
+        [XmlArrayItem("Include")]
 		[SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
 		public List<string> SourceAssemblies { get; set; }
 
-		[XmlArrayItem("Include")]
+        public string TargetFolder { get; set; }
+
+        [XmlArrayItem("Include")]
 		[SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
 		public List<string> TargetAssemblies { get; set; }
 

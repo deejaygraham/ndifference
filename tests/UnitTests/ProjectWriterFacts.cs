@@ -89,7 +89,7 @@ namespace NDifference.UnitTests
             Assert.Contains("<Include>Third.dll</Include>", xmlText);
 
 			Assert.Contains("<TargetName>2.0.0</TargetName>", xmlText);
-            Assert.Contains(string.Format("<TargetFolder>{0}{1}New</SourceFolder>", baseFolder, Path.DirectorySeparatorChar), xmlText);
+            Assert.Contains(string.Format("<TargetFolder>{0}{1}New</TargetFolder>", baseFolder, Path.DirectorySeparatorChar), xmlText);
             Assert.Contains("<TargetAssemblies>", xmlText);
             Assert.Contains("<Include>Second.dll</Include>",  xmlText);
             Assert.Contains("<Include>Third.dll</Include>", xmlText);

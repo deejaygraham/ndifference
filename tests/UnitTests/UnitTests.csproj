@@ -88,8 +88,6 @@
     <Compile Include="Inspectors\Types\ClassAbstractionInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\ClassDerivationInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\ClassSealingInspectorFacts.cs" />
-    <Compile Include="Inspectors\Assemblies\CommonAssembliesInspectorFacts.cs" />
-    <Compile Include="Inspectors\Types\CommonTypesInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\ConstructorInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\EnumInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\FinalizerInspectorFacts.cs" />

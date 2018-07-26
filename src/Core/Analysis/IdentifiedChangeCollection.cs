@@ -131,6 +131,7 @@ namespace NDifference.Analysis
 			return list;
 		}
 
+        [Obsolete("No longer used")]
         public void SwitchCategory(Category from, Category to)
         {
             if (this.Categories.Contains(from))
@@ -147,6 +148,8 @@ namespace NDifference.Analysis
             if (this.Categories.Contains(from))
                 this.Categories.Remove(from);
         }
+
+        [Obsolete("No longer used")]
         public void PurgeCategory(string categoryName)
         {
             this.Changes.RemoveAll(x => x.Category.Name == categoryName);

@@ -80,8 +80,6 @@ namespace NDifference.Analysis
 				
 				progressIndicator.Report(new Progress("Inspecting Release Differences"));
 
-
-                //IdentifiedChangeCollection potentialAssemblyChanges = new IdentifiedChangeCollection();
                 RunAssemblyCollectionInspectors(inspectors, assemblyModel, result.Summary);
 
                 int currentAssemblyNumber = 0;
@@ -147,7 +145,6 @@ namespace NDifference.Analysis
 
                         progressIndicator.Report(new Progress("Comparing types in assembly " + previousAssembly.Name, currentAssemblyNumber, totalAssemblies));
 
-                        //IdentifiedChangeCollection potentialTypeChanges = new IdentifiedChangeCollection();
                         RunTypeCollectionInspectors(inspectors, typeModel, changesToThisAssembly);
 
                         // now inspect each type...
@@ -220,59 +217,17 @@ namespace NDifference.Analysis
                                 {
                                     result.Type(changesToThisType);
 
-                                    //if (!changesToThisAssembly.Changes.Any(x => x.Category.Name == WellKnownAssemblyCategories.ChangedTypes.Name))
-                                    //{
-                                        changesToThisAssembly.Add(new IdentifiedChange(
-                                            null, 
-                                            WellKnownAssemblyCategories.ChangedTypes,
-                                            currentType.FullName,
-                                            new DocumentLink
-                                            {
-                                                LinkText = currentType.FullName,
-                                                LinkUrl = currentType.FullName,
-                                                Identifier = currentType.Identifier
-                                            }));
-                                    //}
+                                    changesToThisAssembly.Add(new IdentifiedChange(
+                                        null, 
+                                        WellKnownAssemblyCategories.ChangedTypes,
+                                        currentType.FullName,
+                                        new DocumentLink
+                                        {
+                                            LinkText = currentType.FullName,
+                                            LinkUrl = currentType.FullName,
+                                            Identifier = currentType.Identifier
+                                        }));
                                 }
-
-                                // look at the assembly this is in and change the potentially
-                                // back port to register a change to the assembly - change it's category///
-                                //changesToThisAssembly.Add(WellKnownSummaryCategories.PotentiallyChangedAssemblies);
-
-                                //foreach (var common in potentiallyChangedAssemblies)
-                                //{
-                                //    Debug.Assert(common.First != null);
-                                //    Debug.Assert(common.Second != null);
-
-                                //    // TODO - this is a wild guess - number may not reflect the actual number in the report. 
-                                //    changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.PotentiallyChangedAssemblies, common.First.Name, new DocumentLink
-                                //    {
-                                //        LinkText = common.First.Name,
-                                //        LinkUrl = common.First.Name,
-                                //        Identifier = common.Second.Identifier
-                                //    }));
-                                //}
-
-                                ////changes.Add(WellKnownAssemblyCategories.PotentiallyChangedTypes);
-
-                                //foreach (var common in changedInCommon)
-                                //{
-                                //    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.PotentiallyChangedTypes, common.Second.FullName, new DocumentLink
-                                //    {
-                                //        LinkText = common.First.FullName,
-                                //        LinkUrl = common.First.FullName,
-                                //        Identifier = common.First.Identifier
-                                //    }));
-
-                                //}
-                                // add an assembly change record...
-                                // add a type change record?
-                            }
-                            else
-                            {
-
-                                // find a summary block for this item and remove it...
-                                // result.AssemblyLevelChanges.
                             }
 
                             this.TypeComparisonComplete.Fire(this);
@@ -287,14 +242,8 @@ namespace NDifference.Analysis
                             changesToThisAssembly.SummaryBlocks.Add("Churn", calc2.Calculate().ToString() + " %");
                         }
 
-                        //if (changesToThisAssembly.Changes.Any(x => x.Category.Name != "Changed Types"))
-                        //{
-                        //    changesToThisAssembly.Changes.RemoveAll(x => x.Category.Name == "Changed Types");
-                        //}
-
                         this.AssemblyComparisonComplete.Fire(this);
 
-                        // hand this off to another container...
                         if (changesToThisAssembly.Changes.Any())
                         {
                             result.Assembly(changesToThisAssembly);
@@ -335,18 +284,6 @@ namespace NDifference.Analysis
                 foreach(var iai in inspectors.AnalysisInspectors.Where(x => x.Enabled))
                 {
                     iai.Inspect(result);
-                }
-
-                // now remove potentials from results.
-
-                foreach(var tlc in result.TypeLevelChanges)
-                {
-                    
-                }
-
-                foreach(var alc in result.AssemblyChangesModifiable)
-                {
-
                 }
 			}
 			finally

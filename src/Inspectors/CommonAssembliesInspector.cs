@@ -28,7 +28,7 @@ namespace NDifference.Inspectors
 
             if (potentiallyChangedAssemblies.Any())
             {
-                changes.Add(WellKnownSummaryCategories.PotentiallyChangedAssemblies);
+                //changes.Add(WellKnownSummaryCategories.PotentiallyChangedAssemblies);
 
                 foreach (var common in potentiallyChangedAssemblies)
                 {
@@ -36,12 +36,12 @@ namespace NDifference.Inspectors
                     Debug.Assert(common.Second != null);
 
                     // TODO - this is a wild guess - number may not reflect the actual number in the report. 
-                    changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.PotentiallyChangedAssemblies, common.First.Name, new DocumentLink
-                    {
-                        LinkText = common.First.Name,
-                        LinkUrl = common.First.Name,
-                        Identifier = common.Second.Identifier
-                    }));
+                    //changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.PotentiallyChangedAssemblies, common.First.Name, new DocumentLink
+                    //{
+                    //    LinkText = common.First.Name,
+                    //    LinkUrl = common.First.Name,
+                    //    Identifier = common.Second.Identifier
+                    //}));
                 }
             }
 		}

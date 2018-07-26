@@ -25,8 +25,6 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
 				return;
 
-			changes.Add(WellKnownTypeCategories.ConstantsObsolete);
-
 			ClassDefinition firstClass = first as ClassDefinition;
 			ClassDefinition secondClass = second as ClassDefinition;
 
@@ -56,8 +54,6 @@ namespace NDifference.Inspectors
         {
             if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
                 return;
-
-            changes.Add(WellKnownTypeCategories.ConstantsObsolete);
 
             ClassDefinition firstClass = first as ClassDefinition;
             Debug.Assert(firstClass != null, "First type is not a class");

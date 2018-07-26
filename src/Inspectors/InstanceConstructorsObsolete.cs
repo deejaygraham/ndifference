@@ -24,9 +24,6 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy == TypeTaxonomy.Class
 				|| second.Taxonomy == TypeTaxonomy.Class)
 			{
-
-				changes.Add(WellKnownTypeCategories.ConstructorsObsolete);
-				
                 ClassDefinition cd2 = second as ClassDefinition;
 				var obs = cd2.Constructors.FindObsoleteMembers();
 
@@ -53,9 +50,6 @@ namespace NDifference.Inspectors
             if (first.Taxonomy == TypeTaxonomy.Class
                 || second.Taxonomy == TypeTaxonomy.Class)
             {
-
-                changes.Add(WellKnownTypeCategories.ConstructorsObsolete);
-
                 ClassDefinition cd1 = first as ClassDefinition;
                 var oldObs = cd1.Constructors.FindObsoleteMembers();
 

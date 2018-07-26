@@ -20,7 +20,6 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownTypeCategories.TypeDebug);
 			changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeDebug, "This is a demonstration type inspector-identified change"));
 		}
 	}

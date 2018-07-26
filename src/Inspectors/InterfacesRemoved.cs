@@ -25,9 +25,6 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
-			// TODO new category - hierarchy changes ???
-			changes.Add(WellKnownTypeCategories.TypeInternal);
-
 			if (first.Taxonomy == TypeTaxonomy.Class
 				|| first.Taxonomy == TypeTaxonomy.Interface
 				|| second.Taxonomy == TypeTaxonomy.Class

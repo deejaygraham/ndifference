@@ -30,16 +30,16 @@ namespace NDifference.Inspectors
 
             if (changedInCommon.Any())
             {
-                changes.Add(WellKnownAssemblyCategories.PotentiallyChangedTypes);
+               // changes.Add(WellKnownAssemblyCategories.PotentiallyChangedTypes);
 
                 foreach (var common in changedInCommon)
                 {
-                    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.PotentiallyChangedTypes, common.Second.FullName, new DocumentLink
-                    {
-                        LinkText = common.First.FullName,
-                        LinkUrl = common.First.FullName,
-                        Identifier = common.First.Identifier
-                    }));
+                    //changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.PotentiallyChangedTypes, common.Second.FullName, new DocumentLink
+                    //{
+                    //    LinkText = common.First.FullName,
+                    //    LinkUrl = common.First.FullName,
+                    //    Identifier = common.First.Identifier
+                    //}));
                 }
             }
         }

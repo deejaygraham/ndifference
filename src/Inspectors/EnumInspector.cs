@@ -27,10 +27,6 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy != TypeTaxonomy.Enum || second.Taxonomy != TypeTaxonomy.Enum)
 				return;
 
-			changes.Add(WellKnownTypeCategories.EnumValuesRemoved);
-			changes.Add(WellKnownTypeCategories.EnumValuesChanged);
-			changes.Add(WellKnownTypeCategories.EnumValuesAdded);
-			
 			EnumDefinition firstEnum = first as EnumDefinition;
 			EnumDefinition secondEnum = second as EnumDefinition;
 

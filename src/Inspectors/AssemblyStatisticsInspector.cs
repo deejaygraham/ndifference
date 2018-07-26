@@ -25,8 +25,6 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ICombinedTypes types, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownAssemblyCategories.AssemblyInternal);
-
 			int oldNamespaces = types.Types
 				.Where(x => x.First != null)
 				.Select(x => x.First.Namespace)
@@ -41,7 +39,7 @@ namespace NDifference.Inspectors
 			
 			if (oldNamespaces != newNamespaces)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
+                changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
 				{
 					Name = "Namespaces",
 					Was = oldNamespaces.ToString(),
@@ -54,7 +52,7 @@ namespace NDifference.Inspectors
 
 			if (oldTypes != newTypes)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
+                changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
 				{
 					Name = "Types",
 					Was = oldTypes.ToString(),

@@ -24,9 +24,6 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy == TypeTaxonomy.Class
 				|| second.Taxonomy == TypeTaxonomy.Class)
 			{
-
-				changes.Add(WellKnownTypeCategories.ConstructorsRemoved);
-
 				ClassDefinition cd1 = first as ClassDefinition;
 				ClassDefinition cd2 = second as ClassDefinition;
 

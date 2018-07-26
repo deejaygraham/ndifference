@@ -28,9 +28,6 @@ namespace NDifference.Inspectors
 				|| second.Taxonomy == TypeTaxonomy.Class
 				|| second.Taxonomy == TypeTaxonomy.Interface)
 			{
-
-				changes.Add(WellKnownTypeCategories.PropertiesRemoved);
-
 				IReferenceTypeDefinition firstRef = first as IReferenceTypeDefinition;
 				IReferenceTypeDefinition secondRef = second as IReferenceTypeDefinition;
 

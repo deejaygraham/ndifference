@@ -27,8 +27,6 @@ namespace NDifference.Inspectors
 
             if (removedTypes.Any())
             {
-                changes.Add(WellKnownAssemblyCategories.RemovedTypes);
-
                 foreach (var removed in removedTypes)
                 {
                     changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.First.FullName));

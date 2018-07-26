@@ -21,8 +21,6 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownTypeCategories.TypeDebug);
-
 			changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeDebug, new DeltaDescriptor { Was = first.ToCode(), IsNow = second.ToCode() }));
 		}
 	}

@@ -30,7 +30,11 @@ namespace NDifference.Analysis
 
         public IdentifiedChange(IInspector inspector, Category cat, string name, object descriptor)
         {
-            this.Inspector = inspector.ShortCode;
+            if (inspector == null)
+                this.Inspector = "unknown";
+            else
+                this.Inspector = inspector.ShortCode;
+
             this.Priority = cat.Priority.Value;
             this.Description = name;
             this.Descriptor = descriptor;

@@ -23,9 +23,6 @@ namespace NDifference.Inspectors
 
 		public void Inspect(IAssemblyInfo first, IAssemblyInfo second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownAssemblyCategories.AddedReferences);
-			changes.Add(WellKnownAssemblyCategories.RemovedReferences);
-
 			var comparer = new AssemblyReferenceComparer();
 
 			// added

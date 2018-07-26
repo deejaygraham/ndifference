@@ -29,8 +29,6 @@ namespace NDifference.Inspectors
 
             if (addedTypes.Any())
             {
-                changes.Add(WellKnownAssemblyCategories.AddedTypes);
-
                 foreach (var added in addedTypes)
                 {
                     changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedTypes, added.Second.FullName));

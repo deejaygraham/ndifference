@@ -25,15 +25,31 @@ namespace NDifference.Inspectors
 
             foreach(var a in result.AssemblyChangesModifiable)
             {
-                
                 foreach(var c in a.Changes.Where(x => x.Category.Identifier == WellKnownAssemblyCategories.PotentiallyChangedTypes.Identifier))
                 {
+                    //string assemblyName = a.Name.Replace(".dll", "");
                     if (result.TypeLevelChanges.Any(t => AssembliesMatch(t.SummaryBlocks["Assembly"], a.Name)))
                     {
                         c.Category = WellKnownAssemblyCategories.ChangedTypes;
+
+                        a.SwitchCategory(WellKnownAssemblyCategories.PotentiallyChangedTypes, WellKnownAssemblyCategories.ChangedTypes);
+                        a.SwitchCategory(WellKnownSummaryCategories.PotentiallyChangedAssemblies, WellKnownSummaryCategories.ChangedAssemblies);
+
+                        result.Summary.SwitchCategory(WellKnownSummaryCategories.PotentiallyChangedAssemblies, WellKnownSummaryCategories.ChangedAssemblies);
                     }
                 }
             }
+
+            // remove the other potentials then?
+            foreach (var a in result.AssemblyChangesModifiable)
+            {
+                a.PurgeCategory(WellKnownAssemblyCategories.PotentiallyChangedTypes.Name);
+                a.PurgeCategory(WellKnownSummaryCategories.PotentiallyChangedAssemblies.Name);
+            }
+
+            result.Summary.PurgeCategory(WellKnownSummaryCategories.PotentiallyChangedAssemblies.Name);
+            result.Summary.PurgeCategory(WellKnownAssemblyCategories.PotentiallyChangedTypes.Name);
+
         }
 
         private bool AssembliesMatch(string assembly, string summaryAssembly)

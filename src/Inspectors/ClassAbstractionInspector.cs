@@ -25,8 +25,6 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
 				return;
 
-			changes.Add(WellKnownTypeCategories.TypeInternal);
-
 			ClassDefinition firstClass = first as ClassDefinition;
 			ClassDefinition secondClass = second as ClassDefinition;
 
@@ -35,8 +33,6 @@ namespace NDifference.Inspectors
 
 			if (!firstClass.IsAbstract && secondClass.IsAbstract)
 			{
-				changes.Add(WellKnownTypeCategories.TypeInternal);
-
 				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, 
 					new NamedDeltaDescriptor 
 					{ 

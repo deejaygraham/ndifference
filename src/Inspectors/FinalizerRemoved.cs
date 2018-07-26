@@ -16,8 +16,6 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownTypeCategories.FinalizersRemoved);
-
 			if (first.Taxonomy == TypeTaxonomy.Class
 				&& second.Taxonomy == TypeTaxonomy.Class)
 			{

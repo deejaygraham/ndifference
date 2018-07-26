@@ -28,8 +28,6 @@ namespace NDifference.Inspectors
 				|| second.Taxonomy == TypeTaxonomy.Class
 				|| second.Taxonomy == TypeTaxonomy.Interface)
 			{
-				changes.Add(WellKnownTypeCategories.MethodsObsolete);
-
 				//IReferenceTypeDefinition firstRef = first as IReferenceTypeDefinition;
 				IReferenceTypeDefinition secondRef = second as IReferenceTypeDefinition;
 
@@ -60,8 +58,6 @@ namespace NDifference.Inspectors
                 || second.Taxonomy == TypeTaxonomy.Class
                 || second.Taxonomy == TypeTaxonomy.Interface)
             {
-                changes.Add(WellKnownTypeCategories.MethodsObsolete);
-
                 IReferenceTypeDefinition firstRef = first as IReferenceTypeDefinition;
                 var oldObs = firstRef.Methods(MemberVisibilityOption.Public).FindObsoleteMembers();
 

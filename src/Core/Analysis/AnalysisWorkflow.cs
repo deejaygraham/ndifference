@@ -80,7 +80,9 @@ namespace NDifference.Analysis
 				
 				progressIndicator.Report(new Progress("Inspecting Release Differences"));
 
-				RunAssemblyCollectionInspectors(inspectors, assemblyModel, result.Summary);
+
+                //IdentifiedChangeCollection potentialAssemblyChanges = new IdentifiedChangeCollection();
+                RunAssemblyCollectionInspectors(inspectors, assemblyModel, result.Summary);
 
                 int currentAssemblyNumber = 0;
                 int totalAssemblies = assemblyModel.ChangedInCommon.Count();
@@ -145,6 +147,7 @@ namespace NDifference.Analysis
 
                         progressIndicator.Report(new Progress("Comparing types in assembly " + previousAssembly.Name, currentAssemblyNumber, totalAssemblies));
 
+                        //IdentifiedChangeCollection potentialTypeChanges = new IdentifiedChangeCollection();
                         RunTypeCollectionInspectors(inspectors, typeModel, changesToThisAssembly);
 
                         // now inspect each type...
@@ -216,6 +219,20 @@ namespace NDifference.Analysis
                                 else
                                 {
                                     result.Type(changesToThisType);
+
+                                    //if (!changesToThisAssembly.Changes.Any(x => x.Category.Name == WellKnownAssemblyCategories.ChangedTypes.Name))
+                                    //{
+                                        changesToThisAssembly.Add(new IdentifiedChange(
+                                            null, 
+                                            WellKnownAssemblyCategories.ChangedTypes,
+                                            currentType.FullName,
+                                            new DocumentLink
+                                            {
+                                                LinkText = currentType.FullName,
+                                                LinkUrl = currentType.FullName,
+                                                Identifier = currentType.Identifier
+                                            }));
+                                    //}
                                 }
 
                                 // look at the assembly this is in and change the potentially
@@ -281,6 +298,16 @@ namespace NDifference.Analysis
                         if (changesToThisAssembly.Changes.Any())
                         {
                             result.Assembly(changesToThisAssembly);
+                            result.Summary.Add(new IdentifiedChange(
+                                null,
+                                WellKnownSummaryCategories.ChangedAssemblies,
+                                commonAssemblyPair.First.Name,
+                                new DocumentLink
+                                {
+                                    LinkText = commonAssemblyPair.First.Name,
+                                    LinkUrl = commonAssemblyPair.First.Name,
+                                    Identifier = commonAssemblyPair.Second.Identifier
+                                }));
                         }
                     }
                     catch (BadImageFormatException)
@@ -308,6 +335,18 @@ namespace NDifference.Analysis
                 foreach(var iai in inspectors.AnalysisInspectors.Where(x => x.Enabled))
                 {
                     iai.Inspect(result);
+                }
+
+                // now remove potentials from results.
+
+                foreach(var tlc in result.TypeLevelChanges)
+                {
+                    
+                }
+
+                foreach(var alc in result.AssemblyChangesModifiable)
+                {
+
                 }
 			}
 			finally

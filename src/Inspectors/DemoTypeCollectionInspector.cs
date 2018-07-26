@@ -23,8 +23,6 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ICombinedTypes types, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownAssemblyCategories.ChangedTypes);
-
 			var comparer = new TypeNameComparer();
 
 			foreach (var common in types.InCommon)

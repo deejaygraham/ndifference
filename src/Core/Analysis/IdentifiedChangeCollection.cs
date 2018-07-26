@@ -52,7 +52,7 @@ namespace NDifference.Analysis
 
 		public List<IdentifiedChange> Changes { get; private set; }
 
-		public void Add(Category cat)
+		private void Add(Category cat)
 		{
 			Debug.Assert(this.Categories != null, "Categories collection is null");
 			Debug.Assert(cat != null, "Category is null");
@@ -89,6 +89,9 @@ namespace NDifference.Analysis
 					throw new Exception("Column mismatch " + c.Name);
 			}
 
+            if (!this.Categories.Contains(c))
+                this.Add(c);
+
 			this.Changes.Add(change);
 		}
 
@@ -124,6 +127,27 @@ namespace NDifference.Analysis
 
 			return list;
 		}
+
+        public void SwitchCategory(Category from, Category to)
+        {
+            if (this.Categories.Contains(from))
+                this.Categories.Add(to);
+
+            foreach(var change in this.Changes)
+            {
+                if (change.Category.Name == from.Name && change.Category.Identifier == from.Identifier)
+                {
+                    change.Category = to;
+                }
+            }
+
+            if (this.Categories.Contains(from))
+                this.Categories.Remove(from);
+        }
+        public void PurgeCategory(string categoryName)
+        {
+            this.Changes.RemoveAll(x => x.Category.Name == categoryName);
+        }
 
 		public void CopyMetaFrom(IdentifiedChangeCollection other)
 		{

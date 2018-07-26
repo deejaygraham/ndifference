@@ -27,8 +27,6 @@ namespace NDifference.Inspectors
 
             if (addedAssemblies.Any())
             {
-                changes.Add(WellKnownSummaryCategories.AddedAssemblies);
-
                 foreach (var added in addedAssemblies)
                 {
                     changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.AddedAssemblies, added.Second.Name));

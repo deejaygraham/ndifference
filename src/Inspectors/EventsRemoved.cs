@@ -24,8 +24,6 @@ namespace NDifference.Inspectors
 			if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
 				return;
 
-			changes.Add(WellKnownTypeCategories.EventsRemoved);
-
 			ClassDefinition firstClass = first as ClassDefinition;
 			ClassDefinition secondClass = second as ClassDefinition;
 

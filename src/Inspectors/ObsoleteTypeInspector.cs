@@ -23,9 +23,7 @@ namespace NDifference.Inspectors
 		{
 			Debug.Assert(types != null, "List of types cannot be null");
 			Debug.Assert(changes != null, "Changes object cannot be null");
-
-			changes.Add(WellKnownAssemblyCategories.ObsoleteTypes);
-
+            
 			foreach (var s in types.InCommon)
 			{
 				ITypeInfo t1 = s.First;
@@ -33,7 +31,7 @@ namespace NDifference.Inspectors
 
 				if (t1.ObsoleteMarker == null && ti.ObsoleteMarker != null)
 				{
-					changes.Add(
+                    changes.Add(
 						new IdentifiedChange(
 							this, 
 							WellKnownAssemblyCategories.ObsoleteTypes, 

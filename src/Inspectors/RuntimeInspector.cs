@@ -23,8 +23,6 @@ namespace NDifference.Inspectors
 
 		public void Inspect(IAssemblyInfo first, IAssemblyInfo second, IdentifiedChangeCollection changes)
 		{
-			changes.Add(WellKnownAssemblyCategories.AssemblyInternal);
-
             if (first.RuntimeVersion != second.RuntimeVersion)
 			{
 				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, 

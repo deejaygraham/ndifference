@@ -60,7 +60,6 @@ namespace NDifference.UnitTests
 
 			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.AddedTypes));
 			Assert.Empty(changes.ChangesInCategory(WellKnownChangePriorities.RemovedTypes));
-			Assert.Single(changes.ChangesInCategory(WellKnownChangePriorities.PotentiallyChangedTypes));
 		}
 
 	}

@@ -70,29 +70,32 @@ namespace NDifference.Analysis
 			// now look for category and flag up missing.
 			Category c = change.Category;
 
-			if (this.Categories.Contains(c))
-			{
-				int columnsInTable = c.Columns;
-				int columnsInData = 1;
+            if (c != null)
+            {
+                if (this.Categories.Contains(c))
+                {
+                    int columnsInTable = c.Columns;
+                    int columnsInData = 1;
 
-				if (change.Descriptor != null)
-				{
-					IDescriptor implementsIDescriptor = change.Descriptor as IDescriptor;
+                    if (change.Descriptor != null)
+                    {
+                        IDescriptor implementsIDescriptor = change.Descriptor as IDescriptor;
 
-					if (implementsIDescriptor != null)
-					{
-						columnsInData = implementsIDescriptor.Columns;
-					}
-				}
+                        if (implementsIDescriptor != null)
+                        {
+                            columnsInData = implementsIDescriptor.Columns;
+                        }
+                    }
 
-				if (columnsInData != columnsInTable)
-					throw new Exception("Column mismatch " + c.Name);
-			}
+                    if (columnsInData != columnsInTable)
+                        throw new Exception("Column mismatch " + c.Name);
+                }
 
-            if (!this.Categories.Contains(c))
-                this.Add(c);
+                if (!this.Categories.Contains(c))
+                    this.Add(c);
+            }
 
-			this.Changes.Add(change);
+            this.Changes.Add(change);
 		}
 
 		public List<IdentifiedChange> ChangesInCategory(int priority) // and for a level ?

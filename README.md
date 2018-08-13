@@ -68,6 +68,6 @@ contributions! Contribute a patch or let us know how to improve.
 
 ### Thank You's !
 * The [Mono.Cecil](http://www.mono-project.com/Cecil) Project for the reflection engine
-* The fine folks at [xunit](http://xunit.codeplex.com) for their unit testing framework.
+* The fine folks at [xunit](https://xunit.github.io/) for their unit testing framework.
 * [AppVeyor](https://appveyor.com/) for the CI support.
 

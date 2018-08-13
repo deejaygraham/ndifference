@@ -75,7 +75,7 @@ namespace NDifference.Reporting
                 {
                     writer.WriteElement("td", () =>
                     {
-                        writer.WriteString(cells[i]);
+                        writer.WriteRaw(cells[i]);
                     });
                 }
                 writer.WriteNewLine();

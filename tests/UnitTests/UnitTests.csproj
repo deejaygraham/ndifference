@@ -116,6 +116,7 @@
     <Compile Include="Inspectors\Assemblies\RemovedAssembliesInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\RemovedTypesInspectorFacts.cs" />
     <Compile Include="ReportAsHtml4Facts.cs" />
+    <Compile Include="Reporting\MethodCodeAsHtmlFacts.cs" />
     <Compile Include="TestDataBuilders\AssemblyReflectorBuilder.cs" />
     <Compile Include="TestDataBuilders\BoilerplateCodeBuilder.cs" />
     <Compile Include="TestDataBuilders\CodeBuildingListExtensions.cs" />

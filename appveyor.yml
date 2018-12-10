@@ -37,10 +37,11 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}-rc1'
   
- deploy:
-   -provider: GitHub
-   artfact: NDifference.zip
-   draft: false
-   prerelease: false
-     
+deploy:
+-provider: GitHub
+ artfact: NDifference.zip
+ draft: false
+ prerelease: false
+ on:
+   branch: master
    

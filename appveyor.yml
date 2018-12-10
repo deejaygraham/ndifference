@@ -37,10 +37,10 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}-rc1'
   
-deploy:
--provider: GitHub
- draft: false
- prerelease: false
- on:
-   branch: master
+#deploy:
+#provider: GitHub
+#draft: false
+#prerelease: false
+#on:
+#  branch: master
    

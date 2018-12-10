@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace NDifference.Projects
 {
@@ -160,62 +161,76 @@ namespace NDifference.Projects
 				firstVersion.Name = persistableFormat.SourceName;
 			}
 
-			foreach (var file in persistableFormat.SourceAssemblies)
-			{
-				if (!string.IsNullOrEmpty(file))
-				{
-					string fullPath = file;
-
-                    if (string.IsNullOrEmpty(persistableFormat.SourceFolder))
+            if (persistableFormat.SourceAssemblies.Any())
+            {
+                foreach (var file in persistableFormat.SourceAssemblies)
+                {
+                    if (!string.IsNullOrEmpty(file))
                     {
-                        if (!string.IsNullOrEmpty(baseFolder))
+                        string fullPath = file;
+
+                        if (string.IsNullOrEmpty(persistableFormat.SourceFolder))
                         {
-                            fullPath = baseFolder.MakeAbsolutePath(file);
+                            if (!string.IsNullOrEmpty(baseFolder))
+                            {
+                                fullPath = baseFolder.MakeAbsolutePath(file);
+                            }
                         }
-                    }
-                    else
-                    {
-                        fullPath = persistableFormat.SourceFolder.MakeAbsolutePath(file);
-                    }
-
-                    firstVersion.Add(new AssemblyDiskInfo(fullPath));
-				}
-			}
-
-			project.Product.Add(firstVersion);
-
-			var secondVersion = new ProductIncrement();
-
-			if (!String.IsNullOrEmpty(persistableFormat.TargetName))
-			{
-				secondVersion.Name = persistableFormat.TargetName;
-			}
-
-			foreach (var file in persistableFormat.TargetAssemblies)
-			{
-				if (!string.IsNullOrEmpty(file))
-				{
-					string fullPath = file;
-
-                    if (string.IsNullOrEmpty(persistableFormat.TargetFolder))
-                    {
-                        if (!string.IsNullOrEmpty(baseFolder))
+                        else
                         {
-                            fullPath = baseFolder.MakeAbsolutePath(file);
+                            fullPath = persistableFormat.SourceFolder.MakeAbsolutePath(file);
                         }
+
+                        firstVersion.Add(new AssemblyDiskInfo(fullPath));
                     }
-                    else
+                }
+            }
+            else
+            {
+                InferFileListFrom(persistableFormat.SourceFolder, persistableFormat.SourceFilter, firstVersion);
+            }
+
+            project.Product.Add(firstVersion);
+
+            var secondVersion = new ProductIncrement();
+
+            if (!String.IsNullOrEmpty(persistableFormat.TargetName))
+            {
+                secondVersion.Name = persistableFormat.TargetName;
+            }
+
+            if (persistableFormat.TargetAssemblies.Any())
+            {
+                foreach (var file in persistableFormat.TargetAssemblies)
+                {
+                    if (!string.IsNullOrEmpty(file))
                     {
-                        fullPath = persistableFormat.TargetFolder.MakeAbsolutePath(file);
+                        string fullPath = file;
+
+                        if (string.IsNullOrEmpty(persistableFormat.TargetFolder))
+                        {
+                            if (!string.IsNullOrEmpty(baseFolder))
+                            {
+                                fullPath = baseFolder.MakeAbsolutePath(file);
+                            }
+                        }
+                        else
+                        {
+                            fullPath = persistableFormat.TargetFolder.MakeAbsolutePath(file);
+                        }
+
+                        secondVersion.Add(new AssemblyDiskInfo(fullPath));
                     }
+                }
+            }
+            else
+            {
+                InferFileListFrom(persistableFormat.TargetFolder, persistableFormat.TargetFilter, secondVersion);
+            }
 
-                    secondVersion.Add(new AssemblyDiskInfo(fullPath));
-				}
-			}
+            project.Product.Add(secondVersion);
 
-			project.Product.Add(secondVersion);
-
-			project.Settings = ProjectSettings.FromPersistableFormat(persistableFormat.Settings);
+            project.Settings = ProjectSettings.FromPersistableFormat(persistableFormat.Settings);
 
 			if (project.Settings.FromIndex >= 0)
 			{
@@ -242,7 +257,18 @@ namespace NDifference.Projects
 			return project;
 		}
 
-		public void CopyMetaFrom(Project other)
+        private static void InferFileListFrom(string folder, string filter, ProductIncrement increment)
+        {
+            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
+            {
+                foreach (string fullPath in Directory.EnumerateFiles(folder, filter))
+                {
+                    increment.Add(new AssemblyDiskInfo(fullPath));
+                }
+            }
+        }
+
+        public void CopyMetaFrom(Project other)
 		{
 			if (other == null)
 				return;

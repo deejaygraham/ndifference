@@ -39,7 +39,7 @@ assembly_info:
   
 deploy:
 -provider: GitHub
- artfact: NDifference.zip
+ artifact: NDifference.zip
  draft: false
  prerelease: false
  on:

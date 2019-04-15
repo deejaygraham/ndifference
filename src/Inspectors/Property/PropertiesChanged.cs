@@ -91,7 +91,7 @@ namespace NDifference.Inspectors
 										new NamedDeltaDescriptor
 										{
 											Name = string.Format(
-												"Property changed from from {0} to {1}",
+												"Property changed from {0} to {1}",
 												oldProperty.PropertyType.Type,
 												newProperty.PropertyType.Type
 												),

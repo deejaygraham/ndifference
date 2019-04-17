@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Analysis
 {
     [Serializable]
+    [Flags]
     public enum Severity
     {
-        Unknown,
-        Information,
-        Warning,
-        Error,
-        Critical
+        Unknown = 0,
+        NonBreaking = 1,
+        PotentiallyBreakingChange = 2,
+        BreakingChange = 4
     }
 
 }

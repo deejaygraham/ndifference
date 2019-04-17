@@ -241,7 +241,7 @@ namespace NDifference.Reporting
                             html.WriteElement("caption", () =>
 							{
 								// new property on category - caption ?
-								html.WriteString(cat.Description);
+								html.WriteString(cat.FullDescription);
 							});
                             html.WriteNewLine();
                         }

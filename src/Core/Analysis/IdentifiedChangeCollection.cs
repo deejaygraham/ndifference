@@ -98,7 +98,12 @@ namespace NDifference.Analysis
             this.Changes.Add(change);
 		}
 
-		public List<IdentifiedChange> ChangesInCategory(int priority) // and for a level ?
+        public int CountChangesWithSeverity(Severity s)
+        {
+            return this.Changes.Count(x => x.Category.Severity >= s);
+        }
+
+        public List<IdentifiedChange> ChangesInCategory(int priority) // and for a level ?
 		{
 			Debug.Assert(this.Categories != null, "Categories collection is null");
 			Debug.Assert(this.Changes != null, "Changes collection is null");

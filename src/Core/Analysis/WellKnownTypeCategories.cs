@@ -11,17 +11,17 @@ namespace NDifference.Inspectors
 			Description = "These changes were made to the new version of the type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.TypeInternal),
 			Headings = new string[] { "Message", "Was", "Now" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		// constants
 		public static readonly Category ConstantsRemoved = new Category
 		{
 			Name = "Removed Constants",
-			Description = "These constants were removed in the new version of this type",
+			Description = "These constants were removed in the new version of this type.",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsRemoved),
 			Headings = new string[] { "Value" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category ConstantsObsolete = new Category
@@ -30,7 +30,7 @@ namespace NDifference.Inspectors
 			Description = "These constants were made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsObsolete),
 			Headings = new string[] { "Value", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category ConstantsChanged = new Category
@@ -39,7 +39,7 @@ namespace NDifference.Inspectors
 			Description = "These constants were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsChanged),
 			Headings = new string[] { "Message", "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category ConstantsAdded = new Category
@@ -48,7 +48,7 @@ namespace NDifference.Inspectors
 			Description = "These constants were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsAdded),
 			Headings = new string[] { "Value" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// fields
@@ -58,7 +58,7 @@ namespace NDifference.Inspectors
 			Description = "These fields were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsRemoved),
 			Headings = new string[] { "Value" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category FieldsObsolete = new Category
@@ -67,7 +67,7 @@ namespace NDifference.Inspectors
 			Description = "These fields were made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsObsolete),
 			Headings = new string[] { "Value", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category FieldsChanged = new Category
@@ -76,7 +76,7 @@ namespace NDifference.Inspectors
 			Description = "These fields were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsChanged),
 			Headings = new string[] { "Message", "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category FieldsAdded = new Category
@@ -85,7 +85,7 @@ namespace NDifference.Inspectors
 			Description = "These fields were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsAdded),
 			Headings = new string[] { "Value" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// constructors
@@ -95,7 +95,7 @@ namespace NDifference.Inspectors
 			Description = "These constructors were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsRemoved),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category ConstructorsObsolete = new Category
@@ -104,7 +104,7 @@ namespace NDifference.Inspectors
 			Description = "These constructors were made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsObsolete),
 			Headings = new string[] { "Signature", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category ConstructorsChanged = new Category
@@ -113,7 +113,7 @@ namespace NDifference.Inspectors
 			Description = "These constructors were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsChanged),
 			Headings = new string[] { "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category ConstructorsAdded = new Category
@@ -122,7 +122,7 @@ namespace NDifference.Inspectors
 			Description = "These constructors were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsAdded),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// finalizers
@@ -132,7 +132,7 @@ namespace NDifference.Inspectors
 			Description = "This finalizer was removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FinalizersRemoved),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category FinalizersObsolete = new Category
@@ -141,7 +141,7 @@ namespace NDifference.Inspectors
 			Description = "This finalizer was made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FinalizersObsolete),
 			Headings = new string[] { "Signature", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category FinalizersChanged = new Category
@@ -150,7 +150,7 @@ namespace NDifference.Inspectors
 			Description = "This finalizer was changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FinalizersChanged),
 			Headings = new string[] { "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category FinalizersAdded = new Category
@@ -159,7 +159,7 @@ namespace NDifference.Inspectors
 			Description = "This finalizer was added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FinalizersAdded),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// delegates
@@ -169,7 +169,7 @@ namespace NDifference.Inspectors
 			Description = "These delegates were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesRemoved),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category DelegatesObsolete = new Category
@@ -178,7 +178,7 @@ namespace NDifference.Inspectors
 			Description = "These delegates were made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesObsolete),
 			Headings = new string[] { "Signature", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category DelegatesChanged = new Category
@@ -187,7 +187,7 @@ namespace NDifference.Inspectors
 			Description = "These delegates were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesChanged),
 			Headings = new string[] { "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category DelegatesAdded = new Category
@@ -196,7 +196,7 @@ namespace NDifference.Inspectors
 			Description = "These delegates were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesAdded),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// events
@@ -206,7 +206,7 @@ namespace NDifference.Inspectors
 			Description = "These events were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsRemoved),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category EventsObsolete = new Category
@@ -215,7 +215,7 @@ namespace NDifference.Inspectors
 			Description = "These events were made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsObsolete),
 			Headings = new string[] { "Signature", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category EventsChanged = new Category
@@ -224,7 +224,7 @@ namespace NDifference.Inspectors
 			Description = "These events were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsChanged),
 			Headings = new string[] { "Message", "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category EventsAdded = new Category
@@ -233,7 +233,7 @@ namespace NDifference.Inspectors
 			Description = "These events were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsAdded),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// properties
@@ -243,7 +243,7 @@ namespace NDifference.Inspectors
 			Description = "These properties were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesRemoved),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category PropertiesObsolete = new Category
@@ -252,7 +252,7 @@ namespace NDifference.Inspectors
 			Description = "These properties were made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesObsolete),
 			Headings = new string[] { "Signature", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category PropertiesChanged = new Category
@@ -261,7 +261,7 @@ namespace NDifference.Inspectors
 			Description = "These properties were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesChanged),
 			Headings = new string[] { "Message", "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category PropertiesAdded = new Category
@@ -270,7 +270,7 @@ namespace NDifference.Inspectors
 			Description = "These properties were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesAdded),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// indexers
@@ -280,7 +280,7 @@ namespace NDifference.Inspectors
 			Description = "These indexers were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersRemoved),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
 		};
 
 		public static readonly Category IndexersObsolete = new Category
@@ -289,7 +289,7 @@ namespace NDifference.Inspectors
 			Description = "These indexers were made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersObsolete),
 			Headings = new string[] { "Signature", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category IndexersChanged = new Category
@@ -298,7 +298,7 @@ namespace NDifference.Inspectors
 			Description = "These indexers were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersChanged),
 			Headings = new string[] { "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category IndexersAdded = new Category
@@ -307,7 +307,7 @@ namespace NDifference.Inspectors
 			Description = "These indexers were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersAdded),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// methods
@@ -317,7 +317,7 @@ namespace NDifference.Inspectors
 			Description = "These methods were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsRemoved),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category MethodsObsolete = new Category
@@ -326,7 +326,7 @@ namespace NDifference.Inspectors
 			Description = "These methods were made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsObsolete),
 			Headings = new string[] { "Signature", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category MethodsChanged = new Category
@@ -335,7 +335,7 @@ namespace NDifference.Inspectors
 			Description = "These methods were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsChanged),
 			Headings = new string[] { "Message", "Was", "Now" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category MethodsAdded = new Category
@@ -344,7 +344,7 @@ namespace NDifference.Inspectors
 			Description = "These methods were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsAdded),
 			Headings = new string[] { "Signature" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 		// enums
@@ -354,7 +354,7 @@ namespace NDifference.Inspectors
 			Description = "These values were removed in the new version of this enum",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesRemoved),
 			Headings = new string[] { "Value" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 		public static readonly Category EnumValuesChanged = new Category
@@ -363,7 +363,7 @@ namespace NDifference.Inspectors
 			Description = "These values were changed in the new version of this enum",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesChanged),
 			Headings = new string[] { "Was", "Now" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
 		public static readonly Category EnumValuesAdded = new Category
@@ -372,7 +372,7 @@ namespace NDifference.Inspectors
 			Description = "These values were added to the new version of this enum",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesAdded),
 			Headings = new string[] { "Value" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
         };
 
 
@@ -381,7 +381,7 @@ namespace NDifference.Inspectors
 			Name = "Debug",
 			Description = "These are debug output that should not appear in the finished reports.",
 			Priority = new CategoryPriority(WellKnownChangePriorities.TypeDebug),
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
         };
 
 	}

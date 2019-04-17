@@ -19,7 +19,7 @@ namespace NDifference.Inspectors
 			Description = "These assemblies were removed from the new version of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedAssemblies),
 			Headings = new string[] { "Assembly" },
-            Severity = Severity.Error
+            Severity = Severity.BreakingChange
 		};
 
 		public static readonly Category ChangedAssemblies = new Category
@@ -28,7 +28,7 @@ namespace NDifference.Inspectors
 			Description = "These assemblies have changed between the two versions of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ChangedAssemblies),
 			Headings = new string[] { "Assembly" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
 		};
 
         public static readonly Category PotentiallyChangedAssemblies = new Category
@@ -37,7 +37,7 @@ namespace NDifference.Inspectors
             Description = "These assemblies have failed a hash check between the two versions of the product",
             Priority = new CategoryPriority(WellKnownChangePriorities.PotentiallyChangedAssemblies),
             Headings = new string[] { "Assembly" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
         public static readonly Category AddedAssemblies = new Category
@@ -46,7 +46,7 @@ namespace NDifference.Inspectors
 			Description = "These assemblies have been added to the new version",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedAssemblies),
 			Headings = new string[] { "Assembly" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
 		};
 
 		//public static readonly Category UnchangedAssemblies = new Category 

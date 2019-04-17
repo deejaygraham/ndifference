@@ -13,7 +13,7 @@ namespace NDifference.Analysis
 			Description = "These changes were made to the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AssemblyInternal),
 			Headings = new string[] { "Change", "From", "To" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
 		};
 
 		public static readonly Category RemovedReferences = new Category
@@ -22,7 +22,7 @@ namespace NDifference.Analysis
 			Description = "These references were removed in the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedReferences),
 			Headings = new string[] { "Reference" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
 		};
 
 		public static readonly Category AddedReferences = new Category
@@ -31,16 +31,16 @@ namespace NDifference.Analysis
 			Description = "These references were added to the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedReferences),
 			Headings = new string[] { "Reference" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
 		};
 
 		public static readonly Category RemovedTypes = new Category
 		{
 			Name = "Removed Types",
-			Description = "These typers were removed from the new version of the product",
+			Description = "These types were removed from the new version of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedTypes),
 			Headings = new string[] { "Type" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
 		};
 
 		public static readonly Category ObsoleteTypes = new Category
@@ -49,7 +49,7 @@ namespace NDifference.Analysis
 			Description = "These types were marked as deprecated in the new version of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ObsoleteTypes),
 			Headings = new string[] { "Type", "Message" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
 		};
 
         public static readonly Category PotentiallyChangedTypes = new Category
@@ -58,7 +58,7 @@ namespace NDifference.Analysis
             Description = "These types MAY have changed between the two versions of the product",
             Priority = new CategoryPriority(WellKnownChangePriorities.PotentiallyChangedTypes),
             Headings = new string[] { "Type" },
-            Severity = Severity.Warning
+            Severity = Severity.PotentiallyBreakingChange
         };
 
         public static readonly Category ChangedTypes = new Category
@@ -67,7 +67,7 @@ namespace NDifference.Analysis
 			Description = "These types have changed between the two versions of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ChangedTypes),
 			Headings = new string[] { "Type" },
-            Severity = Severity.Critical
+            Severity = Severity.BreakingChange
 		};
 
 		public static readonly Category AddedTypes = new Category
@@ -76,7 +76,7 @@ namespace NDifference.Analysis
 			Description = "These types have been added to the new version",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedTypes),
 			Headings = new string[] { "Type" },
-            Severity = Severity.Information
+            Severity = Severity.NonBreaking
 		};
 
 		//public static readonly Category UnchangedTypes = new Category 

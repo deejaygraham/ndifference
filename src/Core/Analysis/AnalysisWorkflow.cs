@@ -108,6 +108,8 @@ namespace NDifference.Analysis
 					// inspect each assembly...
 					try
                     {
+                        int breakingChangesToAssembly = 0;
+
                         var previousVersionReflection = this.ReflectorFactory.LoadAssembly(previousAssembly.Path);
                         var currentVersionReflection = this.ReflectorFactory.LoadAssembly(currentAssembly.Path);
 
@@ -228,6 +230,11 @@ namespace NDifference.Analysis
                                             Identifier = currentType.Identifier
                                         }));
                                 }
+
+                                int breakingChangesToType = changesToThisType.CountChangesWithSeverity(Severity.PotentiallyBreakingChange);
+                                breakingChangesToAssembly += breakingChangesToType;
+
+                                changesToThisType.SummaryBlocks.Add("Potential Breaking Changes", breakingChangesToType.ToString());
                             }
 
                             this.TypeComparisonComplete.Fire(this);
@@ -257,6 +264,8 @@ namespace NDifference.Analysis
                                     LinkUrl = commonAssemblyPair.First.Name,
                                     Identifier = commonAssemblyPair.Second.Identifier
                                 }));
+
+                            changesToThisAssembly.SummaryBlocks.Add("Potential Breaking Changes", breakingChangesToAssembly.ToString());
                         }
                     }
                     catch (BadImageFormatException)

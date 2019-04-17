@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 
 namespace NDifference.Analysis
 {
@@ -17,6 +18,24 @@ namespace NDifference.Analysis
 		public string Name { get; set; }
 
 		public string Description { get; set; }
+
+        public string FullDescription
+        {
+            get
+            {
+                if (this.Severity <= Severity.NonBreaking)
+                    return this.Description;
+
+                var builder = new StringBuilder(this.Description);
+
+                if (!this.Description.EndsWith("."))
+                    builder.Append(". ");
+
+                builder.Append("Please check client code to assess likely impact.");
+
+                return builder.ToString();
+            }
+        }
 
 		public CategoryPriority Priority { get; set; }
 

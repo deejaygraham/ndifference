@@ -32,16 +32,18 @@ namespace NDifference.Cmdlets
 
             try
             {
+                var infoBuilder = new AssemblyDiskInfoBuilder();
+
                 Project project = ProjectBuilder.Default();
 
                 project.Product.Name = "Untitled";
                 ProductIncrement source = project.Product[0];
                 source.Name = "Source";
-                source.Add(AssemblyDiskInfoBuilder.BuildFromFile(this.Reference));
+                source.Add(infoBuilder.BuildFromFile(this.Reference));
 
                 ProductIncrement target = project.Product[1];
                 target.Name = "Target";
-                target.Add(AssemblyDiskInfoBuilder.BuildFromFile(this.Path));
+                target.Add(infoBuilder.BuildFromFile(this.Path));
 
                 // temporary folder !!!
                 // project.Settings.OutputFolder = this.OutputFolder.GetFullPath();

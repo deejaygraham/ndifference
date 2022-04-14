@@ -7,13 +7,13 @@ namespace NDifference
 {
 	public static class FileInfoExtensions
 	{
-		public static string CalculateChecksum(this FileSystemInfo info)
-		{
-			using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
-			{
-				return info.CalculateChecksum(md5);
-			}
-		}
+        public static string CalculateChecksum(this FileSystemInfo info)
+        {
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            {
+                return info.CalculateChecksum(md5);
+            }
+        }
 
 		public static string CalculateChecksum(this FileSystemInfo info, HashAlgorithm hashAlgorithm)
 		{

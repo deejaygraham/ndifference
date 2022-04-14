@@ -104,13 +104,15 @@ namespace WalkingSkeleton
 				return;
 			}
 
+            var infoBuilder = new AssemblyDiskInfoBuilder();
+
 			var previousVersion = new ProductIncrement() { Name = "v0.0.1" };
 
-			previousVersion.AddRange(AssemblyDiskInfoBuilder.BuildFromFolder(firstFolder));
+			previousVersion.AddRange(infoBuilder.BuildFromFolder(firstFolder));
 
 			var nextVersion = new ProductIncrement() { Name = "v0.0.2" };
 
-			nextVersion.AddRange(AssemblyDiskInfoBuilder.BuildFromFolder(secondFolder));
+			nextVersion.AddRange(infoBuilder.BuildFromFolder(secondFolder));
 
 			var project = ProjectBuilder.Default();
 			project.Product.Clear();

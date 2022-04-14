@@ -17,7 +17,7 @@ namespace NDifference
 		}
 
 		public AssemblyDiskInfo(string path)
-			: this(path, DateTime.MinValue, 0, string.Empty)
+			: this(path, DateTime.MinValue, 0)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NDifference
         {
         }
 
-		public AssemblyDiskInfo(string path, DateTime date, long size, string checksum)
+		public AssemblyDiskInfo(string path, DateTime date, long size)
 		{
 			Debug.Assert(!string.IsNullOrEmpty(path), "Path cannot be blank");
 
@@ -39,7 +39,6 @@ namespace NDifference
 			this.Name = System.IO.Path.GetFileName(path);
 			this.Date = date;
 			this.Size = size;
-			this.Checksum = checksum;
 		}
 
 		public string Identifier
@@ -63,7 +62,22 @@ namespace NDifference
 
 		public long Size { get; private set; }
 
-		public string Checksum { get; private set; }
+        private string checksum;
+
+        public string Checksum
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(checksum))
+                {
+                    var info = new FileInfo(this.Path);
+
+                    checksum = info.CalculateChecksum();
+                }
+
+                return checksum;
+            }
+        }
 
 		/// <summary>
 		/// Equal based on everything but path.
@@ -98,7 +112,7 @@ namespace NDifference
 
 		public override int GetHashCode()
 		{
-			return this.Checksum.GetHashCode();
+			return this.Name.GetHashCode();
 		}
 
 		public override bool Equals(object obj)
@@ -136,14 +150,9 @@ namespace NDifference
 				&& this.Checksum == other.Checksum;
 		}
 
-		public string CalculateHash()
-		{
-			if (String.IsNullOrEmpty(this.Checksum))
-			{
-				this.Checksum = Guid.NewGuid().ToString();
-			}
-
-			return this.Checksum;
-		}
-	}
+        public string CalculateHash()
+        {
+            return this.Checksum;
+        }
+    }
 }

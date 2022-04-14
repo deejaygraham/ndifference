@@ -64,7 +64,9 @@ namespace NDifference.Tasks
 			Log.LogMessage(MessageImportance.Low, "Starting API Difference Analysis");
 
 			try
-			{
+            {
+                var infoBuilder = new AssemblyDiskInfoBuilder();
+
 				this.ValidateParameters();
 
 				Project project = ProjectBuilder.Default();
@@ -79,7 +81,7 @@ namespace NDifference.Tasks
 					{
 						foreach(ITaskItem sourceItem in this.SourceAssemblies)
 						{
-							source.Add(AssemblyDiskInfoBuilder.BuildFromFile(sourceItem.GetFullPath()));
+							source.Add(infoBuilder.BuildFromFile(sourceItem.GetFullPath()));
 						}
 					}
 
@@ -90,7 +92,7 @@ namespace NDifference.Tasks
 					{
 						foreach (ITaskItem targetItem in this.TargetAssemblies)
 						{
-							target.Add(AssemblyDiskInfoBuilder.BuildFromFile(targetItem.GetFullPath()));
+							target.Add(infoBuilder.BuildFromFile(targetItem.GetFullPath()));
 						}
 					}
 

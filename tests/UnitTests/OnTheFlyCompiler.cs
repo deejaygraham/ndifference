@@ -24,6 +24,8 @@ namespace NDifference.UnitTests
 		private const string DllExtension = ".dll";
 		private const string PdbExtension = ".pdb";
 
+        private AssemblyDiskInfoBuilder infoBuilder = new AssemblyDiskInfoBuilder();
+
 		public OnTheFlyCompiler(CodeDomProvider provider, CompilerParameters parameters)
 		{
 			this.FileName = System.IO.Path.Combine(this.Folder, System.IO.Path.GetRandomFileName() + DllExtension);
@@ -97,7 +99,7 @@ namespace NDifference.UnitTests
 				throw new InvalidOperationException("Compilation Failed:\n" + string.Join(Environment.NewLine, results.Errors.BuildErrorMessageList(code).ToArray()));
 			}
 
-			return AssemblyDiskInfoBuilder.BuildFromFile(this.FileName);
+			return infoBuilder.BuildFromFile(this.FileName);
 		}
 
 		public void Dispose()

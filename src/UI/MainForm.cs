@@ -123,50 +123,64 @@ namespace NDifference.UI
 		}
 
 		private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var newProject = UpdateProjectFromUI();
-			newProject.CopyMetaFrom(this._project);
-			this._project = newProject;
+        {
+            try
+            {
+                var newProject = UpdateProjectFromUI();
+                newProject.CopyMetaFrom(this._project);
+                this._project = newProject;
 
-			if (string.IsNullOrEmpty(this._project.FileName))
-			{
-				string saveProject = PromptForFileNameToSaveProject(this._project.Product.Name + "-" + this._project.Product.ComparedIncrements.First.Name + "-" + this._project.Product.ComparedIncrements.Second.Name);
+                if (string.IsNullOrEmpty(this._project.FileName))
+                {
+                    string saveProject = PromptForFileNameToSaveProject(this._project.Product.Name + "-" + this._project.Product.ComparedIncrements.First.Name + "-" + this._project.Product.ComparedIncrements.Second.Name);
 
-				if (!string.IsNullOrEmpty(saveProject))
-				{
-					this._project.FileName = saveProject;
-				}
-			}
+                    if (!string.IsNullOrEmpty(saveProject))
+                    {
+                        this._project.FileName = saveProject;
+                    }
+                }
 
-			if (!string.IsNullOrEmpty(this._project.FileName))
-			{
-				ProjectWriter.Save(this._project, this._project.FileName);
+                if (!string.IsNullOrEmpty(this._project.FileName))
+                {
+                    ProjectWriter.Save(this._project, this._project.FileName);
 
-				if (this.ProjectSaved != null)
-				{
-					this.ProjectSaved(this, EventArgs.Empty);
-				}
-			}
+                    if (this.ProjectSaved != null)
+                    {
+                        this.ProjectSaved(this, EventArgs.Empty);
+                    }
+                }
+            }
+			catch (DirectoryNotFoundException dnf)
+            {
+                MessageBox.Show(dnf.Message);
+            }
 		}
 
 		private void saveProjectAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var newProject = UpdateProjectFromUI();
-			newProject.CopyMetaFrom(this._project);
-			this._project = newProject;
+            try
+            {
+                var newProject = UpdateProjectFromUI();
+                newProject.CopyMetaFrom(this._project);
+                this._project = newProject;
 
-			string saveProject = PromptForFileNameToSaveProject(this._project.Product.Name + "-" + this._project.Product.ComparedIncrements.First.Name + "-" + this._project.Product.ComparedIncrements.Second.Name);
+                string saveProject = PromptForFileNameToSaveProject(this._project.Product.Name + "-" + this._project.Product.ComparedIncrements.First.Name + "-" + this._project.Product.ComparedIncrements.Second.Name);
 
-			if (!string.IsNullOrEmpty(saveProject))
-			{
-				this._project.FileName = saveProject;
-				ProjectWriter.Save(this._project, this._project.FileName);
-				
-				if (this.ProjectSaved != null)
-				{
-					this.ProjectSaved(this, EventArgs.Empty);
-				}
-			}
+                if (!string.IsNullOrEmpty(saveProject))
+                {
+                    this._project.FileName = saveProject;
+                    ProjectWriter.Save(this._project, this._project.FileName);
+
+                    if (this.ProjectSaved != null)
+                    {
+                        this.ProjectSaved(this, EventArgs.Empty);
+                    }
+                }
+            }
+			catch (DirectoryNotFoundException dnf)
+            {
+                MessageBox.Show(dnf.Message);
+            }
 		}
 
 		private void InitialiseUIFromProject(Project project)
@@ -274,11 +288,14 @@ namespace NDifference.UI
 
 			var oldVersion = new ProductIncrement { Name = this.txtPreviousVersion.Text };
 
+            var infoBuilder = new AssemblyDiskInfoBuilder();
+
 			foreach (var file in this.asPreviousVersion.SelectedAssemblies)
 			{
 				try
 				{
-					var info = AssemblyDiskInfoBuilder.BuildFromFile(file);
+
+					var info = infoBuilder.BuildFromFile(file);
 					oldVersion.Add(info);
 				}
 				catch(FileNotFoundException)
@@ -288,12 +305,12 @@ namespace NDifference.UI
 			}
 
 			var newVersion = new ProductIncrement { Name = this.txtNewVersion.Text };
-
+            
 			foreach (var file in this.asNewVersion.SelectedAssemblies)
 			{
 				try
 				{
-					var info = AssemblyDiskInfoBuilder.BuildFromFile(file);
+					var info = infoBuilder.BuildFromFile(file);
 					newVersion.Add(info);
 				}
 				catch (FileNotFoundException)
@@ -540,41 +557,46 @@ namespace NDifference.UI
 
 		private void Build()
 		{
-			var newProject = UpdateProjectFromUI();
-			newProject.CopyMetaFrom(this._project);
-			this._project = newProject;
+            this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = false;
+            this._dataEntryState.Disable();
+            this._progressState.Visible();
 
-			var errors = this.ValidateProject(this._project);
+            this.progressBar.Minimum = 0;
+            this.progressBar.Value = 0;
+            this.progressBar.Maximum = 100;
 
-			if (errors.Any())
-			{
-				StringBuilder messageBuilder = new StringBuilder();
+            try
+            {
+			    var newProject = UpdateProjectFromUI();
+			    newProject.CopyMetaFrom(this._project);
+			    this._project = newProject;
 
-				foreach (var error in errors)
-				{
-					messageBuilder.AppendLine(error);
-				}
+			    var errors = this.ValidateProject(this._project);
 
-				MessageBox.Show(messageBuilder.ToString());
-				return;
-			}
+			    if (errors.Any())
+			    {
+                    this._progressState.Invisible();
 
-			// auto save...
-			if (this._tracker.IsDirty && !string.IsNullOrEmpty(this._project.FileName) && File.Exists(this._project.FileName))
-			{
-				ProjectWriter.Save(this._project, this._project.FileName);
-			}
+                    this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = true;
+                    this._dataEntryState.Enable();
 
-			this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = false;
-			this._dataEntryState.Disable();
-			this._progressState.Visible();
+                    StringBuilder messageBuilder = new StringBuilder();
 
-			this.progressBar.Minimum = 0;
-			this.progressBar.Value = 0;
-			this.progressBar.Maximum = 100;
+                    foreach (var error in errors)
+                    {
+                        messageBuilder.AppendLine(error);
+                    }
 
-			try
-			{
+                    MessageBox.Show(messageBuilder.ToString());
+				    return;
+			    }
+
+			    // auto save...
+			    if (this._tracker.IsDirty && !string.IsNullOrEmpty(this._project.FileName) && File.Exists(this._project.FileName))
+			    {
+				    ProjectWriter.Save(this._project, this._project.FileName);
+			    }
+
 				IProgress<Progress> progressIndicator = new Progress<Progress>(value =>
 				{
 					if (!String.IsNullOrEmpty(value.Description))

@@ -33,7 +33,7 @@ namespace NDifference.Reporting
 					return;
 				}
 
-				var writer = reportWriters.Find("html");
+				var writer = reportWriters.Find(project.Settings.ReportFormat);
 
 				if (writer != null)
 				{

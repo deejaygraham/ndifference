@@ -1,6 +1,7 @@
 ﻿using NDifference.SourceFormatting;
 using System;
 using System.Globalization;
+using System.Text;
 
 namespace NDifference.Reporting
 {
@@ -30,7 +31,7 @@ namespace NDifference.Reporting
 
         public string Format(ICoded source)
         {
-            throw new NotImplementedException();
+            return "```csharp "  + source.ToPlainText() + "```";
         }
 
         public bool Supports(IReportFormat other)

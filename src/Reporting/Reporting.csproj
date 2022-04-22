@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ExtensionMethods\XmlWriterExtensions.cs" />
     <Compile Include="MarkdownReportWriter.cs" />
+    <Compile Include="MarkdownWriter.cs" />
     <Compile Include="ReportAsHtml4.cs" />
     <Compile Include="HtmlReportWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -150,6 +151,17 @@ namespace NDifference.SourceFormatting
 				return writer.ToString();
 			}
 		}
+		public string ToPlainText()
+        {
+            var builder = new StringBuilder();
+
+            foreach (SourceCodeTag tag in this.tags)
+            {
+                builder.Append(tag.ToPlainText());
+            }
+
+            return builder.ToString();
+        }
 
 		public ReadOnlyCollection<SourceCodeTag> Content
 		{

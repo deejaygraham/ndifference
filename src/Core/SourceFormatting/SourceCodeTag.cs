@@ -79,6 +79,11 @@ namespace NDifference.SourceFormatting
 			return output;
 		}
 
+        public string ToPlainText()
+        {
+            return this.Value + " ";
+        }
+
 		//public void SaveTo(TextWriter writer)
 		//{
 		//	ObjectFlattener<SourceCodeTag>.Flatten(this, writer);

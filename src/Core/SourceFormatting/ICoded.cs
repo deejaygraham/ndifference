@@ -10,5 +10,7 @@ namespace NDifference.SourceFormatting
 	{
 		// syntax tree of objects
 		string ToXml();
-	}
+
+        string ToPlainText();
+    }
 }

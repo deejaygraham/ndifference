@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
-using System.Xml;
 
 namespace NDifference.Reporting
 {
@@ -44,161 +43,73 @@ namespace NDifference.Reporting
 
 				Encoding utf8 = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
 
-				var settings = new XmlWriterSettings
-				{
-					Encoding = utf8,
-					OmitXmlDeclaration = true,
-					Indent = true
-				};
+                using (MarkdownWriter mdw = MarkdownWriter.Create(text))
+                {
+                    var metadata = new Dictionary<string, string>
+                    {
+                        { "title", changes.Heading },
+                        { "id", changes.Identifier }
+                    };
 
-				using (XmlWriter html = XmlWriter.Create(text, settings))
-				{
-					html.WriteStartDocument();
+                    mdw.WriteFrontMatter(metadata);
 
-					html.WriteRaw("<!DOCTYPE html>\r\n");
+                    if (!String.IsNullOrEmpty(changes.HeadingBlock))
+                    {
+                        mdw.Write(changes.HeadingBlock);
+                    }
 
-					html.WriteElement("html", () =>
-					{
-						html.WriteElement("head", () =>
-						{
-							html.WriteRaw("\r\n<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" >\r\n");
+                    // content.Add("Summary Table");
+                    mdw.WriteHeading("Summary of changes", 3);
 
-							if (!String.IsNullOrEmpty(changes.Heading))
-							{
-								html.WriteElement("title", () =>
-								{
-									html.WriteString(changes.Heading);
-								});
-							}
+                    mdw.WriteTableHeader(new string[] { "Item", "Value" });
 
-							html.WriteNewLine();
-							html.WriteComment(" " + changes.Identifier + " ");
-							html.WriteNewLine();
+					foreach (var key in changes.SummaryBlocks.Keys)
+                    {
+                        mdw.WriteTableRow(new string[] { key, changes.SummaryBlocks[key] });
+                    }
 
-							if (changes.MetaBlocks != null)
-							{
-								foreach (var meta in changes.MetaBlocks)
-								{
-									html.WriteRaw(meta);
-									html.WriteNewLine();
-								}
-							}
-						});
+                    // write each category
+                    foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
+                    {
+                        var list = changes.ChangesInCategory(cat.Name);
 
-						html.WriteElement("body", () =>
-						{
-							foreach (var header in changes.HeaderBlocks)
-							{
-								html.WriteNewLine();
-								html.WriteRaw(header);
-								html.WriteNewLine();
-							}
+                        if (list.Any())
+                        {
+							// write out links to each item in the page below:
+                            string href = "#" + cat.Identifier;
+                            string categoryLink = string.Format("[{0}]({1})", cat.Name, href);
+                            string occurrenceLink = string.Format("[{0}]({1})", list.Count, href);
 
-							if (!String.IsNullOrEmpty(changes.HeadingBlock))
-							{
-								html.WriteElement("div", () =>
-								{
-									html.WriteAttributeString("class", "diff-header");
+							mdw.WriteTableRow(new string[] { categoryLink, occurrenceLink });
+						}
+					}
 
-									if (!String.IsNullOrEmpty(changes.HeadingBlock))
-									{
-										html.WriteElement("div", () =>
-										{
-											html.WriteAttributeString("id", "exp");
-											html.WriteRaw(changes.HeadingBlock);
-										});
-									}
-								});
-							}
+                    foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
+                    {
+                        var list = changes.ChangesInCategory(cat.Name);
 
-							html.WriteElement("div", () =>
-							{
-								html.WriteAttributeString("class", "diff-container");
+                        if (list.Any())
+                            RenderCategory(cat, list, mdw, output);
+                    }
 
-								html.WriteElement("div", () =>
-								{
-									html.WriteAttributeString("id", "summary");
-									html.WriteNewLine();
-									html.WriteComment(" Summary Table ");
+                    var uncatChanges = changes.UnCategorisedChanges();
 
-									html.WriteNewLine();
-									html.WriteElement("table", () =>
-									{
-										html.WriteAttributeString("class", "diff-table");
-										html.WriteAttributeString("summary", "Summary of changes between versions");
+                    if (uncatChanges.Any())
+                    {
+                        var uncat = new Category
+                        {
+                            Priority = new CategoryPriority(999), Description = "Uncategorised changes",
+                            Name = "Uncategorised Changes"
+                        };
 
-										html.WriteNewLine();
-										html.WriteElement("caption", () =>
-										{
-											html.WriteString("Summary of changes");
-										});
+                        RenderCategory(uncat, uncatChanges, mdw, output);
+                    }
+                }
 
-										html.WriteNewLine();
-										html.WriteElement("tbody", () =>
-										{
-											html.WriteNewLine();
-											foreach (var key in changes.SummaryBlocks.Keys)
-											{
-												html.WriteTableRow(key, changes.SummaryBlocks[key]);
-											}
+                string content = text.ToString();
 
-											// write each category
-											foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-											{
-												var list = changes.ChangesInCategory(cat.Name);
-
-												if (list.Any())
-												{
-													html.WriteTableRow(cat.Name, list.Count, "#" + cat.Identifier);
-												}
-											}
-										});
-
-										html.WriteNewLine();
-									});
-
-									html.WriteNewLine();
-									html.WriteComment(" End of Summary Table ");
-								});
-
-								foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-								{
-									var list = changes.ChangesInCategory(cat.Name);
-
-									if (list.Any())
-										RenderCategory(cat, list, html, output);
-								}
-
-								var uncatChanges = changes.UnCategorisedChanges();
-
-								if (uncatChanges.Any())
-								{
-									html.WriteComment(" Writing Uncategorised changes ... ");
-
-									var uncat = new Category { Priority = new CategoryPriority(999), Description = "Uncategorised changes", Name = "Uncategorised Changes" };
-
-									RenderCategory(uncat, uncatChanges, html, output);
-								}
-							});
-
-							foreach (var footer in changes.FooterBlocks)
-							{
-								html.WriteNewLine();
-								html.WriteRaw(footer);
-								html.WriteNewLine();
-							}
-
-							// end of body
-						});
-					});
-
-					html.WriteEndDocument();
-				}
-
-				string content = text.ToString();
-
-				output.Execute(content);
-			}
+                output.Execute(content);
+            }
 			finally
 			{
 				if (text != null)
@@ -208,174 +119,124 @@ namespace NDifference.Reporting
 				}
 			}
 		}
-		private void RenderCategory(Category cat, IEnumerable<IdentifiedChange> changes, XmlWriter html, IReportOutput output)
+		private void RenderCategory(Category cat, IEnumerable<IdentifiedChange> changes, MarkdownWriter mdw, IReportOutput output)
 		{
-			html.WriteNewLine();
-			html.WriteElement("div", () =>
+			mdw.WriteNewLine();
+	
+            if (changes.Any())
 			{
-				html.WriteAttributeString("id", cat.Identifier.ToString());
+				mdw.WriteHeading(cat.Name, 2);
 
-				if (changes.Any())
-				{
-					html.WriteNewLine();
-					html.WriteElement("h2", () =>
-					{
-						html.WriteString(cat.Name);
-					});
-					html.WriteNewLine();
+				mdw.Write(cat.FullDescription);
 
-					html.WriteComment("Category P" + cat.Priority.Value);
+                if (cat.Headings != null && cat.Headings.Length > 0)
+                {
+                    mdw.WriteTableHeader(cat.Headings);
+                }
 
-					html.WriteNewLine();
-					html.WriteElement("table", () =>
-					{
-						html.WriteAttributeString("class", "diff-table");
+                // order changes...
+                var ordered = new List<IdentifiedChange>(changes);
+                ordered.Sort(new IdentifiedChangeComparer());
 
-						if (!String.IsNullOrEmpty(cat.Description))
-						{
-							html.WriteAttributeString("summary", cat.Description);
+                foreach (var change in ordered)
+                {
+                    RenderChange(change, mdw, output);
+                }
 
-							html.WriteNewLine();
-							html.WriteElement("caption", () =>
-							{
-								// new property on category - caption ?
-								html.WriteString(cat.FullDescription);
-							});
-							html.WriteNewLine();
-						}
+                mdw.WriteNewLine();
+            }
 
-						if (cat.Headings != null && cat.Headings.Length > 0)
-						{
-							html.WriteNewLine();
-							html.WriteElement("thead", () =>
-							{
-								html.WriteElement("tr", () =>
-								{
-									foreach (var head in cat.Headings)
-									{
-										html.WriteElement("th", () =>
-										{
-											html.WriteRaw(head);
-										});
-									}
-								});
-							});
-							html.WriteNewLine();
-						}
-
-						html.WriteElement("tbody", () =>
-						{
-							html.WriteNewLine();
-							// order changes...
-							var ordered = new List<IdentifiedChange>(changes);
-							ordered.Sort(new IdentifiedChangeComparer());
-
-							foreach (var change in ordered)
-							{
-								RenderChange(change, html, output);
-							}
-
-							html.WriteNewLine();
-						});
-					});
-				}
-				else
-				{
-					html.WriteComment(" No " + cat.Name + " identified ");
-				}
-
-				html.WriteNewLine();
-			});
+            mdw.WriteNewLine();
 		}
 
-		private void RenderChange(IdentifiedChange change, XmlWriter html, IReportOutput output)
+		private void RenderChange(IdentifiedChange change, MarkdownWriter mdw, IReportOutput output)
 		{
 			object descriptor = change.Descriptor;
 
 			if (descriptor != null)
 			{
-				RenderDescriptor(change, descriptor, html, output);
+				RenderDescriptor(change, descriptor, mdw, output);
 			}
 			else if (!String.IsNullOrEmpty(change.Description))
 			{
-				html.WriteTableRow(/*change.Inspector, */change.Description);
+				mdw.WriteTableRow(/*change.Inspector, */new string[] { change.Description });
 			}
 		}
 
-		private void RenderDescriptor(IdentifiedChange change, object descriptor, XmlWriter html, IReportOutput output)
-		{
-			IDocumentLink link = descriptor as IDocumentLink;
+        private void RenderDescriptor(IdentifiedChange change, object descriptor, MarkdownWriter mdw, IReportOutput output)
+        {
+            IDocumentLink link = descriptor as IDocumentLink;
 
-			if (link != null)
-			{
-				if (this.Map != null)
-				{
-					html.WriteTableRow(change.Inspector, link, output, this.Map);
-				}
-			}
-			else
-			{
-				ICodeDescriptor code = descriptor as ICodeDescriptor;
+            if (link != null)
+            {
+                if (this.Map != null)
+                {
+                    mdw.WriteTableRow(change.Inspector, link, output, this.Map);
+                }
+            }
+            else
+            {
+                ICodeDescriptor code = descriptor as ICodeDescriptor;
 
-				if (code != null)
-				{
-					html.WriteTableRow(change.Inspector, code, this._format);
-				}
-				else
-				{
-					INameValueDescriptor nvd = descriptor as INameValueDescriptor;
+                if (code != null)
+                {
+                    mdw.WriteTableRow(change.Inspector, code, this._format);
+                }
+                else
+                {
+                    INameValueDescriptor nvd = descriptor as INameValueDescriptor;
 
-					if (nvd != null)
-					{
-						html.WriteTableRow(change.Inspector, nvd, this._format);
-					}
-					else
-					{
-						INamedDeltaDescriptor nd = descriptor as INamedDeltaDescriptor;
+                    if (nvd != null)
+                    {
+                        mdw.WriteTableRow(change.Inspector, nvd, this._format);
+                    }
+                    else
+                    {
+                        INamedDeltaDescriptor nd = descriptor as INamedDeltaDescriptor;
 
-						if (nd != null)
-						{
-							html.WriteTableRow(change.Inspector, nd, this._format);
-						}
-						else
-						{
-							IValueDescriptor vd = descriptor as IValueDescriptor;
+                        if (nd != null)
+                        {
+                            mdw.WriteTableRow(change.Inspector, nd, this._format);
+                        }
+                        else
+                        {
+                            IValueDescriptor vd = descriptor as IValueDescriptor;
 
-							if (vd != null)
-							{
-								html.WriteTableRow(change.Inspector, vd, this._format);
-							}
-							else
-							{
-								INamedDeltaDescriptor ndd = descriptor as INamedDeltaDescriptor;
+                            if (vd != null)
+                            {
+                                mdw.WriteTableRow(change.Inspector, vd, this._format);
+                            }
+                            else
+                            {
+                                INamedDeltaDescriptor ndd = descriptor as INamedDeltaDescriptor;
 
-								if (ndd != null)
-								{
-									html.WriteTableRow(change.Inspector, ndd, this._format);
-								}
-								else
-								{
-									IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
+                                if (ndd != null)
+                                {
+                                    mdw.WriteTableRow(change.Inspector, ndd, this._format);
+                                }
+                                else
+                                {
+                                    IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
 
-									if (delta != null)
-									{
-										html.WriteTableRow(change.Inspector, delta, this._format);
-									}
-									//else
-									//{
-									//	INameValueDescriptor textDesc = descriptor as INameValueDescriptor;
+                                    if (delta != null)
+                                    {
+                                        mdw.WriteTableRow(change.Inspector, delta, this._format);
+                                    }
+                                    //else
+                                    //{
+                                    //	INameValueDescriptor textDesc = descriptor as INameValueDescriptor;
 
-									//	if (textDesc != null)
-									//	{
-									//		html.WriteTableRow(change.Inspector, textDesc, this._format);
-									//	}
-									//}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+                                    //	if (textDesc != null)
+                                    //	{
+                                    //		mdw.WriteTableRow(change.Inspector, textDesc, this._format);
+                                    //	}
+                                    //}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

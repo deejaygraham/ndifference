@@ -108,6 +108,10 @@ namespace NDifference.Reporting
 					
 					writer.Write(results.Summary, output, format);
 
+					// write obsolete types and methods stuff here
+
+					// write most obvious breaking changes.
+
 					SiteMapTopic siteMap = new SiteMapTopic
 					{
 						Id = results.Summary.Identifier,

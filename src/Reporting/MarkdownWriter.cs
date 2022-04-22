@@ -125,7 +125,7 @@ namespace NDifference.Reporting
                 {
                     string relativePath = map.PathRelativeTo(change.Identifier, folder);
                     string link = string.Format("[{0}]({1})", change.LinkText,
-                        map.PathRelativeTo(change.Identifier, folder));
+                        map.PathRelativeTo(change.Identifier, folder).Replace(".md", ".html"));
                     WriteTableRow(link);
                 }
                 else

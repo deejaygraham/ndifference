@@ -48,7 +48,8 @@ namespace NDifference.Reporting
                     var metadata = new Dictionary<string, string>
                     {
                         { "title", changes.Heading },
-                        { "id", changes.Identifier }
+                        { "id", changes.Identifier },
+                        { "layout", "layouts/overview.njk" }
                     };
 
                     mdw.WriteFrontMatter(metadata);

@@ -68,12 +68,12 @@ namespace NDifference
         {
             get
             {
-                if (String.IsNullOrEmpty(checksum))
+                if (String.IsNullOrEmpty(checksum) && !String.IsNullOrEmpty(this.Path))
                 {
                     var info = new FileInfo(this.Path);
 
                     checksum = info.CalculateChecksum();
-                }
+				}
 
                 return checksum;
             }

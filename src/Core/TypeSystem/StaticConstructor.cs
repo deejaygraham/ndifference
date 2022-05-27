@@ -43,6 +43,7 @@ namespace NDifference.TypeSystem
 			SourceCode code = new SourceCode();
 
 			code.Add(new KeywordTag("static"));
+            code.Add(new WhitespaceTag());
 			code.Add(this.Name.ToCode());
 			code.Add(new PunctuationTag("("));
 			code.Add(new PunctuationTag(")"));

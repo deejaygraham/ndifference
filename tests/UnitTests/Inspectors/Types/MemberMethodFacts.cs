@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NDifference.UnitTests
+namespace NDifference.UnitTests.Types
 {
 	public class MemberMethodFacts
 	{

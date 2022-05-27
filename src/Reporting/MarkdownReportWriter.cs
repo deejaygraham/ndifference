@@ -53,6 +53,7 @@ namespace NDifference.Reporting
                     };
 
                     mdw.WriteFrontMatter(metadata);
+                    mdw.Write("<!-- markdownlint-disable-file -->");
 
                     if (!String.IsNullOrEmpty(changes.HeadingBlock))
                     {
@@ -60,7 +61,7 @@ namespace NDifference.Reporting
                     }
 
                     // content.Add("Summary Table");
-                    mdw.WriteHeading("Summary of changes", 3);
+                    mdw.WriteHeading("Summary of changes", 2);
 
                     mdw.WriteTableHeader(new string[] { "Item", "Value" });
 

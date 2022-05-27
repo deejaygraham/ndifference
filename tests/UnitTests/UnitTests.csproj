@@ -106,6 +106,7 @@
     <Compile Include="IHashableFacts.cs" />
     <Compile Include="InMemoryReportOutput.cs" />
     <Compile Include="ICodedFacts.cs" />
+    <Compile Include="SourceFormattingFacts.cs" />
     <Compile Include="OnTheFlyCompiler.cs" />
     <Compile Include="PathExtensionFacts.cs" />
     <Compile Include="PocoTypeFacts.cs" />

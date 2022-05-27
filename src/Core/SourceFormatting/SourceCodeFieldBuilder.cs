@@ -33,6 +33,7 @@ namespace NDifference.SourceFormatting
 			SourceCode code = new SourceCode();
 
 			code.Add(this.typeName);
+			code.Add(new WhitespaceTag());
 			code.Add(this.identifier);
 
 			return code;

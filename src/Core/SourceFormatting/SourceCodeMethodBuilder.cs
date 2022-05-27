@@ -56,16 +56,18 @@ namespace NDifference.SourceFormatting
 			if (this.typeName != null)
 			{
 				code.Add(this.typeName);
+                code.Add(new WhitespaceTag());
 			}
 
 			if (this.isAbstract != null)
 			{
 				code.Add(this.isAbstract);
+				code.Add(new WhitespaceTag());
 			}
 
 			code.Add(this.identifier);
 
-			code.Add(new PunctuationTag("("));
+            code.Add(new PunctuationTag("("));
 
 			for (int i = 0; i < this.argumentList.Count; ++i)
 			{

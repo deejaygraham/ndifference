@@ -81,7 +81,7 @@ namespace NDifference.SourceFormatting
 
         public string ToPlainText()
         {
-            return this.Value + " ";
+            return this.Value;
         }
 
 		//public void SaveTo(TextWriter writer)

@@ -129,6 +129,7 @@
     <Compile Include="SourceFormatting\SourceCodeMethodBuilder.cs" />
     <Compile Include="SourceFormatting\SourceCodeTag.cs" />
     <Compile Include="SourceFormatting\TypeNameTag.cs" />
+    <Compile Include="SourceFormatting\WhitespaceTag.cs" />
     <Compile Include="TypeSystem\AccessModifier.cs" />
     <Compile Include="Analysis\AnalysisWorkflow.cs" />
     <Compile Include="Delta.cs" />

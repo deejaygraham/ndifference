@@ -31,7 +31,7 @@ namespace NDifference.Reporting
 
         public string Format(ICoded source)
         {
-            return "``` "  + source.ToPlainText() + " ```";
+            return "`"  + source.ToPlainText() + "`";
         }
 
         public bool Supports(IReportFormat other)

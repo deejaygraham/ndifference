@@ -103,6 +103,7 @@ namespace NDifference.TypeSystem
 				if (i < this.FormalParameters.Count - 1)
 				{
 					code.Add(new PunctuationTag(","));
+                    code.Add(new WhitespaceTag());
 				}
 			}
 

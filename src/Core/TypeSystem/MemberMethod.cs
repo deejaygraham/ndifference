@@ -45,19 +45,24 @@ namespace NDifference.TypeSystem
 			if (this.IsStatic)
 			{
 				code.Add(new KeywordTag("static"));
+                code.Add(new WhitespaceTag());
 			}
 
 			if (this.IsAbstract)
 			{
 				code.Add(new KeywordTag("abstract"));
+                code.Add(new WhitespaceTag());
 			}
 
 			if (this.IsVirtual)
 			{
 				code.Add(new KeywordTag("virtual"));
+                code.Add(new WhitespaceTag());
 			}
 
 			code.Add(this.ReturnType.ToCode());
+            code.Add(new WhitespaceTag());
+
 			code.Add(this.Signature.ToCode());
 
 			return code;

@@ -53,6 +53,7 @@ namespace NDifference.TypeSystem
 			SourceCode code = new SourceCode();
 
 			code.Add(this.FieldType.ToCode());
+			code.Add(new WhitespaceTag());
 			code.Add(new IdentifierTag(this.Name));
 
 			return code;

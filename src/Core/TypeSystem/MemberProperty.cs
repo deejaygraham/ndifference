@@ -32,15 +32,18 @@ namespace NDifference.TypeSystem
 			SourceCode code = new SourceCode();
 
 			code.Add(this.PropertyType.ToCode());
+			code.Add(new WhitespaceTag());
 			code.Add(new IdentifierTag(this.Name));
 
 			if (this.GetterAccessibility == MemberAccessibility.Public 
 				|| this.SetterAccessibility == MemberAccessibility.Public)
 			{
+                code.Add(new WhitespaceTag());
 				code.Add(new PunctuationTag("{"));
 
 				if (this.GetterAccessibility == MemberAccessibility.Public)
 				{
+                    code.Add(new WhitespaceTag());
 					code.Add(new KeywordTag("get;"));
 				}
 				//else if (this.GetterAccessibility == MemberAccessibility.Private)
@@ -50,6 +53,7 @@ namespace NDifference.TypeSystem
 
 				if (this.SetterAccessibility == MemberAccessibility.Public)
 				{
+                    code.Add(new WhitespaceTag());
 					code.Add(new KeywordTag("set;"));
 				}
 				//else if (this.SetterAccessibility == MemberAccessibility.Private)
@@ -57,6 +61,7 @@ namespace NDifference.TypeSystem
 				//	code.Add(new KeywordTag("private set;"));
 				//}
 
+                code.Add(new WhitespaceTag());
 				code.Add(new PunctuationTag("}"));
 			}
 

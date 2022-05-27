@@ -26,7 +26,9 @@ namespace NDifference.TypeSystem
 			SourceCode code = new SourceCode();
 
 			code.Add(new KeywordTag("const"));
+			code.Add(new WhitespaceTag());
 			code.Add(this.ConstantType.ToCode());
+            code.Add(new WhitespaceTag());
 			code.Add(new IdentifierTag(this.Name));
 
 			return code;

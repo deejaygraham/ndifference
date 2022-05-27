@@ -152,23 +152,30 @@ namespace NDifference.TypeSystem
 			SourceCode code = new SourceCode();
 
 			code.Add(new KeywordTag("public"));
+			code.Add(new WhitespaceTag());
 
-			if (this.IsAbstract)
+            if (this.IsAbstract)
 			{
 				code.Add(new KeywordTag("abstract"));
+                code.Add(new WhitespaceTag());
 			}
 
 			if (this.IsSealed)
 			{
 				code.Add(new KeywordTag("sealed"));
+                code.Add(new WhitespaceTag());
 			}
 
 			code.Add(new KeywordTag("class"));
-			code.Add(new TypeNameTag(this.Name));
+            code.Add(new WhitespaceTag());
+
+            code.Add(new TypeNameTag(this.Name));
 
 			if (this.IsSubclass || this.Implements.Count > 0)
 			{
+                code.Add(new WhitespaceTag());
 				code.Add(new PunctuationTag(":"));
+                code.Add(new WhitespaceTag());
 			}
 
 			if (this.IsSubclass)
@@ -179,6 +186,7 @@ namespace NDifference.TypeSystem
 			if (this.IsSubclass && this.Implements.Count > 0)
 			{
 				code.Add(new PunctuationTag(","));
+                code.Add(new WhitespaceTag());
 			}
 
 			if (this.Implements.Count > 0)
@@ -192,6 +200,7 @@ namespace NDifference.TypeSystem
 					if (i < this.Implements.Count - 1)
 					{
 						code.Add(new PunctuationTag(","));
+                        code.Add(new WhitespaceTag());
 					}
 				}
 			}

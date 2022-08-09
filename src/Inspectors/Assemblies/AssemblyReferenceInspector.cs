@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace NDifference.Inspectors
 {
 	/// <summary>
-	/// Checks for changes in assemblies referenced.
+	/// Checks for changes in the assemblies referenced in each version
+	/// and reports additions or removals.
 	/// </summary>
 	public class AssemblyReferenceInspector : IAssemblyInspector
 	{
@@ -28,22 +29,16 @@ namespace NDifference.Inspectors
 			// added
 			var refsAdded = first.References.AddedTo(second.References, comparer);
 
-			if (refsAdded.Any())
+			foreach (var difference in refsAdded)
 			{
-				foreach (var difference in refsAdded)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedReferences, difference.Name));
-				}
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedReferences, difference.Name));
 			}
 
 			var refsRemoved = first.References.RemovedFrom(second.References, comparer);
 
-			if (refsRemoved.Any())
+			foreach (var difference in refsRemoved)
 			{
-				foreach (var difference in refsRemoved)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedReferences, difference.Name));
-				}
+				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedReferences, difference.Name));
 			}
 		}
 	}

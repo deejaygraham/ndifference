@@ -53,6 +53,10 @@ namespace NDifference.Analysis
 		public Category Category { get; set; }
 
         public AnalysisLevel Level { get; set; }
+
+		public string AssemblyName { get; set; }
+
+		public string TypeName { get; set; }
 	}
 
 	public class IdentifiedChangeComparer : IComparer<IdentifiedChange>

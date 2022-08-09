@@ -1,6 +1,7 @@
 ﻿using NDifference.Reporting;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -101,6 +102,11 @@ namespace NDifference.Analysis
         public int CountChangesWithSeverity(Severity s)
         {
             return this.Changes.Count(x => x.Category.Severity >= s);
+        }
+
+        public ReadOnlyCollection<IdentifiedChange> ChangesWithSeverity(Severity s)
+        {
+            return new ReadOnlyCollection<IdentifiedChange>(this.Changes.Where(x => x.Category.Severity >= s).ToList());
         }
 
         public List<IdentifiedChange> ChangesInCategory(int priority) // and for a level ?

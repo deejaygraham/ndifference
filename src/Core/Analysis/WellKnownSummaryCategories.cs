@@ -49,6 +49,15 @@ namespace NDifference.Inspectors
             Severity = Severity.NonBreaking
 		};
 
+        public static readonly Category BreakingChanges = new Category
+        {
+            Name = "Breaking Changes",
+            Description = "These changes may break projects based on the SDK.",
+            Priority = new CategoryPriority(WellKnownChangePriorities.BreakingChanges),
+            Headings = new string[] { "Changes" },
+            Severity = Severity.BreakingChange
+        };
+
 		//public static readonly Category UnchangedAssemblies = new Category 
 		//{ 
 		//	Name = "Changed Assemblies", 

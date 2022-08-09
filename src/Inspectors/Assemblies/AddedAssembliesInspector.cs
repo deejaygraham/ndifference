@@ -6,7 +6,8 @@ using System.Linq;
 namespace NDifference.Inspectors
 {
 	/// <summary>
-	/// Looking for assemblies that have been added from first to second.
+	/// Looking for assemblies that have been added from first to second. I.e. New assemblies added to the
+	/// project since the last version.
 	/// </summary>
 	public class AddedAssembliesInspector : IAssemblyCollectionInspector
 	{
@@ -25,12 +26,10 @@ namespace NDifference.Inspectors
             
             var addedAssemblies = combined.InLaterOnly;
 
-            if (addedAssemblies.Any())
+            foreach (var added in addedAssemblies)
             {
-                foreach (var added in addedAssemblies)
-                {
-                    changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.AddedAssemblies, added.Second.Name));
-                }
+                string assemblyName = added.Second.Name;
+				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.AddedAssemblies, assemblyName));
             }
         }
 	}

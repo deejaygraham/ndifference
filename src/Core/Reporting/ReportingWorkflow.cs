@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace NDifference.Reporting
@@ -99,6 +100,12 @@ namespace NDifference.Reporting
 						this.ReportComplete.Fire(this);
 					}
 
+					// write out obsolete/breaking change summary 
+                    IReportOutput breakingChanges = new FileOutput(Path.Combine(project.Settings.OutputFolder, "BreakingChanges" + format.Extension));
+                    progressIndicator.Report(new Progress("Generating breaking changes report"));
+
+                    writer.Write(results.BreakingChanges, breakingChanges, format);
+
 					// finally write out summary...
 					IReportOutput output = new FileOutput(Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension));
 
@@ -108,16 +115,21 @@ namespace NDifference.Reporting
 					
 					writer.Write(results.Summary, output, format);
 
-					// write obsolete types and methods stuff here
-
-					// write most obvious breaking changes.
-
 					SiteMapTopic siteMap = new SiteMapTopic
 					{
 						Id = results.Summary.Identifier,
 						Title = results.Summary.Name,
 						Link = Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension)
 					};
+
+					// link to breaking changes
+					siteMap.Children.Add(new SiteMapTopic
+                    {
+                        Id = results.BreakingChanges.Identifier,
+                        Title = results.BreakingChanges.Name,
+                        Link = Path.Combine(project.Settings.SubPath, results.BreakingChanges.Name + format.Extension),
+                        Indent = siteMap.Indent + 1
+                    });
 
 					foreach (var dllChange in results.AssemblyLevelChanges)
 					{
@@ -163,7 +175,7 @@ namespace NDifference.Reporting
 					}
 
 					// sitemap file for sandcastle help file builder menu
-					string siteMapFragment = Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + ".sitemap");
+					string siteMapFragment = Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + ".json"); // .sitemap
 
 					File.WriteAllText(siteMapFragment, siteMap.ToString());
 
@@ -216,41 +228,115 @@ namespace NDifference.Reporting
 		{
 			StringBuilder builder = new StringBuilder();
 
-			if (this.Indent > 0)
-			{
-				for(int i = 0; i < this.Indent; ++i)
-				{
-					builder.Append("\t");
-				}
-			}
+            builder.Indent(this.Indent)
+                .AppendLine("{");
 
-			builder.AppendFormat("<siteMapNode title=\"{0}\" url=\"{1}\"", this.Title, this.Link);
+            builder.Indent(this.Indent + 1)
+                .AppendJsonValue("title", this.Title)
+                .Append(",")
+                .AppendLine()
+                .Indent(this.Indent + 1)
+				.AppendJsonValue("url", Path.GetFileName(this.Link).Replace(".md", ".html"));
 
 			if (this.Children.Any())
-			{
-				builder.AppendLine(" >");
+            {
+                builder.Append(",")
+                    .AppendLine();
 
-				foreach(var child in this.Children)
-				{
+                builder.Indent(this.Indent + 1)
+                    .Append("\"subItems\": [")
+                    .AppendLine();
+
+                int count = 0;
+				foreach (var child in this.Children)
+                {
+                    ++count;
+
 					builder.Append(child.ToString());
-				}
 
-				if (this.Indent > 0)
-				{
-					for (int i = 0; i < this.Indent; ++i)
-					{
-						builder.Append("\t");
-					}
-				}
+					if (count < this.Children.Count)
+                        builder.AppendLine(",");
+                    else
+                        builder.AppendLine();
+                }
 
-				builder.AppendLine("</siteMapNode>");
+				builder.Indent(this.Indent + 1)
+                    .AppendLine("]");
 			}
 			else
 			{
-				builder.AppendLine(" />");
+				builder.AppendLine();
 			}
+
+			builder.Indent(this.Indent)
+                .Append("}");
 
 			return builder.ToString();
 		}
+
+		// old style Sandcastle format
+        //public override string ToString()
+        //{
+        //    StringBuilder builder = new StringBuilder();
+
+        //    if (this.Indent > 0)
+        //    {
+        //        for (int i = 0; i < this.Indent; ++i)
+        //        {
+        //            builder.Append("\t");
+        //        }
+        //    }
+
+        //    builder.AppendFormat("<siteMapNode title=\"{0}\" url=\"{1}\"", this.Title, this.Link);
+
+        //    if (this.Children.Any())
+        //    {
+        //        builder.AppendLine(" >");
+
+        //        foreach (var child in this.Children)
+        //        {
+        //            builder.Append(child.ToString());
+        //        }
+
+        //        if (this.Indent > 0)
+        //        {
+        //            for (int i = 0; i < this.Indent; ++i)
+        //            {
+        //                builder.Append("\t");
+        //            }
+        //        }
+
+        //        builder.AppendLine("</siteMapNode>");
+        //    }
+        //    else
+        //    {
+        //        builder.AppendLine(" />");
+        //    }
+
+        //    return builder.ToString();
+        //}
+
+	}
+
+    public static class StringBuilderJsonExtensions
+    {
+		public static StringBuilder Indent(this StringBuilder builder, int level)
+        {
+            if (level > 0)
+            {
+                for (int i = 0; i < level; ++i)
+                {
+                    builder.Append("\t");
+                }
+            }
+
+			return builder;
+        }
+
+        public static StringBuilder AppendJsonValue(this StringBuilder builder, string name, string value)
+        {
+            builder.AppendFormat("\"{0}\": \"{1}\"", name, value);
+            return builder;
+        }
 	}
 }

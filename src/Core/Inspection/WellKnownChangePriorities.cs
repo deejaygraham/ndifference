@@ -11,7 +11,9 @@ namespace NDifference.Inspection
 
 		public static readonly int RemovedAssemblies = SummaryInternal + 1;
 
-        public static readonly int ChangedAssemblies = RemovedAssemblies + 1;
+        public static readonly int BreakingChanges = RemovedAssemblies + 1;
+
+		public static readonly int ChangedAssemblies = BreakingChanges + 1;
 
         public static readonly int PotentiallyChangedAssemblies = ChangedAssemblies + 1;
 

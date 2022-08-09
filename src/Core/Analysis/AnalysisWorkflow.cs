@@ -76,7 +76,7 @@ namespace NDifference.Analysis
                     result.Summary.SummaryBlocks.Add("To", secondVersion.Name);
                 }
 
-				ICombinedAssemblies assemblyModel = CombinedAssemblyModel.BuildFrom(firstVersion.Assemblies, secondVersion.Assemblies);
+                ICombinedAssemblies assemblyModel = CombinedAssemblyModel.BuildFrom(firstVersion.Assemblies, secondVersion.Assemblies);
 				
 				progressIndicator.Report(new Progress("Inspecting Release Differences"));
 
@@ -219,8 +219,8 @@ namespace NDifference.Analysis
                                 {
                                     result.Type(changesToThisType);
 
-                                    changesToThisAssembly.Add(new IdentifiedChange(
-                                        null, 
+                                    var ic = new IdentifiedChange(
+                                        null,
                                         WellKnownAssemblyCategories.ChangedTypes,
                                         currentType.FullName,
                                         new DocumentLink
@@ -228,13 +228,34 @@ namespace NDifference.Analysis
                                             LinkText = currentType.FullName,
                                             LinkUrl = currentType.FullName,
                                             Identifier = currentType.Identifier
-                                        }));
+                                        });
+
+                                    ic.TypeName = currentType.FullName;
+                                    ic.AssemblyName = commonAssemblyPair.First.Name;
+
+                                    changesToThisAssembly.Add(ic);
                                 }
 
                                 int breakingChangesToType = changesToThisType.CountChangesWithSeverity(Severity.PotentiallyBreakingChange);
 
                                 if (breakingChangesToType > 0)
                                 {
+                                    foreach (var breakingChange in changesToThisType.ChangesWithSeverity(
+                                                 Severity.PotentiallyBreakingChange))
+                                    {
+
+                                        // TODO: copy each one and change it
+                                        result.BreakingChanges.Add(new IdentifiedChange
+                                            {
+                                                Category = breakingChange.Category,
+                                                Description = breakingChange.Description,
+                                                Descriptor = breakingChange.Descriptor,
+                                                Inspector = breakingChange.Inspector,
+                                                Level = breakingChange.Level,
+                                                Priority = breakingChange.Priority
+                                            });
+                                    }
+
                                     breakingChangesToAssembly += breakingChangesToType;
                                     changesToThisType.SummaryBlocks.Add("Potential Breaking Changes", breakingChangesToType.ToString());
                                 }
@@ -298,8 +319,24 @@ namespace NDifference.Analysis
                 {
                     iai.Inspect(result);
                 }
-			}
-			finally
+
+                result.BreakingChanges.Name = "Potential Breaking Changes";
+                result.BreakingChanges.SummaryBlocks.Add("Changes", result.BreakingChanges.Changes.Count.ToString());
+                // add breaking changes to the summary list...
+                // fill in missing details...
+
+                result.Summary.Add(new IdentifiedChange(
+                    null,
+                    WellKnownSummaryCategories.ChangedAssemblies,
+                    result.BreakingChanges.Name,
+                    new DocumentLink
+                    {
+                        LinkText = result.BreakingChanges.Name,
+                        LinkUrl = result.BreakingChanges.Name,
+                        Identifier = result.BreakingChanges.Identifier
+                    }));
+            }
+            finally
 			{
 				this.AnalysisComplete.Fire(this);
 			}

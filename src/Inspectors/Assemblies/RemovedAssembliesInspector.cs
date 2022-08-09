@@ -6,7 +6,8 @@ using System.Linq;
 namespace NDifference.Inspectors
 {
 	/// <summary>
-	/// Looking for assemblies in first that are not in second.
+	/// Looking for assemblies in first that are not in second. I.e. assemblies that
+	/// have been considered unused or obsolete and therefore deleted from a project.
 	/// </summary>
 	public class RemovedAssembliesInspector : IAssemblyCollectionInspector
 	{
@@ -25,12 +26,11 @@ namespace NDifference.Inspectors
 
             var removedAssemblies = combined.InEarlierOnly;
 
-            if (removedAssemblies.Any())
+            foreach (var removed in removedAssemblies)
             {
-                foreach (var removed in removedAssemblies)
-                {
-                    changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.RemovedAssemblies, removed.First.Name));
-                }
+                string assemblyName = removed.First.Name;
+
+				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.RemovedAssemblies, assemblyName));
             }
         }
 	}

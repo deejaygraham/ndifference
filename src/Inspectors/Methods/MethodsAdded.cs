@@ -36,9 +36,13 @@ namespace NDifference.Inspectors
 					var added = secondRef.AllMethods.FindAddedMembers(firstRef.AllMethods);
 
 					foreach (var add in added)
-					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsAdded, new CodeDescriptor { Code = add.ToCode() }));
-					}
+                    {
+                        var newMethodAdded = new IdentifiedChange(WellKnownChangePriorities.MethodsAdded, new CodeDescriptor { Code = add.ToCode() });
+                        
+                        newMethodAdded.ForType(first);
+
+                        changes.Add(newMethodAdded);
+                    }
 				}
 			}
 		}

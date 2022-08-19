@@ -1,12 +1,9 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -36,9 +33,13 @@ namespace NDifference.Inspectors
 				var removed = secondClass.Fields.FindRemovedMembers(firstClass.Fields);
 
 				foreach (var rem in removed)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsRemoved, new CodeDescriptor { Code = rem.ToCode() }));
-				}
+                {
+                    var fieldRemoved = new IdentifiedChange(WellKnownChangePriorities.FieldsRemoved, new CodeDescriptor { Code = rem.ToCode() });
+
+					fieldRemoved.ForType(first);
+
+                    changes.Add(fieldRemoved);
+                }
 			}
 		}
 	}

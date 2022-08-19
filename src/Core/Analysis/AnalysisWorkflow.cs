@@ -58,34 +58,27 @@ namespace NDifference.Analysis
 			
 			try
 			{
-				result.Summary.Heading = project.Settings.SummaryTitle;
-				result.Summary.HeadingBlock = project.Settings.HeadingText;
-				result.Summary.Name = project.Settings.SummaryTitle;
-				result.Summary.SummaryBlocks.Add("Name", project.Product.Name);
+                // Build the main summary page, the index for the report
+                result.Summary = BuilMainSummaryPage(project);
 
-				result.Summary.MetaBlocks.AddRange(project.Settings.GenerateMetaBlocks());
-				result.Summary.HeaderBlocks.AddRange(project.Settings.GenerateHeaderBlocks());
-				result.Summary.FooterBlocks.AddRange(project.Settings.GenerateFooterBlocks());
+                result.BreakingChanges.CopyMetaFrom(result.Summary);
+                result.BreakingChanges.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
 
-				var firstVersion = project.Product.ComparedIncrements.First;
-				var secondVersion = project.Product.ComparedIncrements.Second;
+                progressIndicator.Report(new Progress("Inspecting Release Differences"));
 
-                if (firstVersion.Name != secondVersion.Name)
-                {
-                    result.Summary.SummaryBlocks.Add("From", firstVersion.Name);
-                    result.Summary.SummaryBlocks.Add("To", secondVersion.Name);
-                }
+                var firstVersion = project.Product.ComparedIncrements.First;
+                var secondVersion = project.Product.ComparedIncrements.Second;
 
                 ICombinedAssemblies assemblyModel = CombinedAssemblyModel.BuildFrom(firstVersion.Assemblies, secondVersion.Assemblies);
-				
-				progressIndicator.Report(new Progress("Inspecting Release Differences"));
 
+                // inspect both sets of assemblies and report on differences.
                 RunAssemblyCollectionInspectors(inspectors, assemblyModel, result.Summary);
 
                 int currentAssemblyNumber = 0;
                 int totalAssemblies = assemblyModel.ChangedInCommon.Count();
 
-				// now get each assembly pair and compare them at the internal level...
+				// now get each assembly pair where they exist in previous and new collections
+				// and compare them at the internal level...
 				foreach (var commonAssemblyPair in assemblyModel.ChangedInCommon)
 				{
                     ++currentAssemblyNumber;
@@ -100,6 +93,7 @@ namespace NDifference.Analysis
 					}
 
 					progressIndicator.Report(new Progress("Comparing versions of " + commonAssemblyPair.First.Name));
+
 					var previousAssembly = commonAssemblyPair.First;
 					var currentAssembly = commonAssemblyPair.Second;
 										
@@ -135,6 +129,7 @@ namespace NDifference.Analysis
                         // looking for general changes to the assembly...
                         progressIndicator.Report(new Progress("Inspecting " + previousAssembly.Name, currentAssemblyNumber, totalAssemblies));
 
+                        // run inspectors on this assembly
                         RunAssemblyInspectors(inspectors, previousVersionReflection, currentVersionReflection, changesToThisAssembly);
 
                         var previousTypeCollection = previousVersionReflection.GetTypes(AssemblyReflectionOption.Public);
@@ -147,6 +142,7 @@ namespace NDifference.Analysis
 
                         progressIndicator.Report(new Progress("Comparing types in assembly " + previousAssembly.Name, currentAssemblyNumber, totalAssemblies));
 
+                        // run inspectors on all the types in the assembly
                         RunTypeCollectionInspectors(inspectors, typeModel, changesToThisAssembly);
 
                         // now inspect each type...
@@ -220,8 +216,7 @@ namespace NDifference.Analysis
                                     result.Type(changesToThisType);
 
                                     var ic = new IdentifiedChange(
-                                        null,
-                                        WellKnownAssemblyCategories.ChangedTypes,
+                                        WellKnownChangePriorities.ChangedTypes,
                                         currentType.FullName,
                                         new DocumentLink
                                         {
@@ -230,9 +225,6 @@ namespace NDifference.Analysis
                                             Identifier = currentType.Identifier
                                         });
 
-                                    ic.TypeName = currentType.FullName;
-                                    ic.AssemblyName = commonAssemblyPair.First.Name;
-
                                     changesToThisAssembly.Add(ic);
                                 }
 
@@ -240,24 +232,46 @@ namespace NDifference.Analysis
 
                                 if (breakingChangesToType > 0)
                                 {
-                                    foreach (var breakingChange in changesToThisType.ChangesWithSeverity(
-                                                 Severity.PotentiallyBreakingChange))
-                                    {
+                                    //foreach (var breakingChange in changesToThisType.ChangesWithSeverity(
+                                    //             Severity.PotentiallyBreakingChange))
+                                    //{
+                                    //    // find an existing category...
+                                    //    Category category =
+                                    //        result.BreakingChanges.Categories.FirstOrDefault(c =>
+                                    //            c.Name == breakingChange.Category.Name);
 
-                                        // TODO: copy each one and change it
-                                        result.BreakingChanges.Add(new IdentifiedChange
-                                            {
-                                                Category = breakingChange.Category,
-                                                Description = breakingChange.Description,
-                                                Descriptor = breakingChange.Descriptor,
-                                                Inspector = breakingChange.Inspector,
-                                                Level = breakingChange.Level,
-                                                Priority = breakingChange.Priority
-                                            });
-                                    }
+                                    //    if (category == null)
+                                    //    {
+                                    //        // take the category from the current list of breaking changes.
+                                    //        category = new Category
+                                    //        {
+                                    //            Name = breakingChange.Category.Name,
+                                    //            Description = breakingChange.Category.Description,
+                                    //            Priority = breakingChange.Category.Priority,
+                                    //            Headings = new string[] { "Changes", "Type", "Assembly" },
+                                    //            Severity = breakingChange.Category.Severity
+                                    //        };
+                                    //    }
 
-                                    breakingChangesToAssembly += breakingChangesToType;
-                                    changesToThisType.SummaryBlocks.Add("Potential Breaking Changes", breakingChangesToType.ToString());
+                                    //    var copiedChange = new IdentifiedChange
+                                    //    {
+                                    //        AssemblyName = breakingChange.AssemblyName,
+                                    //        //Category = category,
+                                    //        //Description = breakingChange.Description,
+                                    //        Descriptor = breakingChange.Descriptor,
+                                    //        //Inspector = breakingChange.Inspector,
+                                    //        //Level = breakingChange.Level,
+                                    //        Priority = breakingChange.Priority,
+                                    //        TypeName = breakingChange.TypeName
+                                    //    };
+
+                                    //    // TODO: copy each one and change it
+                                    //    // order by assembly and then by type name
+                                    //    result.BreakingChanges.Add(copiedChange);
+                                    //}
+
+                                    //breakingChangesToAssembly += breakingChangesToType;
+                                    //changesToThisType.SummaryBlocks.Add("Potential Breaking Changes", breakingChangesToType.ToString());
                                 }
                             }
 
@@ -279,8 +293,7 @@ namespace NDifference.Analysis
                         {
                             result.Assembly(changesToThisAssembly);
                             result.Summary.Add(new IdentifiedChange(
-                                null,
-                                WellKnownSummaryCategories.ChangedAssemblies,
+                                WellKnownChangePriorities.ChangedAssemblies,
                                 commonAssemblyPair.First.Name,
                                 new DocumentLink
                                 {
@@ -326,8 +339,7 @@ namespace NDifference.Analysis
                 // fill in missing details...
 
                 result.Summary.Add(new IdentifiedChange(
-                    null,
-                    WellKnownSummaryCategories.ChangedAssemblies,
+                    WellKnownChangePriorities.ChangedAssemblies,
                     result.BreakingChanges.Name,
                     new DocumentLink
                     {
@@ -343,6 +355,33 @@ namespace NDifference.Analysis
 
 			return result;
 		}
+
+        private static IdentifiedChangeCollection BuilMainSummaryPage(Project project)
+        {
+            var mainSummaryPage = new IdentifiedChangeCollection
+            {
+                Heading = project.Settings.SummaryTitle,
+                HeadingBlock = project.Settings.HeadingText,
+                Name = project.Settings.SummaryTitle
+            };
+
+            mainSummaryPage.SummaryBlocks.Add("Name", project.Product.Name);
+
+            mainSummaryPage.MetaBlocks.AddRange(project.Settings.GenerateMetaBlocks());
+            mainSummaryPage.HeaderBlocks.AddRange(project.Settings.GenerateHeaderBlocks());
+            mainSummaryPage.FooterBlocks.AddRange(project.Settings.GenerateFooterBlocks());
+
+            var firstVersion = project.Product.ComparedIncrements.First;
+            var secondVersion = project.Product.ComparedIncrements.Second;
+
+            if (firstVersion.Name != secondVersion.Name)
+            {
+                mainSummaryPage.SummaryBlocks.Add("From", firstVersion.Name);
+                mainSummaryPage.SummaryBlocks.Add("To", secondVersion.Name);
+            }
+
+            return mainSummaryPage;
+        }
 
         private static void RunTypeCollectionInspectors(InspectorRepository inspectors, ICombinedTypes typeModel, IdentifiedChangeCollection changes)
         {

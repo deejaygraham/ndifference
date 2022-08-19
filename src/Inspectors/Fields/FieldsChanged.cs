@@ -1,12 +1,9 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -44,15 +41,19 @@ namespace NDifference.Inspectors
 					{
 						// property type has changed.
 						if (oldField.FieldType != newField.FieldType)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsChanged,
-								new NamedDeltaDescriptor
-								{
-									Name = string.Format("Changed type from {0} to {1}", oldField.FieldType, newField.FieldType),
-									Was = oldField.ToCode(),
-									IsNow = newField.ToCode()
-								}));
-						}
+                        {
+                            var fieldTypeChanged = new IdentifiedChange(WellKnownChangePriorities.FieldsChanged,
+                                new NamedDeltaDescriptor
+                                {
+                                    Name = string.Format("Changed type from {0} to {1}", oldField.FieldType, newField.FieldType),
+                                    Was = oldField.ToCode(),
+                                    IsNow = newField.ToCode()
+                                });
+
+							fieldTypeChanged.ForType(first);
+
+                            changes.Add(fieldTypeChanged);
+                        }
 					}
 				}
 			}

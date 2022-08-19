@@ -1,7 +1,6 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
 using System.Diagnostics;
-using System.Linq;
 
 namespace NDifference.Inspectors
 {
@@ -25,15 +24,14 @@ namespace NDifference.Inspectors
 
             var removedTypes = types.InEarlierOnly;
 
-            if (removedTypes.Any())
+            foreach (var removed in removedTypes)
             {
-                foreach (var removed in removedTypes)
-                {
-                    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedTypes, removed.First.FullName));
-                }
-            }
+                var typeRemoved = new IdentifiedChange(WellKnownChangePriorities.RemovedTypes, removed.First.FullName);
+                
+                typeRemoved.ForType(removed.First);
 
+                changes.Add(typeRemoved);
+            }
 		}
 	}
-
 }

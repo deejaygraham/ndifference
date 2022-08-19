@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -39,15 +40,19 @@ namespace NDifference.Inspectors
 					if (oldEvent != null && newEvent != null)
 					{
 						if (oldEvent.EventType != newEvent.EventType)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EventsChanged,
-								new NamedDeltaDescriptor
-								{
-									Name = string.Format("Changed type from {0} to {1}", oldEvent.EventType, newEvent.EventType),
-									Was = oldEvent.ToCode(),
-									IsNow = newEvent.ToCode()
-								}));
-						}
+                        {
+                            var eventChangedType = new IdentifiedChange(WellKnownChangePriorities.EventsChanged,
+                                new NamedDeltaDescriptor
+                                {
+                                    Name = string.Format("Changed type from {0} to {1}", oldEvent.EventType, newEvent.EventType),
+                                    Was = oldEvent.ToCode(),
+                                    IsNow = newEvent.ToCode()
+                                });
+
+							eventChangedType.ForType(first);
+
+                            changes.Add(eventChangedType);
+                        }
 					}
 				}
 			}

@@ -31,7 +31,11 @@ namespace NDifference.Inspectors
             {
                 foreach (var added in addedTypes)
                 {
-                    changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedTypes, added.Second.FullName));
+                    var addedNewType = new IdentifiedChange(WellKnownChangePriorities.AddedTypes, added.Second.FullName);
+
+                    addedNewType.ForType(added.Second);
+
+                    changes.Add(addedNewType);
                 }
             }
 		

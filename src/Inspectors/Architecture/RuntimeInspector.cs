@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace NDifference.Inspectors
 		{
             if (first.RuntimeVersion != second.RuntimeVersion)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, 
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, 
 					new NamedDeltaDescriptor 
 					{ 
 						Name = ".Net Runtime", 

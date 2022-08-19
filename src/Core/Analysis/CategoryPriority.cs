@@ -9,7 +9,12 @@ namespace NDifference.Analysis
 	[DebuggerDisplay("{Value}")]
 	public class CategoryPriority : IEquatable<CategoryPriority>
 	{
-		public static readonly int InvalidValue = -1;
+		public static readonly int Uncategorised = -1;
+
+		public CategoryPriority()
+			: this (Uncategorised)
+		{
+		}
 
 		public CategoryPriority(int value)
 		{
@@ -18,7 +23,7 @@ namespace NDifference.Analysis
 
 		public int Value { get; private set; }
 
-		public bool IsValid { get { return this.Value != InvalidValue; } }
+		public bool IsValid { get { return this.Value != Uncategorised; } }
 
 		public override string ToString()
 		{

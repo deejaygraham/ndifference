@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,12 @@ namespace NDifference.Inspectors
 		public string Description { get { return "Demonstration used for getting report writing correct."; } }
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
-		{
-			changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeDebug, "This is a demonstration type inspector-identified change"));
-		}
+        {
+            var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug, "This is a demonstration type inspector-identified change");
+
+			dummyChange.ForType(first);
+
+            changes.Add(dummyChange);
+        }
 	}
 }

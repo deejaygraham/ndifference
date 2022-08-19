@@ -2,11 +2,7 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -45,26 +41,34 @@ namespace NDifference.Inspectors
 						if (oldProperty != null && newProperty != null)
 						{
 							if (oldProperty.GetterAccessibility == MemberAccessibility.Public && newProperty.GetterAccessibility != MemberAccessibility.Public)
-							{
-								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesChanged,
-									new NamedDeltaDescriptor
-									{
-										Name = "Get removed",
-										Was = oldProperty.ToCode(),
-										IsNow = newProperty.ToCode()
-									}));
+                            {
+                                var getterRemoved = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
+                                    new NamedDeltaDescriptor
+                                    {
+                                        Name = "Get removed",
+                                        Was = oldProperty.ToCode(),
+                                        IsNow = newProperty.ToCode()
+                                    });
+
+                                getterRemoved.ForType(first);
+
+								changes.Add(getterRemoved);
 							}
 
 							if (oldProperty.SetterAccessibility == MemberAccessibility.Public && newProperty.SetterAccessibility != MemberAccessibility.Public)
-							{
-								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesChanged,
-									new NamedDeltaDescriptor
-									{
-										Name = "Set removed",
-										Was = oldProperty.ToCode(),
-										IsNow = newProperty.ToCode()
-									}));
-							}
+                            {
+                                var setterRemoved = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
+                                    new NamedDeltaDescriptor
+                                    {
+                                        Name = "Set removed",
+                                        Was = oldProperty.ToCode(),
+                                        IsNow = newProperty.ToCode()
+                                    });
+
+                                setterRemoved.ForType(first);
+
+								changes.Add(setterRemoved);
+                            }
 
 							if (oldProperty.PropertyType != newProperty.PropertyType)
 							{
@@ -72,33 +76,41 @@ namespace NDifference.Inspectors
 
 								if (oldProperty.PropertyType.ContainingNamespace.CompareTo(newProperty.PropertyType.ContainingNamespace) != 0
 									&& oldProperty.PropertyType.Type == newProperty.PropertyType.Type)
-								{
-									changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesChanged,
-										new NamedDeltaDescriptor
-										{
-											Name = string.Format(
-												"Property changed namespace from {0} to {1}",
-												oldProperty.PropertyType.ContainingNamespace,
-												newProperty.PropertyType.ContainingNamespace
-												),
-											Was = oldProperty.ToCode(),
-											IsNow = newProperty.ToCode()
-										}));
-								}
+                                {
+                                    var movedNamespace = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
+                                        new NamedDeltaDescriptor
+                                        {
+                                            Name = string.Format(
+                                                "Property changed namespace from {0} to {1}",
+                                                oldProperty.PropertyType.ContainingNamespace,
+                                                newProperty.PropertyType.ContainingNamespace
+                                            ),
+                                            Was = oldProperty.ToCode(),
+                                            IsNow = newProperty.ToCode()
+                                        });
+
+                                    movedNamespace.ForType(first);
+
+									changes.Add(movedNamespace);
+                                }
 								else
-								{
-									changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesChanged,
-										new NamedDeltaDescriptor
-										{
-											Name = string.Format(
-												"Property changed from {0} to {1}",
-												oldProperty.PropertyType.Type,
-												newProperty.PropertyType.Type
-												),
-											Was = oldProperty.ToCode(),
-											IsNow = newProperty.ToCode()
-										}));
-								}
+                                {
+                                    var propertyTypeChanged = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
+                                        new NamedDeltaDescriptor
+                                        {
+                                            Name = string.Format(
+                                                "Property changed from {0} to {1}",
+                                                oldProperty.PropertyType.Type,
+                                                newProperty.PropertyType.Type
+                                            ),
+                                            Was = oldProperty.ToCode(),
+                                            IsNow = newProperty.ToCode()
+                                        });
+
+                                    propertyTypeChanged.ForType(first);
+
+                                    changes.Add(propertyTypeChanged);
+                                }
 							}
 						}
                     }

@@ -34,9 +34,13 @@ namespace NDifference.Inspectors
 				var obs = secondRef.Methods(MemberVisibilityOption.Public).FindObsoleteMembers();
 
 				foreach (var o in obs)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
-				}
+                {
+                    var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                    
+                    methodMadeObsolete.ForType(first);
+
+                    changes.Add(methodMadeObsolete);
+                }
 			}
 		}
 	}
@@ -66,7 +70,11 @@ namespace NDifference.Inspectors
 
                 foreach (var o in newObs.Except(oldObs, new CompareMemberMethodByName()))
                 {
-                    changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
+                    var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                    
+                    methodMadeObsolete.ForType(first);
+
+                    changes.Add(methodMadeObsolete);
                 }
             }
         }

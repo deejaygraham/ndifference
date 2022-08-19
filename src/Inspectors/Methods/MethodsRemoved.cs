@@ -35,9 +35,13 @@ namespace NDifference.Inspectors
 					var removed = secondRef.Methods(MemberVisibilityOption.Public).FindRemovedMembers(firstRef.Methods(MemberVisibilityOption.Public));
 
 					foreach (var rem in removed)
-					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsRemoved, new CodeDescriptor { Code = rem.ToCode() }));
-					}
+                    {
+                        var methodRemoved = new IdentifiedChange(WellKnownChangePriorities.MethodsRemoved, new CodeDescriptor { Code = rem.ToCode() });
+						
+                        methodRemoved.ForType(first);
+
+                        changes.Add(methodRemoved);
+                    }
 				}
 			}
 		}

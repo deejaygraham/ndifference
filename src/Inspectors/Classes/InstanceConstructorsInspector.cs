@@ -1,11 +1,9 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -42,39 +40,45 @@ namespace NDifference.Inspectors
 					InstanceConstructor newCtor = onlyInNew.First();
 
 					if (!newCtor.Signature.ExactlyMatches(oldCtor.Signature))
-					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsChanged, new DeltaDescriptor 
-						{ 
-							Was = oldCtor.ToCode(),
-							IsNow = newCtor.ToCode() 
-						}));
-					}
+                    {
+                        var constructorChanged = new IdentifiedChange(WellKnownChangePriorities.ConstructorsChanged, new DeltaDescriptor 
+                        { 
+                            Was = oldCtor.ToCode(),
+                            IsNow = newCtor.ToCode() 
+                        });
+
+						constructorChanged.ForType(first);
+
+                        changes.Add(constructorChanged);
+                    }
 				}
 				else
 				{
 					// otherwise we just report which ones have been 
 					// removed and which ones have been added.
-					if (onlyInOld.Any())
-					{
-						foreach (var remove in onlyInOld)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsRemoved, new CodeDescriptor 
-							{ 
-								Code = remove.ToCode() 
-							}));
-						}
-					}
+					foreach (var remove in onlyInOld)
+                    {
+                        var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved, new CodeDescriptor 
+                        { 
+                            Code = remove.ToCode() 
+                        });
+
+						constructorRemoved.ForType(first);
+
+                        changes.Add(constructorRemoved);
+                    }
 					
-					if (onlyInNew.Any())
-					{
-						foreach (var add in onlyInNew)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsAdded, new CodeDescriptor
-							{
-								Code = add.ToCode()
-							}));
-						}
-					}
+					foreach (var add in onlyInNew)
+                    {
+                        var constructorAdded = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded, new CodeDescriptor
+                        {
+                            Code = add.ToCode()
+                        });
+
+						constructorAdded.ForType(first);
+
+                        changes.Add(constructorAdded);
+                    }
 				}
 			}
 		}

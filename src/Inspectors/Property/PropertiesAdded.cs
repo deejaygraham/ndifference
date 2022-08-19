@@ -2,11 +2,7 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -35,9 +31,13 @@ namespace NDifference.Inspectors
 					var added = secondRef.Properties(MemberVisibilityOption.Public).FindAddedMembers(firstRef.Properties(MemberVisibilityOption.Public));
 
 					foreach (var add in added)
-					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesAdded, new CodeDescriptor { Code = add.ToCode() }));
-					}
+                    {
+                        var propertyAdded = new IdentifiedChange(WellKnownChangePriorities.PropertiesAdded, new CodeDescriptor { Code = add.ToCode() });
+                        
+                        propertyAdded.ForType(first);
+
+                        changes.Add(propertyAdded);
+                    }
 				}
 			}
 		}

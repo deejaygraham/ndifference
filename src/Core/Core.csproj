@@ -46,6 +46,7 @@
     <Compile Include="Analysis\Analysis.cs" />
     <Compile Include="Analysis\AnalysisLevel.cs" />
     <Compile Include="Analysis\AnalysisResult.cs" />
+    <Compile Include="Analysis\CategoryRegistry.cs" />
     <Compile Include="Analysis\ChurnCalculator.cs" />
     <Compile Include="Analysis\IAnalysisWorkflow.cs" />
     <Compile Include="Analysis\IChurnable.cs" />

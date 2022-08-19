@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -32,9 +33,13 @@ namespace NDifference.Inspectors
 			Debug.Assert(secondClass != null, "Second type is not a class");
 
 			if (!firstClass.IsSealed && secondClass.IsSealed)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor { Name = "Class is now marked as sealed", Was = first.ToCode(), IsNow = second.ToCode() }));
-			}
+            {
+                var classNowSealed = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor { Name = "Class is now marked as sealed", Was = first.ToCode(), IsNow = second.ToCode() });
+
+				classNowSealed.ForType(first);
+
+                changes.Add(classNowSealed);
+            }
 		}
 	}
 }

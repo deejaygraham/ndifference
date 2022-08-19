@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -34,9 +35,13 @@ namespace NDifference.Inspectors
 			var obs = secondClass.Fields.FindObsoleteMembers();
 
 			foreach (var o in obs)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
-			}
+            {
+                var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+
+                fieldMadeObsolete.ForType(first);
+
+                changes.Add(fieldMadeObsolete);
+            }
 		}
 	}
 
@@ -66,7 +71,11 @@ namespace NDifference.Inspectors
 
             foreach (var o in newObs.Except(oldObs, new CompareMemberFieldByName()))
             {
-                changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
+                var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+
+                fieldMadeObsolete.ForType(first);
+
+                changes.Add(fieldMadeObsolete);
             }
         }
     }

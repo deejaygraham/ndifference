@@ -1,11 +1,8 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -28,9 +25,13 @@ namespace NDifference.Inspectors
 				var obs = cd2.Constructors.FindObsoleteMembers();
 
 				foreach (var o in obs)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
-				}
+                {
+                    var constructorMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstructorsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+
+                    constructorMadeObsolete.ForType(first);
+
+                    changes.Add(constructorMadeObsolete);
+                }
 			}
 		}
 	}
@@ -58,7 +59,11 @@ namespace NDifference.Inspectors
 
                 foreach (var o in newObs.Except(oldObs, new CompareMemberMethodByName()))
                 {
-                    changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
+                    var constructorMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstructorsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+
+                    constructorMadeObsolete.ForType(first);
+
+                    changes.Add(constructorMadeObsolete);
                 }
             }
         }

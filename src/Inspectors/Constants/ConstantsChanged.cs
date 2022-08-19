@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -42,17 +43,21 @@ namespace NDifference.Inspectors
 
 					if (oldConstant != null && newConstant != null)
 					{
-						// property type has changed.
+						// constant type has changed.
 						if (oldConstant.ConstantType != newConstant.ConstantType)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstantsChanged,
-								new NamedDeltaDescriptor 
-								{ 
-									Name = string.Format("Changed type from {0} to {1}", oldConstant.ConstantType, newConstant.ConstantType), 
-									Was = oldConstant.ToCode(), 
-									IsNow = newConstant.ToCode() 
-								}));
-						}
+                        {
+                            var constantChanged = new IdentifiedChange(WellKnownChangePriorities.ConstantsChanged,
+                                new NamedDeltaDescriptor 
+                                { 
+                                    Name = string.Format("Changed type from {0} to {1}", oldConstant.ConstantType, newConstant.ConstantType), 
+                                    Was = oldConstant.ToCode(), 
+                                    IsNow = newConstant.ToCode() 
+                                });
+
+							constantChanged.ForType(first);
+
+                            changes.Add(constantChanged);
+                        }
 					}
 				}
 			}

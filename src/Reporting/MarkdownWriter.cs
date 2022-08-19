@@ -135,24 +135,12 @@ namespace NDifference.Reporting
             }
         }
 
-        public void WriteTableRow(string shortCode, INameDescriptor change, IReportFormat format)
+        public void WriteTableRow(string shortCode, INameDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
-            WriteTableRow(change.Name);
+            WriteTableRow(change.Name, typeName, assemblyName);
         }
 
-        public void WriteTableRow(string shortCode, IValueDescriptor change, IReportFormat format)
-        {
-            string text = change.Value.ToString();
-
-            ICoded code = change.Value as ICoded;
-
-            if (code != null)
-                text = format.Format(code);
-
-            WriteTableRow(text);
-        }
-
-        public void WriteTableRow(string shortCode, INameValueDescriptor change, IReportFormat format)
+        public void WriteTableRow(string shortCode, IValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
             string text = change.Value.ToString();
 
@@ -161,10 +149,22 @@ namespace NDifference.Reporting
             if (code != null)
                 text = format.Format(code);
 
-            WriteTableRow(change.Name, text);
+            WriteTableRow(text, typeName, assemblyName);
         }
 
-        public void WriteTableRow(string shortCode, IDeltaDescriptor change, IReportFormat format)
+        public void WriteTableRow(string shortCode, INameValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        {
+            string text = change.Value.ToString();
+
+            ICoded code = change.Value as ICoded;
+
+            if (code != null)
+                text = format.Format(code);
+
+            WriteTableRow(change.Name, text, typeName, assemblyName);
+        }
+
+        public void WriteTableRow(string shortCode, IDeltaDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
             string wasText = change.Was.ToString();
             string isText = change.IsNow.ToString();
@@ -182,10 +182,10 @@ namespace NDifference.Reporting
                 isText = format.Format(isNow);
             }
 
-            WriteTableRow(wasText, isText);
+            WriteTableRow(wasText, isText, typeName, assemblyName);
         }
 
-        public void WriteTableRow(string shortCode, INamedDeltaDescriptor change, IReportFormat format)
+        public void WriteTableRow(string shortCode, INamedDeltaDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
             string wasText = change.Was.ToString();
             string isText = change.IsNow.ToString();
@@ -203,14 +203,14 @@ namespace NDifference.Reporting
                 isText = format.Format(isNow);
             }
 
-            WriteTableRow(change.Name, wasText, isText);
+            WriteTableRow(change.Name, wasText, isText, typeName, assemblyName);
         }
 
-        public void WriteTableRow(string shortCode, ICodeDescriptor change, IReportFormat format)
+        public void WriteTableRow(string shortCode, ICodeDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
             string text = format.Format(change.Code);
 
-            WriteTableRow(text);
+            WriteTableRow(text, typeName, assemblyName);
         }
 
         public void WriteTableRowLink(string cell1, string cell2, string link)

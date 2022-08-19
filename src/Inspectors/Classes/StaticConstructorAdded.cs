@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -31,9 +32,13 @@ namespace NDifference.Inspectors
 				StaticConstructor newStatic = cd2.StaticConstructor;
 
 				if (oldStatic == null && newStatic != null)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsAdded, new CodeDescriptor { Code = newStatic.ToCode() }));
-				}
+                {
+                    var addedConstructor = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded, new CodeDescriptor { Code = newStatic.ToCode() });
+
+					addedConstructor.ForType(first);
+
+                    changes.Add(addedConstructor);
+                }
 			}
 		}
 	}

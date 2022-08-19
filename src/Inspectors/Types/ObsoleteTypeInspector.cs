@@ -30,19 +30,19 @@ namespace NDifference.Inspectors
 				ITypeInfo ti = s.Second;
 
 				if (t1.ObsoleteMarker == null && ti.ObsoleteMarker != null)
-				{
-                    changes.Add(
-						new IdentifiedChange(
-							this, 
-							WellKnownAssemblyCategories.ObsoleteTypes, 
-							new NameValueDescriptor 
-							{ 
-								Name = ti.FullName, 
-								Value = ti.ObsoleteMarker.Message 
-							}));
-				}
-			}
+                {
+                    var typeMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ObsoleteTypes, 
+                        new NameValueDescriptor 
+                        { 
+                            Name = ti.FullName, 
+                            Value = ti.ObsoleteMarker.Message 
+                        });
 
+                    typeMadeObsolete.ForType(t1);
+
+                    changes.Add(typeMadeObsolete);
+                }
+			}
 		}
 	}
 }

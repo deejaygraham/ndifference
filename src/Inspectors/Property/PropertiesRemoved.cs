@@ -2,12 +2,7 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -36,9 +31,13 @@ namespace NDifference.Inspectors
 					var removed = secondRef.Properties(MemberVisibilityOption.Public).FindRemovedMembers(firstRef.Properties(MemberVisibilityOption.Public));
 
 					foreach (var rem in removed)
-					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesRemoved, new CodeDescriptor { Code = rem.ToCode() }));
-					}
+                    {
+                        var removedProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesRemoved, new CodeDescriptor { Code = rem.ToCode() });
+                        
+                        removedProperty.ForType(first);
+
+                        changes.Add(removedProperty);
+                    }
 				}
 			}
 		}

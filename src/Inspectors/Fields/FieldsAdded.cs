@@ -1,16 +1,12 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-
 	public class FieldsAdded : ITypeInspector
 	{
 		public bool Enabled { get; set; }
@@ -37,9 +33,13 @@ namespace NDifference.Inspectors
 				var added = secondClass.Fields.FindAddedMembers(firstClass.Fields);
 
 				foreach (var add in added)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FieldsAdded, new CodeDescriptor { Code = add.ToCode() }));
-				}
+                {
+                    var fieldAdded = new IdentifiedChange(WellKnownChangePriorities.FieldsAdded, new CodeDescriptor { Code = add.ToCode() });
+
+					fieldAdded.ForType(first);
+
+                    changes.Add(fieldAdded);
+                }
 			}
 		}
 	}

@@ -8,6 +8,9 @@ using System.Text;
 
 namespace NDifference.Inspectors
 {
+	/// <summary>
+	/// Contains all inspectors, collected by type.
+	/// </summary>
 	public class InspectorRepository
 	{
 		private List<IAssemblyCollectionInspector> aci = new List<IAssemblyCollectionInspector>();

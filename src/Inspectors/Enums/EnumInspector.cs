@@ -1,14 +1,13 @@
 ﻿// #define DEBUG_ENUMS
 
 using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -62,11 +61,15 @@ namespace NDifference.Inspectors
 				if (insertInSequence.Any())
 				{
 					foreach (var insert in insertInSequence.OrderBy(x => x.Value))
-					{
-						// addition
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EnumValuesAdded,
-							new CodeDescriptor { Code = insert.ToCode() }));
-					}
+                    {
+                        // addition
+                        var enumAdded = new IdentifiedChange(WellKnownChangePriorities.EnumValuesAdded,
+                            new CodeDescriptor { Code = insert.ToCode() });
+
+						enumAdded.ForType(first);
+
+                        changes.Add(enumAdded);
+                    }
 				}
 
 				var removeSequence = removed.Except(added, compareByText);
@@ -74,11 +77,15 @@ namespace NDifference.Inspectors
 				if (removeSequence.Any())
 				{
 					foreach (var remove in removeSequence.OrderBy(x => x.Value))
-					{
-						// removed
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EnumValuesRemoved,
-							new CodeDescriptor { Code = remove.ToCode() }));
-					}
+                    {
+                        // removed
+                        var enumRemoved = new IdentifiedChange(WellKnownChangePriorities.EnumValuesRemoved,
+                            new CodeDescriptor { Code = remove.ToCode() });
+
+						enumRemoved.ForType(first);
+
+                        changes.Add(enumRemoved);
+                    }
 				}
 
 				if (!insertInSequence.Any() && !removeSequence.Any())
@@ -92,10 +99,14 @@ namespace NDifference.Inspectors
 							var secondValue = secondEnum.AllowedValues[i];
 
 							if (firstValue.Value != secondValue.Value)
-							{
-								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EnumValuesChanged,
-								new DeltaDescriptor { Was = firstValue.ToCode(), IsNow = secondValue.ToCode() }));
-							}
+                            {
+                                var enumValueChanged = new IdentifiedChange(WellKnownChangePriorities.EnumValuesChanged,
+                                    new DeltaDescriptor { Was = firstValue.ToCode(), IsNow = secondValue.ToCode() });
+
+								enumValueChanged.ForType(first);
+
+                                changes.Add(enumValueChanged);
+                            }
 						}
 					}
 				}

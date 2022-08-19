@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace NDifference.Reporting
 {
+	/// <summary>
+	/// Describes a change that includes a name, previous value and current value.
+	/// </summary>
 	public class NamedDeltaDescriptor : INamedDeltaDescriptor
 	{
 		public string Name { get; set; }
@@ -15,6 +14,13 @@ namespace NDifference.Reporting
 		public object IsNow { get; set; }
 
 		public int Columns { get { return 3; } }
-	}
 
+		public IEnumerable<string> ColumnNames
+		{
+			get
+			{
+				return new List<string>();
+			}
+		}
+	}
 }

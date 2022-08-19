@@ -11,5 +11,13 @@ namespace NDifference.Reporting
 		public object Value { get; set; }
 
 		public int Columns { get { return 1; } }
+
+		public IEnumerable<string> ColumnNames
+		{
+			get
+			{
+				return new string[] { "Signature" };
+			}
+		}
 	}
 }

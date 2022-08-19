@@ -1,12 +1,9 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -37,25 +34,33 @@ namespace NDifference.Inspectors
 				{
 					// check for heirarchy change
 					if (firstClass.InheritsFrom != secondClass.InheritsFrom)
-					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor
-							{
-								Name = String.Format("Class was derived from {0}, now derived from {1}", firstClass.InheritsFrom, secondClass.InheritsFrom),
-								Was = first.ToCode(),
-								IsNow = second.ToCode()
-							}));
-					}
+                    {
+                        var classDerivationChanged = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor
+                        {
+                            Name = String.Format("Class was derived from {0}, now derived from {1}", firstClass.InheritsFrom, secondClass.InheritsFrom),
+                            Was = first.ToCode(),
+                            IsNow = second.ToCode()
+                        });
+
+						classDerivationChanged.ForType(first);
+
+                        changes.Add(classDerivationChanged);
+                    }
 				}
 				else
-				{
-					// no longer derived...
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor 
-						{ 
-							Name = "Class no longer derives from " + firstClass.InheritsFrom.ToString(), 
-							Was = first.ToCode(), 
-							IsNow = second.ToCode() 
-						}));
-				}
+                {
+                    // no longer derived...
+                    var classDerivationChanged = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor 
+                    { 
+                        Name = "Class no longer derives from " + firstClass.InheritsFrom.ToString(), 
+                        Was = first.ToCode(), 
+                        IsNow = second.ToCode() 
+                    });
+
+					classDerivationChanged.ForType(first);
+
+                    changes.Add(classDerivationChanged);
+                }
 			}
 		}
 	}

@@ -29,7 +29,7 @@ namespace NDifference.Inspectors
             foreach (var added in addedAssemblies)
             {
                 string assemblyName = added.Second.Name;
-				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.AddedAssemblies, assemblyName));
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedAssemblies, assemblyName));
             }
         }
 	}

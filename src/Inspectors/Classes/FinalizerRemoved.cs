@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 
@@ -26,9 +27,13 @@ namespace NDifference.Inspectors
 				Finalizer nowDestructor = cd2.Finalizer;
 
 				if (wasDestructor != null && nowDestructor == null)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.FinalizersRemoved, new ValueDescriptor { Value = wasDestructor.ToCode() }));
-				}
+                {
+                    var finalizerRemoved = new IdentifiedChange(WellKnownChangePriorities.FinalizersRemoved, new ValueDescriptor { Value = wasDestructor.ToCode() });
+
+					finalizerRemoved.ForType(first);
+
+                    changes.Add(finalizerRemoved);
+                }
 			}
 		}
 	}

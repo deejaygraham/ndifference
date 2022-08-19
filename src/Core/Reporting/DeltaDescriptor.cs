@@ -16,5 +16,13 @@ namespace NDifference.Reporting
 		public object IsNow { get; set; }
 
 		public int Columns { get { return 2; } }
+
+		public IEnumerable<string> ColumnNames 
+		{ 
+			get
+            {
+				return new List<string>();
+            } 
+		}
 	}
 }

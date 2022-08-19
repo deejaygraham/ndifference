@@ -46,7 +46,8 @@ namespace NDifference.UnitTests
 		//	collection.Add(new IdentifiedChange());
 
 		//	Assert.Equal(2, collection.UnCategorisedChanges().Count);
-		//}
+		//} 
+
 
 		//[Fact]
 		//public void IdentifiedChangeCollection_Finds_Miscategorised_Changes()

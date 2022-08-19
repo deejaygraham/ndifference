@@ -1,11 +1,10 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -30,11 +29,17 @@ namespace NDifference.Inspectors
 			var obs = secondClass.Events.FindObsoleteMembers();
 
 			foreach (var o in obs)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EventsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
-			}
+            {
+                var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });  
+
+                eventMadeObsolete.ForType(first);
+
+                changes.Add(eventMadeObsolete);
+            }
 		}
 	}
+
+    // TODO - Common checks
 
     public class EventsNowObsolete : ITypeInspector
     {
@@ -59,7 +64,11 @@ namespace NDifference.Inspectors
 
             foreach (var o in newObs.Except(oldObs, new CompareMemberEventByName()))
             {
-                changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EventsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
+                var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+
+                eventMadeObsolete.ForType(first);
+
+                changes.Add(eventMadeObsolete);
             }
         }
     }

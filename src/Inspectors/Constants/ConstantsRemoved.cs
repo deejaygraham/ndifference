@@ -1,12 +1,9 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -36,9 +33,13 @@ namespace NDifference.Inspectors
 				var removed = secondClass.Constants.FindRemovedMembers(firstClass.Constants);
 
 				foreach (var rem in removed)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstantsRemoved, new CodeDescriptor { Code = rem.ToCode() }));
-				}
+                {
+                    var constantRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstantsRemoved, new CodeDescriptor { Code = rem.ToCode() });
+
+					constantRemoved.ForType(first);
+
+                    changes.Add(constantRemoved);
+                }
 			}
 		}
 	}

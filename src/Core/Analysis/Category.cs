@@ -10,7 +10,7 @@ namespace NDifference.Analysis
 		public Category()
 		{
 			this.Identifier = new Identifier().Value;
-			this.Priority = new CategoryPriority(CategoryPriority.InvalidValue);
+			this.Priority = new CategoryPriority(CategoryPriority.Uncategorised);
 		}
 
 		public string Identifier { get; private set; }

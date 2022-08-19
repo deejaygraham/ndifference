@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using System;
 using System.Collections.Generic;
@@ -31,14 +32,14 @@ namespace NDifference.Inspectors
 
 			foreach (var difference in refsAdded)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AddedReferences, difference.Name));
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedReferences, difference.Name));
 			}
 
 			var refsRemoved = first.References.RemovedFrom(second.References, comparer);
 
 			foreach (var difference in refsRemoved)
 			{
-				changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.RemovedReferences, difference.Name));
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedReferences, difference.Name));
 			}
 		}
 	}

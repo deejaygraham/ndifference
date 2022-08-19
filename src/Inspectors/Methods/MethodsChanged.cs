@@ -38,47 +38,63 @@ namespace NDifference.Inspectors
 					if (counterpart != null)
 					{
 						if (method.IsVirtual != counterpart.IsVirtual)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-									new NamedDeltaDescriptor
-									{
-										Name = method.IsVirtual ? "Method is no longer virtual" : "Method is now virtual",
-										Was = method.ToCode(),
-										IsNow = counterpart.ToCode()
-									}));
-						}
+                        {
+                            var virtualnessChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                new NamedDeltaDescriptor
+                                {
+                                    Name = method.IsVirtual ? "Method is no longer virtual" : "Method is now virtual",
+                                    Was = method.ToCode(),
+                                    IsNow = counterpart.ToCode()
+                                });
+
+                            virtualnessChanged.ForType(first);
+
+                            changes.Add(virtualnessChanged);
+                        }
 						else if (!method.IsAbstract && counterpart.IsAbstract)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-									new NamedDeltaDescriptor
-									{
-										Name = "Method is now abstract",
-										Was = method.ToCode(),
-										IsNow = counterpart.ToCode()
-									}));
-						}
+                        {
+                            var methodMadeAbstract = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                new NamedDeltaDescriptor
+                                {
+                                    Name = "Method is now abstract",
+                                    Was = method.ToCode(),
+                                    IsNow = counterpart.ToCode()
+                                });
+
+                            methodMadeAbstract.ForType(first);
+
+                            changes.Add(methodMadeAbstract);
+                        }
 
 						if (method.IsStatic != counterpart.IsStatic)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-									new NamedDeltaDescriptor
-									{
-										Name = method.IsStatic ? "Method is no longer static" : "Method is now static",
-										Was = method.ToCode(),
-										IsNow = counterpart.ToCode()
-									}));
-						}
+                        {
+                            var staticnessChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                new NamedDeltaDescriptor
+                                {
+                                    Name = method.IsStatic ? "Method is no longer static" : "Method is now static",
+                                    Was = method.ToCode(),
+                                    IsNow = counterpart.ToCode()
+                                });
+                            
+                            staticnessChanged.ForType(first);
+
+                            changes.Add(staticnessChanged);
+                        }
 
 						if (method.Accessibility != counterpart.Accessibility)
-						{
-							changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-									new NamedDeltaDescriptor
-									{
-										Name = "Accessibility has changed",
-										Was = method.Accessibility.ToDescription(),
-										IsNow = counterpart.Accessibility.ToDescription()
-									}));
-						}
+                        {
+                            var accessibilityChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                new NamedDeltaDescriptor
+                                {
+                                    Name = "Accessibility has changed",
+                                    Was = method.Accessibility.ToDescription(),
+                                    IsNow = counterpart.Accessibility.ToDescription()
+                                });
+
+                            accessibilityChanged.ForType(first);
+
+                            changes.Add(accessibilityChanged);
+                        }
 
 						MemberMethod mm = method as MemberMethod;
 						MemberMethod cm = counterpart as MemberMethod;
@@ -86,15 +102,19 @@ namespace NDifference.Inspectors
 						if (mm != null && cm != null)
 						{
 							if (mm.ReturnType != cm.ReturnType)
-							{
-								changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.MethodsChanged,
-										new NamedDeltaDescriptor
-										{
-											Name = "Return type has changed",
-											Was = mm.ToCode(),
-											IsNow = cm.ToCode()
-										}));
-							}
+                            {
+                                var returnTypeChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                    new NamedDeltaDescriptor
+                                    {
+                                        Name = "Return type has changed",
+                                        Was = mm.ToCode(),
+                                        IsNow = cm.ToCode()
+                                    });
+
+                                returnTypeChanged.ForType(first);
+
+                                changes.Add(returnTypeChanged);
+                            }
 						}
 
 						// other things have changed ???

@@ -1,16 +1,39 @@
-﻿using NDifference.SourceFormatting;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NDifference.SourceFormatting;
 
 namespace NDifference.Reporting
 {
-	public class CodeDescriptor : ICodeDescriptor
+    public class CodeDescriptor : ICodeDescriptor
 	{
 		public ICoded Code { get; set; }
 
-		public int Columns { get { return 1; } }
-	}
+        public int Columns
+        {
+            get
+            {
+                int columns = 1;
+
+                if (!String.IsNullOrEmpty(this.TypeName))
+                    columns++;
+
+                if (!String.IsNullOrEmpty(this.AssemblyName))
+                    columns++;
+
+                return columns;
+            }
+        }
+
+        public IEnumerable<string> ColumnNames
+        {
+            get
+            {
+                return new string[] { "Change" };
+            }
+        }
+
+        public string TypeName { get; set; }
+
+        public string AssemblyName { get; set; }
+    }
 }

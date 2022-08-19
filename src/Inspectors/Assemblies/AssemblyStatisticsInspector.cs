@@ -1,19 +1,14 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
 using NDifference.Reporting;
-using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	/// <summary>
-	/// Gathers stats for an assembly
-	/// </summary>
-	public class AssemblyStatisticsInspector : ITypeCollectionInspector
+    /// <summary>
+    /// Gathers stats for an assembly
+    /// </summary>
+    public class AssemblyStatisticsInspector : ITypeCollectionInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -39,7 +34,7 @@ namespace NDifference.Inspectors
 			
 			if (oldNamespaces != newNamespaces)
 			{
-                changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
+                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, new NamedDeltaDescriptor
 				{
 					Name = "Namespaces",
 					Was = oldNamespaces.ToString(),
@@ -52,7 +47,7 @@ namespace NDifference.Inspectors
 
 			if (oldTypes != newTypes)
 			{
-                changes.Add(new IdentifiedChange(this, WellKnownAssemblyCategories.AssemblyInternal, new NamedDeltaDescriptor
+                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, new NamedDeltaDescriptor
 				{
 					Name = "Types",
 					Was = oldTypes.ToString(),

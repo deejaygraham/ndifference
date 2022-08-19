@@ -10,5 +10,9 @@ namespace NDifference.Reporting
 	public interface ICodeDescriptor : IDescriptor
 	{
 		ICoded Code { get; }
+
+		string TypeName { get; }
+
+		string AssemblyName { get; }
 	}
 }

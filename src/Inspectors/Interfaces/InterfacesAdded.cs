@@ -1,18 +1,15 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	/// <summary>
-	/// Looking for changes in the interfaces a type implements.
-	/// </summary>
-	public class InterfacesAdded : ITypeInspector
+    /// <summary>
+    /// Looking for changes in the interfaces a type implements.
+    /// </summary>
+    public class InterfacesAdded : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -38,9 +35,13 @@ namespace NDifference.Inspectors
 				if (added.Any())
 				{
 					foreach (var add in added)
-					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor { Name = "Now implements", Was = string.Empty, IsNow = add.ToCode() }));
-					}
+                    {
+                        var interfaceAdded = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor { Name = "Now implements", Was = string.Empty, IsNow = add.ToCode() });
+						
+                        interfaceAdded.ForType(first);
+
+                        changes.Add(interfaceAdded);
+                    }
 				}
 			}
 		}

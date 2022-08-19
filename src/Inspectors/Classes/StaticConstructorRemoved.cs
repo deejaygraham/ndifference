@@ -1,11 +1,7 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -31,9 +27,13 @@ namespace NDifference.Inspectors
 				StaticConstructor newStatic = cd2.StaticConstructor;
 
 				if (oldStatic != null && newStatic == null)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstructorsRemoved, new ValueDescriptor { Value = oldStatic.ToCode() }));
-				}
+                {
+                    var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved, new ValueDescriptor { Value = oldStatic.ToCode() });
+
+					constructorRemoved.ForType(first);
+
+                    changes.Add(constructorRemoved);
+                }
 			}
 		}
 	}

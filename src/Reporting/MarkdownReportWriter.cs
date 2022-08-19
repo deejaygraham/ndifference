@@ -71,28 +71,28 @@ namespace NDifference.Reporting
                     }
 
                     // write each category
-                    foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-                    {
-                        var list = changes.ChangesInCategory(cat.Name);
+     //               foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
+     //               {
+     //                   var list = changes.ChangesInCategory(cat.Name);
 
-                        if (list.Any())
-                        {
-							// write out links to each item in the page below:
-                            string href = "#" + cat.Identifier;
-                            string categoryLink = string.Format("[{0}]({1})", cat.Name, href);
-                            string occurrenceLink = string.Format("[{0}]({1})", list.Count, href);
+     //                   if (list.Any())
+     //                   {
+					//		// write out links to each item in the page below:
+     //                       string href = "#" + cat.Identifier;
+     //                       string categoryLink = string.Format("[{0}]({1})", cat.Name, href);
+     //                       string occurrenceLink = string.Format("[{0}]({1})", list.Count, href);
 
-							mdw.WriteTableRow(new string[] { categoryLink, occurrenceLink });
-						}
-					}
+					//		mdw.WriteTableRow(new string[] { categoryLink, occurrenceLink });
+					//	}
+					//}
 
-                    foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-                    {
-                        var list = changes.ChangesInCategory(cat.Name);
+     //               foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
+     //               {
+     //                   var list = changes.ChangesInCategory(cat.Name);
 
-                        if (list.Any())
-                            RenderCategory(cat, list, mdw, output);
-                    }
+     //                   if (list.Any())
+     //                       RenderCategory(cat, list, mdw, output);
+     //               }
 
                     var uncatChanges = changes.UnCategorisedChanges();
 
@@ -182,7 +182,7 @@ namespace NDifference.Reporting
 
                 if (code != null)
                 {
-                    mdw.WriteTableRow(change.Inspector, code, this._format);
+                    mdw.WriteTableRow(change.Inspector, code, this._format, change.TypeName, change.AssemblyName);
                 }
                 else
                 {
@@ -190,7 +190,7 @@ namespace NDifference.Reporting
 
                     if (nvd != null)
                     {
-                        mdw.WriteTableRow(change.Inspector, nvd, this._format);
+                        mdw.WriteTableRow(change.Inspector, nvd, this._format, change.TypeName, change.AssemblyName);
                     }
                     else
                     {
@@ -198,7 +198,7 @@ namespace NDifference.Reporting
 
                         if (nd != null)
                         {
-                            mdw.WriteTableRow(change.Inspector, nd, this._format);
+                            mdw.WriteTableRow(change.Inspector, nd, this._format, change.TypeName, change.AssemblyName);
                         }
                         else
                         {
@@ -206,7 +206,7 @@ namespace NDifference.Reporting
 
                             if (vd != null)
                             {
-                                mdw.WriteTableRow(change.Inspector, vd, this._format);
+                                mdw.WriteTableRow(change.Inspector, vd, this._format, change.TypeName, change.AssemblyName);
                             }
                             else
                             {
@@ -222,7 +222,7 @@ namespace NDifference.Reporting
 
                                     if (delta != null)
                                     {
-                                        mdw.WriteTableRow(change.Inspector, delta, this._format);
+                                        mdw.WriteTableRow(change.Inspector, delta, this._format, change.TypeName, change.AssemblyName);
                                     }
                                     //else
                                     //{

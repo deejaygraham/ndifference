@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
@@ -39,9 +40,13 @@ namespace NDifference.Inspectors
 				{
 					// or for each - no longer implements...
 					foreach (var remove in removed)
-					{
-						changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, new NamedDeltaDescriptor { Name = "No longer implements", Was = remove.ToCode(), IsNow = string.Empty }));
-					}
+                    {
+                        var interfaceRemoved = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor { Name = "No longer implements", Was = remove.ToCode(), IsNow = string.Empty });
+
+						interfaceRemoved.ForType(first);
+
+                        changes.Add(interfaceRemoved);
+                    }
 				}
 			}
 		}

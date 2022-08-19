@@ -1,12 +1,11 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -22,22 +21,13 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
 		{
-			if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
-				return;
+            var inspector = new InspectObsoleteConstants
+            {
+                NagMode = true
+            };
 
-			ClassDefinition firstClass = first as ClassDefinition;
-			ClassDefinition secondClass = second as ClassDefinition;
-
-			Debug.Assert(firstClass != null, "First type is not a class");
-			Debug.Assert(secondClass != null, "Second type is not a class");
-
-			var obs = secondClass.Constants.FindObsoleteMembers();
-
-			foreach(var o in obs)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstantsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
-			}
-		}
+            inspector.Inspect(this, first, second, changes);
+        }
 	}
 
     public class ConstantsNowObsolete : ITypeInspector
@@ -52,20 +42,53 @@ namespace NDifference.Inspectors
 
         public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
         {
+            var inspector = new InspectObsoleteConstants
+            {
+                NagMode = false
+            };
+
+            inspector.Inspect(this, first, second, changes);
+        }
+    }
+
+    class InspectObsoleteConstants
+    {
+        public bool NagMode { get; set; }
+
+        public void Inspect(ITypeInspector parentInspector, ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
+        {
             if (first.Taxonomy != TypeTaxonomy.Class || second.Taxonomy != TypeTaxonomy.Class)
                 return;
 
-            ClassDefinition firstClass = first as ClassDefinition;
-            Debug.Assert(firstClass != null, "First type is not a class");
-            var oldObs = firstClass.Constants.FindObsoleteMembers();
+            IEnumerable<Constant> obsoleteConstants = null;
 
-            ClassDefinition secondClass = second as ClassDefinition;
-            Debug.Assert(secondClass != null, "Second type is not a class");
-            var newObs = secondClass.Constants.FindObsoleteMembers();
-
-            foreach (var o in newObs.Except(oldObs, new CompareMemberConstantByName()))
+            if (this.NagMode)
             {
-                changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.ConstantsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
+                ClassDefinition secondClass = second as ClassDefinition;
+                Debug.Assert(secondClass != null, "Second type is not a class");
+
+                obsoleteConstants = secondClass.Constants.FindObsoleteMembers();
+            }
+            else
+            {
+                ClassDefinition firstClass = first as ClassDefinition;
+                Debug.Assert(firstClass != null, "First type is not a class");
+                var oldObs = firstClass.Constants.FindObsoleteMembers();
+
+                ClassDefinition secondClass = second as ClassDefinition;
+                Debug.Assert(secondClass != null, "Second type is not a class");
+                var newObs = secondClass.Constants.FindObsoleteMembers();
+
+                obsoleteConstants = newObs.Except(oldObs, new CompareMemberConstantByName());
+            }
+
+            foreach (var o in obsoleteConstants)
+            {
+                var constantMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstantsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+
+                constantMadeObsolete.ForType(first);
+
+                changes.Add(constantMadeObsolete);
             }
         }
     }

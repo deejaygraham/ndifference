@@ -3,56 +3,83 @@ using NDifference.Inspectors;
 using NDifference.Reporting;
 using System.Collections.Generic;
 using System.Diagnostics;
+using NDifference.TypeSystem;
+using System;
 
 namespace NDifference.Analysis
 {
     /// <summary>
-    /// Represents a single change in an API.
+    /// Represents a single change in an API. Changes can be grouped into 
+	/// collections which are ordered according to priority for reporting.
     /// </summary>
     [DebuggerDisplay("{Description}")]
 	public sealed class IdentifiedChange
 	{
 		public IdentifiedChange()
 		{
-			this.Priority = CategoryPriority.InvalidValue;
-			this.Inspector = "No Inspector Specified";
+			this.Priority = CategoryPriority.Uncategorised;
+			this.Severity = Severity.Unknown;
+			//this.Inspector = "No Inspector Specified";
 		}
 
-        public IdentifiedChange(IInspector inspector, Category cat, string name)
-            : this(inspector, cat, name, null)
+        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, string name)
+            : this(categoryPriority, name, null)
         {
         }
 
-        public IdentifiedChange(IInspector inspector, Category cat, object descriptor)
-            : this(inspector, cat, string.Empty, descriptor)
+        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, object descriptor)
+            : this(categoryPriority, string.Empty, descriptor)
 		{
 		}
 
-        public IdentifiedChange(IInspector inspector, Category cat, string name, object descriptor)
+        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, string name, object descriptor)
         {
-            if (inspector == null)
-                this.Inspector = "unknown";
-            else
-                this.Inspector = inspector.ShortCode;
+            //if (inspector == null)
+            //    this.Inspector = "unknown";
+            //else
+            //    this.Inspector = inspector.ShortCode;
 
-            this.Priority = cat.Priority.Value;
+            this.Priority = categoryPriority;
             this.Description = name;
             this.Descriptor = descriptor;
-            this.Category = cat;
-            this.Level = AnalysisLevel.Unknown;
+            //this.Level = AnalysisLevel.Unknown;
         }
 
+		public Severity Severity { get; set; }
+
+		[Obsolete("Not used we don't think")]
         public string Description { get; set; }
 
 		public int Priority { get; set; }
 
+		// IDescriptor ???
 		public object Descriptor { get; set; }
 
+		[Obsolete("Not used we don't think")]
 		public string Inspector { get; set; }
 
-		public Category Category { get; set; }
+//		public Category Category { get; set; }
 
-        public AnalysisLevel Level { get; set; }
+        //public AnalysisLevel Level { get; set; }
+
+        public void ForType(ITypeInfo type)
+        {
+            this.TypeName = type.FullName;
+
+            if (type.Assembly.EndsWith(".dll"))
+            {
+                this.AssemblyName = type.Assembly;
+            }
+            else
+            {
+                this.AssemblyName = type.Assembly + ".dll";
+            }
+        }
+
+		public void ForAssembly(string name)
+        {
+            this.AssemblyName = name;
+        }
 
 		public string AssemblyName { get; set; }
 

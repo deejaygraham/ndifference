@@ -33,9 +33,13 @@ namespace NDifference.Inspectors
 				var obs = secondRef.Properties(MemberVisibilityOption.Public).FindObsoleteMembers();
 
 				foreach (var o in obs)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
-				}
+                {
+                    var obsoleteProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                    
+                    obsoleteProperty.ForType(first);
+
+                    changes.Add(obsoleteProperty);
+                }
 			}
 
 		}
@@ -66,7 +70,11 @@ namespace NDifference.Inspectors
 
                 foreach (var o in newObs.Except(oldObs, new CompareMemberPropertyByName()))
                 {
-                    changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.PropertiesObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message }));
+                    var propertyMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                    
+                    propertyMadeObsolete.ForType(first);
+
+                    changes.Add(propertyMadeObsolete);
                 }
             }
 

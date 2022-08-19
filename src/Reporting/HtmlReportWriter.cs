@@ -144,15 +144,15 @@ namespace NDifference.Reporting
 											}
 
 											// write each category
-											foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-											{
-                                                var list = changes.ChangesInCategory(cat.Name);
+											//foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
+											//{
+           //                                     var list = changes.ChangesInCategory(cat.Name);
 
-                                                if (list.Any())
-												{
-													html.WriteTableRow(cat.Name, list.Count, "#" + cat.Identifier);
-												}
-											}
+           //                                     if (list.Any())
+											//	{
+											//		html.WriteTableRow(cat.Name, list.Count, "#" + cat.Identifier);
+											//	}
+											//}
 										});
 
                                         html.WriteNewLine();
@@ -162,13 +162,13 @@ namespace NDifference.Reporting
                                     html.WriteComment(" End of Summary Table ");
 								});
 
-								foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-								{
-                                    var list = changes.ChangesInCategory(cat.Name);
+								//foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
+								//{
+        //                            var list = changes.ChangesInCategory(cat.Name);
 
-                                    if (list.Any())
-                                        RenderCategory(cat, list, html, output);
-								}
+        //                            if (list.Any())
+        //                                RenderCategory(cat, list, html, output);
+								//}
 
 								var uncatChanges = changes.UnCategorisedChanges();
 

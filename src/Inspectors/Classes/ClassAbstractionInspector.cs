@@ -1,16 +1,12 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class ClassAbstractionInspector : ITypeInspector
+    public class ClassAbstractionInspector : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -32,15 +28,21 @@ namespace NDifference.Inspectors
 			Debug.Assert(secondClass != null, "Second type is not a class");
 
 			if (!firstClass.IsAbstract && secondClass.IsAbstract)
-			{
-				changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeInternal, 
-					new NamedDeltaDescriptor 
-					{ 
-						Name = "Class is now abstract", 
-						Was = first.ToCode(), 
-						IsNow = second.ToCode() 
-					}));
-			}
+            {
+                var classMadeAbstract = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
+
+					// needs coded descriptor
+                    new NamedDeltaDescriptor 
+                    { 
+                        Name = "Class is now abstract", 
+                        Was = first.ToCode(), 
+                        IsNow = second.ToCode() 
+                    });
+
+				classMadeAbstract.ForType(first);
+
+                changes.Add(classMadeAbstract);
+            }
 		}
 	}
 }

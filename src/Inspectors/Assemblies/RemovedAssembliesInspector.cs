@@ -30,7 +30,7 @@ namespace NDifference.Inspectors
             {
                 string assemblyName = removed.First.Name;
 
-				changes.Add(new IdentifiedChange(this, WellKnownSummaryCategories.RemovedAssemblies, assemblyName));
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedAssemblies, assemblyName));
             }
         }
 	}

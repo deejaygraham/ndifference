@@ -60,6 +60,10 @@ namespace NDifference.Analysis
 			{
 				return this._topLevelChanges;
 			}
+            set
+            {
+                this._topLevelChanges = value;
+            }
 		}
 
 		public ReadOnlyCollection<IdentifiedChangeCollection> AssemblyLevelChanges

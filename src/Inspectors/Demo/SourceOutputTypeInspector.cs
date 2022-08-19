@@ -1,11 +1,7 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
@@ -20,8 +16,12 @@ namespace NDifference.Inspectors
 		public string Description { get { return "Writes source code for each type found"; } }
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
-		{
-			changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.TypeDebug, new DeltaDescriptor { Was = first.ToCode(), IsNow = second.ToCode() }));
-		}
+        {
+            var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug, new DeltaDescriptor { Was = first.ToCode(), IsNow = second.ToCode() });
+
+            dummyChange.ForType(first);
+
+            changes.Add(dummyChange);
+        }
 	}
 }

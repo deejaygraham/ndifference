@@ -26,21 +26,24 @@ namespace NDifference.Inspectors
 			var comparer = new TypeNameComparer();
 
 			foreach (var common in types.InCommon)
-			{
-				changes.Add(new IdentifiedChange 
-				{
-					Description = common.Second.FullName,
-					Priority = WellKnownAssemblyCategories.ChangedTypes.Priority.Value,
-					Descriptor = new DocumentLink
-					{
-						LinkText = common.First.Name,
-						LinkUrl = common.First.FullName,
-						Identifier = common.Second.Identifier
-					},
+            {
+                var dummyChange = new IdentifiedChange 
+                {
+                    Description = common.Second.FullName,
+                    Priority = WellKnownAssemblyCategories.ChangedTypes.Priority.Value,
+                    Descriptor = new DocumentLink
+                    {
+                        LinkText = common.First.Name,
+                        LinkUrl = common.First.FullName,
+                        Identifier = common.Second.Identifier
+                    },
                     Inspector = this.ShortCode
+                };
 
-				});
-			}
+                dummyChange.ForType(common.Second);
+
+                changes.Add(dummyChange);
+            }
 		}
 	}
 }

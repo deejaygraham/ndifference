@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
+    /// <summary>
+    /// Describes a change that includes previous value and current value.
+    /// </summary>
 	public interface IDeltaDescriptor : IDescriptor
 	{
-		// string Name { get; }
-
 		object Was { get; }
 
 		object IsNow { get; }
 	}
-
 }

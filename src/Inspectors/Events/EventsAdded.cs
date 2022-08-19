@@ -1,4 +1,5 @@
 ﻿using NDifference.Analysis;
+using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System.Linq;
@@ -28,9 +29,13 @@ namespace NDifference.Inspectors
 				var added = secondClass.Events.FindAddedMembers(firstClass.Events);
 
 				foreach (var add in added)
-				{
-					changes.Add(new IdentifiedChange(this, WellKnownTypeCategories.EventsAdded, new CodeDescriptor { Code = add.ToCode() }));
-				}
+                {
+                    var eventAdded = new IdentifiedChange(WellKnownChangePriorities.EventsAdded, new CodeDescriptor { Code = add.ToCode() });
+
+					eventAdded.ForType(first);
+
+                    changes.Add(eventAdded);
+                }
 			}
 		}
 	}

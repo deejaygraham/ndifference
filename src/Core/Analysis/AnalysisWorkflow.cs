@@ -199,11 +199,7 @@ namespace NDifference.Analysis
                             changesToThisType.Parents.Add(new DocumentLink { Identifier = changesToThisAssembly.Identifier, LinkText = changesToThisAssembly.Name });
 
                             progressIndicator.Report(new Progress("Inspecting type " + currentType.Name));
-
-                            foreach (var ti in inspectors.TypeInspectors.Where(x => x.Enabled))
-                            {
-                                ti.Inspect(previousType, currentType, changesToThisType);
-                            }
+                            RunTypeInspectors(inspectors, previousType, currentType, changesToThisType);
 
                             if (changesToThisType.Changes.Any())
                             {
@@ -217,7 +213,7 @@ namespace NDifference.Analysis
 
                                     var ic = new IdentifiedChange(
                                         WellKnownChangePriorities.ChangedTypes,
-                                        currentType.FullName,
+                                        //currentType.FullName,
                                         new DocumentLink
                                         {
                                             LinkText = currentType.FullName,
@@ -294,7 +290,7 @@ namespace NDifference.Analysis
                             result.Assembly(changesToThisAssembly);
                             result.Summary.Add(new IdentifiedChange(
                                 WellKnownChangePriorities.ChangedAssemblies,
-                                commonAssemblyPair.First.Name,
+                                //commonAssemblyPair.First.Name,
                                 new DocumentLink
                                 {
                                     LinkText = commonAssemblyPair.First.Name,
@@ -340,7 +336,7 @@ namespace NDifference.Analysis
 
                 result.Summary.Add(new IdentifiedChange(
                     WellKnownChangePriorities.ChangedAssemblies,
-                    result.BreakingChanges.Name,
+                   // result.BreakingChanges.Name,
                     new DocumentLink
                     {
                         LinkText = result.BreakingChanges.Name,
@@ -355,6 +351,14 @@ namespace NDifference.Analysis
 
 			return result;
 		}
+
+        private static void RunTypeInspectors(InspectorRepository inspectors, ITypeInfo previousType, ITypeInfo currentType, IdentifiedChangeCollection changesToThisType)
+        {
+            foreach (var ti in inspectors.TypeInspectors.Where(x => x.Enabled))
+            {
+                ti.Inspect(previousType, currentType, changesToThisType);
+            }
+        }
 
         private static IdentifiedChangeCollection BuilMainSummaryPage(Project project)
         {

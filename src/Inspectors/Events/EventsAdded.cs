@@ -30,7 +30,12 @@ namespace NDifference.Inspectors
 
 				foreach (var add in added)
                 {
-                    var eventAdded = new IdentifiedChange(WellKnownChangePriorities.EventsAdded, new CodeDescriptor { Code = add.ToCode() });
+                    var eventAdded = new IdentifiedChange(WellKnownChangePriorities.EventsAdded, 
+						new CodeDescriptor 
+						{ 
+							Reason = "Event added",
+							Code = add.ToCode() 
+						});
 
 					eventAdded.ForType(first);
 

@@ -43,9 +43,9 @@ namespace NDifference.Inspectors
 							if (oldProperty.GetterAccessibility == MemberAccessibility.Public && newProperty.GetterAccessibility != MemberAccessibility.Public)
                             {
                                 var getterRemoved = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
-                                    new NamedDeltaDescriptor
+                                    new CodeDeltaDescriptor
                                     {
-                                        Name = "Get removed",
+                                        Reason = "Get removed",
                                         Was = oldProperty.ToCode(),
                                         IsNow = newProperty.ToCode()
                                     });
@@ -58,9 +58,9 @@ namespace NDifference.Inspectors
 							if (oldProperty.SetterAccessibility == MemberAccessibility.Public && newProperty.SetterAccessibility != MemberAccessibility.Public)
                             {
                                 var setterRemoved = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
-                                    new NamedDeltaDescriptor
+                                    new CodeDeltaDescriptor
                                     {
-                                        Name = "Set removed",
+                                        Reason = "Set removed",
                                         Was = oldProperty.ToCode(),
                                         IsNow = newProperty.ToCode()
                                     });
@@ -78,9 +78,9 @@ namespace NDifference.Inspectors
 									&& oldProperty.PropertyType.Type == newProperty.PropertyType.Type)
                                 {
                                     var movedNamespace = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
-                                        new NamedDeltaDescriptor
+                                        new CodeDeltaDescriptor
                                         {
-                                            Name = string.Format(
+                                            Reason = string.Format(
                                                 "Property changed namespace from {0} to {1}",
                                                 oldProperty.PropertyType.ContainingNamespace,
                                                 newProperty.PropertyType.ContainingNamespace
@@ -96,9 +96,9 @@ namespace NDifference.Inspectors
 								else
                                 {
                                     var propertyTypeChanged = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
-                                        new NamedDeltaDescriptor
+                                        new CodeDeltaDescriptor
                                         {
-                                            Name = string.Format(
+                                            Reason = string.Format(
                                                 "Property changed from {0} to {1}",
                                                 oldProperty.PropertyType.Type,
                                                 newProperty.PropertyType.Type

@@ -1,5 +1,6 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
+using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,7 +32,12 @@ namespace NDifference.Inspectors
             {
                 foreach (var added in addedTypes)
                 {
-                    var addedNewType = new IdentifiedChange(WellKnownChangePriorities.AddedTypes, added.Second.FullName);
+                    var addedNewType = new IdentifiedChange(WellKnownChangePriorities.AddedTypes,
+						new NameDescriptor
+						{
+							Name = added.Second.FullName,
+							Reason = "Type added"
+						}); 
 
                     addedNewType.ForType(added.Second);
 

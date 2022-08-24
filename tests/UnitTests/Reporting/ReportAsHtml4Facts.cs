@@ -11,7 +11,7 @@ namespace NDifference.UnitTests
 			ReportAsHtml4 format = new ReportAsHtml4();
 
 			Assert.True(format.Supports("html"));
-			Assert.True(format.Supports("HTML"));
+			Assert.True(format.Supports(".HTML"));
 		}
 
 	}

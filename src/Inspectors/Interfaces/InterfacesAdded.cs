@@ -36,7 +36,14 @@ namespace NDifference.Inspectors
 				{
 					foreach (var add in added)
                     {
-                        var interfaceAdded = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor { Name = "Now implements", Was = string.Empty, IsNow = add.ToCode() });
+						// TODO - Interface added !!!!
+                        var interfaceAdded = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
+							new CodeDescriptor 
+							{ 
+								Reason = "Now implements", 
+								//Was = null,  //string.Empty, // TODO SourceCode.NoOp();
+								Code = add.ToCode() 
+							});
 						
                         interfaceAdded.ForType(first);
 

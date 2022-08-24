@@ -34,12 +34,13 @@ namespace NDifference.Inspectors
 			
 			if (oldNamespaces != newNamespaces)
 			{
-                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, new NamedDeltaDescriptor
-				{
-					Name = "Namespaces",
-					Was = oldNamespaces.ToString(),
-					IsNow = newNamespaces.ToString()
-				}));
+                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, 
+					new DeltaDescriptor
+					{
+						Reason = "Namespaces",
+						Was = oldNamespaces.ToString(),
+						IsNow = newNamespaces.ToString()
+					}));
 			}
 
 			int oldTypes = types.Types.Count(x => x.First != null);
@@ -47,12 +48,13 @@ namespace NDifference.Inspectors
 
 			if (oldTypes != newTypes)
 			{
-                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, new NamedDeltaDescriptor
-				{
-					Name = "Types",
-					Was = oldTypes.ToString(),
-					IsNow = newTypes.ToString()
-				}));
+                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, 
+					new DeltaDescriptor
+					{
+						Reason = "Types",
+						Was = oldTypes.ToString(),
+						IsNow = newTypes.ToString()
+					}));
 			}
 		}
 	}

@@ -32,7 +32,12 @@ namespace NDifference.Inspectors
 
 					foreach (var add in added)
                     {
-                        var propertyAdded = new IdentifiedChange(WellKnownChangePriorities.PropertiesAdded, new CodeDescriptor { Code = add.ToCode() });
+                        var propertyAdded = new IdentifiedChange(WellKnownChangePriorities.PropertiesAdded, 
+							new CodeDescriptor 
+							{ 
+								Code = add.ToCode(),
+								Reason = "Property has been added"
+							});
                         
                         propertyAdded.ForType(first);
 

@@ -34,7 +34,12 @@ namespace NDifference.Inspectors
 
 				foreach (var add in added)
                 {
-                    var constantAdded = new IdentifiedChange(WellKnownChangePriorities.ConstantsAdded, new CodeDescriptor { Code = add.ToCode() });
+                    var constantAdded = new IdentifiedChange(WellKnownChangePriorities.ConstantsAdded, 
+						new CodeDescriptor 
+						{ 
+							Reason = "Constant added",
+							Code = add.ToCode() 
+						});
 
 					constantAdded.ForType(first);
 

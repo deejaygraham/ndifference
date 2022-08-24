@@ -87,6 +87,7 @@
     <Compile Include="Projects\ProjectReader.cs" />
     <Compile Include="Projects\ProjectSettings.cs" />
     <Compile Include="Projects\ProjectWriter.cs" />
+    <Compile Include="Reporting\CodeDeltaDescriptor.cs" />
     <Compile Include="Reporting\CodeDescriptor.cs" />
     <Compile Include="Reporting\CssVariableRepository.cs" />
     <Compile Include="Reporting\DefaultHtml5Style.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Reporting\DocumentLink.cs" />
     <Compile Include="Reporting\FileOutput.cs" />
     <Compile Include="Reporting\HtmlStyleReset.cs" />
+    <Compile Include="Reporting\ICodeDeltaDescriptor.cs" />
     <Compile Include="Reporting\ICodeDescriptor.cs" />
     <Compile Include="Reporting\IDeltaDescriptor.cs" />
     <Compile Include="Reporting\IDescriptor.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Reporting\FileMapBuilder.cs" />
     <Compile Include="Reporting\IValueDescriptor.cs" />
     <Compile Include="Reporting\NamedDeltaDescriptor.cs" />
+    <Compile Include="Reporting\NameDescriptor.cs" />
     <Compile Include="Reporting\ReportFormatRepository.cs" />
     <Compile Include="Reporting\ReportingRepository.cs" />
     <Compile Include="Reporting\ReportingWorkflow.cs" />

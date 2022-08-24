@@ -34,7 +34,12 @@ namespace NDifference.Inspectors
 
 				foreach (var rem in removed)
                 {
-                    var constantRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstantsRemoved, new CodeDescriptor { Code = rem.ToCode() });
+                    var constantRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstantsRemoved, 
+						new CodeDescriptor 
+						{ 
+							Reason = "Constant removed",
+							Code = rem.ToCode() 
+						});
 
 					constantRemoved.ForType(first);
 

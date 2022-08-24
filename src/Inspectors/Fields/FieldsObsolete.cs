@@ -71,7 +71,12 @@ namespace NDifference.Inspectors
 
             foreach (var o in newObs.Except(oldObs, new CompareMemberFieldByName()))
             {
-                var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete, 
+                    new CodeDescriptor 
+                    { 
+                        Code = o.ToCode(), 
+                        Reason = o.ObsoleteMarker.Message 
+                    });
 
                 fieldMadeObsolete.ForType(first);
 

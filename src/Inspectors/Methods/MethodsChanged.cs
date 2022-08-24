@@ -2,15 +2,10 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class MethodsChanged : ITypeInspector
+    public class MethodsChanged : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -40,9 +35,9 @@ namespace NDifference.Inspectors
 						if (method.IsVirtual != counterpart.IsVirtual)
                         {
                             var virtualnessChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
-                                new NamedDeltaDescriptor
+                                new CodeDeltaDescriptor
                                 {
-                                    Name = method.IsVirtual ? "Method is no longer virtual" : "Method is now virtual",
+                                    Reason = method.IsVirtual ? "Method is no longer virtual" : "Method is now virtual",
                                     Was = method.ToCode(),
                                     IsNow = counterpart.ToCode()
                                 });
@@ -54,9 +49,9 @@ namespace NDifference.Inspectors
 						else if (!method.IsAbstract && counterpart.IsAbstract)
                         {
                             var methodMadeAbstract = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
-                                new NamedDeltaDescriptor
+                                new CodeDeltaDescriptor
                                 {
-                                    Name = "Method is now abstract",
+                                    Reason = "Method is now abstract",
                                     Was = method.ToCode(),
                                     IsNow = counterpart.ToCode()
                                 });
@@ -69,9 +64,9 @@ namespace NDifference.Inspectors
 						if (method.IsStatic != counterpart.IsStatic)
                         {
                             var staticnessChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
-                                new NamedDeltaDescriptor
+                                new CodeDeltaDescriptor
                                 {
-                                    Name = method.IsStatic ? "Method is no longer static" : "Method is now static",
+                                    Reason = method.IsStatic ? "Method is no longer static" : "Method is now static",
                                     Was = method.ToCode(),
                                     IsNow = counterpart.ToCode()
                                 });
@@ -84,9 +79,9 @@ namespace NDifference.Inspectors
 						if (method.Accessibility != counterpart.Accessibility)
                         {
                             var accessibilityChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
-                                new NamedDeltaDescriptor
+                                new DeltaDescriptor
                                 {
-                                    Name = "Accessibility has changed",
+                                    Reason = "Accessibility has changed",
                                     Was = method.Accessibility.ToDescription(),
                                     IsNow = counterpart.Accessibility.ToDescription()
                                 });
@@ -104,9 +99,9 @@ namespace NDifference.Inspectors
 							if (mm.ReturnType != cm.ReturnType)
                             {
                                 var returnTypeChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
-                                    new NamedDeltaDescriptor
+                                    new CodeDeltaDescriptor
                                     {
-                                        Name = "Return type has changed",
+                                        Reason = "Return type has changed",
                                         Was = mm.ToCode(),
                                         IsNow = cm.ToCode()
                                     });

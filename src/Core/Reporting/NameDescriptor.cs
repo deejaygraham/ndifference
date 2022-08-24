@@ -2,13 +2,11 @@
 
 namespace NDifference.Reporting
 {
-	public class NameValueDescriptor : INameValueDescriptor
-	{
-		public string Name { get; set; }
+    public class NameDescriptor : INameDescriptor
+    {
+        public string Name { get; set; }
 
-		public string Reason { get; set; }
-
-		public object Value { get; set; }
+        public string Reason { get; set; }
 
 		public int Columns { get { return 2; } }
 

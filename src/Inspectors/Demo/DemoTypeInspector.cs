@@ -1,5 +1,6 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
+using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,12 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
         {
-            var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug, "This is a demonstration type inspector-identified change");
+            var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug, 
+				new NameDescriptor
+				{
+					Reason = "This is a demonstration type inspector-identified change",
+					Name = "Demo"
+				});
 
 			dummyChange.ForType(first);
 

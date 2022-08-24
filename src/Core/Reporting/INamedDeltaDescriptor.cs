@@ -6,5 +6,6 @@
 	public interface INamedDeltaDescriptor : IDeltaDescriptor
 	{
 		string Name { get; }
+
 	}
 }

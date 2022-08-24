@@ -8,6 +8,8 @@ namespace NDifference.Reporting
 {
 	public class ValueDescriptor : IValueDescriptor
 	{
+		public string Reason { get; set; }
+
 		public object Value { get; set; }
 
 		public int Columns { get { return 1; } }

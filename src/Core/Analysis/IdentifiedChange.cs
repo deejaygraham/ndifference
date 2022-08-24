@@ -22,17 +22,17 @@ namespace NDifference.Analysis
 			//this.Inspector = "No Inspector Specified";
 		}
 
-        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, string name)
-            : this(categoryPriority, name, null)
-        {
-        }
+        //public IdentifiedChange(/*IInspector inspector, */int categoryPriority, string name)
+        //    : this(categoryPriority, name, null)
+        //{
+        //}
 
-        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, object descriptor)
-            : this(categoryPriority, string.Empty, descriptor)
-		{
-		}
+  //      public IdentifiedChange(/*IInspector inspector, */int categoryPriority, IDescriptor descriptor)
+  //          : this(categoryPriority, descriptor)
+		//{
+		//}
 
-        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, string name, object descriptor)
+        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, IDescriptor descriptor)
         {
             //if (inspector == null)
             //    this.Inspector = "unknown";
@@ -40,7 +40,7 @@ namespace NDifference.Analysis
             //    this.Inspector = inspector.ShortCode;
 
             this.Priority = categoryPriority;
-            this.Description = name;
+            //this.Description = name;
             this.Descriptor = descriptor;
             //this.Level = AnalysisLevel.Unknown;
         }
@@ -66,15 +66,18 @@ namespace NDifference.Analysis
         {
             this.TypeName = type.FullName;
 
-            if (type.Assembly.EndsWith(".dll"))
+			if (!String.IsNullOrEmpty(type.Assembly))
             {
-                this.AssemblyName = type.Assembly;
-            }
-            else
-            {
-                this.AssemblyName = type.Assembly + ".dll";
-            }
-        }
+				if (type.Assembly.EndsWith(".dll"))
+				{
+					this.AssemblyName = type.Assembly;
+				}
+				else
+				{
+					this.AssemblyName = type.Assembly + ".dll";
+				}
+			}
+		}
 
 		public void ForAssembly(string name)
         {
@@ -122,6 +125,7 @@ namespace NDifference.Analysis
 			//	return xdelta.Name.CompareTo(ydelta.Name);
 			//}
 
+			// TODO Change order ???
 			INameValueDescriptor xtext = x as INameValueDescriptor;
 			INameValueDescriptor ytext = y as INameValueDescriptor;
 

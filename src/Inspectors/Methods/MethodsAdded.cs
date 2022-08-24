@@ -2,16 +2,11 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class MethodsAdded : ITypeInspector
+    public class MethodsAdded : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -37,7 +32,12 @@ namespace NDifference.Inspectors
 
 					foreach (var add in added)
                     {
-                        var newMethodAdded = new IdentifiedChange(WellKnownChangePriorities.MethodsAdded, new CodeDescriptor { Code = add.ToCode() });
+                        var newMethodAdded = new IdentifiedChange(WellKnownChangePriorities.MethodsAdded, 
+							new CodeDescriptor 
+							{ 
+								Reason = "Method added",
+								Code = add.ToCode() 
+							});
                         
                         newMethodAdded.ForType(first);
 

@@ -2,15 +2,11 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class EventsChanged : ITypeInspector
+    public class EventsChanged : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -42,9 +38,9 @@ namespace NDifference.Inspectors
 						if (oldEvent.EventType != newEvent.EventType)
                         {
                             var eventChangedType = new IdentifiedChange(WellKnownChangePriorities.EventsChanged,
-                                new NamedDeltaDescriptor
+                                new CodeDeltaDescriptor
                                 {
-                                    Name = string.Format("Changed type from {0} to {1}", oldEvent.EventType, newEvent.EventType),
+                                    Reason = string.Format("Changed type from {0} to {1}", oldEvent.EventType, newEvent.EventType),
                                     Was = oldEvent.ToCode(),
                                     IsNow = newEvent.ToCode()
                                 });

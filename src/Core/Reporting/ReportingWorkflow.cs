@@ -5,12 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace NDifference.Reporting
 {
-	public class ReportingWorkflow : IReportingWorkflow
+    public class ReportingWorkflow : IReportingWorkflow
 	{
 		public event EventHandler<CancellableEventArgs> ReportsStarting;
 

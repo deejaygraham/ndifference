@@ -84,7 +84,12 @@ namespace NDifference.Inspectors
 
             foreach (var o in obsoleteConstants)
             {
-                var constantMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstantsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                var constantMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstantsObsolete, 
+                    new CodeDescriptor 
+                    { 
+                        Code = o.ToCode(), 
+                        Reason = o.ObsoleteMarker.Message 
+                    });
 
                 constantMadeObsolete.ForType(first);
 

@@ -4,14 +4,11 @@ using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class MethodsObsolete : ITypeInspector
+    public class MethodsObsolete : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -35,7 +32,12 @@ namespace NDifference.Inspectors
 
 				foreach (var o in obs)
                 {
-                    var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                    var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete, 
+                        new CodeDescriptor 
+                        { 
+                            Code = o.ToCode(), 
+                            Reason = o.ObsoleteMarker.Message 
+                        });
                     
                     methodMadeObsolete.ForType(first);
 
@@ -70,7 +72,12 @@ namespace NDifference.Inspectors
 
                 foreach (var o in newObs.Except(oldObs, new CompareMemberMethodByName()))
                 {
-                    var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                    var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete, 
+                        new CodeDescriptor 
+                        { 
+                            Code = o.ToCode(), 
+                            Reason = o.ObsoleteMarker.Message 
+                        });
                     
                     methodMadeObsolete.ForType(first);
 

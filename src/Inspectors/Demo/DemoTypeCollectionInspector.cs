@@ -2,16 +2,13 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace NDifference.Inspectors
 {
-	/// <summary>
-	/// Uncritically takes collections and creates a change for each one.
-	/// </summary>
-	public class DemoTypeCollectionInspector : ITypeCollectionInspector
+    /// <summary>
+    /// Uncritically takes collections and creates a change for each one.
+    /// </summary>
+    public class DemoTypeCollectionInspector : ITypeCollectionInspector
 	{
 		public bool Enabled { get { return false; } set { } }
 
@@ -29,15 +26,15 @@ namespace NDifference.Inspectors
             {
                 var dummyChange = new IdentifiedChange 
                 {
-                    Description = common.Second.FullName,
-                    Priority = WellKnownAssemblyCategories.ChangedTypes.Priority.Value,
+                    //Description = common.Second.FullName,
+                    Priority = WellKnownChangePriorities.ChangedTypes,
                     Descriptor = new DocumentLink
                     {
                         LinkText = common.First.Name,
                         LinkUrl = common.First.FullName,
                         Identifier = common.Second.Identifier
-                    },
-                    Inspector = this.ShortCode
+                    }//,
+                    //Inspector = this.ShortCode
                 };
 
                 dummyChange.ForType(common.Second);

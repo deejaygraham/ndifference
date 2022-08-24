@@ -2,16 +2,12 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class ConstantsChanged : ITypeInspector
+    public class ConstantsChanged : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -47,9 +43,9 @@ namespace NDifference.Inspectors
 						if (oldConstant.ConstantType != newConstant.ConstantType)
                         {
                             var constantChanged = new IdentifiedChange(WellKnownChangePriorities.ConstantsChanged,
-                                new NamedDeltaDescriptor 
+                                new CodeDeltaDescriptor 
                                 { 
-                                    Name = string.Format("Changed type from {0} to {1}", oldConstant.ConstantType, newConstant.ConstantType), 
+                                    Reason = string.Format("Changed type from {0} to {1}", oldConstant.ConstantType, newConstant.ConstantType), 
                                     Was = oldConstant.ToCode(), 
                                     IsNow = newConstant.ToCode() 
                                 });

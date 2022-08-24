@@ -34,7 +34,12 @@ namespace NDifference.Inspectors
 
 				foreach (var add in added)
                 {
-                    var fieldAdded = new IdentifiedChange(WellKnownChangePriorities.FieldsAdded, new CodeDescriptor { Code = add.ToCode() });
+                    var fieldAdded = new IdentifiedChange(WellKnownChangePriorities.FieldsAdded, 
+						new CodeDescriptor 
+						{ 
+							Reason = "Field added",
+							Code = add.ToCode() 
+						});
 
 					fieldAdded.ForType(first);
 

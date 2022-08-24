@@ -1,13 +1,9 @@
-﻿using NDifference.Analysis;
-using NDifference.Inspection;
+﻿using NDifference.Inspection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NDifference.Inspectors
+namespace NDifference.Analysis
 {
+    [Obsolete("Maybe don't need")]
 	/// <summary>
 	/// Changes that apply at the top level - all assemblies.
 	/// </summary>

@@ -1,5 +1,6 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
+using NDifference.Reporting;
 using System.Diagnostics;
 using System.Linq;
 
@@ -29,7 +30,14 @@ namespace NDifference.Inspectors
             foreach (var added in addedAssemblies)
             {
                 string assemblyName = added.Second.Name;
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedAssemblies, assemblyName));
+
+				// descriptor ?
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedAssemblies, 
+					new NameDescriptor 
+					{ 
+						Name = assemblyName,
+						Reason = "Assembly added"
+					}));
             }
         }
 	}

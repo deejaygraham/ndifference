@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace NDifference.Inspectors
 {
-	public class InstanceConstructorsInspector : ITypeInspector
+    public class InstanceConstructorsInspector : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -41,11 +41,13 @@ namespace NDifference.Inspectors
 
 					if (!newCtor.Signature.ExactlyMatches(oldCtor.Signature))
                     {
-                        var constructorChanged = new IdentifiedChange(WellKnownChangePriorities.ConstructorsChanged, new DeltaDescriptor 
-                        { 
-                            Was = oldCtor.ToCode(),
-                            IsNow = newCtor.ToCode() 
-                        });
+                        var constructorChanged = new IdentifiedChange(WellKnownChangePriorities.ConstructorsChanged, 
+							new CodeDeltaDescriptor 
+							{ 
+								Was = oldCtor.ToCode(),
+								IsNow = newCtor.ToCode(),
+								Reason = "Constructor signature changed"
+							});
 
 						constructorChanged.ForType(first);
 
@@ -58,10 +60,12 @@ namespace NDifference.Inspectors
 					// removed and which ones have been added.
 					foreach (var remove in onlyInOld)
                     {
-                        var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved, new CodeDescriptor 
-                        { 
-                            Code = remove.ToCode() 
-                        });
+                        var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved, 
+							new CodeDescriptor 
+							{ 
+								Code = remove.ToCode(),
+								Reason = "Constructor removed"
+							});
 
 						constructorRemoved.ForType(first);
 
@@ -70,10 +74,12 @@ namespace NDifference.Inspectors
 					
 					foreach (var add in onlyInNew)
                     {
-                        var constructorAdded = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded, new CodeDescriptor
-                        {
-                            Code = add.ToCode()
-                        });
+                        var constructorAdded = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded, 
+							new CodeDescriptor
+							{
+								Code = add.ToCode(),
+								Reason = "Constructor added"
+							});
 
 						constructorAdded.ForType(first);
 

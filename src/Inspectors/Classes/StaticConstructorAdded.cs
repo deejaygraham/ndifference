@@ -33,7 +33,12 @@ namespace NDifference.Inspectors
 
 				if (oldStatic == null && newStatic != null)
                 {
-                    var addedConstructor = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded, new CodeDescriptor { Code = newStatic.ToCode() });
+                    var addedConstructor = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded, 
+						new CodeDescriptor 
+						{ 
+							Reason = "Static constructor added",
+							Code = newStatic.ToCode() 
+						});
 
 					addedConstructor.ForType(first);
 

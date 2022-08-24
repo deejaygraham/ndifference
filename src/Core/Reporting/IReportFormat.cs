@@ -36,6 +36,14 @@ namespace NDifference.Reporting
 		/// <returns></returns>
 		string Format(ICoded source);
 
+		string FormatLink(string url, string name);
+
+		string FormatTitle(int size, string title, string id);
+
+		string FormatTableHeader(IEnumerable<string> headings);
+
+		string FormatTableRow(IEnumerable<string> cells);
+
 		/// <summary>
 		/// Does this format match the provided one?
 		/// </summary>

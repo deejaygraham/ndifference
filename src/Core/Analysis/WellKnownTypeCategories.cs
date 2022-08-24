@@ -1,8 +1,9 @@
-﻿using NDifference.Analysis;
-using NDifference.Inspection;
+﻿using NDifference.Inspection;
+using System;
 
-namespace NDifference.Inspectors
+namespace NDifference.Analysis
 {
+    [Obsolete("Maybe don't need")]
 	public static class WellKnownTypeCategories
 	{
 		public static readonly Category TypeInternal = new Category
@@ -27,7 +28,7 @@ namespace NDifference.Inspectors
 		public static readonly Category ConstantsObsolete = new Category
 		{
 			Name = "Obsolete Constants",
-			Description = "These constants were made obsolete in the new version of this type",
+			Description = "These constants have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsObsolete),
 			Headings = new string[] { "Value", "Message" },
             Severity = Severity.PotentiallyBreakingChange
@@ -64,7 +65,7 @@ namespace NDifference.Inspectors
 		public static readonly Category FieldsObsolete = new Category
 		{
 			Name = "Obsolete Fields",
-			Description = "These fields were made obsolete in the new version of this type",
+			Description = "These fields have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsObsolete),
 			Headings = new string[] { "Value", "Message" },
             Severity = Severity.PotentiallyBreakingChange
@@ -101,7 +102,7 @@ namespace NDifference.Inspectors
 		public static readonly Category ConstructorsObsolete = new Category
 		{
 			Name = "Obsolete Constructors",
-			Description = "These constructors were made obsolete in the new version of this type",
+			Description = "These constructors have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsObsolete),
 			Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
@@ -175,7 +176,7 @@ namespace NDifference.Inspectors
 		public static readonly Category DelegatesObsolete = new Category
 		{
 			Name = "Obsolete Delegates",
-			Description = "These delegates were made obsolete in the new version of this type",
+			Description = "These delegates have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesObsolete),
 			Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
@@ -212,7 +213,7 @@ namespace NDifference.Inspectors
 		public static readonly Category EventsObsolete = new Category
 		{
 			Name = "Obsolete Events",
-			Description = "These events were made obsolete in the new version of this type",
+			Description = "These events have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsObsolete),
 			Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
@@ -249,7 +250,7 @@ namespace NDifference.Inspectors
 		public static readonly Category PropertiesObsolete = new Category
 		{
 			Name = "Obsolete Properties",
-			Description = "These properties were made obsolete in the new version of this type",
+			Description = "These properties have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesObsolete),
 			Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
@@ -286,7 +287,7 @@ namespace NDifference.Inspectors
 		public static readonly Category IndexersObsolete = new Category
 		{
 			Name = "Obsolete Indexers",
-			Description = "These indexers were made obsolete in the new version of this type",
+			Description = "These indexers have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersObsolete),
 			Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
@@ -323,7 +324,7 @@ namespace NDifference.Inspectors
 		public static readonly Category MethodsObsolete = new Category
 		{
 			Name = "Obsolete Methods",
-			Description = "These methods were made obsolete in the new version of this type",
+			Description = "These methods have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsObsolete),
 			Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange

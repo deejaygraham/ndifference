@@ -28,7 +28,12 @@ namespace NDifference.Inspectors
 
 				if (wasDestructor != null && nowDestructor == null)
                 {
-                    var finalizerRemoved = new IdentifiedChange(WellKnownChangePriorities.FinalizersRemoved, new ValueDescriptor { Value = wasDestructor.ToCode() });
+                    var finalizerRemoved = new IdentifiedChange(WellKnownChangePriorities.FinalizersRemoved, 
+						new CodeDescriptor 
+						{ 
+							Reason = "Finalizer removed",
+							Code = wasDestructor.ToCode() 
+						});
 
 					finalizerRemoved.ForType(first);
 

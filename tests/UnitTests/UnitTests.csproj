@@ -106,6 +106,7 @@
     <Compile Include="IHashableFacts.cs" />
     <Compile Include="InMemoryReportOutput.cs" />
     <Compile Include="ICodedFacts.cs" />
+    <Compile Include="Reporting\ReportAsMarkdownFacts.cs" />
     <Compile Include="SourceFormattingFacts.cs" />
     <Compile Include="OnTheFlyCompiler.cs" />
     <Compile Include="PathExtensionFacts.cs" />
@@ -116,7 +117,7 @@
     <Compile Include="PropertyDeclarationFacts.cs" />
     <Compile Include="Inspectors\Assemblies\RemovedAssembliesInspectorFacts.cs" />
     <Compile Include="Inspectors\Types\RemovedTypesInspectorFacts.cs" />
-    <Compile Include="ReportAsHtml4Facts.cs" />
+    <Compile Include="Reporting\ReportAsHtml4Facts.cs" />
     <Compile Include="Reporting\MethodCodeAsHtmlFacts.cs" />
     <Compile Include="TestDataBuilders\AssemblyReflectorBuilder.cs" />
     <Compile Include="TestDataBuilders\BoilerplateCodeBuilder.cs" />

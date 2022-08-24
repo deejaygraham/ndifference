@@ -1,15 +1,15 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
+using NDifference.Reporting;
 using System.Diagnostics;
-using System.Linq;
 
 namespace NDifference.Inspectors
 {
-	/// <summary>
-	/// Looking for assemblies in first that are not in second. I.e. assemblies that
-	/// have been considered unused or obsolete and therefore deleted from a project.
-	/// </summary>
-	public class RemovedAssembliesInspector : IAssemblyCollectionInspector
+    /// <summary>
+    /// Looking for assemblies in first that are not in second. I.e. assemblies that
+    /// have been considered unused or obsolete and therefore deleted from a project.
+    /// </summary>
+    public class RemovedAssembliesInspector : IAssemblyCollectionInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -30,7 +30,12 @@ namespace NDifference.Inspectors
             {
                 string assemblyName = removed.First.Name;
 
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedAssemblies, assemblyName));
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedAssemblies, 
+					new NameDescriptor
+					{
+						Name = assemblyName,
+						Reason = "Removed assembly"
+					}));
             }
         }
 	}

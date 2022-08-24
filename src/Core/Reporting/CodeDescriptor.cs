@@ -4,9 +4,16 @@ using NDifference.SourceFormatting;
 
 namespace NDifference.Reporting
 {
+    /// <summary>
+    /// Descriptor containing code only, used e.g. in a list of 
+    /// properties added to a class where the signature is the 
+    /// only thing of interest.
+    /// </summary>
     public class CodeDescriptor : ICodeDescriptor
 	{
 		public ICoded Code { get; set; }
+
+        public string Reason { get; set; }
 
         public int Columns
         {

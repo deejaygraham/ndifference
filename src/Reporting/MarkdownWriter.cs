@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
@@ -59,42 +56,42 @@ namespace NDifference.Reporting
             writer.WriteLine(text);
         }
 
-        public void WriteHeading(string heading, int size)
-        {
-            if (size < 1 || size > 6) throw new ArgumentOutOfRangeException();
+        //public void WriteHeading(string heading, int size)
+        //{
+        //    if (size < 1 || size > 6) throw new ArgumentOutOfRangeException();
 
-            writer.WriteLine();
-            writer.WriteLine();
-            writer.WriteLine(new string('#', size) + " " + heading);
-            writer.WriteLine();
-        }
+        //    writer.WriteLine();
+        //    writer.WriteLine();
+        //    writer.WriteLine(new string('#', size) + " " + heading);
+        //    writer.WriteLine();
+        //}
 
         public void WriteNewLine()
         {
             writer.WriteLine();
         }
 
-        public void WriteTableHeader(IEnumerable<string> headings)
-        {
-            writer.WriteLine();
-            writer.Write("| ");
+        //public void WriteTableHeader(IEnumerable<string> headings)
+        //{
+        //    writer.WriteLine();
+        //    writer.Write("| ");
 
-            foreach (var heading in headings)
-            {
-                writer.Write(" " + heading + " |");
-            }
+        //    foreach (var heading in headings)
+        //    {
+        //        writer.Write(" " + heading + " |");
+        //    }
 
-            writer.WriteLine();
+        //    writer.WriteLine();
 
-            writer.Write("|");
+        //    writer.Write("|");
 
-            foreach (var heading in headings)
-            {
-                writer.Write(new string('-', heading.Length + 2) + "|");
-            }
+        //    foreach (var heading in headings)
+        //    {
+        //        writer.Write(new string('-', heading.Length + 2) + "|");
+        //    }
 
-            writer.WriteLine();
-        }
+        //    writer.WriteLine();
+        //}
 
         public void WriteTableRow(params string[] cells)
         {
@@ -102,13 +99,13 @@ namespace NDifference.Reporting
 
             foreach (var cell in cells)
             {
-                writer.Write(cell + " |");
+                writer.Write(cell + " | ");
             }
 
             writer.WriteLine();
         }
 
-        public void WriteTableRow(string shortCode, IDocumentLink change, IReportOutput output, FileMap map)
+        public void WriteTableRow(IDocumentLink change, IReportOutput output, FileMap map)
         {
             bool outputDeadLinks = false;
 
@@ -135,12 +132,12 @@ namespace NDifference.Reporting
             }
         }
 
-        public void WriteTableRow(string shortCode, INameDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
-        {
-            WriteTableRow(change.Name, typeName, assemblyName);
-        }
+        //public void WriteTableRow(string shortCode, INameDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        //{
+        //    WriteTableRow(change.Name, typeName, assemblyName);
+        //}
 
-        public void WriteTableRow(string shortCode, IValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        public void WriteTableRow(IValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
             string text = change.Value.ToString();
 
@@ -152,7 +149,7 @@ namespace NDifference.Reporting
             WriteTableRow(text, typeName, assemblyName);
         }
 
-        public void WriteTableRow(string shortCode, INameValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        public void WriteTableRow(INameValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
             string text = change.Value.ToString();
 
@@ -164,49 +161,30 @@ namespace NDifference.Reporting
             WriteTableRow(change.Name, text, typeName, assemblyName);
         }
 
-        public void WriteTableRow(string shortCode, IDeltaDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        public void WriteTableRow(IDeltaDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
-            string wasText = change.Was.ToString();
-            string isText = change.IsNow.ToString();
+            WriteTableRow(change.Was, change.IsNow, typeName, assemblyName);
+        }
 
-            ICoded was = change.Was as ICoded;
-            ICoded isNow = change.IsNow as ICoded;
-
-            if (was != null)
-            {
-                wasText = format.Format(was);
-            }
-
-            if (isNow != null)
-            {
-                isText = format.Format(isNow);
-            }
+        public void WriteTableRow(ICodeDeltaDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        {
+            string wasText = format.Format(change.Was);
+            string isText = format.Format(change.IsNow);
 
             WriteTableRow(wasText, isText, typeName, assemblyName);
         }
 
-        public void WriteTableRow(string shortCode, INamedDeltaDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        public void WriteTableRow(INameDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
-            string wasText = change.Was.ToString();
-            string isText = change.IsNow.ToString();
-
-            ICoded was = change.Was as ICoded;
-            ICoded isNow = change.IsNow as ICoded;
-
-            if (was != null)
-            {
-                wasText = format.Format(was);
-            }
-
-            if (isNow != null)
-            {
-                isText = format.Format(isNow);
-            }
-
-            WriteTableRow(change.Name, wasText, isText, typeName, assemblyName);
+            WriteTableRow(change.Name, change.Reason, typeName, assemblyName);
         }
 
-        public void WriteTableRow(string shortCode, ICodeDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        public void WriteTableRow(INamedDeltaDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        {
+            WriteTableRow(change.Name, change.Was, change.IsNow, typeName, assemblyName);
+        }
+
+        public void WriteTableRow(ICodeDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
             string text = format.Format(change.Code);
 
@@ -217,6 +195,7 @@ namespace NDifference.Reporting
         {
             WriteTableRow(new string[] { string.Format("[{0}]({1})", cell1, link), string.Format("[{0}]({1})", cell2, link) });
         }
+
         public void WriteTableRow(string cell1, int cell2)
         {
             WriteTableRow(cell1, cell2.ToString());

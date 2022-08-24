@@ -41,7 +41,12 @@ namespace NDifference.Inspectors
 					// or for each - no longer implements...
 					foreach (var remove in removed)
                     {
-                        var interfaceRemoved = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor { Name = "No longer implements", Was = remove.ToCode(), IsNow = string.Empty });
+                        var interfaceRemoved = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
+							new CodeDescriptor 
+							{ 
+								Reason = "No longer implements", 
+								Code = remove.ToCode()
+							});
 
 						interfaceRemoved.ForType(first);
 

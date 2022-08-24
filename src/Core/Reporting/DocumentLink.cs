@@ -7,6 +7,9 @@ namespace NDifference.Reporting
 	{
 		public string Identifier { get; set; }
 
+		// TODO Wrong abstraction here - cleaned up by reporting change.
+		public string Reason { get; set; }
+
 		public string LinkText { get; set; }
 
 		public string LinkUrl { get; set; }

@@ -26,7 +26,12 @@ namespace NDifference.Inspectors
 
 				foreach (var o in obs)
                 {
-                    var constructorMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstructorsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                    var constructorMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstructorsObsolete, 
+                        new CodeDescriptor 
+                        { 
+                            Code = o.ToCode(), 
+                            Reason = o.ObsoleteMarker.Message 
+                        });
 
                     constructorMadeObsolete.ForType(first);
 
@@ -59,7 +64,12 @@ namespace NDifference.Inspectors
 
                 foreach (var o in newObs.Except(oldObs, new CompareMemberMethodByName()))
                 {
-                    var constructorMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstructorsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                    var constructorMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstructorsObsolete, 
+                        new CodeDescriptor 
+                        { 
+                            Code = o.ToCode(), 
+                            Reason = o.ObsoleteMarker.Message 
+                        });
 
                     constructorMadeObsolete.ForType(first);
 

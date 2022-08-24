@@ -32,7 +32,12 @@ namespace NDifference.Inspectors
 
 					foreach (var rem in removed)
                     {
-                        var removedProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesRemoved, new CodeDescriptor { Code = rem.ToCode() });
+                        var removedProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesRemoved, 
+							new CodeDescriptor 
+							{ 
+								Code = rem.ToCode(),
+								Reason = "Property has been removed"
+							});
                         
                         removedProperty.ForType(first);
 

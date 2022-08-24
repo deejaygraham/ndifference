@@ -1,19 +1,22 @@
-﻿using NDifference.SourceFormatting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace NDifference.Reporting
 {
-	public class DeltaDescriptor : IDeltaDescriptor
+    /// <summary>
+    /// Describes a change from a "was" state to an 
+    /// "is now" state. With optional descriptive text.
+    /// </summary>
+    public class DeltaDescriptor : IDeltaDescriptor
 	{
 		// public string Name { get; set; }
 
-		public object Was { get; set; }
+		// TODO make this string
+		public string Was { get; set; }
 
-		public object IsNow { get; set; }
+		// TODO make this string
+		public string IsNow { get; set; }
+
+		public string Reason { get; set; }
 
 		public int Columns { get { return 2; } }
 

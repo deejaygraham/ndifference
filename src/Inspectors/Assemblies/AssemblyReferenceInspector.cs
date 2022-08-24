@@ -1,19 +1,15 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
 using NDifference.Reporting;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	/// <summary>
-	/// Checks for changes in the assemblies referenced in each version
-	/// and reports additions or removals.
-	/// </summary>
-	public class AssemblyReferenceInspector : IAssemblyInspector
+    /// <summary>
+    /// Checks for changes in the assemblies referenced in each version
+    /// and reports additions or removals.
+    /// </summary>
+    public class AssemblyReferenceInspector : IAssemblyInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -32,14 +28,23 @@ namespace NDifference.Inspectors
 
 			foreach (var difference in refsAdded)
 			{
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedReferences, difference.Name));
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedReferences, 
+					new NameDescriptor
+					{
+						Name = difference.Name,
+						Reason = "Reference added"
+					}));
 			}
 
 			var refsRemoved = first.References.RemovedFrom(second.References, comparer);
 
 			foreach (var difference in refsRemoved)
 			{
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedReferences, difference.Name));
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedReferences, new NameDescriptor
+				{
+					Name = difference.Name,
+					Reason = "Reference removed"
+				}));
 			}
 		}
 	}

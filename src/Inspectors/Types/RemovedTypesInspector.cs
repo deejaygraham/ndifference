@@ -1,5 +1,6 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
+using NDifference.Reporting;
 using System.Diagnostics;
 
 namespace NDifference.Inspectors
@@ -26,7 +27,12 @@ namespace NDifference.Inspectors
 
             foreach (var removed in removedTypes)
             {
-                var typeRemoved = new IdentifiedChange(WellKnownChangePriorities.RemovedTypes, removed.First.FullName);
+                var typeRemoved = new IdentifiedChange(WellKnownChangePriorities.RemovedTypes,
+					new NameDescriptor
+					{
+						Name = removed.First.FullName,
+						Reason = "Type removed"
+					}); 
                 
                 typeRemoved.ForType(removed.First);
 

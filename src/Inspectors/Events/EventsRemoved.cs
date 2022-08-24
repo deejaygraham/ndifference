@@ -30,7 +30,12 @@ namespace NDifference.Inspectors
 
 				foreach (var rem in removed)
                 {
-                    var fieldRemoved = new IdentifiedChange(WellKnownChangePriorities.EventsRemoved, new CodeDescriptor { Code = rem.ToCode() });
+                    var fieldRemoved = new IdentifiedChange(WellKnownChangePriorities.EventsRemoved, 
+						new CodeDescriptor 
+						{ 
+							Reason = "Event removed",
+							Code = rem.ToCode() 
+						});
 
 					fieldRemoved.ForType(first);
 

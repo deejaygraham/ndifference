@@ -151,44 +151,12 @@ namespace NDifference.Reporting
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, IDeltaDescriptor change, IReportFormat format)
 		{
-			string wasText = change.Was.ToString();
-			string isText = change.IsNow.ToString();
-
-			ICoded was = change.Was as ICoded;
-			ICoded isNow = change.IsNow as ICoded;
-
-			if (was != null)
-			{
-				wasText = format.Format(was);
-			}
-
-			if (isNow != null)
-			{
-				isText = format.Format(isNow);
-			}
-
-            writer.WriteTableRow(wasText, isText);
+            writer.WriteTableRow(change.Was, change.IsNow);
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, INamedDeltaDescriptor change, IReportFormat format)
 		{
-			string wasText = change.Was.ToString();
-			string isText = change.IsNow.ToString();
-
-			ICoded was = change.Was as ICoded;
-			ICoded isNow = change.IsNow as ICoded;
-
-			if (was != null)
-			{
-				wasText = format.Format(was);
-			}
-
-			if (isNow != null)
-			{
-				isText = format.Format(isNow);
-			}
-
-            writer.WriteTableRow(change.Name, wasText, isText);
+            writer.WriteTableRow(change.Name, change.Was, change.IsNow);
 		}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, ICodeDescriptor change, IReportFormat format)

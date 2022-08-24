@@ -36,7 +36,12 @@ namespace NDifference.Inspectors
 
 					foreach (var rem in removed)
                     {
-                        var methodRemoved = new IdentifiedChange(WellKnownChangePriorities.MethodsRemoved, new CodeDescriptor { Code = rem.ToCode() });
+                        var methodRemoved = new IdentifiedChange(WellKnownChangePriorities.MethodsRemoved, 
+							new CodeDescriptor 
+							{ 
+								Reason = "Method removed",
+								Code = rem.ToCode() 
+							});
 						
                         methodRemoved.ForType(first);
 

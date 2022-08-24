@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace NDifference.Inspectors
 {
-	public class ClassDerivationInspector : ITypeInspector
+    public class ClassDerivationInspector : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -35,12 +35,13 @@ namespace NDifference.Inspectors
 					// check for heirarchy change
 					if (firstClass.InheritsFrom != secondClass.InheritsFrom)
                     {
-                        var classDerivationChanged = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor
-                        {
-                            Name = String.Format("Class was derived from {0}, now derived from {1}", firstClass.InheritsFrom, secondClass.InheritsFrom),
-                            Was = first.ToCode(),
-                            IsNow = second.ToCode()
-                        });
+                        var classDerivationChanged = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
+							new CodeDeltaDescriptor
+							{
+								Reason = String.Format("Class was derived from {0}, now derived from {1}", firstClass.InheritsFrom, secondClass.InheritsFrom),
+								Was = first.ToCode(),
+								IsNow = second.ToCode()
+							});
 
 						classDerivationChanged.ForType(first);
 
@@ -50,12 +51,13 @@ namespace NDifference.Inspectors
 				else
                 {
                     // no longer derived...
-                    var classDerivationChanged = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, new NamedDeltaDescriptor 
-                    { 
-                        Name = "Class no longer derives from " + firstClass.InheritsFrom.ToString(), 
-                        Was = first.ToCode(), 
-                        IsNow = second.ToCode() 
-                    });
+                    var classDerivationChanged = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
+						new CodeDeltaDescriptor 
+						{ 
+							Reason = "Class no longer derives from " + firstClass.InheritsFrom.ToString(), 
+							Was = first.ToCode(), 
+							IsNow = second.ToCode() 
+						});
 
 					classDerivationChanged.ForType(first);
 

@@ -184,11 +184,18 @@ namespace NDifference.Reporting
             WriteTableRow(change.Name, change.Was, change.IsNow, typeName, assemblyName);
         }
 
+        /// <summary>
+        /// Write out a simple code change with a reason for the change.
+        /// </summary>
+        /// <param name="change"></param>
+        /// <param name="format"></param>
+        /// <param name="typeName"></param>
+        /// <param name="assemblyName"></param>
         public void WriteTableRow(ICodeDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
-            string text = format.Format(change.Code);
+            string code = format.Format(change.Code);
 
-            WriteTableRow(text, typeName, assemblyName);
+            WriteTableRow(code, change.Reason, assemblyName);
         }
 
         public void WriteTableRowLink(string cell1, string cell2, string link)

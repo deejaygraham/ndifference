@@ -1,14 +1,9 @@
 ﻿using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NDifference.UnitTests
 {
-	public class FullyQualifiedNameFacts
+    public class FullyQualifiedNameFacts
 	{
 		[Fact]
 		public void FullyQualifiedName_Class_Name_Only_Namespace_Is_Blank()
@@ -69,6 +64,5 @@ namespace NDifference.UnitTests
 		{
 			Assert.Equal(new FullyQualifiedName("System.String"), new FullyQualifiedName("System.String"));
 		}
-
 	}
 }

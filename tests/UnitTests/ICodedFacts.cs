@@ -1,15 +1,10 @@
 ﻿using NDifference.SourceFormatting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NDifference.UnitTests
 {
-	public class ICodedFacts
+    public class ICodedFacts
 	{
 		[Fact]
 		public void ICoded_Flattens_To_Xml()
@@ -27,7 +22,29 @@ namespace NDifference.UnitTests
 			Assert.Contains("<tn>MyLib.TestClass</tn>", flat);
 			Assert.Contains("</SourceCode>", flat);
 		}
-		
+
+		[Fact]
+		public void ICoded_Flattens_To_PlainText()
+		{
+			var type = FullyQualifiedNameBuilder.Type()
+				.Named("TestClass")
+				.InNamespace("MyLib")
+				.Build();
+
+			Assert.Equal("MyLib.TestClass", type.ToCode().ToPlainText());
+		}
+
+		[Fact]
+		public void ICoded_FullyQualifiedName_Escapes_Generic_Markers()
+		{
+			var list = FullyQualifiedNameBuilder.Type()
+				.Named("List<string>")
+				.InNamespace("System.Collections.Generic")
+				.Build();
+
+			Assert.Equal("System.Collections.Generic.List<string>", list.ToCode().ToPlainText());
+		}
+
 		[Fact]
 		public void SourceCode_Equals_Returns_True_For_Identical_Types()
 		{

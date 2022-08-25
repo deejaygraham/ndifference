@@ -61,7 +61,10 @@ namespace NDifference.Reporting
                     }
 
                     // content.Add("Summary Table");
+                    mdw.WriteNewLine();
+                    mdw.WriteNewLine();
                     mdw.Write(format.FormatTitle(2, "Summary of changes", null));
+                    mdw.WriteNewLine();
 
                     mdw.Write(format.FormatTableHeader(new string[] { "Item", "Value" }));
 
@@ -71,83 +74,49 @@ namespace NDifference.Reporting
                     }
 
                     CategoryRegistry registry = new CategoryRegistry();
-                    registry.Register(WellKnownAssemblyCategories.AddedReferences);
-                    registry.Register(WellKnownAssemblyCategories.AddedTypes);
-                    registry.Register(WellKnownAssemblyCategories.AssemblyInternal);
-                    registry.Register(WellKnownAssemblyCategories.ChangedTypes);
-                    registry.Register(WellKnownAssemblyCategories.ObsoleteTypes);
-                    registry.Register(WellKnownAssemblyCategories.PotentiallyChangedTypes);
-                    registry.Register(WellKnownAssemblyCategories.RemovedReferences);
-                    registry.Register(WellKnownAssemblyCategories.RemovedTypes);
 
-                    registry.Register(WellKnownSummaryCategories.RemovedAssemblies);
-                    registry.Register(WellKnownSummaryCategories.ChangedAssemblies);
-                    registry.Register(WellKnownSummaryCategories.PotentiallyChangedAssemblies);
-                    registry.Register(WellKnownSummaryCategories.AddedAssemblies);
-                    registry.Register(WellKnownSummaryCategories.BreakingChanges);
+                    var groupedChanges = changes.Changes.GroupBy(x => x.Priority).Reverse();
 
-                    registry.Register(WellKnownTypeCategories.TypeInternal);
-                    registry.Register(WellKnownTypeCategories.ConstantsRemoved);
-                    registry.Register(WellKnownTypeCategories.ConstantsObsolete);
-                    registry.Register(WellKnownTypeCategories.ConstantsChanged);
-                    registry.Register(WellKnownTypeCategories.ConstantsAdded);
-                    registry.Register(WellKnownTypeCategories.FieldsRemoved);
-                    registry.Register(WellKnownTypeCategories.FieldsObsolete);
-                    registry.Register(WellKnownTypeCategories.FieldsChanged);
-                    registry.Register(WellKnownTypeCategories.FieldsAdded);
-                    registry.Register(WellKnownTypeCategories.ConstructorsRemoved);
-                    registry.Register(WellKnownTypeCategories.ConstructorsObsolete);
-                    registry.Register(WellKnownTypeCategories.ConstructorsChanged);
-                    registry.Register(WellKnownTypeCategories.ConstructorsAdded);
-                    registry.Register(WellKnownTypeCategories.FinalizersRemoved);
-                    registry.Register(WellKnownTypeCategories.FinalizersObsolete);
-                    registry.Register(WellKnownTypeCategories.FinalizersChanged);
-                    registry.Register(WellKnownTypeCategories.FinalizersAdded);
-                    registry.Register(WellKnownTypeCategories.DelegatesRemoved);
-                    registry.Register(WellKnownTypeCategories.DelegatesObsolete);
-                    registry.Register(WellKnownTypeCategories.DelegatesChanged);
-                    registry.Register(WellKnownTypeCategories.DelegatesAdded);
-                    registry.Register(WellKnownTypeCategories.EventsRemoved);
-                    registry.Register(WellKnownTypeCategories.EventsObsolete);
-                    registry.Register(WellKnownTypeCategories.EventsChanged);
-                    registry.Register(WellKnownTypeCategories.EventsAdded);
-                    registry.Register(WellKnownTypeCategories.PropertiesRemoved);
-                    registry.Register(WellKnownTypeCategories.PropertiesObsolete);
-                    registry.Register(WellKnownTypeCategories.PropertiesChanged);
-                    registry.Register(WellKnownTypeCategories.PropertiesAdded);
-                    registry.Register(WellKnownTypeCategories.IndexersRemoved);
-                    registry.Register(WellKnownTypeCategories.IndexersObsolete);
-                    registry.Register(WellKnownTypeCategories.IndexersChanged);
-                    registry.Register(WellKnownTypeCategories.IndexersAdded);
-                    registry.Register(WellKnownTypeCategories.MethodsRemoved);
-                    registry.Register(WellKnownTypeCategories.MethodsObsolete);
-                    registry.Register(WellKnownTypeCategories.MethodsChanged);
-                    registry.Register(WellKnownTypeCategories.MethodsAdded);
-                    registry.Register(WellKnownTypeCategories.EnumValuesRemoved);
-                    registry.Register(WellKnownTypeCategories.EnumValuesChanged);
-                    registry.Register(WellKnownTypeCategories.EnumValuesAdded);
-                    registry.Register(WellKnownTypeCategories.TypeDebug);
-
-
-                    // find a well known category that corresponds to this priority 
-                    // in the category registry.
-                    foreach (var priorityGroup in changes.Changes.GroupBy(x => x.Priority).Reverse())
+                    foreach (var groupChange in groupedChanges)
                     {
+                        var category = registry.ForPriority(groupChange.Key);
 
-                        int priority = priorityGroup.Key;
+                        string changeLink = format.FormatLink("#" + category.Identifier, category.Name);
+                        string countLink = format.FormatLink("#" + category.Identifier, groupChange.Count().ToString());
 
-                        var category = registry.ForPriority(priority);
+                        mdw.Write(format.FormatTableRow(new string[] { changeLink, countLink }));
+
+                        // write out a link too.
+                        // write each category
+                        //foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
+                        //{
+                        //                                     var list = changes.ChangesInCategory(cat.Name);
+
+                        //                                     if (list.Any())
+                        //	{
+                        //		html.WriteTableRow(cat.Name, list.Count, "#" + cat.Identifier);
+                        //	}
+                        //}
+                    }
+
+                    foreach (var priorityGroup in groupedChanges)
+                    {
+                        var category = registry.ForPriority(priorityGroup.Key);
 
                         mdw.WriteNewLine();
+                        mdw.WriteNewLine();
+                        mdw.Write(format.FormatTitle(2, category.Name, category.Identifier));
+                        mdw.WriteNewLine();
 
-                        mdw.Write(format.FormatTitle(2, category.Name, null));
-
-                        mdw.Write(category.FullDescription);
+                        //mdw.Write(category.FullDescription);
 
                         if (category.Headings != null && category.Headings.Length > 0)
                         {
                             mdw.Write(format.FormatTableHeader(category.Headings));
                         }
+
+
+                        
 
                         // order changes...
                         //var ordered = new List<IdentifiedChange>(change);
@@ -294,7 +263,15 @@ namespace NDifference.Reporting
 
                 if (code != null)
                 {
-                    mdw.WriteTableRow(code, this._format, change.TypeName, change.AssemblyName);
+                    string signature = this._format.Format(code.Code);
+
+                    if (signature.Contains("&lt;") || code.Code.ToPlainText().Contains("&lt;"))
+                    {
+
+                    }
+
+                    mdw.WriteTableRow(signature, code.Reason);
+//                    mdw.WriteTableRow(code, this._format, change.TypeName, change.AssemblyName);
                 }
                 else
                 {

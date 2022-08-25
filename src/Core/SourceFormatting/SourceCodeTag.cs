@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace NDifference.SourceFormatting
 {
-	public class SourceCodeTag : IXmlSerializable
+    public class SourceCodeTag : IXmlSerializable
 	{
 		public SourceCodeTag()
 		{
@@ -46,7 +41,7 @@ namespace NDifference.SourceFormatting
 		public void WriteXml(System.Xml.XmlWriter writer)
 		{
 			writer.WriteStartElement(this.Name);
-			writer.WriteRaw(this.Value);
+			writer.WriteRaw(this.Value.Replace("<", "&lt;").Replace(">", "&gt;"));
 			writer.WriteEndElement();
 		}
 

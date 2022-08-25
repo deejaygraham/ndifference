@@ -27,7 +27,7 @@ namespace NDifference.UnitTests
 		[Fact]
 		public void ReportAsMarkdown_Creates_Hashes_For_Title_Size()
 		{
-			Assert.StartsWith("\r\n\r\n### ", new ReportAsMarkdown().FormatTitle(3, "Hello", null));
+			Assert.StartsWith("### ", new ReportAsMarkdown().FormatTitle(3, "Hello", null));
 		}
 
 		[Fact]
@@ -41,7 +41,7 @@ namespace NDifference.UnitTests
 		{
 			string line = new ReportAsMarkdown().FormatTableHeader(new string[] { "Name", "Value" });
 
-			Assert.Equal("\r\n| Name | Value |\r\n|------|-------|\r\n", line);
+			Assert.Equal("| Name | Value |\r\n|------|-------|", line);
 		}
 
 		[Fact]
@@ -49,7 +49,7 @@ namespace NDifference.UnitTests
 		{
 			string line = new ReportAsMarkdown().FormatTableRow(new string[] { "Hello", "World" });
 
-			Assert.Equal("| Hello | World |\r\n", line);
+			Assert.Equal("| Hello | World |", line);
 		}
 
 		[Fact]

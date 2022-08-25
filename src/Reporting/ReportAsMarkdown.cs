@@ -49,7 +49,7 @@ namespace NDifference.Reporting
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine();
+//            builder.AppendLine();
             builder.Append("|");
 
             foreach (var heading in headings)
@@ -66,7 +66,7 @@ namespace NDifference.Reporting
                 builder.Append(new string('-', heading.Length + 2) + "|");
             }
 
-            builder.AppendLine();
+            //builder.AppendLine();
 
             return builder.ToString();
         }
@@ -82,7 +82,7 @@ namespace NDifference.Reporting
                 builder.Append(" " + cell + " |");
             }
 
-            builder.AppendLine();
+            //builder.AppendLine();
 
             return builder.ToString();
         }
@@ -93,16 +93,16 @@ namespace NDifference.Reporting
 
             var builder = new StringBuilder();
 
-            builder.AppendLine();
-            builder.AppendLine();
+            //builder.AppendLine();
+            //builder.AppendLine();
 
             builder.AppendFormat("{0} {1} ", new string('#', size), title);
 
             if (!String.IsNullOrEmpty(id))
                 builder.AppendFormat("{{ #{0} }}", id);
 
-            builder.AppendLine();
-            builder.AppendLine();
+            //builder.AppendLine();
+            //builder.AppendLine();
 
             return builder.ToString();
         }

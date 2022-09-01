@@ -43,7 +43,8 @@ namespace NDifference.Inspectors
 						if (oldConstant.ConstantType != newConstant.ConstantType)
                         {
                             var constantChanged = new IdentifiedChange(WellKnownChangePriorities.ConstantsChanged,
-                                new CodeDeltaDescriptor 
+								Severity.NonBreaking,
+								new CodeDeltaDescriptor 
                                 { 
                                     Reason = string.Format("Changed type from {0} to {1}", oldConstant.ConstantType, newConstant.ConstantType), 
                                     Was = oldConstant.ToCode(), 

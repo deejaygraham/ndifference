@@ -107,6 +107,11 @@ namespace NDifference.Reporting
             return builder.ToString();
         }
 
+        public string FormatComment(string text)
+        {
+            return "<!-- " + text + " -->";
+        }
+
         public bool Supports(IReportFormat other)
         {
             return String.Compare(other.FriendlyName, this.FriendlyName, ignoreCase: true) == 0

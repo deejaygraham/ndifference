@@ -52,8 +52,16 @@ namespace NDifference.Reporting
                         { "layout", "layouts/overview.njk" }
                     };
 
-                    mdw.WriteFrontMatter(metadata);
-                    mdw.Write("<!-- markdownlint-disable-file -->");
+                    mdw.Write("---");
+
+                    foreach (var key in metadata.Keys)
+                    {
+                        mdw.Write(key + ": \"" + metadata[key] + "\"");
+                    }
+
+                    mdw.Write("---");
+
+                    mdw.Write(format.FormatComment("markdownlint-disable-file"));
 
                     if (!String.IsNullOrEmpty(changes.HeadingBlock))
                     {
@@ -85,18 +93,6 @@ namespace NDifference.Reporting
                         string countLink = format.FormatLink("#" + category.Identifier, groupChange.Count().ToString());
 
                         mdw.Write(format.FormatTableRow(new string[] { changeLink, countLink }));
-
-                        // write out a link too.
-                        // write each category
-                        //foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-                        //{
-                        //                                     var list = changes.ChangesInCategory(cat.Name);
-
-                        //                                     if (list.Any())
-                        //	{
-                        //		html.WriteTableRow(cat.Name, list.Count, "#" + cat.Identifier);
-                        //	}
-                        //}
                     }
 
                     foreach (var priorityGroup in groupedChanges)
@@ -114,67 +110,13 @@ namespace NDifference.Reporting
                         {
                             mdw.Write(format.FormatTableHeader(category.Headings));
                         }
-
-
-                        
-
-                        // order changes...
-                        //var ordered = new List<IdentifiedChange>(change);
-                        //ordered.Sort(new IdentifiedChangeComparer());
-
+                       
                         foreach (var change in priorityGroup)
                         {
                             RenderChange(change, mdw, output);
-//                            mdw.WriteNewLine();
                         }
 
                         mdw.WriteNewLine();
-
-                        // string href = "#" + cat.Identifier;
-                        //                       string categoryLink = string.Format("[{0}]({1})", cat.Name, href);
-                        //                       string occurrenceLink = string.Format("[{0}]({1})", list.Count, href);
-
-                        //		mdw.WriteTableRow(new string[] { categoryLink, occurrenceLink });
-                        //priorityGroup.
-
-                        // RenderCategory(cat, list, mdw, output);
-                    }
-
-                    // write each category
-                    //               foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-                    //               {
-                    //                   var list = changes.ChangesInCategory(cat.Name);
-
-                    //                   if (list.Any())
-                    //                   {
-                    //		// write out links to each item in the page below:
-                    //                       string href = "#" + cat.Identifier;
-                    //                       string categoryLink = string.Format("[{0}]({1})", cat.Name, href);
-                    //                       string occurrenceLink = string.Format("[{0}]({1})", list.Count, href);
-
-                    //		mdw.WriteTableRow(new string[] { categoryLink, occurrenceLink });
-                    //	}
-                    //}
-
-                    //               foreach (var cat in changes.Categories.OrderBy(x => x.Priority.Value))
-                    //               {
-                    //                   var list = changes.ChangesInCategory(cat.Name);
-
-                    //                   if (list.Any())
-                    //                       RenderCategory(cat, list, mdw, output);
-                    //               }
-
-                    var uncatChanges = changes.UnCategorisedChanges();
-
-                    if (uncatChanges.Any())
-                    {
-                        var uncat = new Category
-                        {
-                            Priority = new CategoryPriority(999), Description = "Uncategorised changes",
-                            Name = "Uncategorised Changes"
-                        };
-
-                        //RenderCategory(uncat, uncatChanges, mdw, output);
                     }
                 }
 
@@ -191,35 +133,6 @@ namespace NDifference.Reporting
 				}
 			}
 		}
-		//private void RenderCategory(Category cat, IEnumerable<IdentifiedChange> changes, MarkdownWriter mdw, IReportOutput output)
-		//{
-		//	mdw.WriteNewLine();
-	
-  //          if (changes.Any())
-		//	{
-		//		mdw.WriteHeading(cat.Name, 2);
-
-		//		mdw.Write(cat.FullDescription);
-
-  //              if (cat.Headings != null && cat.Headings.Length > 0)
-  //              {
-  //                  mdw.Write(format.cat.Headings);
-  //              }
-
-  //              // order changes...
-  //              var ordered = new List<IdentifiedChange>(changes);
-  //              ordered.Sort(new IdentifiedChangeComparer());
-
-  //              foreach (var change in ordered)
-  //              {
-  //                  RenderChange(change, mdw, output);
-  //              }
-
-  //              mdw.WriteNewLine();
-  //          }
-
-  //          mdw.WriteNewLine();
-		//}
 
 		private void RenderChange(IdentifiedChange change, MarkdownWriter mdw, IReportOutput output)
 		{
@@ -229,10 +142,6 @@ namespace NDifference.Reporting
 			{
 				RenderDescriptor(change, descriptor, mdw, output);
 			}
-///			else if (!String.IsNullOrEmpty(change.Description))
-//			{
-//				mdw.WriteTableRow(/*change.Inspector, */new string[] { change.Description });
-//			}
 		}
 
         private void Render(IDocumentLink link, MarkdownWriter mdw, IReportFormat format, IReportOutput output, FileMap map)

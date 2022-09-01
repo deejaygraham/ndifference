@@ -29,8 +29,9 @@ namespace NDifference.Inspectors
 
 			if (!firstClass.IsAbstract && secondClass.IsAbstract)
             {
-                var classMadeAbstract = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
-                    new CodeDeltaDescriptor
+                var classMadeAbstract = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
+					Severity.BreakingChange,
+					new CodeDeltaDescriptor
 					{ 
                         Reason = "Class is now abstract", 
                         Was = first.ToCode(), 

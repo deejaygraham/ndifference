@@ -28,7 +28,8 @@ namespace NDifference.Inspectors
 
 				if (oldStatic != null && newStatic == null)
                 {
-                    var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved, 
+                    var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved,
+						Severity.BreakingChange,
 						new CodeDescriptor 
 						{ 
 							Reason = "Static constructor removed",

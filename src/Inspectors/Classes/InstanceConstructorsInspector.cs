@@ -41,7 +41,8 @@ namespace NDifference.Inspectors
 
 					if (!newCtor.Signature.ExactlyMatches(oldCtor.Signature))
                     {
-                        var constructorChanged = new IdentifiedChange(WellKnownChangePriorities.ConstructorsChanged, 
+                        var constructorChanged = new IdentifiedChange(WellKnownChangePriorities.ConstructorsChanged,
+							Severity.BreakingChange,
 							new CodeDeltaDescriptor 
 							{ 
 								Was = oldCtor.ToCode(),
@@ -60,7 +61,8 @@ namespace NDifference.Inspectors
 					// removed and which ones have been added.
 					foreach (var remove in onlyInOld)
                     {
-                        var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved, 
+                        var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved,
+							Severity.BreakingChange,
 							new CodeDescriptor 
 							{ 
 								Code = remove.ToCode(),
@@ -74,7 +76,8 @@ namespace NDifference.Inspectors
 					
 					foreach (var add in onlyInNew)
                     {
-                        var constructorAdded = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded, 
+                        var constructorAdded = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded,
+							Severity.NonBreaking,
 							new CodeDescriptor
 							{
 								Code = add.ToCode(),

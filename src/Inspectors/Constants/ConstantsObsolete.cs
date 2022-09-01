@@ -84,7 +84,8 @@ namespace NDifference.Inspectors
 
             foreach (var o in obsoleteConstants)
             {
-                var constantMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstantsObsolete, 
+                var constantMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstantsObsolete,
+                    Severity.BreakingChange,
                     new CodeDescriptor 
                     { 
                         Code = o.ToCode(), 

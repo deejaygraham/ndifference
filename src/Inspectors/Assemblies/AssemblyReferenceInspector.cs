@@ -28,7 +28,8 @@ namespace NDifference.Inspectors
 
 			foreach (var difference in refsAdded)
 			{
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedReferences, 
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedReferences,
+					Severity.NonBreaking,
 					new NameDescriptor
 					{
 						Name = difference.Name,
@@ -40,11 +41,13 @@ namespace NDifference.Inspectors
 
 			foreach (var difference in refsRemoved)
 			{
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedReferences, new NameDescriptor
-				{
-					Name = difference.Name,
-					Reason = "Reference removed"
-				}));
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedReferences,
+					Severity.BreakingChange,
+					new NameDescriptor
+					{
+						Name = difference.Name,
+						Reason = "Reference removed"
+					}));
 			}
 		}
 	}

@@ -1,14 +1,13 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
 using NDifference.Reporting;
-using System;
 
 namespace NDifference.Inspectors
 {
-	/// <summary>
-	/// Checks for changes in target architecture - x86 -> x64 | Any CPU
-	/// </summary>
-	public class ArchitectureChangeInspector : IAssemblyInspector
+    /// <summary>
+    /// Checks for changes in target architecture - x86 -> x64 | Any CPU
+    /// </summary>
+    public class ArchitectureChangeInspector : IAssemblyInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -23,7 +22,8 @@ namespace NDifference.Inspectors
 			if (first.Architecture != second.Architecture)
 			{
                 // need to report this change...
-                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, 
+                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal,
+					Severity.NonBreaking,
 					new DeltaDescriptor
 					{
 						Reason = "Architecture has changed",

@@ -28,6 +28,7 @@ namespace NDifference.Inspectors
                 {
                     //Description = common.Second.FullName,
                     Priority = WellKnownChangePriorities.ChangedTypes,
+                    Severity = Severity.NonBreaking,
                     Descriptor = new DocumentLink
                     {
                         LinkText = common.First.Name,

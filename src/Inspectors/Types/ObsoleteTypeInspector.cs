@@ -31,8 +31,9 @@ namespace NDifference.Inspectors
 
 				if (t1.ObsoleteMarker == null && ti.ObsoleteMarker != null)
                 {
-                    var typeMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ObsoleteTypes, 
-                        new NameValueDescriptor 
+                    var typeMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ObsoleteTypes,
+						Severity.BreakingChange,
+						new NameValueDescriptor 
                         { 
                             Name = ti.FullName, 
                             Value = ti.ObsoleteMarker.Message 

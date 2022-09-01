@@ -35,6 +35,7 @@ namespace NDifference.Inspectors
 			if (oldNamespaces != newNamespaces)
 			{
                 changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, 
+					Severity.NonBreaking,
 					new DeltaDescriptor
 					{
 						Reason = "Namespaces",

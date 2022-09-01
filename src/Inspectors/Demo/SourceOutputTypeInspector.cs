@@ -17,7 +17,8 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
         {
-            var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug, 
+            var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug,
+				Severity.NonBreaking,
 				new CodeDeltaDescriptor 
 				{ 
 					Reason = "Debug code",

@@ -39,59 +39,15 @@ namespace NDifference.Reporting
             };
         }
 
-        public void WriteFrontMatter(IDictionary<string, string> dictionary)
-        {
-            writer.WriteLine("---");
-
-            foreach (var key in dictionary.Keys)
-            {
-                writer.WriteLine(key + ": \"" + dictionary[key] + "\"");
-            }
-
-            writer.WriteLine("---");
-        }
-
         public void Write(string text)
         {
             writer.WriteLine(text);
         }
 
-        //public void WriteHeading(string heading, int size)
-        //{
-        //    if (size < 1 || size > 6) throw new ArgumentOutOfRangeException();
-
-        //    writer.WriteLine();
-        //    writer.WriteLine();
-        //    writer.WriteLine(new string('#', size) + " " + heading);
-        //    writer.WriteLine();
-        //}
-
         public void WriteNewLine()
         {
             writer.WriteLine();
         }
-
-        //public void WriteTableHeader(IEnumerable<string> headings)
-        //{
-        //    writer.WriteLine();
-        //    writer.Write("| ");
-
-        //    foreach (var heading in headings)
-        //    {
-        //        writer.Write(" " + heading + " |");
-        //    }
-
-        //    writer.WriteLine();
-
-        //    writer.Write("|");
-
-        //    foreach (var heading in headings)
-        //    {
-        //        writer.Write(new string('-', heading.Length + 2) + "|");
-        //    }
-
-        //    writer.WriteLine();
-        //}
 
         public void WriteTableRow(params string[] cells)
         {

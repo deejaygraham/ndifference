@@ -2,15 +2,10 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class FinalizerAdded : ITypeInspector
+    public class FinalizerAdded : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -33,7 +28,8 @@ namespace NDifference.Inspectors
 
 				if (wasDestructor == null && nowDestructor != null)
                 {
-                    var finalizerAdded = new IdentifiedChange(WellKnownChangePriorities.FinalizersAdded, 
+                    var finalizerAdded = new IdentifiedChange(WellKnownChangePriorities.FinalizersAdded,
+						Severity.NonBreaking,
 						new CodeDescriptor 
 						{ 
 							Code = nowDestructor.ToCode(),

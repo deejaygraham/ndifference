@@ -61,6 +61,7 @@ namespace NDifference.Analysis
                 // Build the main summary page, the index for the report
                 result.Summary = BuilMainSummaryPage(project);
 
+                result.BreakingChanges.Name = "Breaking Changes";
                 result.BreakingChanges.CopyMetaFrom(result.Summary);
                 result.BreakingChanges.Parents.Add(new DocumentLink { Identifier = result.Summary.Identifier, LinkText = result.Summary.Name });
 
@@ -213,6 +214,7 @@ namespace NDifference.Analysis
 
                                     var ic = new IdentifiedChange(
                                         WellKnownChangePriorities.ChangedTypes,
+                                        Severity.NonBreaking,
                                         //currentType.FullName,
                                         new DocumentLink
                                         {
@@ -290,6 +292,7 @@ namespace NDifference.Analysis
                             result.Assembly(changesToThisAssembly);
                             result.Summary.Add(new IdentifiedChange(
                                 WellKnownChangePriorities.ChangedAssemblies,
+                                Severity.NonBreaking,
                                 //commonAssemblyPair.First.Name,
                                 new DocumentLink
                                 {
@@ -336,6 +339,7 @@ namespace NDifference.Analysis
 
                 result.Summary.Add(new IdentifiedChange(
                     WellKnownChangePriorities.ChangedAssemblies,
+                    Severity.NonBreaking,
                    // result.BreakingChanges.Name,
                     new DocumentLink
                     {

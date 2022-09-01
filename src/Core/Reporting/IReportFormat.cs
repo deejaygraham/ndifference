@@ -44,6 +44,8 @@ namespace NDifference.Reporting
 
 		string FormatTableRow(IEnumerable<string> cells);
 
+		string FormatComment(string text);
+
 		/// <summary>
 		/// Does this format match the provided one?
 		/// </summary>

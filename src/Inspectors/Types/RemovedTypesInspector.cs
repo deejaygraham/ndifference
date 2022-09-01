@@ -28,6 +28,7 @@ namespace NDifference.Inspectors
             foreach (var removed in removedTypes)
             {
                 var typeRemoved = new IdentifiedChange(WellKnownChangePriorities.RemovedTypes,
+					Severity.BreakingChange,
 					new NameDescriptor
 					{
 						Name = removed.First.FullName,

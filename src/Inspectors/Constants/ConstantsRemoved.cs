@@ -35,6 +35,7 @@ namespace NDifference.Inspectors
 				foreach (var rem in removed)
                 {
                     var constantRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstantsRemoved, 
+						Severity.BreakingChange,
 						new CodeDescriptor 
 						{ 
 							Reason = "Constant removed",

@@ -2,15 +2,10 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class DemoTypeInspector : ITypeInspector
+    public class DemoTypeInspector : ITypeInspector
 	{
 		public bool Enabled { get { return false; } set { } }
 
@@ -22,7 +17,8 @@ namespace NDifference.Inspectors
 
 		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
         {
-            var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug, 
+            var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug,
+				Severity.NonBreaking,
 				new NameDescriptor
 				{
 					Reason = "This is a demonstration type inspector-identified change",

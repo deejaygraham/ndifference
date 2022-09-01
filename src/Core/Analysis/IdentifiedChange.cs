@@ -32,7 +32,7 @@ namespace NDifference.Analysis
 		//{
 		//}
 
-        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, IDescriptor descriptor)
+        public IdentifiedChange(/*IInspector inspector, */int categoryPriority, Severity severity, IDescriptor descriptor)
         {
             //if (inspector == null)
             //    this.Inspector = "unknown";
@@ -40,6 +40,7 @@ namespace NDifference.Analysis
             //    this.Inspector = inspector.ShortCode;
 
             this.Priority = categoryPriority;
+			this.Severity = severity;
             //this.Description = name;
             this.Descriptor = descriptor;
             //this.Level = AnalysisLevel.Unknown;

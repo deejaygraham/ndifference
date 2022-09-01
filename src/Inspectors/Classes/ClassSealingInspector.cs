@@ -2,16 +2,11 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class ClassSealingInspector : ITypeInspector
+    public class ClassSealingInspector : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -34,7 +29,8 @@ namespace NDifference.Inspectors
 
 			if (!firstClass.IsSealed && secondClass.IsSealed)
             {
-                var classNowSealed = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
+                var classNowSealed = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
+					Severity.BreakingChange,
 					new CodeDeltaDescriptor 
 					{ Reason = "Class is now marked as sealed", 
 						Was = first.ToCode(), 

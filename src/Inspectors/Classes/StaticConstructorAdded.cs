@@ -2,15 +2,10 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	public class StaticConstructorAdded : ITypeInspector
+    public class StaticConstructorAdded : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -33,7 +28,8 @@ namespace NDifference.Inspectors
 
 				if (oldStatic == null && newStatic != null)
                 {
-                    var addedConstructor = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded, 
+                    var addedConstructor = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded,
+						Severity.NonBreaking,
 						new CodeDescriptor 
 						{ 
 							Reason = "Static constructor added",

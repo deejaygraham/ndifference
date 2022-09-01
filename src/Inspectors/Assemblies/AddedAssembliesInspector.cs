@@ -2,15 +2,14 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using System.Diagnostics;
-using System.Linq;
 
 namespace NDifference.Inspectors
 {
-	/// <summary>
-	/// Looking for assemblies that have been added from first to second. I.e. New assemblies added to the
-	/// project since the last version.
-	/// </summary>
-	public class AddedAssembliesInspector : IAssemblyCollectionInspector
+    /// <summary>
+    /// Looking for assemblies that have been added from first to second. I.e. New assemblies added to the
+    /// project since the last version.
+    /// </summary>
+    public class AddedAssembliesInspector : IAssemblyCollectionInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -32,7 +31,8 @@ namespace NDifference.Inspectors
                 string assemblyName = added.Second.Name;
 
 				// descriptor ?
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedAssemblies, 
+				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedAssemblies,
+					Severity.NonBreaking,
 					new NameDescriptor 
 					{ 
 						Name = assemblyName,

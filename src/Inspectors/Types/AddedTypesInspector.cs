@@ -33,6 +33,7 @@ namespace NDifference.Inspectors
                 foreach (var added in addedTypes)
                 {
                     var addedNewType = new IdentifiedChange(WellKnownChangePriorities.AddedTypes,
+						Severity.NonBreaking,
 						new NameDescriptor
 						{
 							Name = added.Second.FullName,

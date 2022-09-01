@@ -52,6 +52,11 @@ namespace NDifference.Reporting
 			return builder.ToString();
 		}
 
+        public string FormatComment(string text)
+        {
+			return "<!-- " + text + " -->";
+		}
+
         public string FormatLink(string url, string name)
         {
 			var builder = new StringBuilder();

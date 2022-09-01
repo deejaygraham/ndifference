@@ -30,7 +30,8 @@ namespace NDifference.Inspectors
 
 				foreach (var add in added)
                 {
-                    var eventAdded = new IdentifiedChange(WellKnownChangePriorities.EventsAdded, 
+                    var eventAdded = new IdentifiedChange(WellKnownChangePriorities.EventsAdded,
+						Severity.NonBreaking,
 						new CodeDescriptor 
 						{ 
 							Reason = "Event added",

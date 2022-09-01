@@ -18,6 +18,6 @@ namespace NDifference.Reporting
 
 		//Project Project { get; set; }
 
-		void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format);
+		void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format, bool consolidateReport);
 	}
 }

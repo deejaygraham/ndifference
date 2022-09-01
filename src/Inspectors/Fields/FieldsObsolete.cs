@@ -36,7 +36,13 @@ namespace NDifference.Inspectors
 
 			foreach (var o in obs)
             {
-                var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete, new NameValueDescriptor { Name = o.ToString(), Value = o.ObsoleteMarker.Message });
+                var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete,
+                    Severity.BreakingChange,
+                    new NameValueDescriptor 
+                    { 
+                        Name = o.ToString(), 
+                        Value = o.ObsoleteMarker.Message 
+                    });
 
                 fieldMadeObsolete.ForType(first);
 
@@ -71,7 +77,8 @@ namespace NDifference.Inspectors
 
             foreach (var o in newObs.Except(oldObs, new CompareMemberFieldByName()))
             {
-                var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete, 
+                var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete,
+                    Severity.BreakingChange,
                     new CodeDescriptor 
                     { 
                         Code = o.ToCode(), 

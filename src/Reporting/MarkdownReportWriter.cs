@@ -22,7 +22,7 @@ namespace NDifference.Reporting
 
         public FileMap Map { get; set; }
 
-		public void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format)
+		public void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format, bool consolidateReport)
         {
 			Debug.Assert(changes != null, "changes object must be set");
 			Debug.Assert(output != null, "output object must be set");
@@ -89,6 +89,19 @@ namespace NDifference.Reporting
                     {
                         var category = registry.ForPriority(groupChange.Key);
 
+                        if (consolidateReport)
+                        {
+                            // does category include assembly and typename for consolidated report?
+                            if (!category.Headings.Contains("Assembly"))
+                            {
+                                var newHeadings = new List<string>(category.Headings);
+                                newHeadings.Add("Type");
+                                newHeadings.Add("Assembly");
+
+                                category.Headings = newHeadings.ToArray();
+                            }
+                        }
+
                         string changeLink = format.FormatLink("#" + category.Identifier, category.Name);
                         string countLink = format.FormatLink("#" + category.Identifier, groupChange.Count().ToString());
 
@@ -144,16 +157,16 @@ namespace NDifference.Reporting
 			}
 		}
 
-        private void Render(IDocumentLink link, MarkdownWriter mdw, IReportFormat format, IReportOutput output, FileMap map)
-        {
-            if (link != null)
-            {
-                if (map != null)
-                {
-                    //mdw.Write(fomatlink, output, this.Map);
-                }
-            }
-        }
+        //private void Render(IDocumentLink link, MarkdownWriter mdw, IReportFormat format, IReportOutput output, FileMap map)
+        //{
+        //    if (link != null)
+        //    {
+        //        if (map != null)
+        //        {
+        //            //mdw.Write(fomatlink, output, this.Map);
+        //        }
+        //    }
+        //}
 
         private void RenderDescriptor(IdentifiedChange change, object descriptor, MarkdownWriter mdw, IReportOutput output)
         {

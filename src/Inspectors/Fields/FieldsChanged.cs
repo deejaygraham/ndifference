@@ -43,7 +43,8 @@ namespace NDifference.Inspectors
 						if (oldField.FieldType != newField.FieldType)
                         {
                             var fieldTypeChanged = new IdentifiedChange(WellKnownChangePriorities.FieldsChanged,
-                                new CodeDeltaDescriptor
+								Severity.BreakingChange,
+								new CodeDeltaDescriptor
                                 {
                                     Reason = string.Format("Changed type from {0} to {1}", oldField.FieldType, newField.FieldType),
                                     Was = oldField.ToCode(),

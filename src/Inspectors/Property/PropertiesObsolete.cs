@@ -34,7 +34,8 @@ namespace NDifference.Inspectors
 
 				foreach (var o in obs)
                 {
-                    var obsoleteProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete, 
+                    var obsoleteProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete,
+                        Severity.BreakingChange,
                         new CodeDescriptor 
                         { 
                             Code = o.ToCode(), 
@@ -75,7 +76,8 @@ namespace NDifference.Inspectors
 
                 foreach (var o in newObs.Except(oldObs, new CompareMemberPropertyByName()))
                 {
-                    var propertyMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete, 
+                    var propertyMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete,
+                        Severity.BreakingChange,
                         new CodeDescriptor 
                         { 
                             Code = o.ToCode(), 

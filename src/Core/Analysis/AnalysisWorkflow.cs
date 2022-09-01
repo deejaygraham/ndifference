@@ -230,43 +230,44 @@ namespace NDifference.Analysis
 
                                 if (breakingChangesToType > 0)
                                 {
-                                    //foreach (var breakingChange in changesToThisType.ChangesWithSeverity(
-                                    //             Severity.PotentiallyBreakingChange))
-                                    //{
-                                    //    // find an existing category...
-                                    //    Category category =
-                                    //        result.BreakingChanges.Categories.FirstOrDefault(c =>
-                                    //            c.Name == breakingChange.Category.Name);
+                                    foreach (var breakingChange in changesToThisType.ChangesWithSeverity(Severity.PotentiallyBreakingChange))
+                                    {
+                                        //    // find an existing category...
+                                        //    Category category =
+                                        //        result.BreakingChanges.Categories.FirstOrDefault(c =>
+                                        //            c.Name == breakingChange.Category.Name);
 
-                                    //    if (category == null)
-                                    //    {
-                                    //        // take the category from the current list of breaking changes.
-                                    //        category = new Category
-                                    //        {
-                                    //            Name = breakingChange.Category.Name,
-                                    //            Description = breakingChange.Category.Description,
-                                    //            Priority = breakingChange.Category.Priority,
-                                    //            Headings = new string[] { "Changes", "Type", "Assembly" },
-                                    //            Severity = breakingChange.Category.Severity
-                                    //        };
-                                    //    }
+                                        //    if (category == null)
+                                        //    {
+                                        //        // take the category from the current list of breaking changes.
+                                        //        category = new Category
+                                        //        {
+                                        //            Name = breakingChange.Category.Name,
+                                        //            Description = breakingChange.Category.Description,
+                                        //            Priority = breakingChange.Category.Priority,
+                                        //            Headings = new string[] { "Changes", "Type", "Assembly" },
+                                        //            Severity = breakingChange.Category.Severity
+                                        //        };
+                                        //    }
 
-                                    //    var copiedChange = new IdentifiedChange
-                                    //    {
-                                    //        AssemblyName = breakingChange.AssemblyName,
-                                    //        //Category = category,
-                                    //        //Description = breakingChange.Description,
-                                    //        Descriptor = breakingChange.Descriptor,
-                                    //        //Inspector = breakingChange.Inspector,
-                                    //        //Level = breakingChange.Level,
-                                    //        Priority = breakingChange.Priority,
-                                    //        TypeName = breakingChange.TypeName
-                                    //    };
+                                        var copiedChange = new IdentifiedChange
+                                        {
+                                            
+                                            //Category = category,
+                                            //Description = breakingChange.Description,
+                                            Descriptor = breakingChange.Descriptor,
+                                            //Inspector = breakingChange.Inspector,
+                                            //Level = breakingChange.Level,
+                                            Severity = breakingChange.Severity,
+                                            Priority = breakingChange.Priority,
+                                            AssemblyName = breakingChange.AssemblyName,
+                                            TypeName = breakingChange.TypeName
+                                        };
 
-                                    //    // TODO: copy each one and change it
-                                    //    // order by assembly and then by type name
-                                    //    result.BreakingChanges.Add(copiedChange);
-                                    //}
+                                        //    // TODO: copy each one and change it
+                                        //    // order by assembly and then by type name
+                                        result.BreakingChanges.Add(copiedChange);
+                                    }
 
                                     //breakingChangesToAssembly += breakingChangesToType;
                                     //changesToThisType.SummaryBlocks.Add("Potential Breaking Changes", breakingChangesToType.ToString());

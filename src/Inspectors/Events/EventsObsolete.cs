@@ -30,7 +30,8 @@ namespace NDifference.Inspectors
 
 			foreach (var o in obs)
             {
-                var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete, 
+                var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete,
+                    Severity.BreakingChange,
                     new CodeDescriptor 
                     { 
                         Code = o.ToCode(), 
@@ -69,7 +70,8 @@ namespace NDifference.Inspectors
 
             foreach (var o in newObs.Except(oldObs, new CompareMemberEventByName()))
             {
-                var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete, 
+                var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete,
+                    Severity.BreakingChange,
                     new CodeDescriptor 
                     { 
                         Code = o.ToCode(), 

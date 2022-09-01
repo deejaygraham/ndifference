@@ -37,7 +37,8 @@ namespace NDifference.Inspectors
 					foreach (var add in added)
                     {
 						// TODO - Interface added !!!!
-                        var interfaceAdded = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
+                        var interfaceAdded = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
+							Severity.NonBreaking,
 							new CodeDescriptor 
 							{ 
 								Reason = "Now implements", 

@@ -2,18 +2,14 @@
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Inspectors
 {
-	/// <summary>
-	/// Looking for changes in the interfaces a type implements.
-	/// </summary>
-	public class InterfacesRemoved : ITypeInspector
+    /// <summary>
+    /// Looking for changes in the interfaces a type implements.
+    /// </summary>
+    public class InterfacesRemoved : ITypeInspector
 	{
 		public bool Enabled { get; set; }
 
@@ -41,7 +37,8 @@ namespace NDifference.Inspectors
 					// or for each - no longer implements...
 					foreach (var remove in removed)
                     {
-                        var interfaceRemoved = new IdentifiedChange(WellKnownChangePriorities.TypeInternal, 
+                        var interfaceRemoved = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
+							Severity.BreakingChange,
 							new CodeDescriptor 
 							{ 
 								Reason = "No longer implements", 

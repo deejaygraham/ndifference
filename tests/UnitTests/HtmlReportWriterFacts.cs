@@ -25,7 +25,7 @@ namespace NDifference.UnitTests
 			project.Product.Add(new ProductIncrement { Name = "1.0" });
 			project.Product.Add(new ProductIncrement { Name = "2.0" });
 
-			writer.Write(superficial, output, writer.SupportedFormats.First());
+			writer.Write(superficial, output, writer.SupportedFormats.First(), false);
 
 			Assert.Contains("<html>", output.Content);
 
@@ -55,7 +55,7 @@ namespace NDifference.UnitTests
 			project.Product.Add(new ProductIncrement { Name = "1.0" });
 			project.Product.Add(new ProductIncrement { Name = "2.0" });
 
-			writer.Write(superficial, output, writer.SupportedFormats.First());
+			writer.Write(superficial, output, writer.SupportedFormats.First(), false);
 
 			Assert.Contains("Test.dll", output.Content);
 		}

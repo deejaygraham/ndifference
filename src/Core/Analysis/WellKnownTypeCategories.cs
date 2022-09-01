@@ -335,7 +335,7 @@ namespace NDifference.Analysis
 			Name = "Changed Methods",
 			Description = "These methods were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsChanged),
-			Headings = new string[] { "Message", "Was", "Now" },
+			Headings = new string[] { "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 

@@ -61,6 +61,7 @@ namespace NDifference.Reporting
             writer.WriteLine();
         }
 
+        // used
         public void WriteTableRow(IDocumentLink change, IReportOutput output, FileMap map)
         {
             bool outputDeadLinks = false;

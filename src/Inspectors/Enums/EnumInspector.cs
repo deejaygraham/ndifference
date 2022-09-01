@@ -64,7 +64,8 @@ namespace NDifference.Inspectors
                     {
                         // addition
                         var enumAdded = new IdentifiedChange(WellKnownChangePriorities.EnumValuesAdded,
-                            new CodeDescriptor 
+							Severity.NonBreaking,
+							new CodeDescriptor 
 							{ 
 								Reason = "Enum value added",
 								Code = insert.ToCode() 
@@ -84,7 +85,8 @@ namespace NDifference.Inspectors
                     {
                         // removed
                         var enumRemoved = new IdentifiedChange(WellKnownChangePriorities.EnumValuesRemoved,
-                            new CodeDescriptor 
+							Severity.BreakingChange, 
+							new CodeDescriptor 
 							{ 
 								Reason = "Enum value removed",
 								Code = remove.ToCode() 
@@ -109,7 +111,8 @@ namespace NDifference.Inspectors
 							if (firstValue.Value != secondValue.Value)
                             {
                                 var enumValueChanged = new IdentifiedChange(WellKnownChangePriorities.EnumValuesChanged,
-                                    new CodeDeltaDescriptor 
+									Severity.NonBreaking,
+									new CodeDeltaDescriptor 
 									{ 
 										Reason = "Enum value changed",
 										Was = firstValue.ToCode(), 

@@ -32,7 +32,8 @@ namespace NDifference.Inspectors
 
 					foreach (var add in added)
                     {
-                        var newMethodAdded = new IdentifiedChange(WellKnownChangePriorities.MethodsAdded, 
+                        var newMethodAdded = new IdentifiedChange(WellKnownChangePriorities.MethodsAdded,
+							Severity.NonBreaking,
 							new CodeDescriptor 
 							{ 
 								Reason = "Method added",

@@ -36,7 +36,8 @@ namespace NDifference.Inspectors
 
 					foreach (var rem in removed)
                     {
-                        var methodRemoved = new IdentifiedChange(WellKnownChangePriorities.MethodsRemoved, 
+                        var methodRemoved = new IdentifiedChange(WellKnownChangePriorities.MethodsRemoved,
+							Severity.BreakingChange,
 							new CodeDescriptor 
 							{ 
 								Reason = "Method removed",

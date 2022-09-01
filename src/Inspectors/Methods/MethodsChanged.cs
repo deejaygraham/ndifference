@@ -35,6 +35,7 @@ namespace NDifference.Inspectors
 						if (method.IsVirtual != counterpart.IsVirtual)
                         {
                             var virtualnessChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                Severity.BreakingChange,
                                 new CodeDeltaDescriptor
                                 {
                                     Reason = method.IsVirtual ? "Method is no longer virtual" : "Method is now virtual",
@@ -49,6 +50,7 @@ namespace NDifference.Inspectors
 						else if (!method.IsAbstract && counterpart.IsAbstract)
                         {
                             var methodMadeAbstract = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                Severity.BreakingChange,
                                 new CodeDeltaDescriptor
                                 {
                                     Reason = "Method is now abstract",
@@ -64,6 +66,7 @@ namespace NDifference.Inspectors
 						if (method.IsStatic != counterpart.IsStatic)
                         {
                             var staticnessChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                Severity.BreakingChange,
                                 new CodeDeltaDescriptor
                                 {
                                     Reason = method.IsStatic ? "Method is no longer static" : "Method is now static",
@@ -79,6 +82,7 @@ namespace NDifference.Inspectors
 						if (method.Accessibility != counterpart.Accessibility)
                         {
                             var accessibilityChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                Severity.BreakingChange,
                                 new DeltaDescriptor
                                 {
                                     Reason = "Accessibility has changed",
@@ -99,6 +103,7 @@ namespace NDifference.Inspectors
 							if (mm.ReturnType != cm.ReturnType)
                             {
                                 var returnTypeChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
+                                    Severity.BreakingChange,
                                     new CodeDeltaDescriptor
                                     {
                                         Reason = "Return type has changed",

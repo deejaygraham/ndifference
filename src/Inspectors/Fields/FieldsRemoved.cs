@@ -34,7 +34,8 @@ namespace NDifference.Inspectors
 
 				foreach (var rem in removed)
                 {
-                    var fieldRemoved = new IdentifiedChange(WellKnownChangePriorities.FieldsRemoved, 
+                    var fieldRemoved = new IdentifiedChange(WellKnownChangePriorities.FieldsRemoved,
+						Severity.BreakingChange,
 						new CodeDescriptor 
 						{ 
 							Reason = "Field removed",

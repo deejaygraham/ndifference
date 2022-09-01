@@ -32,7 +32,8 @@ namespace NDifference.Inspectors
 
 					foreach (var add in added)
                     {
-                        var propertyAdded = new IdentifiedChange(WellKnownChangePriorities.PropertiesAdded, 
+                        var propertyAdded = new IdentifiedChange(WellKnownChangePriorities.PropertiesAdded,
+							Severity.NonBreaking,
 							new CodeDescriptor 
 							{ 
 								Code = add.ToCode(),

@@ -15,6 +15,7 @@ namespace NDifference.Reporting
 
         public string Reason { get; set; }
 
+        // TODO: Obsolete Columns etc.
         public int Columns
         {
             get

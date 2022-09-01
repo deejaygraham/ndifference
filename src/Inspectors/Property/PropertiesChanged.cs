@@ -43,6 +43,7 @@ namespace NDifference.Inspectors
 							if (oldProperty.GetterAccessibility == MemberAccessibility.Public && newProperty.GetterAccessibility != MemberAccessibility.Public)
                             {
                                 var getterRemoved = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
+                                    Severity.BreakingChange,
                                     new CodeDeltaDescriptor
                                     {
                                         Reason = "Get removed",
@@ -58,6 +59,7 @@ namespace NDifference.Inspectors
 							if (oldProperty.SetterAccessibility == MemberAccessibility.Public && newProperty.SetterAccessibility != MemberAccessibility.Public)
                             {
                                 var setterRemoved = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
+                                    Severity.BreakingChange,
                                     new CodeDeltaDescriptor
                                     {
                                         Reason = "Set removed",
@@ -78,6 +80,7 @@ namespace NDifference.Inspectors
 									&& oldProperty.PropertyType.Type == newProperty.PropertyType.Type)
                                 {
                                     var movedNamespace = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
+                                        Severity.BreakingChange,
                                         new CodeDeltaDescriptor
                                         {
                                             Reason = string.Format(
@@ -96,6 +99,7 @@ namespace NDifference.Inspectors
 								else
                                 {
                                     var propertyTypeChanged = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
+                                        Severity.BreakingChange,
                                         new CodeDeltaDescriptor
                                         {
                                             Reason = string.Format(

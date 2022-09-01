@@ -49,7 +49,8 @@ namespace NDifference.Inspectors
 
 			if (oldTypes != newTypes)
 			{
-                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal, 
+                changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal,
+					Severity.NonBreaking,
 					new DeltaDescriptor
 					{
 						Reason = "Types",

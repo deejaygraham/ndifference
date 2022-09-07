@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
+	[Obsolete("IValueDescriptor not used")]
 	public interface IValueDescriptor : IDescriptor
 	{
 		object Value { get; set; }

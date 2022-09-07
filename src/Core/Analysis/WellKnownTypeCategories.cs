@@ -11,7 +11,7 @@ namespace NDifference.Analysis
 			Name = "Type Changes",
 			Description = "These changes were made to the new version of the type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.TypeInternal),
-			Headings = new string[] { "Message", "Was", "Now" },
+			//Headings = new string[] { "Message", "Was", "Now" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -21,7 +21,7 @@ namespace NDifference.Analysis
 			Name = "Removed Constants",
 			Description = "These constants were removed in the new version of this type.",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsRemoved),
-			Headings = new string[] { "Value" },
+			//Headings = new string[] { "Value" },
             Severity = Severity.BreakingChange
         };
 
@@ -30,7 +30,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Constants",
 			Description = "These constants have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsObsolete),
-			Headings = new string[] { "Value", "Message" },
+			//Headings = new string[] { "Value", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -39,7 +39,7 @@ namespace NDifference.Analysis
 			Name = "Changed Constants",
 			Description = "These constants were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsChanged),
-			Headings = new string[] { "Message", "Was", "Now" },
+			//Headings = new string[] { "Message", "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -48,7 +48,7 @@ namespace NDifference.Analysis
 			Name = "New Constants",
 			Description = "These constants were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstantsAdded),
-			Headings = new string[] { "Value" },
+			//Headings = new string[] { "Value" },
             Severity = Severity.NonBreaking
         };
 
@@ -58,7 +58,7 @@ namespace NDifference.Analysis
 			Name = "Removed Fields",
 			Description = "These fields were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsRemoved),
-			Headings = new string[] { "Value" },
+			//Headings = new string[] { "Value" },
             Severity = Severity.BreakingChange
         };
 
@@ -67,7 +67,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Fields",
 			Description = "These fields have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsObsolete),
-			Headings = new string[] { "Value", "Message" },
+			//Headings = new string[] { "Value", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -76,7 +76,7 @@ namespace NDifference.Analysis
 			Name = "Changed Fields",
 			Description = "These fields were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsChanged),
-			Headings = new string[] { "Message", "Was", "Now" },
+			//Headings = new string[] { "Message", "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -85,7 +85,7 @@ namespace NDifference.Analysis
 			Name = "New Fields",
 			Description = "These fields were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FieldsAdded),
-			Headings = new string[] { "Value" },
+			//Headings = new string[] { "Value" },
             Severity = Severity.NonBreaking
         };
 
@@ -95,7 +95,7 @@ namespace NDifference.Analysis
 			Name = "Removed Constructors",
 			Description = "These constructors were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsRemoved),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.BreakingChange
         };
 
@@ -104,7 +104,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Constructors",
 			Description = "These constructors have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsObsolete),
-			Headings = new string[] { "Signature", "Message" },
+			//Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -113,7 +113,7 @@ namespace NDifference.Analysis
 			Name = "Changed Constructors",
 			Description = "These constructors were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsChanged),
-			Headings = new string[] { "Was", "Now" },
+			//Headings = new string[] { "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -122,7 +122,7 @@ namespace NDifference.Analysis
 			Name = "New Constructors",
 			Description = "These constructors were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ConstructorsAdded),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.NonBreaking
         };
 
@@ -132,7 +132,7 @@ namespace NDifference.Analysis
 			Name = "Removed Finalizer",
 			Description = "This finalizer was removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FinalizersRemoved),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.BreakingChange
         };
 
@@ -141,7 +141,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Finalizer",
 			Description = "This finalizer was made obsolete in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FinalizersObsolete),
-			Headings = new string[] { "Signature", "Message" },
+			//Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -150,7 +150,7 @@ namespace NDifference.Analysis
 			Name = "Changed Finalizer",
 			Description = "This finalizer was changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FinalizersChanged),
-			Headings = new string[] { "Was", "Now" },
+			//Headings = new string[] { "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -159,7 +159,7 @@ namespace NDifference.Analysis
 			Name = "New Finalizer",
 			Description = "This finalizer was added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.FinalizersAdded),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.NonBreaking
         };
 
@@ -169,7 +169,7 @@ namespace NDifference.Analysis
 			Name = "Removed Delegates",
 			Description = "These delegates were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesRemoved),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.BreakingChange
         };
 
@@ -178,7 +178,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Delegates",
 			Description = "These delegates have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesObsolete),
-			Headings = new string[] { "Signature", "Message" },
+			//Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -187,7 +187,7 @@ namespace NDifference.Analysis
 			Name = "Changed Delegates",
 			Description = "These delegates were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesChanged),
-			Headings = new string[] { "Was", "Now" },
+			//Headings = new string[] { "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -196,7 +196,7 @@ namespace NDifference.Analysis
 			Name = "New Delegates",
 			Description = "These delegates were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.DelegatesAdded),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.NonBreaking
         };
 
@@ -206,7 +206,7 @@ namespace NDifference.Analysis
 			Name = "Removed Events",
 			Description = "These events were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsRemoved),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.BreakingChange
         };
 
@@ -215,7 +215,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Events",
 			Description = "These events have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsObsolete),
-			Headings = new string[] { "Signature", "Message" },
+			//Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -224,7 +224,7 @@ namespace NDifference.Analysis
 			Name = "Changed Events",
 			Description = "These events were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsChanged),
-			Headings = new string[] { "Message", "Was", "Now" },
+			//Headings = new string[] { "Message", "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -233,7 +233,7 @@ namespace NDifference.Analysis
 			Name = "New Events",
 			Description = "These events were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EventsAdded),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.NonBreaking
         };
 
@@ -243,7 +243,7 @@ namespace NDifference.Analysis
 			Name = "Removed Properties",
 			Description = "These properties were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesRemoved),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.BreakingChange
         };
 
@@ -252,7 +252,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Properties",
 			Description = "These properties have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesObsolete),
-			Headings = new string[] { "Signature", "Message" },
+			//Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -261,7 +261,7 @@ namespace NDifference.Analysis
 			Name = "Changed Properties",
 			Description = "These properties were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesChanged),
-			Headings = new string[] { "Message", "Was", "Now" },
+			//Headings = new string[] { "Message", "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -270,7 +270,7 @@ namespace NDifference.Analysis
 			Name = "New Properties",
 			Description = "These properties were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.PropertiesAdded),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.NonBreaking
         };
 
@@ -280,7 +280,7 @@ namespace NDifference.Analysis
 			Name = "Removed Indexers",
 			Description = "These indexers were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersRemoved),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.BreakingChange
 		};
 
@@ -289,7 +289,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Indexers",
 			Description = "These indexers have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersObsolete),
-			Headings = new string[] { "Signature", "Message" },
+			//Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -298,7 +298,7 @@ namespace NDifference.Analysis
 			Name = "Changed Indexers",
 			Description = "These indexers were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersChanged),
-			Headings = new string[] { "Was", "Now" },
+			//Headings = new string[] { "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -307,7 +307,7 @@ namespace NDifference.Analysis
 			Name = "New Indexers",
 			Description = "These indexers were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.IndexersAdded),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.NonBreaking
         };
 
@@ -317,7 +317,7 @@ namespace NDifference.Analysis
 			Name = "Removed Methods",
 			Description = "These methods were removed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsRemoved),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.BreakingChange
         };
 
@@ -326,7 +326,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Methods",
 			Description = "These methods have been marked as obsolete",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsObsolete),
-			Headings = new string[] { "Signature", "Message" },
+			//Headings = new string[] { "Signature", "Message" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -335,7 +335,7 @@ namespace NDifference.Analysis
 			Name = "Changed Methods",
 			Description = "These methods were changed in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsChanged),
-			Headings = new string[] { "Was", "Now" },
+			//Headings = new string[] { "Was", "Now" },
             Severity = Severity.BreakingChange
         };
 
@@ -344,7 +344,7 @@ namespace NDifference.Analysis
 			Name = "New Methods",
 			Description = "These methods were added in the new version of this type",
 			Priority = new CategoryPriority(WellKnownChangePriorities.MethodsAdded),
-			Headings = new string[] { "Signature" },
+			//Headings = new string[] { "Signature" },
             Severity = Severity.NonBreaking
         };
 
@@ -354,7 +354,7 @@ namespace NDifference.Analysis
 			Name = "Values Removed",
 			Description = "These values were removed in the new version of this enum",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesRemoved),
-			Headings = new string[] { "Value" },
+			//Headings = new string[] { "Value" },
             Severity = Severity.BreakingChange
         };
 
@@ -363,7 +363,7 @@ namespace NDifference.Analysis
 			Name = "Values Changed",
 			Description = "These values were changed in the new version of this enum",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesChanged),
-			Headings = new string[] { "Was", "Now" },
+			//Headings = new string[] { "Was", "Now" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -372,7 +372,7 @@ namespace NDifference.Analysis
 			Name = "Values Added",
 			Description = "These values were added to the new version of this enum",
 			Priority = new CategoryPriority(WellKnownChangePriorities.EnumValuesAdded),
-			Headings = new string[] { "Value" },
+			//Headings = new string[] { "Value" },
             Severity = Severity.NonBreaking
         };
 

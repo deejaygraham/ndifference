@@ -14,10 +14,10 @@ namespace NDifference
 			this.FullPath = fullPath;
 		}
 
-		public PhysicalFolder(DirectoryInfo info)
-			: this (info.FullName)
-		{
-		}
+		//public PhysicalFolder(DirectoryInfo info)
+		//	: this (info.FullName)
+		//{
+		//}
 
 		public string FullPath { get; private set; }
 

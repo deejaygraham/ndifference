@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.Reporting
 {
-	public class CssVariableRepository
+    public class CssVariableRepository
 	{
 		Dictionary<string, string> variables = new Dictionary<string, string>();
 

@@ -1,10 +1,8 @@
-﻿
-using NDifference.Inspectors;
-using NDifference.Reporting;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace NDifference.Analysis
 {
@@ -12,7 +10,7 @@ namespace NDifference.Analysis
     /// Represents a single change in an API. Changes can be grouped into 
 	/// collections which are ordered according to priority for reporting.
     /// </summary>
-    [DebuggerDisplay("{Description}")]
+   // [DebuggerDisplay("{Description}")]
 	public sealed class IdentifiedChange
 	{
 		public IdentifiedChange()
@@ -53,13 +51,12 @@ namespace NDifference.Analysis
 
 		public int Priority { get; set; }
 
-		// IDescriptor ???
-		public object Descriptor { get; set; }
+		public IDescriptor Descriptor { get; set; }
 
 		[Obsolete("Not used we don't think")]
 		public string Inspector { get; set; }
 
-//		public Category Category { get; set; }
+        //		public Category Category { get; set; }
 
         //public AnalysisLevel Level { get; set; }
 
@@ -67,28 +64,28 @@ namespace NDifference.Analysis
         {
             this.TypeName = type.FullName;
 
-			if (!String.IsNullOrEmpty(type.Assembly))
+            if (!String.IsNullOrEmpty(type.Assembly))
             {
-				if (type.Assembly.EndsWith(".dll"))
-				{
-					this.AssemblyName = type.Assembly;
-				}
-				else
-				{
-					this.AssemblyName = type.Assembly + ".dll";
-				}
-			}
-		}
+                if (type.Assembly.EndsWith(".dll"))
+                {
+                    this.AssemblyName = type.Assembly;
+                }
+                else
+                {
+                    this.AssemblyName = type.Assembly + ".dll";
+                }
+            }
+        }
 
-		public void ForAssembly(string name)
+        public void ForAssembly(string name)
         {
             this.AssemblyName = name;
         }
 
-		public string AssemblyName { get; set; }
+        public string AssemblyName { get; set; }
 
-		public string TypeName { get; set; }
-	}
+        public string TypeName { get; set; }
+    }
 
 	public class IdentifiedChangeComparer : IComparer<IdentifiedChange>
 	{

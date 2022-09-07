@@ -45,6 +45,7 @@ namespace NDifference.Reporting
             return string.Format("[{0}]({1})", name, url);
         }
 
+        [Obsolete]
         public string FormatTableHeader(IEnumerable<string> headings)
         {
             var builder = new StringBuilder();
@@ -71,6 +72,7 @@ namespace NDifference.Reporting
             return builder.ToString();
         }
 
+        [Obsolete("Use Markdown Table instead")]
         public string FormatTableRow(IEnumerable<string> cells)
         {
             var builder = new StringBuilder();

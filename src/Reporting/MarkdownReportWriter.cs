@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
+using NDifference.Inspection;
 
 namespace NDifference.Reporting
 {
@@ -22,7 +23,7 @@ namespace NDifference.Reporting
 
         public FileMap Map { get; set; }
 
-		public void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format, bool consolidateReport)
+		public void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format)
         {
 			Debug.Assert(changes != null, "changes object must be set");
 			Debug.Assert(output != null, "output object must be set");
@@ -74,11 +75,15 @@ namespace NDifference.Reporting
                     mdw.Write(format.FormatTitle(2, "Summary of changes", null));
                     mdw.WriteNewLine();
 
-                    mdw.Write(format.FormatTableHeader(new string[] { "Item", "Value" }));
+                    var summaryTable = new MarkdownTable();
+
+                    summaryTable.AddColumns(new string[] { "Item", "Value" });
+//                    mdw.Write(format.FormatTableHeader(new string[] { "Item", "Value" }));
 
 					foreach (var key in changes.SummaryBlocks.Keys)
                     {
-                        mdw.Write(format.FormatTableRow(new string[] { key, changes.SummaryBlocks[key] }));
+                        summaryTable.AddRow(new string[] { key, changes.SummaryBlocks[key] });
+                        //mdw.Write(format.FormatTableRow(new string[] { key, changes.SummaryBlocks[key] }));
                     }
 
                     CategoryRegistry registry = new CategoryRegistry();
@@ -89,24 +94,13 @@ namespace NDifference.Reporting
                     {
                         var category = registry.ForPriority(groupChange.Key);
 
-                        if (consolidateReport)
-                        {
-                            // does category include assembly and typename for consolidated report?
-                            if (!category.Headings.Contains("Assembly"))
-                            {
-                                var newHeadings = new List<string>(category.Headings);
-                                newHeadings.Add("Type");
-                                newHeadings.Add("Assembly");
-
-                                category.Headings = newHeadings.ToArray();
-                            }
-                        }
-
                         string changeLink = format.FormatLink("#" + category.Identifier, category.Name);
                         string countLink = format.FormatLink("#" + category.Identifier, groupChange.Count().ToString());
 
-                        mdw.Write(format.FormatTableRow(new string[] { changeLink, countLink }));
+                        summaryTable.AddRow(new string[] { changeLink, countLink });
                     }
+
+                    mdw.Write(summaryTable.ToString());
 
                     foreach (var priorityGroup in groupedChanges)
                     {
@@ -119,15 +113,40 @@ namespace NDifference.Reporting
 
                         //mdw.Write(category.FullDescription);
 
-                        if (category.Headings != null && category.Headings.Length > 0)
+                        var headings = ColumnNames(priorityGroup.First());
+
+                        var table = new MarkdownTable();
+                        Debug.Assert(headings != null, "Headings not set correctly for priority type");
+
+                        table.AddColumns(headings);
+
+                        if (changes.Consolidated)
                         {
-                            mdw.Write(format.FormatTableHeader(category.Headings));
+                            table.Consolidated = true;
+                            table.AddColumn("Type");
+                            table.AddColumn("Assembly");
                         }
-                       
+
                         foreach (var change in priorityGroup)
                         {
-                            RenderChange(change, mdw, output);
+                            if (change.Descriptor is IDocumentLink)
+                            {
+                                IDocumentLink descriptor = change.Descriptor as IDocumentLink;
+
+                                // look up correct path...
+                                IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
+
+                                string relativePath = this.Map.PathRelativeTo(descriptor.Identifier, folder);
+                                string link = format.FormatLink(relativePath.Replace(".md", ".html"), descriptor.LinkText);
+                                table.AddRow(link);
+                            }
+                            else
+                            {
+                                table.AddRow(change);
+                            }
                         }
+
+                        mdw.Write(table.ToString());
 
                         mdw.WriteNewLine();
                     }
@@ -147,131 +166,108 @@ namespace NDifference.Reporting
 			}
 		}
 
-		private void RenderChange(IdentifiedChange change, MarkdownWriter mdw, IReportOutput output)
-		{
-			object descriptor = change.Descriptor;
-
-			if (descriptor != null)
-			{
-				RenderDescriptor(change, descriptor, mdw, output);
-			}
-		}
-
-        //private void Render(IDocumentLink link, MarkdownWriter mdw, IReportFormat format, IReportOutput output, FileMap map)
-        //{
-        //    if (link != null)
-        //    {
-        //        if (map != null)
-        //        {
-        //            //mdw.Write(fomatlink, output, this.Map);
-        //        }
-        //    }
-        //}
-
-        private void RenderDescriptor(IdentifiedChange change, object descriptor, MarkdownWriter mdw, IReportOutput output)
+        private IEnumerable<string> ColumnNames(IdentifiedChange change)
         {
-            IDocumentLink link = descriptor as IDocumentLink;
+            var columns = new List<string>();
 
-            if (link != null)
+            if (change.Priority == WellKnownChangePriorities.RemovedAssemblies 
+                     || change.Priority == WellKnownChangePriorities.BreakingChanges // not used
+                     || change.Priority == WellKnownChangePriorities.PotentiallyChangedAssemblies // not used
+                     || change.Priority == WellKnownChangePriorities.AddedAssemblies
+                     || change.Priority == WellKnownChangePriorities.ChangedAssemblies)
             {
-                if (this.Map != null)
-                {
-                    mdw.WriteTableRow(link, output, this.Map);
-                }
+                // single column
+                columns.Add("Assembly");
+            }
+            else if (change.Priority == WellKnownChangePriorities.AssemblyInternal
+                    || change.Priority == WellKnownChangePriorities.TypeInternal)
+            {
+                // class structure has changed
+                columns.Add("Was");
+                columns.Add("Is Now");
+                columns.Add("Reason");
+            }
+            else if (change.Priority == WellKnownChangePriorities.RemovedReferences
+                     || change.Priority == WellKnownChangePriorities.AddedReferences)
+            {
+                columns.Add("Reference");
+            }
+            else if (change.Priority == WellKnownChangePriorities.AddedTypes 
+                     || change.Priority == WellKnownChangePriorities.ChangedTypes
+                     || change.Priority == WellKnownChangePriorities.RemovedTypes)
+            {
+                columns.Add("Type");
+            }
+            else if (change.Priority == WellKnownChangePriorities.ObsoleteTypes)
+            {
+                columns.Add("Type");
+                columns.Add("Message");
+            }
+            else if (change.Priority == WellKnownChangePriorities.PotentiallyChangedTypes) // not used
+            {
+                columns.Add("Potentially Changed Types");
+            }
+            else if (change.Priority == WellKnownChangePriorities.ConstantsAdded
+                    || change.Priority == WellKnownChangePriorities.ConstantsRemoved
+                    || change.Priority == WellKnownChangePriorities.ConstructorsAdded
+                    || change.Priority == WellKnownChangePriorities.ConstructorsRemoved
+                    || change.Priority == WellKnownChangePriorities.DelegatesAdded
+                    || change.Priority == WellKnownChangePriorities.DelegatesRemoved
+                    || change.Priority == WellKnownChangePriorities.EnumValuesAdded
+                    || change.Priority == WellKnownChangePriorities.EnumValuesRemoved
+                    || change.Priority == WellKnownChangePriorities.EventsAdded
+                    || change.Priority == WellKnownChangePriorities.EventsRemoved
+                    || change.Priority == WellKnownChangePriorities.FinalizersAdded
+                    || change.Priority == WellKnownChangePriorities.FinalizersRemoved
+                    || change.Priority == WellKnownChangePriorities.FieldsAdded
+                    || change.Priority == WellKnownChangePriorities.FieldsRemoved
+                    || change.Priority == WellKnownChangePriorities.IndexersAdded
+                    || change.Priority == WellKnownChangePriorities.IndexersRemoved
+                    || change.Priority == WellKnownChangePriorities.MethodsAdded
+                    || change.Priority == WellKnownChangePriorities.MethodsRemoved
+                    || change.Priority == WellKnownChangePriorities.PropertiesAdded
+                    || change.Priority == WellKnownChangePriorities.PropertiesRemoved)
+            {
+                columns.Add("Signature");
+            }
+            else if (change.Priority == WellKnownChangePriorities.ConstantsObsolete
+                    || change.Priority == WellKnownChangePriorities.ConstructorsObsolete
+                    || change.Priority == WellKnownChangePriorities.DelegatesObsolete
+                    || change.Priority == WellKnownChangePriorities.EventsObsolete
+                    || change.Priority == WellKnownChangePriorities.FieldsObsolete
+                    || change.Priority == WellKnownChangePriorities.FinalizersObsolete
+                    || change.Priority == WellKnownChangePriorities.IndexersObsolete
+                    || change.Priority == WellKnownChangePriorities.MethodsObsolete
+                    || change.Priority == WellKnownChangePriorities.PropertiesObsolete)
+            {
+                columns.Add("Signature");
+                columns.Add("Reason");
+            }
+            else if (change.Priority == WellKnownChangePriorities.ConstantsChanged
+                    || change.Priority == WellKnownChangePriorities.FieldsChanged
+                    || change.Priority == WellKnownChangePriorities.ConstructorsChanged
+                    || change.Priority == WellKnownChangePriorities.DelegatesChanged
+                    || change.Priority == WellKnownChangePriorities.EnumValuesChanged
+                    || change.Priority == WellKnownChangePriorities.EventsChanged
+                    || change.Priority == WellKnownChangePriorities.FinalizersChanged
+                    || change.Priority == WellKnownChangePriorities.IndexersChanged
+                    || change.Priority == WellKnownChangePriorities.MethodsChanged
+                    || change.Priority == WellKnownChangePriorities.PropertiesChanged)
+            {
+                columns.Add("Was");
+                columns.Add("Is Now");
+            }
+            else if (change.Priority == WellKnownChangePriorities.TypeDebug)
+            {
+                // nothing
+                columns.Add("Debug");
             }
             else
             {
-                ICodeDescriptor code = descriptor as ICodeDescriptor;
-
-                if (code != null)
-                {
-                    string signature = this._format.Format(code.Code);
-
-                    if (signature.Contains("&lt;") || code.Code.ToPlainText().Contains("&lt;"))
-                    {
-
-                    }
-
-                    mdw.WriteTableRow(signature, code.Reason);
-//                    mdw.WriteTableRow(code, this._format, change.TypeName, change.AssemblyName);
-                }
-                else
-                {
-                    INameValueDescriptor nvd = descriptor as INameValueDescriptor;
-
-                    if (nvd != null)
-                    {
-                        mdw.WriteTableRow(nvd, this._format, change.TypeName, change.AssemblyName);
-                    }
-                    else
-                    {
-                        INamedDeltaDescriptor nd = descriptor as INamedDeltaDescriptor;
-
-                        if (nd != null)
-                        {
-                            mdw.WriteTableRow(nd, this._format, change.TypeName, change.AssemblyName);
-                        }
-                        else
-                        {
-                            IValueDescriptor vd = descriptor as IValueDescriptor;
-
-                            if (vd != null)
-                            {
-                                mdw.WriteTableRow(vd, this._format, change.TypeName, change.AssemblyName);
-                            }
-                            else
-                            {
-                                INamedDeltaDescriptor ndd = descriptor as INamedDeltaDescriptor;
-
-                                if (ndd != null)
-                                {
-                                    mdw.WriteTableRow(ndd, this._format);
-                                }
-                                else
-                                {
-                                    IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
-
-                                    if (delta != null)
-                                    {
-                                        mdw.WriteTableRow(delta, this._format, change.TypeName, change.AssemblyName);
-                                    }
-                                    else
-                                    {
-                                        ICodeDeltaDescriptor codedelta = descriptor as ICodeDeltaDescriptor;
-
-                                        if (codedelta != null)
-                                        {
-                                            mdw.WriteTableRow(codedelta, this._format, change.TypeName, change.AssemblyName);
-                                        }
-                                        else
-                                        {
-                                            INameDescriptor named = descriptor as INameDescriptor;
-
-                                            if (named != null)
-                                            {
-                                                mdw.WriteTableRow(named, this._format, change.TypeName, change.AssemblyName);
-                                            }
-                                            else
-                                            {
-                                                Debug.Assert(false, "No Descriptor for this");
-                                            }
-                                        }
-                                    }
-                                    //else
-                                    //{
-                                    //	INameValueDescriptor textDesc = descriptor as INameValueDescriptor;
-
-                                    //	if (textDesc != null)
-                                    //	{
-                                    //		mdw.WriteTableRow(change.Inspector, textDesc, this._format);
-                                    //	}
-                                    //}
-                                }
-                            }
-                        }
-                    }
-                }
+                columns.Add("Priority Not Handled!");
             }
+
+            return columns;
         }
     }
 }

@@ -41,6 +41,7 @@ namespace NDifference.Inspectors
 						Reason = "Namespaces",
 						Was = oldNamespaces.ToString(),
 						IsNow = newNamespaces.ToString()
+                        //ColumnNames = new string[] { "Namespace" }
 					}));
 			}
 
@@ -56,7 +57,8 @@ namespace NDifference.Inspectors
 						Reason = "Types",
 						Was = oldTypes.ToString(),
 						IsNow = newTypes.ToString()
-					}));
+                        //ColumnNames = new string[] { "Type" }
+                    }));
 			}
 		}
 	}

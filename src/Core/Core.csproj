@@ -93,6 +93,7 @@
     <Compile Include="Reporting\DefaultHtml5Style.cs" />
     <Compile Include="Reporting\DefaultHtmlStyle.cs" />
     <Compile Include="Reporting\DeltaDescriptor.cs" />
+    <Compile Include="Reporting\Descriptor.cs" />
     <Compile Include="Reporting\DocumentLink.cs" />
     <Compile Include="Reporting\FileOutput.cs" />
     <Compile Include="Reporting\HtmlStyleReset.cs" />

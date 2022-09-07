@@ -73,19 +73,19 @@ namespace NDifference
                     var info = new FileInfo(this.Path);
 
                     checksum = info.CalculateChecksum();
-				}
+                }
 
                 return checksum;
             }
         }
 
-		/// <summary>
-		/// Equal based on everything but path.
-		/// </summary>
-		/// <param name="leftHandSide">left hand side of comparison</param>
-		/// <param name="rightHandSide">right hand side of comparison</param>
-		/// <returns>true if equal</returns>
-		public static bool operator ==(AssemblyDiskInfo leftHandSide, AssemblyDiskInfo rightHandSide)
+        /// <summary>
+        /// Equal based on everything but path.
+        /// </summary>
+        /// <param name="leftHandSide">left hand side of comparison</param>
+        /// <param name="rightHandSide">right hand side of comparison</param>
+        /// <returns>true if equal</returns>
+        public static bool operator ==(AssemblyDiskInfo leftHandSide, AssemblyDiskInfo rightHandSide)
 		{
 			if (object.ReferenceEquals(leftHandSide, rightHandSide))
 			{

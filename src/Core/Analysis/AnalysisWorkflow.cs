@@ -259,9 +259,9 @@ namespace NDifference.Analysis
                                             //Inspector = breakingChange.Inspector,
                                             //Level = breakingChange.Level,
                                             Severity = breakingChange.Severity,
-                                            Priority = breakingChange.Priority,
-                                            AssemblyName = breakingChange.AssemblyName,
-                                            TypeName = breakingChange.TypeName
+                                            Priority = breakingChange.Priority
+                                            //AssemblyName = breakingChange.AssemblyName,
+                                            //TypeName = breakingChange.TypeName
                                         };
 
                                         //    // TODO: copy each one and change it
@@ -299,7 +299,8 @@ namespace NDifference.Analysis
                                 {
                                     LinkText = commonAssemblyPair.First.Name,
                                     LinkUrl = commonAssemblyPair.First.Name,
-                                    Identifier = commonAssemblyPair.Second.Identifier
+                                    Identifier = commonAssemblyPair.Second.Identifier//,
+                                    //ColumnNames = new string[] { "Assembly" }
                                 }));
 
                             if (breakingChangesToAssembly > 0)
@@ -346,7 +347,8 @@ namespace NDifference.Analysis
                     {
                         LinkText = result.BreakingChanges.Name,
                         LinkUrl = result.BreakingChanges.Name,
-                        Identifier = result.BreakingChanges.Identifier
+                        Identifier = result.BreakingChanges.Identifier//,
+                        //ColumnNames = new string[] { "Assembly" }
                     }));
             }
             finally

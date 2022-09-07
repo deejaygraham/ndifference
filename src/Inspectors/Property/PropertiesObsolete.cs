@@ -39,7 +39,7 @@ namespace NDifference.Inspectors
                         new CodeDescriptor 
                         { 
                             Code = o.ToCode(), 
-                            Reason = o.ObsoleteMarker.Message 
+                            Reason = o.ObsoleteMarker.Message
                         });
                     
                     obsoleteProperty.ForType(first);
@@ -81,7 +81,7 @@ namespace NDifference.Inspectors
                         new CodeDescriptor 
                         { 
                             Code = o.ToCode(), 
-                            Reason = o.ObsoleteMarker.Message 
+                            Reason = o.ObsoleteMarker.Message
                         });
                     
                     propertyMadeObsolete.ForType(first);

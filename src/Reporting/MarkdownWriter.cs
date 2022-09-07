@@ -128,7 +128,7 @@ namespace NDifference.Reporting
             string wasText = format.Format(change.Was);
             string isText = format.Format(change.IsNow);
 
-            WriteTableRow(wasText, isText, typeName, assemblyName);
+            WriteTableRow(wasText, isText, change.Reason, typeName, assemblyName);
         }
 
         public void WriteTableRow(INameDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
@@ -152,7 +152,7 @@ namespace NDifference.Reporting
         {
             string code = format.Format(change.Code);
 
-            WriteTableRow(code, change.Reason, assemblyName);
+            WriteTableRow(code, change.Reason, typeName, assemblyName);
         }
 
         public void WriteTableRowLink(string cell1, string cell2, string link)

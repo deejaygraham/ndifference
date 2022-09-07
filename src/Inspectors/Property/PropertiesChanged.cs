@@ -90,7 +90,7 @@ namespace NDifference.Inspectors
                                             ),
                                             Was = oldProperty.ToCode(),
                                             IsNow = newProperty.ToCode()
-                                        });
+                                          });
 
                                     movedNamespace.ForType(first);
 

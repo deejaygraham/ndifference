@@ -39,10 +39,11 @@ namespace NDifference.Inspectors
                     {
                         var interfaceRemoved = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
 							Severity.BreakingChange,
-							new CodeDescriptor 
+							new CodeDeltaDescriptor 
 							{ 
 								Reason = "No longer implements", 
-								Code = remove.ToCode()
+								Was = remove.ToCode(),
+								IsNow = null
 							});
 
 						interfaceRemoved.ForType(first);

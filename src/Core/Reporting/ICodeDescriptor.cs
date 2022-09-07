@@ -11,8 +11,8 @@ namespace NDifference.Reporting
 	{
 		ICoded Code { get; }
 
-		string TypeName { get; }
+		//string TypeName { get; }
 
-		string AssemblyName { get; }
+		//string AssemblyName { get; }
 	}
 }

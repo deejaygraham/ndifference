@@ -70,7 +70,7 @@ namespace NDifference.Reporting
 
 							this.ReportStarting.Fire(this, new FileProgessEventArgs { FileName = typeChange.Name });
 
-							writer.Write(typeChange, typeOutput, format, false);
+							writer.Write(typeChange, typeOutput, format);
 
 							this.ReportComplete.Fire(this);
 						}
@@ -84,7 +84,7 @@ namespace NDifference.Reporting
 
 						progressIndicator.Report(new Progress("Generating report for " + dllChange.Name));
 
-						writer.Write(dllChange, dllOutput, format, false);
+						writer.Write(dllChange, dllOutput, format);
 
 						// need to write out everything relating to this assembly in one place...
 
@@ -103,7 +103,9 @@ namespace NDifference.Reporting
                     IReportOutput breakingChanges = new FileOutput(Path.Combine(project.Settings.OutputFolder, "BreakingChanges" + format.Extension));
                     progressIndicator.Report(new Progress("Generating breaking changes report"));
 
-                    writer.Write(results.BreakingChanges, breakingChanges, format, true);
+                    results.BreakingChanges.Consolidated = true;
+
+					writer.Write(results.BreakingChanges, breakingChanges, format);
 
 					// finally write out summary...
 					IReportOutput output = new FileOutput(Path.Combine(project.Settings.OutputFolder, project.Settings.IndexName + format.Extension));
@@ -112,7 +114,7 @@ namespace NDifference.Reporting
 
 					progressIndicator.Report(new Progress("Generating summary report"));
 					
-					writer.Write(results.Summary, output, format, false);
+					writer.Write(results.Summary, output, format);
 
 					SiteMapTopic siteMap = new SiteMapTopic
 					{

@@ -24,7 +24,7 @@ namespace NDifference.Reporting
 
 		public FileMap Map { get; set; }
 
-		public void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format, bool consolidateReport)
+		public void Write(IdentifiedChangeCollection changes, IReportOutput output, IReportFormat format)
 		{
 			Debug.Assert(changes != null, "changes object must be set");
 			Debug.Assert(output != null, "output object must be set");

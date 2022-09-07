@@ -7,7 +7,10 @@ using System.Linq;
 
 namespace NDifference.Analysis
 {
-	[DebuggerDisplay("{Name}")]
+	/// <summary>
+	/// Collection of changes. Can be for a single type, a collection of types, an
+	/// assembly or a full collection of assemblies in a project.
+	/// </summary>
 	public sealed class IdentifiedChangeCollection : IUniquelyIdentifiable
 	{
 		public IdentifiedChangeCollection()
@@ -62,6 +65,12 @@ namespace NDifference.Analysis
             this.Changes.Add(change);
 		}
 
+		/// <summary>
+		/// Should all changes be bundled together (e.g. breaking changes)
+		/// and have each change identified by assembly and type.
+		/// </summary>
+		public bool Consolidated { get; set; }
+
         public int CountChangesWithSeverity(Severity minimumSeverity)
         {
             return this.Changes.Count(x => x.Severity >= minimumSeverity);
@@ -79,11 +88,6 @@ namespace NDifference.Analysis
 			return this.Changes.Where(x => x.Priority == priority).ToList();
 		}
 
-
-		//public IEnumerable<int> Priorities()
-  //      {
-
-  //      }
 
         public List<IdentifiedChange> UnCategorisedChanges()
 		{

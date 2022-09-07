@@ -53,10 +53,10 @@ namespace NDifference
 			return assemblies.FirstOrDefault(x => comparison.Equals(x, instance));
 		}
 
-		public static IAssemblyDiskInfo FindMatchFor(this IEnumerable<IAssemblyDiskInfo> assemblies, string instance)
-		{
-			return assemblies.FirstOrDefault(x => x.Name.Equals(instance, StringComparison.CurrentCultureIgnoreCase));
-		}
+		//public static IAssemblyDiskInfo FindMatchFor(this IEnumerable<IAssemblyDiskInfo> assemblies, string instance)
+		//{
+		//	return assemblies.FirstOrDefault(x => x.Name.Equals(instance, StringComparison.CurrentCultureIgnoreCase));
+		//}
 
         public static bool AllAssembliesInSameFolder(this IEnumerable<IAssemblyDiskInfo> assemblies)
         {

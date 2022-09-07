@@ -23,9 +23,9 @@ namespace NDifference.Inspectors
 			{
 				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AssemblyInternal,
 					Severity.BreakingChange,
-					new NamedDeltaDescriptor 
+					new DeltaDescriptor 
 					{ 
-						Name = ".Net Runtime", 
+						Reason = ".Net Runtime change", 
 						Was = first.RuntimeVersion, 
 						IsNow = second.RuntimeVersion 
 					}));

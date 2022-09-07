@@ -12,11 +12,5 @@ namespace NDifference.Reporting
 		/// Why the difference?
 		/// </summary>
 		string Reason { get; }
-
-		// TODO move these to report only???
-		int Columns { get; }
-
-		IEnumerable<string> ColumnNames { get; }
-	
-	}
+    }
 }

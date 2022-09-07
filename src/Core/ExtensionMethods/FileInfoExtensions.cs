@@ -5,8 +5,8 @@ using System.Text;
 
 namespace NDifference
 {
-	public static class FileInfoExtensions
-	{
+    public static class FileInfoExtensions
+    {
         public static string CalculateChecksum(this FileSystemInfo info)
         {
             using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
@@ -15,23 +15,23 @@ namespace NDifference
             }
         }
 
-		public static string CalculateChecksum(this FileSystemInfo info, HashAlgorithm hashAlgorithm)
-		{
-			const string HexFormat = "X2";
-			var builder = new StringBuilder();
+        public static string CalculateChecksum(this FileSystemInfo info, HashAlgorithm hashAlgorithm)
+        {
+            const string HexFormat = "X2";
+            var builder = new StringBuilder();
 
-			using (FileStream fs = new FileStream(info.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-			{
-				byte[] hash = hashAlgorithm.ComputeHash(fs);
+            using (FileStream fs = new FileStream(info.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                byte[] hash = hashAlgorithm.ComputeHash(fs);
 
-				for (int i = 0; i < hash.Length; ++i)
-				{
-					builder.Append(hash[i].ToString(HexFormat, CultureInfo.InvariantCulture));
-				}
-			}
+                for (int i = 0; i < hash.Length; ++i)
+                {
+                    builder.Append(hash[i].ToString(HexFormat, CultureInfo.InvariantCulture));
+                }
+            }
 
-			return builder.ToString();
-		}
+            return builder.ToString();
+        }
 
-	}
+    }
 }

@@ -6,10 +6,6 @@
 	/// <typeparam name="T"></typeparam>
 	public class Pair<T>
 	{
-		public Pair()
-		{
-		}
-
 		public Pair(T first, T second)
 		{
 			this.First = first;

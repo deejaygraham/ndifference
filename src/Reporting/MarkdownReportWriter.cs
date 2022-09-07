@@ -137,7 +137,7 @@ namespace NDifference.Reporting
                                 IFolder folder = new PhysicalFolder(System.IO.Path.GetDirectoryName(output.Path));
 
                                 string relativePath = this.Map.PathRelativeTo(descriptor.Identifier, folder);
-                                string link = format.FormatLink(relativePath.Replace(".md", ".html"), descriptor.LinkText);
+                                string link = format.FormatLink(relativePath.Replace(".md", ".html").Replace(" ", ""), descriptor.LinkText);
                                 table.AddRow(link);
                             }
                             else

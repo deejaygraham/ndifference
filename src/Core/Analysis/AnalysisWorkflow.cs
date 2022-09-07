@@ -59,7 +59,7 @@ namespace NDifference.Analysis
 			try
 			{
                 // Build the main summary page, the index for the report
-                result.Summary = BuilMainSummaryPage(project);
+                result.Summary = BuildMainSummaryPage(project);
 
                 result.BreakingChanges.Name = "Breaking Changes";
                 result.BreakingChanges.CopyMetaFrom(result.Summary);
@@ -332,7 +332,7 @@ namespace NDifference.Analysis
             }
         }
 
-        private static IdentifiedChangeCollection BuilMainSummaryPage(Project project)
+        private static IdentifiedChangeCollection BuildMainSummaryPage(Project project)
         {
             var mainSummaryPage = new IdentifiedChangeCollection
             {

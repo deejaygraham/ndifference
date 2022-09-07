@@ -171,13 +171,16 @@ namespace NDifference.Reporting
             var columns = new List<string>();
 
             if (change.Priority == WellKnownChangePriorities.RemovedAssemblies 
-                     || change.Priority == WellKnownChangePriorities.BreakingChanges // not used
-                     || change.Priority == WellKnownChangePriorities.PotentiallyChangedAssemblies // not used
                      || change.Priority == WellKnownChangePriorities.AddedAssemblies
                      || change.Priority == WellKnownChangePriorities.ChangedAssemblies)
             {
                 // single column
                 columns.Add("Assembly");
+            }
+            else if (change.Priority == WellKnownChangePriorities.BreakingChanges
+                    || change.Priority == WellKnownChangePriorities.PotentiallyChangedAssemblies) // not used
+            {
+                columns.Add("Breaking Changes");
             }
             else if (change.Priority == WellKnownChangePriorities.AssemblyInternal
                     || change.Priority == WellKnownChangePriorities.TypeInternal)

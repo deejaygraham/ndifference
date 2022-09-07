@@ -144,7 +144,7 @@ namespace NDifference.Reporting
 
             Debug.Assert(cellCount == headingCount, "Table incorrectly formatted");
 
-            this.rows.Add(String.Join(" | ", cells));
+            this.rows.Add("| " + String.Join(" | ", cells) + " |");
         }
 
 

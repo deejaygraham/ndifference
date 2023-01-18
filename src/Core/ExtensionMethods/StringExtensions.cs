@@ -37,6 +37,18 @@ namespace NDifference
 				.Replace(XmlLessThan, HtmlLessThan)
 				.Replace(XmlGreaterThan, HtmlGreaterThan);
 		}
+
+        public static string PathSafeTypeName(this string fullyQualifiedName)
+        {
+            const string XmlLessThan = "<";
+            const string XmlGreaterThan = ">";
+            const string Underscore = "_";
+
+            return fullyQualifiedName
+                .Replace(XmlLessThan, Underscore)
+                .Replace(XmlGreaterThan, Underscore)
+                .Replace(',', '.');
+        }
 	}
 
 }

@@ -64,7 +64,7 @@ namespace NDifference.Reporting
 						// write in reverse order...so that files should exist when we write a link..
 						foreach (var typeChange in results.TypeLevelChanges)
 						{
-							IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.HtmlSafeTypeName() + format.Extension));
+							IReportOutput typeOutput = new FileOutput(Path.Combine(project.Settings.SubPath, typeChange.Name.PathSafeTypeName() + format.Extension));
 
 							progressIndicator.Report(new Progress("Generating report for " + typeChange.Name));
 
@@ -128,7 +128,7 @@ namespace NDifference.Reporting
                     {
                         Id = results.BreakingChanges.Identifier,
                         Title = results.BreakingChanges.Name,
-                        Link = Path.Combine(project.Settings.SubPath, results.BreakingChanges.Name + format.Extension),
+                        Link = Path.Combine(project.Settings.SubPath, results.BreakingChanges.Name.Replace(" ", "") + format.Extension),
                         Indent = siteMap.Indent + 1
                     });
 
@@ -155,7 +155,7 @@ namespace NDifference.Reporting
 							{
 								try
 								{
-									string fileName = typeChange.Name.Replace('<', '_').Replace('>', '_').Replace(',', '.');
+									string fileName = typeChange.Name.PathSafeTypeName();
 
 									string link = Path.Combine(project.Settings.SubPath, fileName + format.Extension);
 

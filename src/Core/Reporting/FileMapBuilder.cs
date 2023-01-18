@@ -43,7 +43,7 @@ namespace NDifference.Reporting
 			Debug.Assert(this.map != null, "Map not created");
 			Debug.Assert(this.project != null, "Project not set");
 
-			string pagePath = this.project.Settings.SuggestPath(link.LinkUrl.HtmlSafeTypeName(), this.format.Extension);
+			string pagePath = this.project.Settings.SuggestPath(link.LinkUrl.PathSafeTypeName(), this.format.Extension);
 			map.Add(link.Identifier, new PhysicalFile(pagePath));
 
 			return this;
@@ -81,7 +81,7 @@ namespace NDifference.Reporting
 			Debug.Assert(this.map != null, "Map not created");
 			Debug.Assert(this.project != null, "Project not set");
 
-			string parentPath = project.Settings.SuggestPath(change.Name.HtmlSafeTypeName(), format.Extension);
+			string parentPath = project.Settings.SuggestPath(change.Name.PathSafeTypeName(), format.Extension);
 			map.Add(change.Identifier, new PhysicalFile(parentPath));
 
 			foreach (var c in change.Changes)
@@ -94,7 +94,7 @@ namespace NDifference.Reporting
 
 					if (link != null)
 					{
-						string pagePath = project.Settings.SuggestPath(link.LinkUrl.HtmlSafeTypeName(), format.Extension);
+						string pagePath = project.Settings.SuggestPath(link.LinkUrl.PathSafeTypeName(), format.Extension);
 						map.Add(link.Identifier, new PhysicalFile(pagePath));
 					}
 				}

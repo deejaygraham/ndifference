@@ -303,6 +303,7 @@ namespace NDifference.Analysis
                 }
 
                 result.BreakingChanges.Name = "Breaking Changes";
+                result.BreakingChanges.Heading = "Breaking Changes";
                 result.BreakingChanges.SummaryBlocks.Add("Changes", result.BreakingChanges.Changes.Count.ToString());
                 result.BreakingChanges.CopyMetaFrom(result.Summary);
 

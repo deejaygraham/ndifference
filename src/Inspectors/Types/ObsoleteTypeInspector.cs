@@ -1,4 +1,5 @@
-﻿using NDifference.Analysis;
+﻿using System;
+using NDifference.Analysis;
 using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
@@ -29,14 +30,20 @@ namespace NDifference.Inspectors
 				ITypeInfo t1 = s.First;
 				ITypeInfo ti = s.Second;
 
-				if (t1.ObsoleteMarker == null && ti.ObsoleteMarker != null)
+				// don't care about previously obsolete...
+				if (ti.ObsoleteMarker != null)
                 {
+                    string reason = ti.ObsoleteMarker.Message;
+
+                    if (String.IsNullOrEmpty(reason))
+                        reason = "No specific message given";
+
                     var typeMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ObsoleteTypes,
 						Severity.BreakingChange,
 						new NameValueDescriptor 
                         { 
                             Name = ti.FullName, 
-                            Value = ti.ObsoleteMarker.Message 
+                            Reason = reason 
                         });
 
                     typeMadeObsolete.ForType(t1);

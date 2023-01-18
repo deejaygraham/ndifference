@@ -96,6 +96,7 @@
     <Compile Include="Inspectors\Types\MemberFieldFacts.cs" />
     <Compile Include="Inspectors\Types\MemberMethodFacts.cs" />
     <Compile Include="Inspectors\Types\MemberPropertyFacts.cs" />
+    <Compile Include="Inspectors\Types\TypeObsoleteFacts.cs" />
     <Compile Include="MemberFieldFacts.cs" />
     <Compile Include="FileExtensions.cs" />
     <Compile Include="FileMapFacts.cs" />

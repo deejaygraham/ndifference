@@ -56,7 +56,7 @@ namespace NDifference.Inspectors
 
         public string DisplayName { get { return "Obsolete Methods - New"; } }
 
-        public string Description { get { return "Checks for obsolete methods"; } }
+        public string Description { get { return "Checks for new obsolete methods"; } }
 
         public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
         {

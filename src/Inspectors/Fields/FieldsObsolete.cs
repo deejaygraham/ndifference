@@ -41,7 +41,7 @@ namespace NDifference.Inspectors
                     new NameValueDescriptor 
                     { 
                         Name = o.ToString(), 
-                        Value = o.ObsoleteMarker.Message 
+                        Reason = o.ObsoleteMarker.Message 
                     });
 
                 fieldMadeObsolete.ForType(first);

@@ -253,7 +253,7 @@ namespace NDifference.Reporting
                 {
                     ++count;
 
-					builder.Append(child.ToString());
+					builder.Indent(this.Indent + 1).Append(child.ToString());
 
 					if (count < this.Children.Count)
                         builder.AppendLine(",");

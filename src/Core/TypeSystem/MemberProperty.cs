@@ -72,7 +72,7 @@ namespace NDifference.TypeSystem
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendFormat("{0} {1} ", this.PropertyType.Type, this.Name);
+			builder.AppendFormat("{0} **{1}** ", this.PropertyType.Type, this.Name);
 
 			if (this.GetterAccessibility == MemberAccessibility.Public
 				|| this.SetterAccessibility == MemberAccessibility.Public)

@@ -69,7 +69,7 @@ namespace NDifference.TypeSystem
 			if (this.IsReadOnly)
 				builder.Append("readonly ");
 
-			builder.AppendFormat("{0} {1} ", this.FieldType.Type, this.Name);
+			builder.AppendFormat("{0} **{1}** ", this.FieldType.Type, this.Name);
 
 			return builder.ToString();
 		}

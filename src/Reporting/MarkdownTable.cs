@@ -49,7 +49,9 @@ namespace NDifference.Reporting
         {
             var row = new List<string>();
             row.Add(descriptor.Name);
-            row.Add(descriptor.Value.ToString());
+
+            if (descriptor.Value != null)
+                row.Add(descriptor.Value.ToString());
 
             if (columnNames.Contains("Reason"))
                 row.Add(descriptor.Reason);

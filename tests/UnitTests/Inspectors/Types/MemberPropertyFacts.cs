@@ -132,5 +132,47 @@ namespace NDifference.UnitTests.Inspectors.Types
 
 			Assert.Single(delta.Changes);
 		}
-	}
+
+        [Fact]
+        public void PropertiesChanged_Identifies_Property_Marked_As_Obsolete()
+        {
+            var oldClassBuilder = CompilableClassBuilder.PublicClass()
+                .Named("Account")
+                .WithProperty("public string Text { get; set; }");
+
+            var newClassBuilder = CompilableClassBuilder.PublicClass()
+                .Named("Account")
+                .WithProperty("public string Text { get; set; }", makeObsolete:true);
+
+
+            var delta = IdentifiedChangeCollectionBuilder.Changes()
+                .From(oldClassBuilder)
+                .To(newClassBuilder)
+                .InspectedBy(new PropertiesObsolete())
+                .Build();
+
+            Assert.Single(delta.Changes);
+        }
+
+        [Fact]
+        public void PropertiesChanged_Identifies_Property_Originally_Marked_As_Obsolete()
+        {
+            var oldClassBuilder = CompilableClassBuilder.PublicClass()
+                .Named("Account")
+                .WithProperty("public string Text { get; set; }", makeObsolete: true);
+
+            var newClassBuilder = CompilableClassBuilder.PublicClass()
+                .Named("Account")
+                .WithProperty("public string Text { get; set; }", makeObsolete: true);
+
+            var delta = IdentifiedChangeCollectionBuilder.Changes()
+                .From(oldClassBuilder)
+                .To(newClassBuilder)
+                .InspectedBy(new PropertiesObsolete())
+                .Build();
+
+            Assert.Single(delta.Changes);
+        }
+
+    }
 }

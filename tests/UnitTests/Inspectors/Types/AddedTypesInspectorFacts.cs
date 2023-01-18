@@ -5,7 +5,7 @@ using NDifference.TypeSystem;
 using System.Collections.Generic;
 using Xunit;
 
-namespace NDifference.UnitTests
+namespace NDifference.UnitTests.Inspectors.Types
 {
 	public class AddedTypesInspectorFacts
 	{

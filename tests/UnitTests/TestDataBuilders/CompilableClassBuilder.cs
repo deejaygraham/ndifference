@@ -69,18 +69,19 @@ namespace NDifference.UnitTests
 			return this;
 		}
 
-		public CompilableClassBuilder WithConstructor(string constructorCode)
+		public CompilableClassBuilder WithConstructor(string constructorCode, bool makeObsolete = false)
 		{
-			this.constructors.Add(constructorCode);
+            string code = makeObsolete ? GenerateObsoleteAttribute("This Constructor is Obsolete") + constructorCode : constructorCode;
+            this.constructors.Add(code);
 
 			return this;
 		}
 
-		public CompilableClassBuilder WithDefaultConstructor()
-		{
-			this.constructors.Add(string.Format("public {0}() {{ }}", this.className));
+		public CompilableClassBuilder WithDefaultConstructor(bool makeObsolete = false)
+        {
+            string constructorCode = string.Format("public {0}() {{ }}", this.className);
 
-			return this;
+            return WithConstructor(constructorCode, makeObsolete);
 		}
 
 		public CompilableClassBuilder WithStaticConstructor()
@@ -98,58 +99,60 @@ namespace NDifference.UnitTests
 			return this;
 		}
 
-		public CompilableClassBuilder WithEvent(string eventCode)
+		public CompilableClassBuilder WithEvent(string eventCode, bool makeObsolete = false)
 		{
-			this.events.Add(eventCode);
+            string code = makeObsolete ? GenerateObsoleteAttribute("This Event is Obsolete") + eventCode : eventCode;
+			this.events.Add(code);
 
 			return this;
 		}
 
-		public CompilableClassBuilder WithProperty(string propertyCode)
+		public CompilableClassBuilder WithProperty(string propertyCode, bool makeObsolete = false)
 		{
-			this.properties.Add(propertyCode);
+            string code = makeObsolete ? GenerateObsoleteAttribute("This Property is Obsolete") + propertyCode : propertyCode;
+			this.properties.Add(code);
 
 			return this;
 		}
 
-		public CompilableClassBuilder WithProperty(string propertyType, string propertyName)
+		public CompilableClassBuilder WithProperty(string propertyType, string propertyName, bool makeObsolete = false)
+        {
+            string propertyCode = string.Format("public {0} {1} {{ get; set; }}", propertyType, propertyName);
+			return WithProperty(propertyCode, makeObsolete);
+		}
+
+		public CompilableClassBuilder WithField(string fieldCode, bool makeObsolete = false)
 		{
-			this.properties.Add(string.Format("public {0} {1} {{ get; set; }}", propertyType, propertyName));
+            string code = makeObsolete ? GenerateObsoleteAttribute("This Field is Obsolete") + fieldCode : fieldCode;
+			this.fields.Add(code);
 
 			return this;
 		}
 
-		public CompilableClassBuilder WithField(string fieldCode)
+		public CompilableClassBuilder WithField(string typeofField, string fieldName, string fieldValue, bool makeObsolete = false)
 		{
-			this.fields.Add(fieldCode);
+			string fieldCode = string.Format("public {0} {1} = {2};", typeofField, fieldName, fieldValue);
+			return WithField(fieldCode, makeObsolete);
+		}
+
+		public CompilableClassBuilder WithConstant(string constantCode, bool makeObsolete = false)
+		{
+            string code = makeObsolete ? GenerateObsoleteAttribute("This Constant is Obsolete") + constantCode : constantCode;
+			this.constants.Add(code);
 
 			return this;
 		}
 
-		public CompilableClassBuilder WithField(string typeofField, string fieldName, string fieldValue)
-		{
-			this.fields.Add(string.Format("public {0} {1} = {2};", typeofField, fieldName, fieldValue));
-
-			return this;
+		public CompilableClassBuilder WithConstant(string typeofConstant, string constantName, string constantValue, bool makeObsolete = false)
+        {
+            string constantCode = string.Format("public const {0} {1} = {2};", typeofConstant, constantName, constantValue);
+            return WithConstant(constantCode, makeObsolete);
 		}
 
-		public CompilableClassBuilder WithConstant(string constantCode)
-		{
-			this.constants.Add(constantCode);
-
-			return this;
-		}
-
-		public CompilableClassBuilder WithConstant(string typeofConstant, string constantName, string constantValue)
-		{
-			this.constants.Add(string.Format("public const {0} {1} = {2};", typeofConstant, constantName, constantValue));
-
-			return this;
-		}
-
-		public CompilableClassBuilder WithMethod(string methodCode)
-		{
-			this.methods.Add(methodCode);
+		public CompilableClassBuilder WithMethod(string methodCode, bool makeObsolete = false)
+        {
+            string code = makeObsolete ? GenerateObsoleteAttribute("This Method is Obsolete") + methodCode : methodCode;
+            this.methods.Add(code);
 
 			return this;
 		}
@@ -198,25 +201,13 @@ namespace NDifference.UnitTests
 
 			if (this.obsolete)
 			{
-				builder.Append("\t[Obsolete");
-				if (!string.IsNullOrEmpty(this.obsoleteText))
-				{
-					builder.AppendFormat("(\"{0}\")", this.obsoleteText);
-				}
-
-				builder.AppendLine("]");
+				builder.Append(GenerateObsoleteAttribute(this.obsoleteText));
 			}
 
 			builder.Append("\t");
 
-			if (this.isInternal)
-			{
-				builder.Append("internal ");
-			}
-			else
-			{
-				builder.Append("public ");
-			}
+            string visibility = this.isInternal ? "internal " : "public ";
+			builder.Append(visibility);
 
 			builder.AppendFormat(
 				"{0}{1}class {2} ",
@@ -259,5 +250,20 @@ namespace NDifference.UnitTests
 
 			return builder.ToString();
 		}
+
+        private string GenerateObsoleteAttribute(string reason = null)
+        {
+            var builder = new StringBuilder();
+
+			builder.Append("\t[Obsolete");
+            if (!string.IsNullOrEmpty(reason))
+            {
+                builder.AppendFormat("(\"{0}\")", reason);
+            }
+
+            builder.AppendLine("]");
+
+            return builder.ToString();
+        }
 	}
 }

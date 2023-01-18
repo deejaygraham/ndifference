@@ -146,8 +146,11 @@ namespace NDifference.Analysis
                         // run inspectors on all the types in the assembly
                         RunTypeCollectionInspectors(inspectors, typeModel, changesToThisAssembly);
 
+                        // copy assembly level breaking changes...
+                        CopyChangesAboveSeverity(Severity.PotentiallyBreakingChange, changesToThisAssembly, result.BreakingChanges);
+
                         // now inspect each type...
-                        foreach (var commonTypePair in typeModel.ChangedInCommon)
+                        foreach (var commonTypePair in typeModel.InCommon)
                         {
                             var cancelTypeStart = new CancellableEventArgs();
                             this.TypeComparisonStarting.Fire(this, cancelTypeStart);
@@ -226,24 +229,7 @@ namespace NDifference.Analysis
                                     changesToThisAssembly.Add(ic);
                                 }
 
-                                int breakingChangesToType = changesToThisType.CountChangesWithSeverity(Severity.PotentiallyBreakingChange);
-
-                                if (breakingChangesToType > 0)
-                                {
-                                    foreach (var breakingChange in changesToThisType.ChangesWithSeverity(Severity.PotentiallyBreakingChange))
-                                    {
-                                        var copiedChange = new IdentifiedChange
-                                        {
-                                            Descriptor = breakingChange.Descriptor,
-                                            Severity = breakingChange.Severity,
-                                            Priority = breakingChange.Priority,
-                                            AssemblyName = breakingChange.AssemblyName,
-                                            TypeName = breakingChange.TypeName
-                                        };
-
-                                        result.BreakingChanges.Add(copiedChange);
-                                    }
-                                }
+                                CopyChangesAboveSeverity(Severity.PotentiallyBreakingChange, changesToThisType, result.BreakingChanges);
                             }
 
                             this.TypeComparisonComplete.Fire(this);
@@ -333,6 +319,28 @@ namespace NDifference.Analysis
             }
         }
 
+        private static void CopyChangesAboveSeverity(Severity severity, IdentifiedChangeCollection from, IdentifiedChangeCollection to)
+        {
+            int qualifyingChanges = from.CountChangesWithSeverity(severity);
+
+            if (qualifyingChanges > 0)
+            {
+                foreach (var change in from.ChangesWithSeverity(severity))
+                {
+                    var copiedChange = new IdentifiedChange
+                    {
+                        Descriptor = change.Descriptor,
+                        Severity = change.Severity,
+                        Priority = change.Priority,
+                        AssemblyName = change.AssemblyName,
+                        TypeName = change.TypeName
+                    };
+
+                    to.Add(copiedChange);
+                }
+            }
+
+        }
         private static IdentifiedChangeCollection BuildMainSummaryPage(Project project)
         {
             var mainSummaryPage = new IdentifiedChangeCollection

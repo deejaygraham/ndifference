@@ -1,7 +1,7 @@
 ﻿using NDifference.Inspectors;
 using Xunit;
 
-namespace NDifference.UnitTests
+namespace NDifference.UnitTests.Inspectors.Types
 {
     public class TypeObsoleteFacts
     {

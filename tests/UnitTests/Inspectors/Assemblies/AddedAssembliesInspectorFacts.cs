@@ -4,7 +4,7 @@ using NDifference.Inspectors;
 using System.Collections.Generic;
 using Xunit;
 
-namespace NDifference.UnitTests
+namespace NDifference.UnitTests.Inspectors.Assemblies
 {
 	public class AddedAssembliesInspectorFacts
 	{

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NDifference.UnitTests.Types
+namespace NDifference.UnitTests.Inspectors.Types
 {
 	public class MemberMethodFacts
 	{
@@ -132,6 +132,26 @@ namespace NDifference.UnitTests.Types
 
 			Assert.Single(delta.Changes);
 		}
+
+        [Fact]
+        public void MethodsObsolete_Identifies_Existing_Obsolete_Method()
+        {
+            var oldClassBuilder = CompilableClassBuilder.PublicClass()
+                .Named("Account")
+                .WithMethod("public void DoStuff () { }", makeObsolete: true);
+
+            var newClassBuilder = CompilableClassBuilder.PublicClass()
+                .Named("Account")
+                .WithMethod("public void DoStuff () { }", makeObsolete: true);
+
+            var delta = IdentifiedChangeCollectionBuilder.Changes()
+                .From(oldClassBuilder)
+                .To(newClassBuilder)
+                .InspectedBy(new MethodsObsolete())
+                .Build();
+
+            Assert.Single(delta.Changes);
+        }
 
 		[Fact]
 		public void MethodsChanged_Ignores_Identical_Void_Method()

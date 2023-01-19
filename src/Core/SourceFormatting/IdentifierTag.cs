@@ -13,13 +13,8 @@ namespace NDifference.SourceFormatting
 		}
 
 		public IdentifierTag(string name)
-			: base("ident", Boldify(name))
+			: base("ident", name)
 		{
 		}
-
-        private static string Boldify(string text)
-        {
-            return "**" + text + "**";
-        }
 	}
 }

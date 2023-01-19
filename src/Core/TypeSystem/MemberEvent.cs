@@ -32,7 +32,7 @@ namespace NDifference.TypeSystem
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendFormat("event {0} **{1}** ", this.EventType.Type, this.Name);
+			builder.AppendFormat("event {0} {1} ", this.EventType.Type, this.Name);
 
 			return builder.ToString();
 		}

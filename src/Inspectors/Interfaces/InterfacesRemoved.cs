@@ -1,6 +1,7 @@
 ﻿using NDifference.Analysis;
 using NDifference.Inspection;
 using NDifference.Reporting;
+using NDifference.SourceFormatting;
 using NDifference.TypeSystem;
 using System.Linq;
 
@@ -43,7 +44,7 @@ namespace NDifference.Inspectors
 							{ 
 								Reason = "No longer implements", 
 								Was = remove.ToCode(),
-								IsNow = null
+								IsNow = SourceCode.NoOp
 							});
 
 						interfaceRemoved.ForType(first);

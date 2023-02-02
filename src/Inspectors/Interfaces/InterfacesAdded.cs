@@ -3,6 +3,7 @@ using NDifference.Inspection;
 using NDifference.Reporting;
 using NDifference.TypeSystem;
 using System.Linq;
+using NDifference.SourceFormatting;
 
 namespace NDifference.Inspectors
 {
@@ -41,9 +42,8 @@ namespace NDifference.Inspectors
 							Severity.NonBreaking,
 							new CodeDeltaDescriptor 
 							{ 
-								Reason = "Now implements", 
-								//Was = null,  //string.Empty, // TODO SourceCode.NoOp();
-								Was = null,
+								Reason = "Now implements",
+    							Was = SourceCode.NoOp,
 								IsNow = add.ToCode() 
 							});
 						

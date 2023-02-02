@@ -12,6 +12,14 @@ namespace NDifference.SourceFormatting
 	{
 		private List<SourceCodeTag> tags = new List<SourceCodeTag>();
 
+        public static SourceCode NoOp
+        {
+            get
+            {
+                return new SourceCode();
+            }
+        }
+
 		public void Add(ICoded code)
 		{
 			SourceCode asCode = code as SourceCode;

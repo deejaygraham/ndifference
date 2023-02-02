@@ -103,8 +103,12 @@ namespace NDifference.Reporting
         private void AddRow(ICodeDeltaDescriptor descriptor, IdentifiedChange change)
         {
             var row = new List<string>();
-            row.Add(descriptor.Was.ToPlainText());
-            row.Add(descriptor.IsNow.ToPlainText());
+
+            if (columnNames.Contains("Was") && descriptor.Was != null)
+                row.Add(descriptor.Was.ToPlainText());
+
+            if (columnNames.Contains("Is Now") && descriptor.IsNow != null)
+                row.Add(descriptor.IsNow.ToPlainText());
 
             if (columnNames.Contains("Reason"))
                 row.Add(descriptor.Reason);

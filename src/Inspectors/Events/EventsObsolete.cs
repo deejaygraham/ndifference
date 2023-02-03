@@ -32,9 +32,9 @@ namespace NDifference.Inspectors
             {
                 var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete,
                     Severity.BreakingChange,
-                    new CodeDescriptor 
+                    new ObsoleteSignature
                     { 
-                        Code = o.ToCode(), 
+                        Signature = o.ToCode(), 
                         Reason = o.ObsoleteMarker.Message 
                     });  
 
@@ -72,9 +72,9 @@ namespace NDifference.Inspectors
             {
                 var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete,
                     Severity.BreakingChange,
-                    new CodeDescriptor 
+                    new ObsoleteSignature
                     { 
-                        Code = o.ToCode(), 
+                        Signature = o.ToCode(), 
                         Reason = o.ObsoleteMarker.Message 
                     });
 

@@ -36,10 +36,9 @@ namespace NDifference.Inspectors
                 {
                     var fieldAdded = new IdentifiedChange(WellKnownChangePriorities.FieldsAdded,
 						Severity.NonBreaking,
-						new CodeDescriptor 
+						new AddedSignature
 						{ 
-							Reason = "Field added",
-							Code = add.ToCode() 
+							Signature = add.ToCode() 
 						});
 
 					fieldAdded.ForType(first);

@@ -94,17 +94,17 @@ namespace NDifference.Reporting
         //    WriteTableRow(change.Name, typeName, assemblyName);
         //}
 
-        public void WriteTableRow(IValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
-        {
-            string text = change.Value.ToString();
+        //public void WriteTableRow(IValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        //{
+        //    string text = change.Value.ToString();
 
-            ICoded code = change.Value as ICoded;
+        //    ICoded code = change.Value as ICoded;
 
-            if (code != null)
-                text = format.Format(code);
+        //    if (code != null)
+        //        text = format.Format(code);
 
-            WriteTableRow(text, typeName, assemblyName);
-        }
+        //    WriteTableRow(text, typeName, assemblyName);
+        //}
 
         public void WriteTableRow(INameValueDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
@@ -123,7 +123,7 @@ namespace NDifference.Reporting
             WriteTableRow(change.Was, change.IsNow, typeName, assemblyName);
         }
 
-        public void WriteTableRow(ICodeDeltaDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        public void WriteTableRow(IChangedCodeSignature change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
             string wasText = format.Format(change.Was);
             string isText = format.Format(change.IsNow);
@@ -148,11 +148,11 @@ namespace NDifference.Reporting
         /// <param name="format"></param>
         /// <param name="typeName"></param>
         /// <param name="assemblyName"></param>
-        public void WriteTableRow(ICodeDescriptor change, IReportFormat format, string typeName = null, string assemblyName = null)
+        public void WriteTableRow(ICodeSignature change, IReportFormat format, string typeName = null, string assemblyName = null)
         {
-            string code = format.Format(change.Code);
+            string code = format.Format(change.Signature);
 
-            WriteTableRow(code, change.Reason, typeName, assemblyName);
+            WriteTableRow(code, /*change.Reason, */ typeName, assemblyName);
         }
 
         public void WriteTableRowLink(string cell1, string cell2, string link)

@@ -36,10 +36,10 @@ namespace NDifference.Inspectors
                 {
                     var constantRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstantsRemoved, 
 						Severity.BreakingChange,
-						new CodeDescriptor 
+						new RemovedSignature 
 						{ 
 							Reason = "Constant removed",
-							Code = rem.ToCode() 
+							Signature = rem.ToCode() 
 						});
 
 					constantRemoved.ForType(first);

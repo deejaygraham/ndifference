@@ -11,6 +11,8 @@ namespace NDifference.Reporting
 		/// <summary>
 		/// Why the difference?
 		/// </summary>
-		string Reason { get; }
+		//string Reason { get; }
+
+		int DataItemCount { get; }
     }
 }

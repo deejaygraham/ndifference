@@ -34,9 +34,9 @@ namespace NDifference.Inspectors
                 {
                     var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete,
                         Severity.BreakingChange,
-                        new CodeDescriptor 
+                        new ObsoleteSignature
                         { 
-                            Code = o.ToCode(), 
+                            Signature = o.ToCode(), 
                             Reason = o.ObsoleteMarker.Message 
                         });
                     
@@ -75,9 +75,9 @@ namespace NDifference.Inspectors
                 {
                     var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete,
                         Severity.BreakingChange,
-                        new CodeDescriptor 
+                        new ObsoleteSignature 
                         { 
-                            Code = o.ToCode(), 
+                            Signature = o.ToCode(), 
                             Reason = o.ObsoleteMarker.Message 
                         });
                     

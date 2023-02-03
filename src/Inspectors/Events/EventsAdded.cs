@@ -32,10 +32,9 @@ namespace NDifference.Inspectors
                 {
                     var eventAdded = new IdentifiedChange(WellKnownChangePriorities.EventsAdded,
 						Severity.NonBreaking,
-						new CodeDescriptor 
+						new AddedSignature 
 						{ 
-							Reason = "Event added",
-							Code = add.ToCode() 
+							Signature = add.ToCode() 
 						});
 
 					eventAdded.ForType(first);

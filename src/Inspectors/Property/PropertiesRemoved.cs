@@ -34,10 +34,9 @@ namespace NDifference.Inspectors
                     {
                         var removedProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesRemoved,
 							Severity.BreakingChange,
-							new CodeDescriptor 
+							new RemovedSignature 
 							{ 
-								Code = rem.ToCode(),
-								Reason = "Property has been removed"
+								Signature = rem.ToCode()
 							});
                         
                         removedProperty.ForType(first);

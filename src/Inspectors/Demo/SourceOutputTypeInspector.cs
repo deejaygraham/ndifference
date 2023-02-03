@@ -19,7 +19,7 @@ namespace NDifference.Inspectors
         {
             var dummyChange = new IdentifiedChange(WellKnownChangePriorities.TypeDebug,
 				Severity.NonBreaking,
-				new CodeDeltaDescriptor 
+				new ChangedCodeSignature
 				{ 
 					Reason = "Debug code",
 					Was = first.ToCode(), 

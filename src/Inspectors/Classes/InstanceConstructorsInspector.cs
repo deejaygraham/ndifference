@@ -43,7 +43,7 @@ namespace NDifference.Inspectors
                     {
                         var constructorChanged = new IdentifiedChange(WellKnownChangePriorities.ConstructorsChanged,
 							Severity.BreakingChange,
-							new CodeDeltaDescriptor 
+							new ChangedCodeSignature
 							{ 
 								Was = oldCtor.ToCode(),
 								IsNow = newCtor.ToCode(),
@@ -63,9 +63,9 @@ namespace NDifference.Inspectors
                     {
                         var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved,
 							Severity.BreakingChange,
-							new CodeDescriptor 
+							new RemovedSignature 
 							{ 
-								Code = remove.ToCode(),
+								Signature = remove.ToCode(),
 								Reason = "Constructor removed"
 							});
 
@@ -78,10 +78,9 @@ namespace NDifference.Inspectors
                     {
                         var constructorAdded = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded,
 							Severity.NonBreaking,
-							new CodeDescriptor
+							new AddedSignature()
 							{
-								Code = add.ToCode(),
-								Reason = "Constructor added"
+								Signature = add.ToCode()
 							});
 
 						constructorAdded.ForType(first);

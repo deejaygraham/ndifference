@@ -36,10 +36,9 @@ namespace NDifference.Inspectors
                 {
                     var fieldRemoved = new IdentifiedChange(WellKnownChangePriorities.FieldsRemoved,
 						Severity.BreakingChange,
-						new CodeDescriptor 
+						new RemovedSignature 
 						{ 
-							Reason = "Field removed",
-							Code = rem.ToCode() 
+							Signature = rem.ToCode() 
 						});
 
 					fieldRemoved.ForType(first);

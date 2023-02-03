@@ -44,8 +44,8 @@ namespace NDifference.Inspectors
                         {
                             var fieldTypeChanged = new IdentifiedChange(WellKnownChangePriorities.FieldsChanged,
 								Severity.BreakingChange,
-								new CodeDeltaDescriptor
-                                {
+								new ChangedCodeSignature
+								{
                                     Reason = string.Format("Changed type from {0} to {1}", oldField.FieldType, newField.FieldType),
                                     Was = oldField.ToCode(),
                                     IsNow = newField.ToCode()

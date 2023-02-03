@@ -37,7 +37,7 @@ namespace NDifference.Inspectors
                     {
                         var classDerivationChanged = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
 							Severity.BreakingChange,
-							new CodeDeltaDescriptor
+							new ChangedCodeSignature
 							{
 								Reason = String.Format("Class was derived from {0}, now derived from {1}", firstClass.InheritsFrom, secondClass.InheritsFrom),
 								Was = first.ToCode(),
@@ -54,7 +54,7 @@ namespace NDifference.Inspectors
                     // no longer derived...
                     var classDerivationChanged = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
 						Severity.BreakingChange,
-						new CodeDeltaDescriptor 
+						new ChangedCodeSignature
 						{ 
 							Reason = "Class no longer derives from " + firstClass.InheritsFrom.ToString(), 
 							Was = first.ToCode(), 

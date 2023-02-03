@@ -30,10 +30,10 @@ namespace NDifference.Inspectors
                 {
                     var finalizerRemoved = new IdentifiedChange(WellKnownChangePriorities.FinalizersRemoved,
 						Severity.NonBreaking,
-						new CodeDescriptor 
+						new RemovedSignature 
 						{ 
 							Reason = "Finalizer removed",
-							Code = wasDestructor.ToCode() 
+							Signature = wasDestructor.ToCode() 
 						});
 
 					finalizerRemoved.ForType(first);

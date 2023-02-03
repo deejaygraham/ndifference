@@ -86,9 +86,9 @@ namespace NDifference.Inspectors
             {
                 var constantMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstantsObsolete,
                     Severity.BreakingChange,
-                    new CodeDescriptor 
+                    new ObsoleteSignature
                     { 
-                        Code = o.ToCode(), 
+                        Signature = o.ToCode(), 
                         Reason = o.ObsoleteMarker.Message 
                     });
 

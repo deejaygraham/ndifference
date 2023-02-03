@@ -3,6 +3,8 @@ using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using NDifference.Inspection;
 
 namespace NDifference.Analysis
 {
@@ -17,44 +19,40 @@ namespace NDifference.Analysis
 		{
 			this.Priority = CategoryPriority.Uncategorised;
 			this.Severity = Severity.Unknown;
-			//this.Inspector = "No Inspector Specified";
 		}
-
-        //public IdentifiedChange(/*IInspector inspector, */int categoryPriority, string name)
-        //    : this(categoryPriority, name, null)
-        //{
-        //}
-
-  //      public IdentifiedChange(/*IInspector inspector, */int categoryPriority, IDescriptor descriptor)
-  //          : this(categoryPriority, descriptor)
-		//{
-		//}
 
         public IdentifiedChange(/*IInspector inspector, */int categoryPriority, Severity severity, IDescriptor descriptor)
         {
-            //if (inspector == null)
-            //    this.Inspector = "unknown";
-            //else
-            //    this.Inspector = inspector.ShortCode;
-
             this.Priority = categoryPriority;
 			this.Severity = severity;
-            //this.Description = name;
             this.Descriptor = descriptor;
-            //this.Level = AnalysisLevel.Unknown;
-        }
+
+            bool debugAssignments = false;
+
+            if (debugAssignments)
+            {
+                // TODO - Debug!!!
+                var columns = WellKnownChangePriorities.ColumnNames(categoryPriority, false);
+                int elementCount = descriptor.DataItemCount;
+
+                if (columns.Count() != elementCount)
+                {
+                    Debug.Assert(false, string.Format("Row incorrectly formatted: Expecting {0} got {1}", columns.Count(), elementCount));
+                }
+            }
+		}
 
 		public Severity Severity { get; set; }
 
-		[Obsolete("Not used we don't think")]
-        public string Description { get; set; }
+		//[Obsolete("Not used we don't think")]
+        //public string Description { get; set; }
 
 		public int Priority { get; set; }
 
 		public IDescriptor Descriptor { get; set; }
 
-		[Obsolete("Not used we don't think")]
-		public string Inspector { get; set; }
+		//[Obsolete("Not used we don't think")]
+		//public string Inspector { get; set; }
 
         //		public Category Category { get; set; }
 
@@ -107,12 +105,12 @@ namespace NDifference.Analysis
 				return xlink.LinkText.CompareTo(ylink.LinkText);
 			}
 
-			ICodeDescriptor xcode = x as ICodeDescriptor;
-			ICodeDescriptor ycode = y as ICodeDescriptor;
+			ICodeSignature xcode = x as ICodeSignature;
+            ICodeSignature ycode = y as ICodeSignature;
 
 			if (xcode != null && ycode != null)
 			{
-				return xcode.Code.ToString().CompareTo(ycode.Code.ToString());
+				return xcode.Signature.ToString().CompareTo(ycode.Signature.ToString());
 			}
 	
 			//IDeltaDescriptor xdelta = x as IDeltaDescriptor;

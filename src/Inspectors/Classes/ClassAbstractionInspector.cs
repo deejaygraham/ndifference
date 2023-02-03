@@ -31,7 +31,7 @@ namespace NDifference.Inspectors
             {
                 var classMadeAbstract = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
 					Severity.BreakingChange,
-					new CodeDeltaDescriptor
+					new ChangedCodeSignature
 					{ 
                         Reason = "Class is now abstract", 
                         Was = first.ToCode(), 

@@ -31,8 +31,9 @@ namespace NDifference.Inspectors
             {
                 var classNowSealed = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
 					Severity.BreakingChange,
-					new CodeDeltaDescriptor 
-					{ Reason = "Class is now marked as sealed", 
+					new ChangedCodeSignature
+					{ 
+                        Reason = "Class is now marked as sealed", 
 						Was = first.ToCode(), 
 						IsNow = second.ToCode() 
 					});

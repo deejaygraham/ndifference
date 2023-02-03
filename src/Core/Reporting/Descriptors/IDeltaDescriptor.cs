@@ -8,5 +8,7 @@
 		string Was { get; }
 
 		string IsNow { get; }
-	}
+
+        string Reason { get; }
+    }
 }

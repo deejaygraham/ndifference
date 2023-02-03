@@ -28,27 +28,37 @@ namespace NDifference.Inspectors
 
 			foreach (var difference in refsAdded)
 			{
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.AddedReferences,
+				var change = new IdentifiedChange(WellKnownChangePriorities.AddedReferences,
 					Severity.NonBreaking,
 					new NameDescriptor
 					{
 						Name = difference.Name,
 						Reason = "Reference added"
-					}));
-			}
+					});
+
+                change.AssemblyName = first.Name;
+                change.TypeName = "N/A";
+
+                changes.Add(change);
+            }
 
 			var refsRemoved = first.References.RemovedFrom(second.References, comparer);
 
 			foreach (var difference in refsRemoved)
 			{
-				changes.Add(new IdentifiedChange(WellKnownChangePriorities.RemovedReferences,
+				var change = new IdentifiedChange(WellKnownChangePriorities.RemovedReferences,
 					Severity.BreakingChange,
 					new NameDescriptor
 					{
 						Name = difference.Name,
 						Reason = "Reference removed"
-					}));
-			}
+					});
+
+                change.AssemblyName = first.Name;
+                change.TypeName = "N/A";
+
+				changes.Add(change);
+            }
 		}
 	}
 

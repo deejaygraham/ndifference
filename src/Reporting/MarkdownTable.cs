@@ -13,7 +13,14 @@ namespace NDifference.Reporting
 
         private List<string> rows = new List<string>();
 
-        public bool Consolidated { get; set; }
+        public MarkdownTable()
+        {
+        }
+
+        public MarkdownTable(IEnumerable<string> headings)
+        {
+            this.columnNames = new List<string>(headings);
+        }
 
         public void AddColumn(string name)
         {
@@ -32,18 +39,42 @@ namespace NDifference.Reporting
             Debug.Assert(change != null, "Change not set");
             Debug.Assert(change.Descriptor != null, "Change not set");
 
-            AddRow((dynamic) change.Descriptor, change);
+            AddRow((dynamic)change.Descriptor, change);
         }
 
         private void AddRow(INameDescriptor descriptor, IdentifiedChange change)
         {
-            AddRow(descriptor.Name);
+            var row = new List<string>();
+            row.Add(descriptor.Name);
+
+            if (columnNames.Contains("Reason") && !string.IsNullOrEmpty(descriptor.Reason))
+                row.Add(descriptor.Reason);
+
+            if (columnNames.Contains("Type"))
+                row.Add(change.TypeName);
+
+            if (columnNames.Contains("Assembly"))
+                row.Add(change.AssemblyName);
+
+            AddRow(row.ToArray());
         }
 
-        private void AddRow(IValueDescriptor descriptor, IdentifiedChange change)
-        {
-            AddRow(descriptor.Value.ToString());
-        }
+        //private void AddRow(IValueDescriptor descriptor, IdentifiedChange change)
+        //{
+        //    var row = new List<string>();
+        //    row.Add(descriptor.Value.ToString());
+
+        //    if (columnNames.Contains("Reason"))
+        //        row.Add(descriptor.Reason);
+
+        //    if (columnNames.Contains("Type"))
+        //        row.Add(change.TypeName);
+
+        //    if (columnNames.Contains("Assembly"))
+        //        row.Add(change.AssemblyName);
+
+        //    AddRow(row.ToArray());
+        //}
 
         private void AddRow(INameValueDescriptor descriptor, IdentifiedChange change)
         {
@@ -83,12 +114,12 @@ namespace NDifference.Reporting
             AddRow(row.ToArray());
         }
 
-        private void AddRow(ICodeDescriptor descriptor, IdentifiedChange change)
+        private void AddRow(ICodeSignature descriptor, IdentifiedChange change)
         {
             var row = new List<string>();
-            row.Add(descriptor.Code.ToPlainText());
+            row.Add(descriptor.Signature.ToPlainText());
 
-            if (columnNames.Contains("Reason"))
+            if (columnNames.Contains("Reason") && !string.IsNullOrEmpty(descriptor.Reason))
                 row.Add(descriptor.Reason);
 
             if (columnNames.Contains("Type"))
@@ -100,7 +131,7 @@ namespace NDifference.Reporting
             AddRow(row.ToArray());
         }
 
-        private void AddRow(ICodeDeltaDescriptor descriptor, IdentifiedChange change)
+        private void AddRow(IChangedCodeSignature descriptor, IdentifiedChange change)
         {
             var row = new List<string>();
 
@@ -110,7 +141,7 @@ namespace NDifference.Reporting
             if (columnNames.Contains("Is Now") && descriptor.IsNow != null)
                 row.Add(descriptor.IsNow.ToPlainText());
 
-            if (columnNames.Contains("Reason"))
+            if (columnNames.Contains("Reason") && !string.IsNullOrEmpty(descriptor.Reason))
                 row.Add(descriptor.Reason);
 
             if (columnNames.Contains("Type"))
@@ -131,7 +162,7 @@ namespace NDifference.Reporting
             row.Add(descriptor.Was);
             row.Add(descriptor.IsNow);
 
-            if (columnNames.Contains("Reason"))
+            if (columnNames.Contains("Reason") && !string.IsNullOrEmpty(descriptor.Reason))
                 row.Add(descriptor.Reason);
 
             if (columnNames.Contains("Type"))
@@ -145,27 +176,36 @@ namespace NDifference.Reporting
 
         public void AddRow(params string[] cells)
         {
-            int cellCount = cells.Length;
-            int headingCount = columnNames.Count;
+            string row = "| " + String.Join(" | ", cells) + " |";
+            this.rows.Add(row);
 
-            Debug.Assert(cellCount == headingCount, "Table incorrectly formatted");
+            bool debugRowCounts = false;
 
-            this.rows.Add("| " + String.Join(" | ", cells) + " |");
+            if (debugRowCounts)
+            {
+                int rowCellCount = cells.Length;
+                int tableHeadingCount = columnNames.Count;
+
+                if (rowCellCount != tableHeadingCount)
+                {
+                    StringBuilder message = new StringBuilder();
+                    message.AppendFormat("Row incorrectly formatted: Expecting {0} got {1}\n", tableHeadingCount,
+                        rowCellCount);
+                    message.AppendLine(FormatTableRow(columnNames));
+
+                    Debug.Assert(rowCellCount == tableHeadingCount, message.ToString());
+                }
+            }
         }
 
+        private string FormatTableRow(IEnumerable<string> cells)
+        {
+            return "| " + String.Join(" | ", cells) + " |";
+        }
 
-        public override string ToString()
+        private string FormatHeadingDivider(IEnumerable<string> cells)
         {
             var builder = new StringBuilder();
-
-            builder.Append("|");
-
-            foreach (var heading in columnNames)
-            {
-                builder.Append(" " + heading + " |");
-            }
-
-            builder.AppendLine();
 
             // write underlines for headings
             builder.Append("|");
@@ -175,7 +215,17 @@ namespace NDifference.Reporting
                 builder.Append(new string('-', heading.Length + 2) + "|");
             }
 
-            builder.AppendLine();
+            return builder.ToString();
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine(FormatTableRow(columnNames));
+
+            // write underlines for headings
+            builder.AppendLine(FormatHeadingDivider(columnNames));
 
             // write out content...
             foreach (string row in rows)
@@ -186,4 +236,79 @@ namespace NDifference.Reporting
             return builder.ToString();
         }
     }
+
+    public class MarkdownTableHeader
+    {
+        private readonly List<string> columnNames = new List<string>();
+
+        public MarkdownTableHeader()
+        {
+        }
+
+        public MarkdownTableHeader(IEnumerable<string> headings)
+        {
+            this.columnNames = new List<string>(headings);
+        }
+
+        public void AddColumn(string name)
+        {
+            if (!columnNames.Contains(name))
+                this.columnNames.Add(name);
+        }
+
+        public void AddColumns(IEnumerable<string> names)
+        {
+            this.columnNames.AddRange(names);
+        }
+        
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine(FormatTableRow(columnNames));
+
+            // write underlines for headings
+            builder.AppendLine(FormatHeadingDivider(columnNames));
+
+            return builder.ToString();
+        }
+
+        private string FormatTableRow(IEnumerable<string> cells)
+        {
+            return "| " + String.Join(" | ", cells) + " |";
+        }
+
+        private string FormatHeadingDivider(IEnumerable<string> cells)
+        {
+            var builder = new StringBuilder();
+
+            // write underlines for headings
+            builder.Append("|");
+
+            foreach (var heading in columnNames)
+            {
+                builder.Append(new string('-', heading.Length + 2) + "|");
+            }
+
+            return builder.ToString();
+        }
+
+    }
+
+    public class MarkdownTableRow
+    {
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            // not yet
+            return builder.ToString();
+        }
+
+        private string FormatTableRow(IEnumerable<string> cells)
+        {
+            return "| " + String.Join(" | ", cells) + " |";
+        }
+    }
+
 }

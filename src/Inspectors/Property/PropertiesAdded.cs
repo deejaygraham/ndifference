@@ -34,10 +34,9 @@ namespace NDifference.Inspectors
                     {
                         var propertyAdded = new IdentifiedChange(WellKnownChangePriorities.PropertiesAdded,
 							Severity.NonBreaking,
-							new CodeDescriptor 
+							new AddedSignature
 							{ 
-								Code = add.ToCode(),
-								Reason = "Property has been added"
+								Signature = add.ToCode()
 							});
                         
                         propertyAdded.ForType(first);

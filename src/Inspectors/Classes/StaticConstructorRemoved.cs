@@ -30,10 +30,10 @@ namespace NDifference.Inspectors
                 {
                     var constructorRemoved = new IdentifiedChange(WellKnownChangePriorities.ConstructorsRemoved,
 						Severity.BreakingChange,
-						new CodeDescriptor 
+						new RemovedSignature
 						{ 
 							Reason = "Static constructor removed",
-							Code = oldStatic.ToCode() 
+							Signature = oldStatic.ToCode() 
 						});
 
 					constructorRemoved.ForType(first);

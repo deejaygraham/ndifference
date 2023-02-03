@@ -36,7 +36,7 @@ namespace NDifference.Inspectors
                         {
                             var virtualnessChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
                                 Severity.BreakingChange,
-                                new CodeDeltaDescriptor
+                                new ChangedCodeSignature
                                 {
                                     Reason = method.IsVirtual ? "Method is no longer virtual" : "Method is now virtual",
                                     Was = method.ToCode(),
@@ -51,7 +51,7 @@ namespace NDifference.Inspectors
                         {
                             var methodMadeAbstract = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
                                 Severity.BreakingChange,
-                                new CodeDeltaDescriptor
+                                new ChangedCodeSignature
                                 {
                                     Reason = "Method is now abstract",
                                     Was = method.ToCode(),
@@ -67,7 +67,7 @@ namespace NDifference.Inspectors
                         {
                             var staticnessChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
                                 Severity.BreakingChange,
-                                new CodeDeltaDescriptor
+                                new ChangedCodeSignature
                                 {
                                     Reason = method.IsStatic ? "Method is no longer static" : "Method is now static",
                                     Was = method.ToCode(),
@@ -83,11 +83,13 @@ namespace NDifference.Inspectors
                         {
                             var accessibilityChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
                                 Severity.BreakingChange,
-                                new DeltaDescriptor
+                                new ChangedCodeSignature
                                 {
-                                    Reason = "Accessibility has changed",
-                                    Was = method.Accessibility.ToDescription(),
-                                    IsNow = counterpart.Accessibility.ToDescription()
+                                    Reason = string.Format("Accessibility has changed from {0} to {1}", 
+                                        method.Accessibility.ToDescription(),
+                                        counterpart.Accessibility.ToDescription()),
+                                    Was = method.ToCode(),
+                                    IsNow = counterpart.ToCode()
                                 });
 
                             accessibilityChanged.ForType(first);
@@ -104,7 +106,7 @@ namespace NDifference.Inspectors
                             {
                                 var returnTypeChanged = new IdentifiedChange(WellKnownChangePriorities.MethodsChanged,
                                     Severity.BreakingChange,
-                                    new CodeDeltaDescriptor
+                                    new ChangedCodeSignature
                                     {
                                         Reason = "Return type has changed",
                                         Was = mm.ToCode(),

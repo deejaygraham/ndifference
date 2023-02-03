@@ -30,10 +30,9 @@ namespace NDifference.Inspectors
                 {
                     var addedConstructor = new IdentifiedChange(WellKnownChangePriorities.ConstructorsAdded,
 						Severity.NonBreaking,
-						new CodeDescriptor 
+						new AddedSignature
 						{ 
-							Reason = "Static constructor added",
-							Code = newStatic.ToCode() 
+							Signature = newStatic.ToCode() 
 						});
 
 					addedConstructor.ForType(first);

@@ -32,10 +32,10 @@ namespace NDifference.Inspectors
                 {
                     var fieldRemoved = new IdentifiedChange(WellKnownChangePriorities.EventsRemoved,
 						Severity.BreakingChange,
-						new CodeDescriptor 
+						new RemovedSignature 
 						{ 
 							Reason = "Event removed",
-							Code = rem.ToCode() 
+							Signature = rem.ToCode() 
 						});
 
 					fieldRemoved.ForType(first);

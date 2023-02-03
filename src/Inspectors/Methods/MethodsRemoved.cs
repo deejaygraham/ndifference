@@ -38,10 +38,9 @@ namespace NDifference.Inspectors
                     {
                         var methodRemoved = new IdentifiedChange(WellKnownChangePriorities.MethodsRemoved,
 							Severity.BreakingChange,
-							new CodeDescriptor 
+							new RemovedSignature 
 							{ 
-								Reason = "Method removed",
-								Code = rem.ToCode() 
+								Signature = rem.ToCode() 
 							});
 						
                         methodRemoved.ForType(first);

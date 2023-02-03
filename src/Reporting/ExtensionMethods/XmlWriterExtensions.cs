@@ -125,17 +125,17 @@ namespace NDifference.Reporting
             writer.WriteTableRow(change.Name);
 		}
 
-		public static void WriteTableRow(this XmlWriter writer, string shortCode, IValueDescriptor change, IReportFormat format)
-		{
-			string text = change.Value.ToString();
+		//public static void WriteTableRow(this XmlWriter writer, string shortCode, IValueDescriptor change, IReportFormat format)
+		//{
+		//	string text = change.Value.ToString();
 
-			ICoded code = change.Value as ICoded;
+		//	ICoded code = change.Value as ICoded;
 
-			if (code != null)
-				text = format.Format(code);
+		//	if (code != null)
+		//		text = format.Format(code);
 
-            writer.WriteTableRow(text);
-		}
+  //          writer.WriteTableRow(text);
+		//}
 
 		public static void WriteTableRow(this XmlWriter writer, string shortCode, INameValueDescriptor change, IReportFormat format)
 		{
@@ -159,9 +159,9 @@ namespace NDifference.Reporting
             writer.WriteTableRow(change.Name, change.Was, change.IsNow);
 		}
 
-		public static void WriteTableRow(this XmlWriter writer, string shortCode, ICodeDescriptor change, IReportFormat format)
+		public static void WriteTableRow(this XmlWriter writer, string shortCode, ICodeSignature change, IReportFormat format)
 		{
-			string text = format.Format(change.Code);
+			string text = format.Format(change.Signature);
 
             writer.WriteTableRow(text);
 		}

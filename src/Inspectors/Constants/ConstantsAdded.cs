@@ -36,10 +36,9 @@ namespace NDifference.Inspectors
                 {
                     var constantAdded = new IdentifiedChange(WellKnownChangePriorities.ConstantsAdded,
 						Severity.NonBreaking,
-						new CodeDescriptor 
+						new AddedSignature 
 						{ 
-							Reason = "Constant added",
-							Code = add.ToCode() 
+							Signature = add.ToCode() 
 						});
 
 					constantAdded.ForType(first);

@@ -16,7 +16,9 @@ namespace NDifference.SourceFormatting
         {
             get
             {
-                return new SourceCode();
+                var blank = new SourceCode();
+				blank.tags.Add(new IdentifierTag("--"));
+				return blank;
             }
         }
 

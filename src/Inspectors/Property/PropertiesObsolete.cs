@@ -36,9 +36,9 @@ namespace NDifference.Inspectors
                 {
                     var obsoleteProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete,
                         Severity.BreakingChange,
-                        new CodeDescriptor 
+                        new ObsoleteSignature
                         { 
-                            Code = o.ToCode(), 
+                            Signature = o.ToCode(), 
                             Reason = o.ObsoleteMarker.Message
                         });
                     
@@ -78,9 +78,9 @@ namespace NDifference.Inspectors
                 {
                     var propertyMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete,
                         Severity.BreakingChange,
-                        new CodeDescriptor 
+                        new ObsoleteSignature
                         { 
-                            Code = o.ToCode(), 
+                            Signature = o.ToCode(), 
                             Reason = o.ObsoleteMarker.Message
                         });
                     

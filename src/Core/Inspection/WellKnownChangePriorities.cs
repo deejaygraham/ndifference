@@ -1,4 +1,7 @@
 ﻿
+using System.Collections.Generic;
+using NDifference.Analysis;
+
 namespace NDifference.Inspection
 {
 	/// <summary>
@@ -136,5 +139,119 @@ namespace NDifference.Inspection
 		// debugging
 		public static readonly int TypeDebug = 999;
 
-	}
+        public static IEnumerable<string> ColumnNames(int change, bool includeTypeAndAssembly = false)
+        {
+            var columns = new List<string>();
+
+            if (change == WellKnownChangePriorities.RemovedAssemblies ||
+                change == WellKnownChangePriorities.AddedAssemblies ||
+                change == WellKnownChangePriorities.ChangedAssemblies)
+            {
+                // single column
+                columns.Add("Assembly");
+            }
+            else if (change == WellKnownChangePriorities.BreakingChanges ||
+                     change == WellKnownChangePriorities.PotentiallyChangedAssemblies) // not used
+            {
+                columns.Add("Breaking Changes");
+            }
+            else if (change == WellKnownChangePriorities.AssemblyInternal ||
+                     change == WellKnownChangePriorities.TypeInternal)
+            {
+                // class structure has changed
+                columns.Add("Was");
+                columns.Add("Is Now");
+                columns.Add("Reason");
+            }
+            else if (change == WellKnownChangePriorities.AddedReferences || 
+                     change == WellKnownChangePriorities.RemovedReferences)
+            {
+                columns.Add("Reference");
+            }
+            else if (change == WellKnownChangePriorities.AddedTypes ||
+                     change == WellKnownChangePriorities.RemovedTypes ||
+                     change == WellKnownChangePriorities.ChangedTypes)
+            {
+                columns.Add("Type");
+            }
+            else if (change == WellKnownChangePriorities.ObsoleteTypes)
+            {
+                columns.Add("Type");
+                columns.Add("Reason");
+            }
+            else if (change == WellKnownChangePriorities.PotentiallyChangedTypes) // not used
+            {
+                columns.Add("Potentially Changed Types");
+            }
+            else if (change == WellKnownChangePriorities.ConstantsAdded || 
+                     change == WellKnownChangePriorities.ConstantsRemoved ||
+                     change == WellKnownChangePriorities.ConstructorsAdded ||
+                     change == WellKnownChangePriorities.ConstructorsRemoved ||
+                     change == WellKnownChangePriorities.DelegatesAdded ||
+                     change == WellKnownChangePriorities.DelegatesRemoved ||
+                     change == WellKnownChangePriorities.EnumValuesAdded ||
+                     change == WellKnownChangePriorities.EnumValuesRemoved ||
+                     change == WellKnownChangePriorities.EventsAdded ||
+                     change == WellKnownChangePriorities.EventsRemoved ||
+                     change == WellKnownChangePriorities.FinalizersAdded ||
+                     change == WellKnownChangePriorities.FinalizersRemoved ||
+                     change == WellKnownChangePriorities.FieldsAdded ||
+                     change == WellKnownChangePriorities.FieldsRemoved ||
+                     change == WellKnownChangePriorities.IndexersAdded ||
+                     change == WellKnownChangePriorities.IndexersRemoved ||
+                     change == WellKnownChangePriorities.MethodsAdded ||
+                     change == WellKnownChangePriorities.MethodsRemoved ||
+                     change == WellKnownChangePriorities.PropertiesAdded ||
+                     change == WellKnownChangePriorities.PropertiesRemoved)
+            {
+                columns.Add("Signature");
+            }
+            else if (change == WellKnownChangePriorities.ConstantsObsolete ||
+                     change == WellKnownChangePriorities.ConstructorsObsolete ||
+                     change == WellKnownChangePriorities.DelegatesObsolete ||
+                     change == WellKnownChangePriorities.EventsObsolete ||
+                     change == WellKnownChangePriorities.FieldsObsolete ||
+                     change == WellKnownChangePriorities.FinalizersObsolete ||
+                     //change == WellKnownChangePriorities.IndexersObsolete ||
+                     change == WellKnownChangePriorities.MethodsObsolete ||
+                     change == WellKnownChangePriorities.PropertiesObsolete)
+            {
+                columns.Add("Signature");
+                columns.Add("Reason");
+            }
+            else if (change == WellKnownChangePriorities.ConstantsChanged ||
+                     change == WellKnownChangePriorities.ConstructorsChanged ||
+                     change == WellKnownChangePriorities.DelegatesChanged ||
+                     change == WellKnownChangePriorities.EnumValuesChanged ||
+                     change == WellKnownChangePriorities.EventsChanged ||
+                     change == WellKnownChangePriorities.FieldsChanged ||
+                     //change == WellKnownChangePriorities.FinalizersChanged ||
+                     //change == WellKnownChangePriorities.IndexersChanged ||
+                     change == WellKnownChangePriorities.MethodsChanged ||
+                     change == WellKnownChangePriorities.PropertiesChanged)
+            {
+                columns.Add("Was");
+                columns.Add("Is Now");
+                columns.Add("Reason");
+            }
+            else if (change == WellKnownChangePriorities.TypeDebug)
+            {
+                // nothing
+                columns.Add("Debug");
+            }
+            else
+            {
+                columns.Add("Priority Not Handled!");
+            }
+
+            if (includeTypeAndAssembly)
+            {
+                columns.Add("Type");
+                columns.Add("Assembly");
+            }
+
+            return columns;
+        }
+
+    }
 }

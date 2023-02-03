@@ -14,7 +14,7 @@ namespace NDifference.Analysis
 			Name = "Assembly Changes",
 			Description = "These changes were made to the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AssemblyInternal),
-			Headings = new string[] { "Change", "From", "To" },
+			//Headings = new string[] { "Change", "From", "To" },
             Severity = Severity.NonBreaking
 		};
 
@@ -23,7 +23,7 @@ namespace NDifference.Analysis
 			Name = "Removed References",
 			Description = "These references were removed in the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedReferences),
-			Headings = new string[] { "Reference" },
+			//Headings = new string[] { "Reference" },
             Severity = Severity.PotentiallyBreakingChange
 		};
 
@@ -32,7 +32,7 @@ namespace NDifference.Analysis
 			Name = "New References",
 			Description = "These references were added to the new version of the assembly",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedReferences),
-			Headings = new string[] { "Reference" },
+			//Headings = new string[] { "Reference" },
             Severity = Severity.NonBreaking
 		};
 
@@ -41,7 +41,7 @@ namespace NDifference.Analysis
 			Name = "Removed Types",
 			Description = "These types were removed from the new version of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.RemovedTypes),
-			Headings = new string[] { "Type" },
+			//Headings = new string[] { "Type" },
             Severity = Severity.BreakingChange
 		};
 
@@ -50,7 +50,7 @@ namespace NDifference.Analysis
 			Name = "Obsolete Types",
 			Description = "These types were marked as deprecated in the new version of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ObsoleteTypes),
-			Headings = new string[] { "Type", "Message" },
+			//Headings = new string[] { "Type", "Message" },
             Severity = Severity.PotentiallyBreakingChange
 		};
 
@@ -59,7 +59,7 @@ namespace NDifference.Analysis
             Name = "Potentially Changed Types",
             Description = "These types MAY have changed between the two versions of the product",
             Priority = new CategoryPriority(WellKnownChangePriorities.PotentiallyChangedTypes),
-            Headings = new string[] { "Type" },
+           //Headings = new string[] { "Type" },
             Severity = Severity.PotentiallyBreakingChange
         };
 
@@ -68,7 +68,7 @@ namespace NDifference.Analysis
 			Name = "Changed Types",
 			Description = "These types have changed between the two versions of the product",
 			Priority = new CategoryPriority(WellKnownChangePriorities.ChangedTypes),
-			Headings = new string[] { "Type" },
+			//Headings = new string[] { "Type" },
             Severity = Severity.BreakingChange
 		};
 
@@ -77,7 +77,7 @@ namespace NDifference.Analysis
 			Name = "New Types",
 			Description = "These types have been added to the new version",
 			Priority = new CategoryPriority(WellKnownChangePriorities.AddedTypes),
-			Headings = new string[] { "Type" },
+			//Headings = new string[] { "Type" },
             Severity = Severity.NonBreaking
 		};
 

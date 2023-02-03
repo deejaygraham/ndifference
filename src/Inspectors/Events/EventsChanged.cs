@@ -39,8 +39,8 @@ namespace NDifference.Inspectors
                         {
                             var eventChangedType = new IdentifiedChange(WellKnownChangePriorities.EventsChanged,
 								Severity.BreakingChange,
-								new CodeDeltaDescriptor
-                                {
+								new ChangedCodeSignature
+								{
                                     Reason = string.Format("Changed type from {0} to {1}", oldEvent.EventType, newEvent.EventType),
                                     Was = oldEvent.ToCode(),
                                     IsNow = newEvent.ToCode()

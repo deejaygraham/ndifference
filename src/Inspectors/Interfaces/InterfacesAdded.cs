@@ -40,11 +40,9 @@ namespace NDifference.Inspectors
 						// TODO - Interface added !!!!
                         var interfaceAdded = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
 							Severity.NonBreaking,
-							new CodeDeltaDescriptor 
+							new AddedSignature
 							{ 
-								Reason = "Now implements",
-    							Was = SourceCode.NoOp,
-								IsNow = add.ToCode() 
+								Signature = add.ToCode() 
 							});
 						
                         interfaceAdded.ForType(first);

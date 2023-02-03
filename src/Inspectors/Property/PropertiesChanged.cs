@@ -44,7 +44,7 @@ namespace NDifference.Inspectors
                             {
                                 var getterRemoved = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
                                     Severity.BreakingChange,
-                                    new CodeDeltaDescriptor
+                                    new ChangedCodeSignature
                                     {
                                         Reason = "Get removed",
                                         Was = oldProperty.ToCode(),
@@ -60,7 +60,7 @@ namespace NDifference.Inspectors
                             {
                                 var setterRemoved = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
                                     Severity.BreakingChange,
-                                    new CodeDeltaDescriptor
+                                    new ChangedCodeSignature
                                     {
                                         Reason = "Set removed",
                                         Was = oldProperty.ToCode(),
@@ -81,7 +81,7 @@ namespace NDifference.Inspectors
                                 {
                                     var movedNamespace = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
                                         Severity.BreakingChange,
-                                        new CodeDeltaDescriptor
+                                        new ChangedCodeSignature
                                         {
                                             Reason = string.Format(
                                                 "Property changed namespace from {0} to {1}",
@@ -100,7 +100,7 @@ namespace NDifference.Inspectors
                                 {
                                     var propertyTypeChanged = new IdentifiedChange(WellKnownChangePriorities.PropertiesChanged,
                                         Severity.BreakingChange,
-                                        new CodeDeltaDescriptor
+                                        new ChangedCodeSignature
                                         {
                                             Reason = string.Format(
                                                 "Property changed from {0} to {1}",

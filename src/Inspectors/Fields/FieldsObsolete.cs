@@ -38,9 +38,9 @@ namespace NDifference.Inspectors
             {
                 var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete,
                     Severity.BreakingChange,
-                    new NameValueDescriptor 
+                    new ObsoleteSignature
                     { 
-                        Name = o.ToString(), 
+                        Signature = o.ToCode(), 
                         Reason = o.ObsoleteMarker.Message 
                     });
 
@@ -79,9 +79,9 @@ namespace NDifference.Inspectors
             {
                 var fieldMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.FieldsObsolete,
                     Severity.BreakingChange,
-                    new CodeDescriptor 
+                    new ObsoleteSignature
                     { 
-                        Code = o.ToCode(), 
+                        Signature = o.ToCode(), 
                         Reason = o.ObsoleteMarker.Message 
                     });
 

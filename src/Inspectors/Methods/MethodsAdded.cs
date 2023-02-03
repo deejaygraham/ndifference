@@ -34,10 +34,9 @@ namespace NDifference.Inspectors
                     {
                         var newMethodAdded = new IdentifiedChange(WellKnownChangePriorities.MethodsAdded,
 							Severity.NonBreaking,
-							new CodeDescriptor 
+							new AddedSignature
 							{ 
-								Reason = "Method added",
-								Code = add.ToCode() 
+								Signature = add.ToCode() 
 							});
                         
                         newMethodAdded.ForType(first);

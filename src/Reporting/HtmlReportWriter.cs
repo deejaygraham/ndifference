@@ -298,10 +298,10 @@ namespace NDifference.Reporting
 			{
 				RenderDescriptor(change, descriptor, html, output);
 			}
-			else if (!String.IsNullOrEmpty(change.Description))
-			{
-				html.WriteTableRow(/*change.Inspector, */change.Description);
-			}
+			//else if (!String.IsNullOrEmpty(change.Description))
+			//{
+			//	html.WriteTableRow(/*change.Inspector, */change.Description);
+			//}
 		}
 
 		private void RenderDescriptor(IdentifiedChange change, object descriptor, XmlWriter html, IReportOutput output)
@@ -312,16 +312,16 @@ namespace NDifference.Reporting
 			{
 				if (this.Map != null)
 				{
-					html.WriteTableRow(change.Inspector, link, output, this.Map);
+					html.WriteTableRow(null, link, output, this.Map);
 				}
 			}
 			else
 			{
-				ICodeDescriptor code = descriptor as ICodeDescriptor;
+                ICodeSignature code = descriptor as ICodeSignature;
 
 				if (code != null)
 				{
-					html.WriteTableRow(change.Inspector, code, this._format);
+					html.WriteTableRow(null, code, this._format);
 				}
 				else
 				{
@@ -329,7 +329,7 @@ namespace NDifference.Reporting
 
 					if (nvd != null)
 					{
-						html.WriteTableRow(change.Inspector, nvd, this._format);
+						html.WriteTableRow(null, nvd, this._format);
 					}
 					else
 					{
@@ -337,43 +337,43 @@ namespace NDifference.Reporting
 
 						if (nd != null)
 						{
-							html.WriteTableRow(change.Inspector, nd, this._format);
+							html.WriteTableRow(null, nd, this._format);
 						}
 						else
 						{
-							IValueDescriptor vd = descriptor as IValueDescriptor;
+							//IValueDescriptor vd = descriptor as IValueDescriptor;
 
-							if (vd != null)
-							{
-								html.WriteTableRow(change.Inspector, vd, this._format);
-							}
-							else
-							{
-								INamedDeltaDescriptor ndd = descriptor as INamedDeltaDescriptor;
+							//if (vd != null)
+							//{
+							//	html.WriteTableRow(null, vd, this._format);
+							//}
+							//else
+							//{
+							//	INamedDeltaDescriptor ndd = descriptor as INamedDeltaDescriptor;
 
-								if (ndd != null)
-								{
-									html.WriteTableRow(change.Inspector, ndd, this._format);
-								}
-								else
-								{
-									IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
+							//	if (ndd != null)
+							//	{
+							//		html.WriteTableRow(null, ndd, this._format);
+							//	}
+							//	else
+							//	{
+							//		IDeltaDescriptor delta = descriptor as IDeltaDescriptor;
 
-									if (delta != null)
-									{
-										html.WriteTableRow(change.Inspector, delta, this._format);
-									}
-									//else
-									//{
-									//	INameValueDescriptor textDesc = descriptor as INameValueDescriptor;
+							//		if (delta != null)
+							//		{
+							//			html.WriteTableRow(null, delta, this._format);
+							//		}
+							//		//else
+							//		//{
+							//		//	INameValueDescriptor textDesc = descriptor as INameValueDescriptor;
 
-									//	if (textDesc != null)
-									//	{
-									//		html.WriteTableRow(change.Inspector, textDesc, this._format);
-									//	}
-									//}
-								}
-							}
+							//		//	if (textDesc != null)
+							//		//	{
+							//		//		html.WriteTableRow(change.Inspector, textDesc, this._format);
+							//		//	}
+							//		//}
+							//	}
+							//}
 						}
 					}
 				}

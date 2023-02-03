@@ -40,9 +40,9 @@ namespace NDifference.Inspectors
                     {
                         var interfaceRemoved = new IdentifiedChange(WellKnownChangePriorities.TypeInternal,
 							Severity.BreakingChange,
-							new CodeDeltaDescriptor 
+							new ChangedCodeSignature
 							{ 
-								Reason = "No longer implements", 
+								Reason = "No longer implements the interface", 
 								Was = remove.ToCode(),
 								IsNow = SourceCode.NoOp
 							});

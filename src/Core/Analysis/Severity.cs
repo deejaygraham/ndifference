@@ -22,9 +22,13 @@ namespace NDifference.Analysis
         /// </summary>
         PotentiallyBreakingChange = 2,
         /// <summary>
-        /// Definitely will break depedent code.
+        /// Breaking Change pre-existing, corresponds to Nag mode.
         /// </summary>
-        BreakingChange = 4
+        LegacyBreakingChange = 4,
+        /// <summary>
+        /// Definitely will break dependent code.
+        /// </summary>
+        BreakingChange = 8
     }
 
 }

@@ -103,7 +103,7 @@ namespace NDifference.Analysis
 					// inspect each assembly...
 					try
                     {
-                        int breakingChangesToAssembly = 0;
+                        //int breakingChangesToAssembly = 0;
 
                         var previousVersionReflection = this.ReflectorFactory.LoadAssembly(previousAssembly.Path);
                         var currentVersionReflection = this.ReflectorFactory.LoadAssembly(currentAssembly.Path);
@@ -148,6 +148,7 @@ namespace NDifference.Analysis
 
                         // copy assembly level breaking changes...
                         CopyChangesAboveSeverity(Severity.PotentiallyBreakingChange, changesToThisAssembly, result.BreakingChanges);
+                        RemoveChangesWithSeverity(Severity.LegacyBreakingChange, changesToThisAssembly);
 
                         // now inspect each type...
                         foreach (var commonTypePair in typeModel.InCommon)
@@ -203,7 +204,11 @@ namespace NDifference.Analysis
                             changesToThisType.Parents.Add(new DocumentLink { Identifier = changesToThisAssembly.Identifier, LinkText = changesToThisAssembly.Name });
 
                             progressIndicator.Report(new Progress("Inspecting type " + currentType.Name));
+
                             RunTypeInspectors(inspectors, previousType, currentType, changesToThisType);
+
+                            CopyChangesAboveSeverity(Severity.PotentiallyBreakingChange, changesToThisType, result.BreakingChanges);
+                            RemoveChangesWithSeverity(Severity.LegacyBreakingChange, changesToThisType);
 
                             if (changesToThisType.Changes.Any())
                             {
@@ -228,8 +233,6 @@ namespace NDifference.Analysis
 
                                     changesToThisAssembly.Add(ic);
                                 }
-
-                                CopyChangesAboveSeverity(Severity.PotentiallyBreakingChange, changesToThisType, result.BreakingChanges);
                             }
 
                             this.TypeComparisonComplete.Fire(this);
@@ -321,11 +324,11 @@ namespace NDifference.Analysis
 
         private static void CopyChangesAboveSeverity(Severity severity, IdentifiedChangeCollection from, IdentifiedChangeCollection to)
         {
-            int qualifyingChanges = from.CountChangesWithSeverity(severity);
+            int qualifyingChanges = from.CountChangesWithSeverityOrMore(severity);
 
             if (qualifyingChanges > 0)
             {
-                foreach (var change in from.ChangesWithSeverity(severity))
+                foreach (var change in from.ChangesWithSeverityOrMore(severity))
                 {
                     var copiedChange = new IdentifiedChange
                     {
@@ -339,8 +342,16 @@ namespace NDifference.Analysis
                     to.Add(copiedChange);
                 }
             }
-
         }
+
+        private static void RemoveChangesWithSeverity(Severity severity, IdentifiedChangeCollection collection)
+        {
+            foreach (var change in collection.ChangesWithSeverity(severity))
+            {
+                collection.Remove(change);
+            }
+        }
+
         private static IdentifiedChangeCollection BuildMainSummaryPage(Project project)
         {
             var mainSummaryPage = new IdentifiedChangeCollection

@@ -35,7 +35,7 @@ namespace NDifference.Inspectors
 				foreach (var o in obs)
                 {
                     var obsoleteProperty = new IdentifiedChange(WellKnownChangePriorities.PropertiesObsolete,
-                        Severity.BreakingChange,
+                        Severity.LegacyBreakingChange,
                         new ObsoleteSignature
                         { 
                             Signature = o.ToCode(), 

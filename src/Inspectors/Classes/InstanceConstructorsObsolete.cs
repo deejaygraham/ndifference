@@ -27,7 +27,7 @@ namespace NDifference.Inspectors
 				foreach (var o in obs)
                 {
                     var constructorMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstructorsObsolete,
-                        Severity.BreakingChange,
+                        Severity.LegacyBreakingChange,
                         new ObsoleteSignature
                         { 
                             Signature = o.ToCode(), 

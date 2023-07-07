@@ -33,7 +33,7 @@ namespace NDifference.Inspectors
 				foreach (var o in obs)
                 {
                     var methodMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.MethodsObsolete,
-                        Severity.BreakingChange,
+                        Severity.LegacyBreakingChange,
                         new ObsoleteSignature
                         { 
                             Signature = o.ToCode(), 

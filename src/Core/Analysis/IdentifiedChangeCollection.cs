@@ -65,6 +65,11 @@ namespace NDifference.Analysis
             this.Changes.Add(change);
 		}
 
+        public void Remove(IdentifiedChange change)
+        {
+            this.Changes.Remove(change);
+        }
+
 		/// <summary>
 		/// Should all changes be bundled together (e.g. breaking changes)
 		/// and have each change identified by assembly and type.
@@ -73,15 +78,26 @@ namespace NDifference.Analysis
 
         public int CountChangesWithSeverity(Severity minimumSeverity)
         {
+            return this.Changes.Count(x => x.Severity == minimumSeverity);
+        }
+
+        public int CountChangesWithSeverityOrMore(Severity minimumSeverity)
+        {
             return this.Changes.Count(x => x.Severity >= minimumSeverity);
         }
 
-        public ReadOnlyCollection<IdentifiedChange> ChangesWithSeverity(Severity minimumSeverity)
+
+		public ReadOnlyCollection<IdentifiedChange> ChangesWithSeverity(Severity minimumSeverity)
+        {
+            return new ReadOnlyCollection<IdentifiedChange>(this.Changes.Where(x => x.Severity == minimumSeverity).ToList());
+        }
+
+        public ReadOnlyCollection<IdentifiedChange> ChangesWithSeverityOrMore(Severity minimumSeverity)
         {
             return new ReadOnlyCollection<IdentifiedChange>(this.Changes.Where(x => x.Severity >= minimumSeverity).ToList());
         }
 
-        public List<IdentifiedChange> ChangesInCategory(int priority) 
+		public List<IdentifiedChange> ChangesInCategory(int priority) 
 		{
 			Debug.Assert(this.Changes != null, "Changes collection is null");
 

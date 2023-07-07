@@ -27,30 +27,30 @@ namespace NDifference.Inspectors
             
 			foreach (var s in types.InCommon)
 			{
-				ITypeInfo t1 = s.First;
-				ITypeInfo ti = s.Second;
+				ITypeInfo oldVersion = s.First;
+				ITypeInfo newVersion = s.Second;
 
-				// don't care about previously obsolete...
-				if (ti.ObsoleteMarker != null)
+				if (newVersion.ObsoleteMarker != null)
                 {
-                    string reason = ti.ObsoleteMarker.Message;
+                    string reason = newVersion.ObsoleteMarker.Message;
 
                     if (String.IsNullOrEmpty(reason))
                         reason = "No specific message given";
 
+                    Severity severity = (oldVersion.ObsoleteMarker != null) ? Severity.LegacyBreakingChange : Severity.BreakingChange;
+
                     var typeMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ObsoleteTypes,
-						Severity.BreakingChange,
-						new NameValueDescriptor 
-                        { 
-                            Name = ti.FullName, 
-                            Reason = reason 
+                        severity,
+                        new NameValueDescriptor
+                        {
+                            Name = newVersion.FullName,
+                            Reason = reason
                         });
 
-                    typeMadeObsolete.ForType(t1);
-
+                    typeMadeObsolete.ForType(oldVersion);
                     changes.Add(typeMadeObsolete);
                 }
-			}
+            }
 		}
 	}
 }

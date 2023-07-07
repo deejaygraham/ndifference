@@ -31,7 +31,7 @@ namespace NDifference.Inspectors
 			foreach (var o in obs)
             {
                 var eventMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.EventsObsolete,
-                    Severity.BreakingChange,
+                    Severity.LegacyBreakingChange,
                     new ObsoleteSignature
                     { 
                         Signature = o.ToCode(), 

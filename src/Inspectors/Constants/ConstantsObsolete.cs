@@ -85,7 +85,7 @@ namespace NDifference.Inspectors
             foreach (var o in obsoleteConstants)
             {
                 var constantMadeObsolete = new IdentifiedChange(WellKnownChangePriorities.ConstantsObsolete,
-                    Severity.BreakingChange,
+                    this.NagMode ? Severity.LegacyBreakingChange : Severity.BreakingChange,
                     new ObsoleteSignature
                     { 
                         Signature = o.ToCode(), 

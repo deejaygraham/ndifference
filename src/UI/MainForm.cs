@@ -243,8 +243,10 @@ namespace NDifference.UI
 		{
 			foreach (var i in inspectors)
 			{
+   				// string name = i.ShortCode + " - " + i.DisplayName;
+       				string name = i.DisplayName;
 				node.Nodes.Add(
-					new TreeNode(i.ShortCode + " - " + i.DisplayName) 
+					new TreeNode(name) 
 					{ 
 						Tag = i.ShortCode, 
 						Checked = i.Enabled 

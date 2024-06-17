@@ -8,7 +8,8 @@ namespace NDifference.Inspectors
     /// <summary>
     /// Uncritically takes collections and creates a change for each one.
     /// </summary>
-    public class DemoTypeCollectionInspector : ITypeCollectionInspector
+    // exclude from discovery process
+    public class DemoTypeCollectionInspector // : ITypeCollectionInspector
 	{
  // always disabled. Enable here for testing.
 		public bool Enabled { get { return false; } set { } }

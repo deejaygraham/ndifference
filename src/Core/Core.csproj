@@ -1,220 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FB9DB4C7-F9B4-420C-9440-7F422C814F2B}</ProjectGuid>
+    <TargetFramework>net452</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NDifference</RootNamespace>
     <AssemblyName>NDifference.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Analysis\Analysis.cs" />
-    <Compile Include="Analysis\AnalysisLevel.cs" />
-    <Compile Include="Analysis\AnalysisResult.cs" />
-    <Compile Include="Analysis\CategoryRegistry.cs" />
-    <Compile Include="Analysis\ChurnCalculator.cs" />
-    <Compile Include="Analysis\IAnalysisWorkflow.cs" />
-    <Compile Include="Analysis\IChurnable.cs" />
-    <Compile Include="Analysis\Severity.cs" />
-    <Compile Include="Analysis\WellKnownAssemblyCategories.cs" />
-    <Compile Include="Analysis\WellKnownSummaryCategories.cs" />
-    <Compile Include="Analysis\WellKnownTypeCategories.cs" />
-    <Compile Include="Exceptions\InvalidProjectFileFormatException.cs" />
-    <Compile Include="Exceptions\PluginLoadException.cs" />
-    <Compile Include="ExtensionMethods\EventHandlerExtensions.cs" />
-    <Compile Include="ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Files\AssemblyDiskInfoBuilder.cs" />
-    <Compile Include="Files\IFile.cs" />
-    <Compile Include="Files\IFolder.cs" />
-    <Compile Include="Files\PhysicalFile.cs" />
-    <Compile Include="Files\PhysicalFolder.cs" />
-    <Compile Include="Framework\CancellableEventArgs.cs" />
-    <Compile Include="Framework\FileProgessEventArgs.cs" />
-    <Compile Include="Framework\Product.cs" />
-    <Compile Include="Framework\ProductIncrement.cs" />
-    <Compile Include="Inspection\CombinedAssemblyModel.cs" />
-    <Compile Include="Inspection\CombinedObjectModel.cs" />
-    <Compile Include="Inspection\ICombinedAssemblies.cs" />
-    <Compile Include="Inspection\ICombinedTypes.cs" />
-    <Compile Include="Inspection\MemberVisibilityOption.cs" />
-    <Compile Include="Inspection\WellKnownChangePriorities.cs" />
-    <Compile Include="Inspectors\IAnalysisInspector.cs" />
-    <Compile Include="Inspectors\IAssemblyCollectionInspector.cs" />
-    <Compile Include="Inspectors\IInspector.cs" />
-    <Compile Include="Inspectors\InspectorFilter.cs" />
-    <Compile Include="Inspectors\InspectorRepository.cs" />
-    <Compile Include="Inspectors\ITypeCollectionInspector.cs" />
-    <Compile Include="Progress.cs" />
-    <Compile Include="Projects\Project.cs" />
-    <Compile Include="Projects\PersistableProject.cs" />
-    <Compile Include="Projects\PersistableProjectSettings.cs" />
-    <Compile Include="Projects\ProjectBuilder.cs" />
-    <Compile Include="Projects\ProjectReader.cs" />
-    <Compile Include="Projects\ProjectSettings.cs" />
-    <Compile Include="Projects\ProjectWriter.cs" />
-    <Compile Include="Reporting\Descriptors\CodeSignatures.cs" />
-    <Compile Include="Reporting\CssVariableRepository.cs" />
-    <Compile Include="Reporting\DefaultHtml5Style.cs" />
-    <Compile Include="Reporting\DefaultHtmlStyle.cs" />
-    <Compile Include="Reporting\Descriptors\DeltaDescriptor.cs" />
-    <Compile Include="Reporting\Descriptors\Descriptor.cs" />
-    <Compile Include="Reporting\Descriptors\DocumentLink.cs" />
-    <Compile Include="Reporting\FileOutput.cs" />
-    <Compile Include="Reporting\HtmlStyleReset.cs" />
-    <Compile Include="Reporting\Descriptors\IDeltaDescriptor.cs" />
-    <Compile Include="Reporting\Descriptors\IDescriptor.cs" />
-    <Compile Include="Reporting\Descriptors\IDocumentLink.cs" />
-    <Compile Include="Reporting\Descriptors\INamedDeltaDescriptor.cs" />
-    <Compile Include="Reporting\Descriptors\INameDescriptor.cs" />
-    <Compile Include="Reporting\Descriptors\INameValueDescriptor.cs" />
-    <Compile Include="Reporting\IReportFormat.cs" />
-    <Compile Include="Reporting\IReportFormatRepository.cs" />
-    <Compile Include="Reporting\IReportingRepository.cs" />
-    <Compile Include="Reporting\IReportingWorkflow.cs" />
-    <Compile Include="Reporting\IReportOutput.cs" />
-    <Compile Include="Reporting\IReportWriter.cs" />
-    <Compile Include="Reporting\FileMap.cs" />
-    <Compile Include="Reporting\FileMapBuilder.cs" />
-    <Compile Include="Reporting\Descriptors\NamedDeltaDescriptor.cs" />
-    <Compile Include="Reporting\Descriptors\NameDescriptor.cs" />
-    <Compile Include="Reporting\ReportFormatRepository.cs" />
-    <Compile Include="Reporting\ReportingRepository.cs" />
-    <Compile Include="Reporting\ReportingWorkflow.cs" />
-    <Compile Include="Reporting\Descriptors\NameValueDescriptor.cs" />
-    <Compile Include="Reporting\Descriptors\ValueDescriptor.cs" />
-    <Compile Include="SourceFormatting\ClassDeclarationSourceCodeBuilder.cs" />
-    <Compile Include="SourceFormatting\ICoded.cs" />
-    <Compile Include="SourceFormatting\IdentifierTag.cs" />
-    <Compile Include="SourceFormatting\ISourceCodeProvider.cs" />
-    <Compile Include="SourceFormatting\KeywordTag.cs" />
-    <Compile Include="SourceFormatting\ObjectFlattener.cs" />
-    <Compile Include="SourceFormatting\PunctuationTag.cs" />
-    <Compile Include="SourceFormatting\SourceCode.cs" />
-    <Compile Include="SourceFormatting\SourceCodeFieldBuilder.cs" />
-    <Compile Include="SourceFormatting\SourceCodeMethodBuilder.cs" />
-    <Compile Include="SourceFormatting\SourceCodeTag.cs" />
-    <Compile Include="SourceFormatting\TypeNameTag.cs" />
-    <Compile Include="SourceFormatting\WhitespaceTag.cs" />
-    <Compile Include="TypeSystem\AccessModifier.cs" />
-    <Compile Include="Analysis\AnalysisWorkflow.cs" />
-    <Compile Include="Delta.cs" />
-    <Compile Include="DeltaBuilder.cs" />
-    <Compile Include="ExtensionMethods\HashAlgorithmExtensions.cs" />
-    <Compile Include="ExtensionMethods\IEnumerableExtensions.cs" />
-    <Compile Include="Files\AssemblyReference.cs" />
-    <Compile Include="ExtensionMethods\AssemblyExtensions.cs" />
-    <Compile Include="ExtensionMethods\FileInfoExtensions.cs" />
-    <Compile Include="ExtensionMethods\PathExtensions.cs" />
-    <Compile Include="ExtensionMethods\TypeExtensions.cs" />
-    <Compile Include="TypeSystem\ClassDefinition.cs" />
-    <Compile Include="TypeSystem\Constant.cs" />
-    <Compile Include="TypeSystem\EnumDefinition.cs" />
-    <Compile Include="TypeSystem\EnumValue.cs" />
-    <Compile Include="TypeSystem\Finalizer.cs" />
-    <Compile Include="TypeSystem\IMatchExactly.cs" />
-    <Compile Include="TypeSystem\IMatchFuzzily.cs" />
-    <Compile Include="TypeSystem\IMemberMethod.cs" />
-    <Compile Include="TypeSystem\Indexer.cs" />
-    <Compile Include="TypeSystem\InstanceConstructor.cs" />
-    <Compile Include="TypeSystem\IReferenceTypeDefinition.cs" />
-    <Compile Include="TypeSystem\MemberEvent.cs" />
-    <Compile Include="TypeSystem\MemberField.cs" />
-    <Compile Include="Files\FileFilterConstants.cs" />
-    <Compile Include="TypeSystem\FullyQualifiedName.cs" />
-    <Compile Include="Files\IAssemblyDiskInfo.cs" />
-    <Compile Include="Files\IAssemblyInfo.cs" />
-    <Compile Include="ICommonality.cs" />
-    <Compile Include="Analysis\IdentifiedChange.cs" />
-    <Compile Include="Analysis\IdentifiedChangeCollection.cs" />
-    <Compile Include="Identifier.cs" />
-    <Compile Include="Files\AssemblyDiskInfo.cs" />
-    <Compile Include="Files\AssemblyDiskInfoPair.cs" />
-    <Compile Include="Files\AssemblyInfo.cs" />
-    <Compile Include="Files\AssemblyNameComparer.cs" />
-    <Compile Include="IHashable.cs" />
-    <Compile Include="Inspection\AssemblyReflectionOption.cs" />
-    <Compile Include="Inspection\MsReflector.cs" />
-    <Compile Include="Inspection\MsReflectorFactory.cs" />
-    <Compile Include="Inspectors\IAssemblyInspector.cs" />
-    <Compile Include="Inspectors\ITypeInspector.cs" />
-    <Compile Include="TypeSystem\IMemberInfo.cs" />
-    <Compile Include="TypeSystem\InterfaceDefinition.cs" />
-    <Compile Include="TypeSystem\ITypeInfo.cs" />
-    <Compile Include="TypeSystem\IMaybeObsolete.cs" />
-    <Compile Include="InspectedAssembly.cs" />
-    <Compile Include="Inspection\IAssemblyReflectionInspector.cs" />
-    <Compile Include="Inspection\IAssemblyReflector.cs" />
-    <Compile Include="Inspection\IAssemblyReflectorFactory.cs" />
-    <Compile Include="TypeSystem\InstanceAccessModifier.cs" />
-    <Compile Include="IUniquelyIdentifiable.cs" />
-    <Compile Include="TypeSystem\MemberAccessibility.cs" />
-    <Compile Include="TypeSystem\MemberMethod.cs" />
-    <Compile Include="TypeSystem\MemberProperty.cs" />
-    <Compile Include="TypeSystem\MethodDeclaration.cs" />
-    <Compile Include="TypeSystem\Namespace.cs" />
-    <Compile Include="TypeSystem\Obsolete.cs" />
-    <Compile Include="OpaqueAssembly.cs" />
-    <Compile Include="Pair.cs" />
-    <Compile Include="TypeSystem\Operator.cs" />
-    <Compile Include="TypeSystem\Parameter.cs" />
-    <Compile Include="Files\IFileFinder.cs" />
-    <Compile Include="Plugins\ObjectInstantiator.cs" />
-    <Compile Include="Files\FileFinder.cs" />
-    <Compile Include="Plugins\PluginDiscoverer.cs" />
-    <Compile Include="TypeSystem\PocoType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeSystem\PropertyDeclaration.cs" />
-    <Compile Include="Analysis\Category.cs" />
-    <Compile Include="Analysis\CategoryPriority.cs" />
-    <Compile Include="TypeSystem\Signature.cs" />
-    <Compile Include="TypeSystem\StaticConstructor.cs" />
-    <Compile Include="TypeSystem\TypeAliasConverter.cs" />
-    <Compile Include="TypeSystem\TypeName.cs" />
-    <Compile Include="TypeSystem\TypeNameComparer.cs" />
-    <Compile Include="TypeSystem\TypeTaxonomy.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="SourceFormatting\ICodeable.cs" />
+    <Compile Remove="SourceFormatting\SyntaxKind.cs" />
+    <Compile Remove="SourceFormatting\SyntaxNode.cs" />
+    <Compile Remove="SourceFormatting\SyntaxTree.cs" />
+  </ItemGroup>
 </Project>

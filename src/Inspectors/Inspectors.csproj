@@ -1,107 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{98E607C5-A551-466A-834D-4D930260DF0F}</ProjectGuid>
+    <TargetFramework>net452</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NDifference.Inspectors</RootNamespace>
     <AssemblyName>NDifference.Inspectors</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Assemblies\AddedAssembliesInspector.cs" />
-    <Compile Include="Types\AddedTypesInspector.cs" />
-    <Compile Include="Architecture\ArchitectureChangeInspector.cs" />
-    <Compile Include="Assemblies\AssemblyReferenceInspector.cs" />
-    <Compile Include="Assemblies\AssemblyStatisticsInspector.cs" />
-    <Compile Include="Classes\ClassAbstractionInspector.cs" />
-    <Compile Include="Classes\ClassDerivationInspector.cs" />
-    <Compile Include="Classes\ClassSealingInspector.cs" />
-    <Compile Include="Constants\ConstantsAdded.cs" />
-    <Compile Include="Constants\ConstantsChanged.cs" />
-    <Compile Include="Constants\ConstantsObsolete.cs" />
-    <Compile Include="Constants\ConstantsRemoved.cs" />
-    <Compile Include="Demo\DemoTypeCollectionInspector.cs" />
-    <Compile Include="Demo\DemoTypeInspector.cs" />
-    <Compile Include="Enums\EnumInspector.cs" />
-    <Compile Include="Events\EventsAdded.cs" />
-    <Compile Include="Events\EventsChanged.cs" />
-    <Compile Include="Events\EventsObsolete.cs" />
-    <Compile Include="Events\EventsRemoved.cs" />
-    <Compile Include="Fields\FieldsAdded.cs" />
-    <Compile Include="Fields\FieldsChanged.cs" />
-    <Compile Include="Fields\FieldsObsolete.cs" />
-    <Compile Include="Fields\FieldsRemoved.cs" />
-    <Compile Include="Classes\FinalizerAdded.cs" />
-    <Compile Include="Classes\FinalizerRemoved.cs" />
-    <Compile Include="Classes\InstanceConstructorsInspector.cs" />
-    <Compile Include="Classes\InstanceConstructorsObsolete.cs" />
-    <Compile Include="Interfaces\InterfacesAdded.cs" />
-    <Compile Include="Interfaces\InterfacesRemoved.cs" />
-    <Compile Include="Methods\MethodsAdded.cs" />
-    <Compile Include="Methods\MethodsChanged.cs" />
-    <Compile Include="Methods\MethodsObsolete.cs" />
-    <Compile Include="Methods\MethodsRemoved.cs" />
-    <Compile Include="Types\ObsoleteTypeInspector.cs" />
-    <Compile Include="Property\PropertiesAdded.cs" />
-    <Compile Include="Property\PropertiesChanged.cs" />
-    <Compile Include="Property\PropertiesObsolete.cs" />
-    <Compile Include="Property\PropertiesRemoved.cs" />
-    <Compile Include="Types\RemovedTypesInspector.cs" />
-    <Compile Include="Architecture\RuntimeInspector.cs" />
-    <Compile Include="Demo\SourceOutputTypeInspector.cs" />
-    <Compile Include="Classes\StaticConstructorAdded.cs" />
-    <Compile Include="Classes\StaticConstructorRemoved.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Assemblies\RemovedAssembliesInspector.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{fb9db4c7-f9b4-420c-9440-7f422c814f2b}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
 </Project>

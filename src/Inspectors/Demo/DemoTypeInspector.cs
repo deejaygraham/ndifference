@@ -5,7 +5,8 @@ using NDifference.TypeSystem;
 
 namespace NDifference.Inspectors
 {
-    public class DemoTypeInspector : ITypeInspector
+// exclude from discovery process
+    public class DemoTypeInspector // : ITypeInspector
 	{
  // always disabled. Enable here for testing.
 		public bool Enabled { get { return false; } set { } }

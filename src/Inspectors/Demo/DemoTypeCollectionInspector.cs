@@ -10,6 +10,7 @@ namespace NDifference.Inspectors
     /// </summary>
     public class DemoTypeCollectionInspector : ITypeCollectionInspector
 	{
+ // always disabled. Enable here for testing.
 		public bool Enabled { get { return false; } set { } }
 
 		public string ShortCode { get { return "TCI003"; } }

@@ -18,8 +18,7 @@ namespace NDifference
 		{
 			using (var memoryStream = new MemoryStream())
 			{
-				var formatter = new BinaryFormatter();
-				formatter.Serialize(memoryStream, instance);
+				JsonSerializer.Serialize(memoryStream, instance, JsonSerializerOptions.Default);
 
 				cryptoServiceProvider.ComputeHash(memoryStream.ToArray());
 

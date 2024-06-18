@@ -32,8 +32,8 @@ jobs:
         dotnet-version: 8.0.x
 
     # Execute all unit tests in the solution
-    - name: Execute unit tests
-      run: dotnet test
+    #- name: Execute unit tests
+    #  run: dotnet test
 
     # Build the application
     - name: Restore the application

@@ -1,4 +1,4 @@
-﻿using NDifference.TypeSystem;
+using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,7 +150,7 @@ namespace NDifference.UnitTests
 
 		public string CalculateHash()
 		{
-			return this.GetHash<SHA1Managed>();
+			return this.GetHash(SHA256.Create());
 		}
 	}
 }

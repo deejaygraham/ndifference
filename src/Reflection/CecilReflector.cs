@@ -1,4 +1,4 @@
-﻿using Mono.Cecil;
+using Mono.Cecil;
 using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
@@ -84,23 +84,22 @@ namespace NDifference.Reflection
 			{
 				var types = module.GetTypes();
 
-				foreach (var type in types)
+				foreach (var type in types.Where(t => t.HasInterfaces))
 				{
-					if (!type.HasInterfaces)
-						continue;
-
 					TypeTaxonomy kind = type.ToTaxonomy();
 
 					if (kind != TypeTaxonomy.Class || type.IsAbstract)
 						continue;
 
-					foreach (var i in type.Interfaces)
-					{
-						if (i.FullName == requiredInterface.FullName)
-						{
-							yield return type.ToTypeInfo();
-						}
-					}
+                    foreach (var i in type.Interfaces)
+                    {
+                        var interfaceType = i.InterfaceType;
+
+                        if (interfaceType.FullName == requiredInterface.FullName)
+                        {
+                            yield return type.ToTypeInfo();
+                        }
+                    }
 				}
 			}
 

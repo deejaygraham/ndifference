@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace NDifference.Exceptions
 {
-	[Serializable]
 	public class PluginLoadException : Exception
 	{
 		public PluginLoadException()
@@ -12,11 +11,6 @@ namespace NDifference.Exceptions
 
 		public PluginLoadException(string message)
 			: base(message)
-		{
-		}
-
-		protected PluginLoadException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
 		{
 		}
 

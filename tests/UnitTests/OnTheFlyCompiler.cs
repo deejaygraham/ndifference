@@ -61,7 +61,7 @@ namespace NDifference.UnitTests
 		{
 			get
 			{
-				var codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
+				var codeBase = System.Reflection.Assembly.GetExecutingAssembly().Location;
 				var localPath = new Uri(codeBase).LocalPath;
 
 				return System.IO.Path.GetDirectoryName(localPath);

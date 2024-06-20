@@ -3,7 +3,7 @@ using System;
 
 namespace NDifference.Analysis
 {
-    [Obsolete("Maybe don't need")]
+    //[Obsolete("Maybe don't need")]
 	public static class WellKnownTypeCategories
 	{
 		public static readonly Category TypeInternal = new Category

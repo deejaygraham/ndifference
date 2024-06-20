@@ -142,7 +142,7 @@ namespace NDifference.TypeSystem
 		public string CalculateHash()
 		{
 			if (String.IsNullOrEmpty(this._hashValue))
-				this._hashValue = this.GetHash<SHA1Managed>();
+				this._hashValue = this.GetHash(SHA256.Create());
 
 			return this._hashValue;
 		}

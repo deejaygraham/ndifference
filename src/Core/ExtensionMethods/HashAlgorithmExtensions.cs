@@ -7,14 +7,12 @@ namespace NDifference
 {
 	public static class HashAlgorithmExtensions
 	{
-		public static string GetHash<T>(this object instance) where T : HashAlgorithm, new()
+		public static string GetHash(this object instance, HashAlgorithm cryptoServiceProvider)
 		{
-			T cryptoServiceProvider = new T();
-
 			return CalculateHash(instance, cryptoServiceProvider);
 		}
 
-		private static string CalculateHash<T>(object instance, T cryptoServiceProvider) where T : HashAlgorithm, new()
+		private static string CalculateHash(object instance, HashAlgorithm cryptoServiceProvider)
 		{
 			using (var memoryStream = new MemoryStream())
 			{

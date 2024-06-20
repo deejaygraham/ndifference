@@ -21,7 +21,7 @@
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.9.5.4" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.5" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Properties\CommonVersionInfo.cs" />

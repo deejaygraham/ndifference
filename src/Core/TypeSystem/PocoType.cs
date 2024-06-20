@@ -56,7 +56,7 @@ namespace NDifference.TypeSystem
 
 		public string CalculateHash()
 		{
-			return this.GetHash<SHA1Managed>();
+			return this.GetHash(SHA256.Create());
 		}
 
 		public static bool operator ==(PocoType leftHandSide, PocoType rightHandSide)

@@ -3,7 +3,7 @@ using System;
 
 namespace NDifference.Analysis
 {
-    [Obsolete("Maybe don't need")]
+    //[Obsolete("Maybe don't need")]
 	/// <summary>
 	/// Changes that apply at the top level - all assemblies.
 	/// </summary>

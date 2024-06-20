@@ -6,7 +6,7 @@ namespace NDifference.Analysis
 	/// <summary>
 	/// Changes that apply at the assembly level
 	/// </summary>
-	[Obsolete("Maybe don't need")]
+	// [Obsolete("Maybe don't need")]
 	public static class WellKnownAssemblyCategories
 	{
 		public static readonly Category AssemblyInternal = new Category

@@ -1,4 +1,4 @@
-﻿using Mono.Cecil;
+using Mono.Cecil;
 using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
@@ -45,10 +45,12 @@ namespace NDifference.Reflection.Builders
 			if (discovered.HasInterfaces)
 			{
 				foreach (var inter in discovered.Interfaces)
-				{
-					if (inter.IsPublicInterface())
+                {
+                    var interfaceType = inter.InterfaceType;
+
+					if (interfaceType.IsPublicInterface())
 					{
-						id.Implements.Add(new FullyQualifiedName(inter.FriendlyName()));
+						id.Implements.Add(new FullyQualifiedName(interfaceType.FriendlyName()));
 					}
 				}
 			}

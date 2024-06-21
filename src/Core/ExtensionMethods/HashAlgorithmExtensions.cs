@@ -13,16 +13,24 @@ namespace NDifference
 		}
 
 		private static string CalculateHash(object instance, HashAlgorithm cryptoServiceProvider)
-		{
-			using (var memoryStream = new MemoryStream())
-			{
-				JsonSerializer.Serialize(memoryStream, instance, JsonSerializerOptions.Default);
+        {
+            byte[] asBytes = ToBytes(instance);
+            byte[] hash = cryptoServiceProvider.ComputeHash(asBytes);
 
-				cryptoServiceProvider.ComputeHash(memoryStream.ToArray());
-
-				return ToHex(cryptoServiceProvider.Hash);
-			}
+            return ToHex(hash);
 		}
+
+        private static byte[] ToBytes(object instance)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var s = JsonSerializer.Serialize(instance);
+
+                JsonSerializer.Serialize(memoryStream, instance, JsonSerializerOptions.Default);
+
+                return memoryStream.ToArray();
+            }
+        }
 
 		private static string ToHex(byte[] bytes)
 		{

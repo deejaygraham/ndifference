@@ -113,10 +113,12 @@ namespace NDifference.UnitTests
 			
 			IAssemblyReflector oldReflector = AssemblyReflectorBuilder.Introspection()
 					.Code(oldSourceCode)
+                    .Named("account")
 					.Build();
 
 			IAssemblyReflector newReflector = AssemblyReflectorBuilder.Introspection()
 					.Code(newSourceCode)
+                    .Named("account")
 					.Build();
 
 			var oldType = oldReflector.GetTypes().First();

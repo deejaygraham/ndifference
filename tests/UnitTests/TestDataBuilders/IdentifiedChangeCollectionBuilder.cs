@@ -1,4 +1,4 @@
-﻿using NDifference.Analysis;
+using NDifference.Analysis;
 using NDifference.Inspection;
 using NDifference.Inspectors;
 using NDifference.Reflection;
@@ -39,23 +39,9 @@ namespace NDifference.UnitTests
 			return this;
 		}
 
-		public IdentifiedChangeCollectionBuilder WasX64Code(bool x64)
-		{
-			this.oldBuilder.TargetsX64(x64);
-
-			return this;
-		}
-
 		public IdentifiedChangeCollectionBuilder HadAssemblyReference(string reference)
 		{
 			this.oldBuilder.WithAssemblyReference(reference);
-
-			return this;
-		}
-
-		public IdentifiedChangeCollectionBuilder WasCompilerVersion(string compilerVersion)
-		{
-			this.oldBuilder.TargetsCompilerVersion(compilerVersion);
 
 			return this;
 		}
@@ -74,23 +60,9 @@ namespace NDifference.UnitTests
 			return this;
 		}
 
-		public IdentifiedChangeCollectionBuilder IsX64Code(bool x64)
-		{
-			this.newBuilder.TargetsX64(x64);
-
-			return this;
-		}
-
 		public IdentifiedChangeCollectionBuilder NowHasAssemblyReference(string reference)
 		{
 			this.newBuilder.WithAssemblyReference(reference);
-
-			return this;
-		}
-
-		public IdentifiedChangeCollectionBuilder IsCompilerVersion(string compilerVersion)
-		{
-			this.newBuilder.TargetsCompilerVersion(compilerVersion);
 
 			return this;
 		}

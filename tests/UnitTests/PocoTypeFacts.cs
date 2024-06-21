@@ -1,10 +1,18 @@
-﻿using NDifference.UnitTests.TestDataBuilders;
+using NDifference.UnitTests.TestDataBuilders;
 using Xunit;
 
 namespace NDifference.UnitTests
 {
     public class PocoTypeFacts
 	{
+        [Fact]
+        public void PocoType_Hash_Is_Repeatable()
+        {
+            var p1 = TypeBuilder.Class().Named("World").InNamespace("Hello").Build();
+
+            Assert.Equal(p1.CalculateHash(), p1.CalculateHash());
+        }
+
 		[Fact]
 		public void PocoType_Hash_Is_Same_For_Identical_Objects()
 		{

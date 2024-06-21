@@ -45,50 +45,6 @@ namespace NDifference.Reporting
             return string.Format("[{0}]({1})", name, url);
         }
 
-        [Obsolete]
-        public string FormatTableHeader(IEnumerable<string> headings)
-        {
-            var builder = new StringBuilder();
-
-//            builder.AppendLine();
-            builder.Append("|");
-
-            foreach (var heading in headings)
-            {
-                builder.Append(" " + heading + " |");
-            }
-
-            builder.AppendLine();
-
-            builder.Append("|");
-
-            foreach (var heading in headings)
-            {
-                builder.Append(new string('-', heading.Length + 2) + "|");
-            }
-
-            //builder.AppendLine();
-
-            return builder.ToString();
-        }
-
-        [Obsolete("Use Markdown Table instead")]
-        public string FormatTableRow(IEnumerable<string> cells)
-        {
-            var builder = new StringBuilder();
-
-            builder.Append("|");
-
-            foreach (var cell in cells)
-            {
-                builder.Append(" " + cell + " |");
-            }
-
-            //builder.AppendLine();
-
-            return builder.ToString();
-        }
-
         public string FormatTitle(int size, string title, string id)
         {
             if (size < 1 || size > 6) throw new ArgumentOutOfRangeException();

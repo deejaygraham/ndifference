@@ -1,19 +1,17 @@
-﻿using NDifference.Inspection;
+using NDifference.Inspection;
 using NDifference.SourceFormatting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace NDifference.TypeSystem
 {
-	/// <summary>
-	/// Represents an interface "contract".
-	/// </summary>
-	[DebuggerDisplay("interface {FullName}")]
+    /// <summary>
+    /// Represents an interface "contract".
+    /// </summary>
+    [DebuggerDisplay("interface {FullName}")]
 	[Serializable]
 	public class InterfaceDefinition : ITypeInfo, ISourceCodeProvider, IReferenceTypeDefinition
 	{
@@ -35,7 +33,8 @@ namespace NDifference.TypeSystem
 			this.Implements = new List<FullyQualifiedName>();
 		}
 
-		public string Identifier
+        [JsonIgnore]
+        public string Identifier
 		{
 			get
 			{

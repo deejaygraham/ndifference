@@ -1,8 +1,9 @@
-﻿
+
 using NDifference.SourceFormatting;
 using System;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 
 namespace NDifference.TypeSystem
 {
@@ -16,8 +17,9 @@ namespace NDifference.TypeSystem
 	{
 		[NonSerialized]
 		private Identifier ident = new Identifier();
-				
-		public string Identifier
+
+        [JsonIgnore]
+        public string Identifier
 		{
 			get
 			{

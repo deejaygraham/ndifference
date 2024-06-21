@@ -40,10 +40,6 @@ namespace NDifference.Reporting
 
 		string FormatTitle(int size, string title, string id);
 
-		string FormatTableHeader(IEnumerable<string> headings);
-
-		string FormatTableRow(IEnumerable<string> cells);
-
 		string FormatComment(string text);
 
 		/// <summary>

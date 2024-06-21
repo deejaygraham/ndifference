@@ -1,15 +1,13 @@
-﻿using NDifference.SourceFormatting;
+using NDifference.SourceFormatting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace NDifference.TypeSystem
 {
-	[DebuggerDisplay("enum {FullName}")]
+    [DebuggerDisplay("enum {FullName}")]
 	[Serializable]
 	public class EnumDefinition : ITypeInfo
 	{
@@ -35,7 +33,8 @@ namespace NDifference.TypeSystem
 
 		public List<EnumValue> AllowedValues { get; private set; }
 
-		public string Identifier
+        [JsonIgnore]
+        public string Identifier
 		{
 			get
 			{

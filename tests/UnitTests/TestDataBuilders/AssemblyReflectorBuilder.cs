@@ -1,21 +1,17 @@
-﻿using NDifference.Reflection;
+using NDifference.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDifference.UnitTests
 {
-	/// <summary>
-	/// Builds AssemblyReflector object given some source code.
-	/// </summary>
-	public class AssemblyReflectorBuilder : IBuildable<IAssemblyReflector>
+    /// <summary>
+    /// Builds AssemblyReflector object given some source code.
+    /// </summary>
+    public class AssemblyReflectorBuilder : IBuildable<IAssemblyReflector>
 	{
 		private string sourceCode;
-		private bool targetx64;
-		private string compilerVersion;
+        private string fileName;
 		private List<string> references = new List<string>();
 
 		private IAssemblyReflectorFactory factory = new CecilReflectorFactory();
@@ -32,23 +28,15 @@ namespace NDifference.UnitTests
 			return this;
 		}
 
-		public AssemblyReflectorBuilder TargetsX64(bool x64)
-		{
-			this.targetx64 = x64;
+        public AssemblyReflectorBuilder Named(string name)
+        {
+            this.fileName = name;
 
-			return this;
-		}
-
-		public AssemblyReflectorBuilder WithAssemblyReference(string reference)
+            return this;
+        }
+        public AssemblyReflectorBuilder WithAssemblyReference(string reference)
 		{
 			this.references.Add(reference);
-
-			return this;
-		}
-
-		public AssemblyReflectorBuilder TargetsCompilerVersion(string compilerVersion)
-		{
-			this.compilerVersion = compilerVersion;
 
 			return this;
 		}
@@ -58,14 +46,15 @@ namespace NDifference.UnitTests
 			Debug.Assert(this.factory != null, "Reflection factory not set");
 			Debug.Assert(!String.IsNullOrEmpty(this.sourceCode), "No source code set");
 
-			using (OnTheFlyCompiler fly = new OnTheFlyCompiler())
+            OnTheFlyCompiler fly = new OnTheFlyCompiler();
 			{
-				fly.Targetx64 = this.targetx64;
-
-				if (!String.IsNullOrEmpty(this.compilerVersion))
-					fly.CompilerVersion = this.compilerVersion;
-
 				this.references.ForEach(x => fly.References.Add(x));
+
+                if (!String.IsNullOrEmpty(this.fileName))
+                {
+                    fly.FileName = this.fileName;
+                }
+
 				var info = fly.Compile(this.sourceCode);
 
 				return this.factory.LoadAssembly(info.Path);

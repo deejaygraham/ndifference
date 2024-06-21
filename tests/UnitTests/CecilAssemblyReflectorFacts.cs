@@ -1,4 +1,4 @@
-﻿using NDifference.Reflection;
+using NDifference.Reflection;
 using NDifference.TypeSystem;
 using System.Linq;
 using Xunit;
@@ -9,8 +9,8 @@ namespace NDifference.UnitTests
 	{
 		[Fact]
 		public void CecilAssemblyReflector_Loads_Simple_Class_From_Assembly()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Entity")
@@ -37,8 +37,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Abstract_Method_In_Class_Is_Abstract()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Entity")
@@ -68,8 +68,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Virtual_Method_In_Class_Is_Virtual()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Entity")
@@ -98,8 +98,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Loads_Generic_Class_From_Assembly()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Entity<T>")
@@ -125,8 +125,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Loads_Simple_Interface_From_Assembly()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableInterfaceBuilder.PublicInterface()
 					.Named("IEntity")
@@ -151,8 +151,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Interface_Methods_Are_Not_Virtual()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableInterfaceBuilder.PublicInterface()
 					.Named("IEntity")
@@ -181,8 +181,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Loads_Generic_Interface_From_Assembly()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableInterfaceBuilder.PublicInterface()
 					.Named("IEntity<T>")
@@ -207,8 +207,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Loads_Enum_From_Assembly()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableEnumBuilder.PublicEnum()
 					.Named("EntityValues")
@@ -235,8 +235,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Loads_Assembly_Info()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Entity");
@@ -259,8 +259,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Load_Class_With_Generic_Type_In_Method()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Example")
@@ -296,8 +296,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Loads_Internal_Class()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.InternalClass()
 					.Named("Example");
@@ -328,8 +328,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Ignores_Internal_Class_When_Looking_For_Publics()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.InternalClass()
 					.Named("Example");
@@ -353,8 +353,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Finds_Public_Methods_In_Class()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Entity")
@@ -383,8 +383,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Finds_Protected_Methods_In_Class()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Entity")
@@ -413,8 +413,8 @@ namespace NDifference.UnitTests
 
 		[Fact]
 		public void CecilAssemblyReflector_Ignores_Private_Methods_In_Class()
-		{
-			using (var ofc = new OnTheFlyCompiler())
+        {
+            var ofc = new OnTheFlyCompiler();
 			{
 				IBuildToCode code = CompilableClassBuilder.PublicClass()
 					.Named("Entity")

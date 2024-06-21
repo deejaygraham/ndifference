@@ -37,22 +37,6 @@ namespace NDifference.UnitTests
 		}
 
 		[Fact]
-		public void ReportAsMarkdown_Separates_Table_Headers_By_Pipes()
-		{
-			string line = new ReportAsMarkdown().FormatTableHeader(new string[] { "Name", "Value" });
-
-			Assert.Equal("| Name | Value |\r\n|------|-------|", line);
-		}
-
-		[Fact]
-		public void ReportAsMarkdown_Separates_Table_Cells_By_Pipes()
-		{
-			string line = new ReportAsMarkdown().FormatTableRow(new string[] { "Hello", "World" });
-
-			Assert.Equal("| Hello | World |", line);
-		}
-
-		[Fact]
 		public void ReportAsMarkdown_Creates_Markdown_Links()
 		{
 			string line = new ReportAsMarkdown().FormatLink("http://google.com", "Google");

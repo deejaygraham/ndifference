@@ -1,16 +1,15 @@
-﻿using NDifference.Inspection;
+using NDifference.Inspection;
 using NDifference.SourceFormatting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace NDifference.TypeSystem
 {
-	[DebuggerDisplay("class {FullName}")]
+    [DebuggerDisplay("class {FullName}")]
 	[Serializable]
 	public class ClassDefinition : ITypeInfo, ISourceCodeProvider, IReferenceTypeDefinition
 	{
@@ -36,6 +35,7 @@ namespace NDifference.TypeSystem
 			this.Constructors = new List<InstanceConstructor>();
 		}
 
+		[JsonIgnore]
 		public string Identifier
 		{
 			get

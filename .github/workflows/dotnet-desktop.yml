@@ -43,12 +43,12 @@ jobs:
     - name: Zip project
       uses: thedoctor0/zip-release@master
       with: 
-        directory: ./bin/{{ env.Configuration }}/
-        filename: NDifferenceUI.zip
+        directory: ./bin/{{ env.Configuration }}/net8.0-windows
+        filename: NDifference.zip
     - name: 🚀 Upload Build Artifacts
       id: upload-artifact
       uses: actions/upload-artifact@v4
       with:
         name: NDifferenceUI
-        path: ./bin/{{ env.Configuration}}/NDifferenceUI.zip
+        path: ./bin/{{ env.Configuration}}/NDifference.zip
         if-no-files-found: error

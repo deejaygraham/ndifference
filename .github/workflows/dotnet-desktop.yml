@@ -1,4 +1,4 @@
-:# This workflow will build and test a Windows Forms desktop application
+# This workflow will build and test a Windows Forms desktop application
 # built on .NET Core.
 
 name: .NET Core Desktop
@@ -25,7 +25,7 @@ jobs:
         ref: ${{ github.ref }}
 
     - name: Set Build number
-      run: echo "BUILD_ID=${{ github.ref_name }}_$(date +'%Y%j').${{github.run_attempt}}" >> "$GITHUB_ENV"
+      run: echo "BUILD_ID=${{ github.ref_name }}_$(date +'%Y%j').${{github.run_attempt}}" >> "$env:GITHUB_ENV"
       
     # Install the .NET Core workload
     - name: Install .NET Core

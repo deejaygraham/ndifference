@@ -39,11 +39,14 @@ jobs:
       run: dotnet build --configuration ${{ env.Configuration }}
 
     # Zip the application
+    - name: Check
+      run: echo dir
+      
     - name: Zip project
       uses: thedoctor0/zip-release@master
       with: 
-          directory: ./src/UI/bin/{{ env.Configuration }}/net8.0-windows/
-          filename: NDifference.zip
+          directory: "./src/UI/bin/{{ env.Configuration }}/net8.0-windows/"
+          filename: "NDifference.zip"
     - name: 🚀 Upload Build Artifacts
       id: upload-artifact
       uses: actions/upload-artifact@v4

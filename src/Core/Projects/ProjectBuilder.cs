@@ -1,12 +1,11 @@
-﻿using NDifference.Framework;
+using NDifference.Framework;
 using NDifference.Reporting;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace NDifference.Projects
 {
-	public static class ProjectBuilder
+    public static class ProjectBuilder
 	{
 		public static Project Default()
 		{
@@ -47,10 +46,15 @@ namespace NDifference.Projects
 			settings.FooterText = string.Empty;
 
 			// classic styling...
-
-			var styleBuilder = new DefaultHtmlStyle();
-
-			settings.StyleTag = styleBuilder.ToString();
+            if (settings.ReportFormat == "html")
+            {
+                var styleBuilder = new DefaultHtmlStyle();
+                settings.StyleTag = styleBuilder.ToString();
+            }
+            else
+            {
+                settings.StyleTag = string.Empty;
+            }
 
 			var ignoreList = new List<string>();
 

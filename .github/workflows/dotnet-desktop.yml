@@ -40,7 +40,7 @@ jobs:
 
     # Zip the application
     - name: Check
-      run: echo dir
+      run: dir
       
     - name: Zip project
       uses: thedoctor0/zip-release@master

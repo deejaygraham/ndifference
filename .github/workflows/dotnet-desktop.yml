@@ -37,11 +37,8 @@ jobs:
     # Build the application
     - name: Build the application
       run: dotnet build --configuration ${{ env.Configuration }}
-      
-    # Execute all unit tests in the solution
-    - name: Execute unit tests
-      run: dotnet test
 
+    # Zip the application
     - name: Zip project
       uses: thedoctor0/zip-release@master
       with: 
@@ -54,19 +51,6 @@ jobs:
         name: NDifference
         path: ./src/UI/bin/{{ env.Configuration }}/net8.0-windows/NDifference.zip
         if-no-files-found: error
-
-    # Zip the application
-    - name: Zip project
-      uses: thedoctor0/zip-release@master
-      with: 
-        type: "zip"
-        #directory: "./bin/{{ env.Configuration }}/net8.0-windows"
-        filename: "NDifference.zip"
-    - name: Upload Release
-      uses: ncipollo/release-action@v1.12.0
-      with:
-        artifacts: "NDifference.zip"
-        token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     name: Release project

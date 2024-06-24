@@ -9,35 +9,51 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env: 
+  CONFIGURATION: 'Release'
+  
 jobs:
   build:
     name: Build project
     runs-on: windows-latest  
-   
-    env:
-      Solution_Name: NDifference.sln
-      Test_Project_Path: tests\UnitTests\UnitTests.csproj
-      Configuration: 'Release'
       
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        ref: ${{ inputs.ref || github.ref }}
 
+    - name: Set Build number
+      id: build-id
+      run: echo "BUILD_ID=${{ github.ref_name }}_$(date +'%Y%j').${{github.run_attempt}}" >> "$GITHUB_OUTPUT"
+      
     # Install the .NET Core workload
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
+    # Build the application
+    - name: Build the application
+      run: dotnet build --configuration ${{ env.Configuration }}
+      
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test
 
-    # Build the application
-    - name: Build the application
-      run: dotnet build --configuration ${{ env.Configuration }}
+    - name: Zip project
+      uses: thedoctor0/zip-release@master
+      with: 
+          directory: ./src/UI/bin/{{ env.Configuration }}/net8.0-windows/
+          filename: NDifference.zip
+    - name: 🚀 Upload Build Artifacts
+      id: upload-artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: NDifference
+        path: ./src/UI/bin/{{ env.Configuration }}/net8.0-windows/NDifference.zip
+        if-no-files-found: error
 
     # Zip the application
     - name: Zip project
@@ -51,11 +67,42 @@ jobs:
       with:
         artifacts: "NDifference.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
-    
-    #- name: 🚀 Upload Build Artifacts
-    #  id: upload-artifact
-    #  uses: actions/upload-artifact@v4
-     # with:
-     #   name: NDifferenceUI
-     #   path: ./bin/{{ env.Configuration}}/NDifference.zip
-     #   if-no-files-found: error
+
+  release:
+    name: Release project
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with: 
+        name: NDifference
+    - name: Set Release prefix letter
+      id: release-letter
+      shell: pwsh
+      run: echo "LETTER=$(If ("${{inputs.environment}}" -eq "prod") {"v"} Else {"${{inputs.environment}}"})" >> "$env:GITHUB_OUTPUT"
+    - name: Set Release prefix letter
+      id: is-pre-release
+      shell: pwsh
+      run: echo "PRERELEASE=$(If ("${{inputs.environment}}" -eq "prod") {"false"} Else {"true"})" >> "$env:GITHUB_OUTPUT"
+    - name: 🚀 Create Release
+      id: create-release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with: 
+        tag_name: ${{ steps.release-letter.outputs.LETTER }}${{ inputs.version_number }}
+        release_name:  ${{ steps.release-letter.outputs.LETTER }}${{ inputs.version_number }}
+        draft: false
+        prerelease: ${{ inputs.pre_release || fromJson(steps.is-pre-release.outputs.PRERELEASE) }}
+    - name: Upload Release
+      id: upload-release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create-release.outputs.upload_url }} 
+        asset_path: NDifference.zip
+        asset_name: NDifference-${{ inputs.ref || github.ref }}.zip
+        asset_content_type: application/zip
+        

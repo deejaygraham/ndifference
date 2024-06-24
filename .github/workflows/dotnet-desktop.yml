@@ -25,8 +25,7 @@ jobs:
         ref: ${{ github.ref }}
 
     - name: Set Build number
-      id: build-id
-      run: echo "BUILD_ID=${{ github.ref_name }}_$(date +'%Y%j').${{github.run_attempt}}" >> "$GITHUB_OUTPUT"
+      run: echo "BUILD_ID=${{ github.ref_name }}_$(date +'%Y%j').${{github.run_attempt}}" >> "$GITHUB_ENV"
       
     # Install the .NET Core workload
     - name: Install .NET Core
@@ -70,8 +69,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with: 
-        tag_name: ${{ steps.build-id.outputs.BUILD_ID }}
-        release_name: ${{ steps.build-id.outputs.BUILD_ID }}
+        tag_name: ${{ env.BUILD_ID }}
+        release_name: ${{ env.BUILD_ID }}
         draft: false
     - name: Upload Release
       id: upload-release

@@ -25,7 +25,7 @@ jobs:
         ref: ${{ github.ref }}
 
     - name: Set Build number
-      run: echo "BUILD_ID=${{ github.ref_name }}_$(date +'%Y%j').${{github.run_attempt}}" >> "$env:GITHUB_ENV"
+      run: echo "BUILD_ID=${{ github.ref_name }}_$(date +'%Y%j').${{github.run_attempt}}" >> "$GITHUB_ENV"
       
     # Install the .NET Core workload
     - name: Install .NET Core
@@ -39,7 +39,7 @@ jobs:
 
     # Zip the application
     - name: Check
-      run: dir
+      run: env
       
     - name: Zip project
       uses: thedoctor0/zip-release@master

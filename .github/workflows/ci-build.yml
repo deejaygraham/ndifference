@@ -17,16 +17,21 @@ jobs:
   build:
     name: Build project
     runs-on: windows-latest
-
+    
     steps:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.ref }}
+    - name: Set Build number
+      id: build-id
+      run: echo "BUILD_ID=${{ github.ref_name }}_$(date +'%Y%j').${{github.run_attempt}}" >> "$GITHUB_OUTPUT"
     - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: ♻ Restore dependencies
       run: dotnet restore
+    - name: 👷‍♀️ Build ${{ github.ref_name }} branch ${{ steps.build-id.outputs.BUILD_ID }}
+      run: dotnet build --no-restore --configuration ${{ env.CONFIGURATION }}
     - name: 🧪 Test
       run: dotnet test --no-build --verbosity normal

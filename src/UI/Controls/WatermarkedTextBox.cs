@@ -17,6 +17,7 @@ namespace NDifference.UI.Controls
 			this._watermarkText = "<Watermark>";
 		}
 
+		[System.ComponentModel.DefaultValue("<Watermark>")]
 		public string WatermarkText
 		{
 			get { return this._watermarkText; }

@@ -1,4 +1,4 @@
-﻿using NDifference;
+using NDifference;
 using NDifference.Analysis;
 using NDifference.Framework;
 using NDifference.Inspectors;
@@ -7,177 +7,97 @@ using NDifference.Reflection;
 using NDifference.Reporting;
 using System;
 using System.IO;
-using System.Reflection;
 
 namespace WalkingSkeleton
 {
-	public class Program
+	public static class Program
 	{
-#if ASSEMBLY_LOAD_DEMO
-		public static void Main(string[] args)
+		public static int Main(string[] args)
 		{
-			var factory = new CecilReflectorFactory();
-			var reflector = factory.LoadAssembly(Assembly.GetAssembly(typeof(CecilReflector)).Location);
-
-			foreach(var tn in reflector.GetTypes())
+			if (args.Length != 3)
 			{
-				Console.WriteLine(tn);
+				Console.Error.WriteLine(
+					"Usage: WalkingSkeleton <previous-release-folder> <current-release-folder> <output-folder>");
+				return 1;
 			}
 
-			reflector = factory.LoadAssembly(Assembly.GetExecutingAssembly().Location);
+			string previousFolder = Path.GetFullPath(args[0]);
+			string currentFolder = Path.GetFullPath(args[1]);
+			string outputFolder = Path.GetFullPath(args[2]);
 
-			foreach (var tn in reflector.GetTypes())
+			if (!Directory.Exists(previousFolder))
 			{
-				Console.WriteLine(tn);
+				Console.Error.WriteLine("Previous release folder does not exist: {0}", previousFolder);
+				return 1;
 			}
 
-			reflector = factory.LoadAssembly(Assembly.GetAssembly(typeof(PocoType)).Location);
-
-			foreach (var tn in reflector.GetTypes())
+			if (!Directory.Exists(currentFolder))
 			{
-				Console.WriteLine(tn);
+				Console.Error.WriteLine("Current release folder does not exist: {0}", currentFolder);
+				return 1;
 			}
 
-			IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
+			Directory.CreateDirectory(outputFolder);
 
-			var coreAssembly = Assembly.GetAssembly(typeof(PocoType));
-			var testAssembly = Assembly.GetAssembly(typeof(PocoTypeFacts));
-			var reflAssembly = Assembly.GetAssembly(typeof(CecilReflector));
-			var monoAssembly = Assembly.GetAssembly(typeof(DefaultAssemblyResolver));
-
-			var aInspectors = new AssemblyInspectorPluginDiscoverer(finder);
-			aInspectors.Ignore(Path.GetFileName(coreAssembly.Location));
-			aInspectors.Ignore(Path.GetFileName(testAssembly.Location));
-			aInspectors.Ignore(Path.GetFileName(reflAssembly.Location));
-			aInspectors.Ignore(Path.GetFileName(monoAssembly.Location));
-
-			aInspectors.Find();
-
-			var tInspectors = new TypeInspectorPluginDiscoverer(finder);
-			tInspectors.Ignore(Path.GetFileName(coreAssembly.Location));
-			tInspectors.Ignore(Path.GetFileName(testAssembly.Location));
-			tInspectors.Ignore(Path.GetFileName(reflAssembly.Location));
-			tInspectors.Ignore(Path.GetFileName(monoAssembly.Location));
-
-			tInspectors.Find();
-
-			var reportingPlugins = new ReportingPluginDiscoverer(finder);
-			reportingPlugins.Ignore(Path.GetFileName(coreAssembly.Location));
-			reportingPlugins.Ignore(Path.GetFileName(testAssembly.Location));
-			reportingPlugins.Ignore(Path.GetFileName(reflAssembly.Location));
-			reportingPlugins.Ignore(Path.GetFileName(monoAssembly.Location));
-
-			IReportingRepository rr = new ReportingRepository();
-
-			rr.AddRange(reportingPlugins.Find());
-
-			foreach (var fmt in rr.ReportFormats.SupportedFormats)
+			var infoBuilder = new AssemblyDiskInfoBuilder();
+			var previousVersion = new ProductIncrement
 			{
-				Console.WriteLine(fmt);
-			}
+				Name = new DirectoryInfo(previousFolder).Name
+			};
+			previousVersion.AddRange(infoBuilder.BuildFromFolder(previousFolder));
 
-			Console.ReadKey();
-		}
-#else
-
-		static void Main(string[] args)
-		{
-			if (args.Length < 3)
+			var currentVersion = new ProductIncrement
 			{
-				Console.WriteLine("WalkingSkeleton <v1 folder> <v2 folder> <output>");
-				return;
-			}
-
-			string firstFolder = args[0];
-			string secondFolder = args[1];
-			string outputPath = args[2];
-
-			if (!Directory.Exists(firstFolder))
-			{
-				Console.WriteLine("Folder \'{0}\' does not exist", firstFolder);
-				return;
-			}
-
-			if (!Directory.Exists(secondFolder))
-			{
-				Console.WriteLine("Folder \'{0}\' does not exist", secondFolder);
-				return;
-			}
-
-            var infoBuilder = new AssemblyDiskInfoBuilder();
-
-			var previousVersion = new ProductIncrement() { Name = "v0.0.1" };
-
-			previousVersion.AddRange(infoBuilder.BuildFromFolder(firstFolder));
-
-			var nextVersion = new ProductIncrement() { Name = "v0.0.2" };
-
-			nextVersion.AddRange(infoBuilder.BuildFromFolder(secondFolder));
+				Name = new DirectoryInfo(currentFolder).Name
+			};
+			currentVersion.AddRange(infoBuilder.BuildFromFolder(currentFolder));
 
 			var project = ProjectBuilder.Default();
 			project.Product.Clear();
-
-			project.Product.Name = "Walking Skeleton";
+			project.Product.Name = "Command-line comparison";
 			project.Product.Add(previousVersion);
-			project.Product.Add(nextVersion);
+			project.Product.Add(currentVersion);
+			project.Settings.OutputFolder = outputFolder;
 
-			IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
+			var pluginFinder = new FileFinder(
+				AppContext.BaseDirectory,
+				FileFilterConstants.AssemblyFilter);
+			var progress = new ConsoleProgress();
+
+			var inspectors = new InspectorRepository();
+			inspectors.Find(pluginFinder);
+			inspectors.Filter(new InspectorFilter(project.Settings.IgnoreInspectors));
 
 			IAnalysisWorkflow analysis = new AnalysisWorkflow(
-				finder,
+				pluginFinder,
 				new CecilReflectorFactory());
+			AnalysisResult result = analysis.RunAnalysis(project, inspectors, progress);
 
-			analysis.AnalysisStarting += (o, e) =>
+			if (result.Cancelled)
 			{
-				Console.WriteLine("Analysis starting...");
-			};
+				Console.Error.WriteLine("Analysis was cancelled.");
+				return 1;
+			}
 
-			analysis.AssemblyComparisonStarting += (o, e) =>
-			{
-				Console.WriteLine(".");
-			};
-
-			analysis.AssemblyComparisonComplete += (o, e) =>
-			{
-				Console.WriteLine(".");
-			};
-
-			analysis.AnalysisComplete += (o, e) =>
-			{
-				Console.WriteLine("Done.");
-			};
-
-			InspectorRepository ir = new InspectorRepository();
-			ir.Find(finder);
-
-			InspectorFilter filter = new InspectorFilter(project.Settings.IgnoreInspectors);
-			ir.Filter(filter);
-
-			var result = analysis.RunAnalysis(project, ir, null);
-
-			IReportingRepository rr = new ReportingRepository();
-			rr.Find(finder);
+			IReportingRepository reports = new ReportingRepository();
+			reports.Find(pluginFinder);
 
 			IReportingWorkflow reporting = new ReportingWorkflow();
+			reporting.RunReports(project, reports, result, progress);
 
-			reporting.RunReports(project, rr, result, null);
+			Console.WriteLine("Report written to {0}", project.Settings.SuggestIndexPath(".md"));
+			return 0;
 		}
 
-#endif
-
-	}
-
-	/// <summary>
-	/// Example template class to exercise extension methods.
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	public class TemplatedType<T>
-	{
-		private T exampleObject;
-
-		public TemplatedType(T o)
+		private sealed class ConsoleProgress : IProgress<NDifference.Progress>
 		{
-			this.exampleObject = o;
+			public void Report(NDifference.Progress value)
+			{
+				if (value != null && !string.IsNullOrWhiteSpace(value.Description))
+				{
+					Console.WriteLine(value.Description);
+				}
+			}
 		}
 	}
 }

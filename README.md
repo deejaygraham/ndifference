@@ -67,9 +67,6 @@ The original inspiration for this project came from Microsoft's unsupported
 ## Build It
 Get the source (fork or just use the download button at the top right) and run ```dotnet build```.
 
-## CI Status
-The project builds on AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/j669wh11qrhwbq6b?svg=true)](https://ci.appveyor.com/project/deejaygraham/ndifference).
-
 ## Get Involved!
 Have an idea about improving the project? Please get involved. NDifference is an open source project (of course) and we accept 
 contributions! Contribute a patch or let us know how to improve.

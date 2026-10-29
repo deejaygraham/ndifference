@@ -81,6 +81,7 @@ namespace NDifference.UI.Controls
 
 		public int AssemblyCount { get; private set; }
 
+		[DefaultValue("No assemblies selected")]
 		public string MessageWhenEmpty { get { return this.lvAssemblies.MessageWhenEmpty; } set { this.lvAssemblies.MessageWhenEmpty = value; } }
 
 		public void Initialise(IEnumerable<IAssemblyDiskInfo> files)

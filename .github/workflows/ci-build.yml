@@ -34,14 +34,10 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore
-        run: dotnet restore NDifference.sln
-
       - name: Build
         run: >-
           dotnet build NDifference.sln
           --configuration ${{ env.CONFIGURATION }}
-          --no-restore
 
       - name: Test
         run: >-

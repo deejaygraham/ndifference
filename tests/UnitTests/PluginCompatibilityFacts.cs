@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Runtime.Versioning;
 using Xunit;
 
@@ -77,6 +78,9 @@ namespace CompatibilityPlugin
 
 				Assert.Equal("External netstandard2.0 plugin", plugin.DisplayName);
 				Assert.Equal("EXT", plugin.ShortCode);
+				Assert.NotSame(
+					AssemblyLoadContext.Default,
+					AssemblyLoadContext.GetLoadContext(plugin.GetType().Assembly));
 				Assert.Same(
 					typeof(IInspector).Assembly,
 					plugin.GetType().GetInterfaces().Single(type => type == typeof(IInspector)).Assembly);

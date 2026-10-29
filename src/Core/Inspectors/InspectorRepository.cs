@@ -1,10 +1,9 @@
-﻿using NDifference.Exceptions;
+using NDifference.Exceptions;
 using NDifference.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace NDifference.Inspectors
 {
@@ -86,20 +85,15 @@ namespace NDifference.Inspectors
                 this.iai.AddRange(plugins.OfType<IAnalysisInspector>());
                 this.iai.ForEach(x => x.Enabled = true);
             }
-            catch (AggregateException ae)
+            catch (PluginLoadException)
             {
-                StringBuilder message = new StringBuilder();
-
-                foreach (Exception e in ae.InnerExceptions)
-                {
-                    message.AppendLine(e.GetBaseException().Message);
-                }
-
-                throw new PluginLoadException(message.ToString());
+                throw;
             }
             catch (Exception ex)
             {
-                throw new PluginLoadException(ex.GetBaseException().Message);
+                throw new PluginLoadException(
+                    "Inspector plugin discovery failed. " + ex.Message,
+                    ex);
             }
         }
 

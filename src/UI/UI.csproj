@@ -19,9 +19,6 @@
     <NoWarn>1701;1702;CA1416</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\CommonVersionInfo.cs">
-      <Link>Properties\CommonVersionInfo.cs</Link>
-    </Compile>
     <Compile Update="Controls\AssemblySelection.cs">
       <SubType>UserControl</SubType>
     </Compile>

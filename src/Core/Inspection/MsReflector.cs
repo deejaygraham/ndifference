@@ -1,13 +1,14 @@
-﻿using NDifference.TypeSystem;
+using NDifference.TypeSystem;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using NDifference.Inspection;
 
 namespace NDifference
 {
-	internal class MsReflector : IAssemblyReflector
+	internal class MsReflector : IAssemblyReflector, IRuntimeTypeProvider
 	{
 		private System.Reflection.Assembly assembly;
 
@@ -35,27 +36,28 @@ namespace NDifference
 
 			yield break;
 		}
-		
+
 		public IEnumerable<ITypeInfo> GetTypesImplementing(Type requiredInterface)
 		{
-			string interfaceName = requiredInterface.FullName;
-
-			foreach (Type candidateType in this.assembly.GetConcreteTypes())
+			foreach (Type candidateType in this.GetRuntimeTypesImplementing(requiredInterface))
 			{
-				if (candidateType.FindInterfaces(new TypeFilter(MatchNameFilter), interfaceName).Length > 0)
-				{
-					yield return candidateType.ToTypeInfo();
-				}
+				yield return candidateType.ToTypeInfo();
 			}
 
 			yield break;
 		}
 
-		private static bool MatchNameFilter(Type type, object interfaceName)
+		public IEnumerable<Type> GetRuntimeTypesImplementing(Type requiredInterface)
 		{
-			string match = interfaceName as string;
+			foreach (Type candidateType in this.assembly.GetConcreteTypes())
+			{
+				if (requiredInterface.IsAssignableFrom(candidateType))
+				{
+					yield return candidateType;
+				}
+			}
 
-			return type.ToString() == match;
+			yield break;
 		}
 
 

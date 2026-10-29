@@ -109,9 +109,12 @@ public sealed class CustomInspector : ITypeInspector
 }
 ```
 
-Place the plugin DLL and its private dependencies beside `NDifference.UI.exe`. Do not deploy a private copy 
-of `NDifference.Core.dll`; the host shares its contract assembly with plugins. Native DLLs in the application directory are
-ignored during plugin discovery, while managed plugin load errors are reported.
+Place the plugin DLL and its private dependencies in `%LocalAppData%\NDifference\Plugins`. NDifference 
+creates this user-writable directory on first use; installing a plugin does not require administrator
+access. Do not deploy a private copy of `NDifference.Core.dll`; the host shares its contract assembly with 
+plugins. Native DLLs in the plugin directory are ignored during discovery, while managed plugin load errors 
+identify the plugin path and failing dependency.
+
 
 ## Versioning and releases
 

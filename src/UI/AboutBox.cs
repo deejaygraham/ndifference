@@ -45,7 +45,11 @@ namespace NDifference.UI
 		{
 			get
 			{
-				return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+				AssemblyInformationalVersionAttribute versionAttribute =
+					Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+
+				return versionAttribute?.InformationalVersion
+					?? Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			}
 		}
 

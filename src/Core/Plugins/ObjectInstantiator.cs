@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting;
 
 namespace NDifference.Plugins
 {
@@ -10,15 +9,21 @@ namespace NDifference.Plugins
 	/// <typeparam name="T"></typeparam>
 	public class ObjectInstantiator<T> where T : class
 	{
-		public List<T> CreateTypesImplementingInterface(IAssemblyReflector reflector)
+		public List<T> CreateTypesImplementingInterface(IRuntimeTypeProvider provider)
 		{
 			List<T> objects = new List<T>();
 
-			foreach (var foundType in reflector.GetTypesImplementing(typeof(T)))
+			foreach (Type pluginType in provider.GetRuntimeTypesImplementing(typeof(T)))
 			{
-				ObjectHandle handle = Activator.CreateInstance(foundType.Assembly, foundType.FullName);
-				T unwrapped = (T)handle.Unwrap();
-				objects.Add(unwrapped);
+				if (!typeof(T).IsAssignableFrom(pluginType))
+				{
+					throw new InvalidOperationException(string.Format(
+						"Type '{0}' does not implement '{1}'.",
+						pluginType.FullName,
+						typeof(T).FullName));
+				}
+
+				objects.Add((T)Activator.CreateInstance(pluginType));
 			}
 
 			return objects;

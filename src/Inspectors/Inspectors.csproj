@@ -4,13 +4,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>NDifference.Inspectors</RootNamespace>
     <AssemblyName>NDifference.Inspectors</AssemblyName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\CommonVersionInfo.cs">
-      <Link>Properties\CommonVersionInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>

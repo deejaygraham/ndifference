@@ -7,11 +7,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\CommonVersionInfo.cs">
-      <Link>Properties\CommonVersionInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="SourceFormatting\ICodeable.cs" />
     <Compile Remove="SourceFormatting\SyntaxKind.cs" />
     <Compile Remove="SourceFormatting\SyntaxNode.cs" />

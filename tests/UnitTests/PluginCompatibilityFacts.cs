@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using NDifference.Exceptions;
 using NDifference.Inspectors;
 using NDifference.Plugins;
 using System;
@@ -72,6 +73,12 @@ namespace CompatibilityPlugin
 					dependencyPath,
 					typeof(IInspector).Assembly.Location);
 
+				// Self-contained deployments place native runtime files such as this
+				// beside managed assemblies. Discovery must not try to activate them.
+				File.WriteAllText(
+					Path.Combine(pluginDirectory.Path, "clretwrc.dll"),
+					"Native runtime DLL placeholder");
+
 				var discoverer = new PluginDiscoverer<IInspector>(new FileFinder(pluginDirectory.Path));
 
 				IInspector plugin = Assert.Single(discoverer.Find());
@@ -90,6 +97,92 @@ namespace CompatibilityPlugin
 
 				Assert.NotNull(targetFramework);
 				Assert.Equal(".NETStandard,Version=v2.0", targetFramework.FrameworkName);
+			}
+		}
+
+		[Theory]
+		[InlineData(false, "Missing plugin dependency")]
+		[InlineData(true, "incompatible binary format")]
+		public void Dependency_Failure_Identifies_Plugin_Path_Type_And_Dependency(
+			bool useIncompatibleDependency,
+			string expectedDiagnostic)
+		{
+			using (var pluginDirectory = new TemporaryDirectory())
+			{
+				string suffix = Guid.NewGuid().ToString("N");
+				string dependencyAssemblyName = "BrokenDependency_" + suffix;
+				string pluginAssemblyName = "BrokenPlugin_" + suffix;
+				string dependencyPath = Path.Combine(pluginDirectory.Path, dependencyAssemblyName + ".dll");
+				string pluginPath = Path.Combine(pluginDirectory.Path, pluginAssemblyName + ".dll");
+
+				CompileNetStandard20Assembly(
+					dependencyAssemblyName,
+					dependencyPath,
+					@"namespace BrokenDependency
+{
+	public static class PluginNames
+	{
+		public static string GetDisplayName()
+		{
+			return ""Broken dependency plugin"";
+		}
+	}
+}");
+
+				CompileNetStandard20Assembly(
+					pluginAssemblyName,
+					pluginPath,
+					@"using BrokenDependency;
+using NDifference.Analysis;
+using NDifference.Inspectors;
+using NDifference.TypeSystem;
+
+namespace BrokenPlugin
+{
+	public sealed class ExternalInspector : ITypeInspector
+	{
+		private readonly string displayName;
+
+		public ExternalInspector()
+		{
+			this.displayName = PluginNames.GetDisplayName();
+		}
+
+		public bool Enabled { get; set; }
+		public string ShortCode { get { return ""BROKEN""; } }
+		public string DisplayName { get { return this.displayName; } }
+		public string Description { get { return ""Broken dependency test plugin""; } }
+
+		public void Inspect(ITypeInfo first, ITypeInfo second, IdentifiedChangeCollection changes)
+		{
+		}
+	}
+}",
+					dependencyPath,
+					typeof(IInspector).Assembly.Location);
+
+				if (useIncompatibleDependency)
+				{
+					File.WriteAllText(dependencyPath, "Not a managed assembly");
+				}
+				else
+				{
+					File.Delete(dependencyPath);
+				}
+
+				var discoverer = new PluginDiscoverer<IInspector>(
+					new FileFinder(pluginDirectory.Path));
+
+				PluginLoadException exception = Assert.Throws<PluginLoadException>(
+					() => discoverer.Find());
+
+				Assert.Equal(pluginPath, exception.PluginPath);
+				Assert.Equal("activate types from", exception.Operation);
+				Assert.Contains(pluginPath, exception.Message);
+				Assert.Contains("BrokenPlugin.ExternalInspector", exception.Message);
+				Assert.Contains(dependencyAssemblyName, exception.Message);
+				Assert.Contains(expectedDiagnostic, exception.Message);
+				Assert.NotNull(exception.InnerException);
 			}
 		}
 

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
+using NDifference.Plugins;
 
 namespace NDifference
 {
@@ -12,7 +12,9 @@ namespace NDifference
 			Debug.Assert(!string.IsNullOrEmpty(path), "Assembly name is blank");
 			Debug.Assert(File.Exists(path), "Path to assembly does not exist");
 
-			return new MsReflector(Assembly.LoadFrom(path));
+			var loadContext = new PluginLoadContext(path);
+
+			return new MsReflector(loadContext.LoadPluginAssembly());
 		}
 	}
 }

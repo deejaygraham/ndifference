@@ -1,5 +1,6 @@
-﻿using NDifference.Exceptions;
+using NDifference.Exceptions;
 using NDifference.Inspectors;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -55,13 +56,20 @@ namespace NDifference.Plugins
 
 				Debug.Assert(reflector != null, "Reflector not loaded correctly");
 
+				IRuntimeTypeProvider provider = reflector as IRuntimeTypeProvider;
+
+				if (provider == null)
+				{
+					throw new InvalidOperationException("The selected reflector cannot provide runtime plugin types.");
+				}
+
 				var allPublicTypes = reflector.GetTypes(AssemblyReflectionOption.Public);
 
 				if (allPublicTypes.Any())
 				{
 					Debug.Assert(this.Instantiator != null, "Instantiator is not set");
 
-					found.AddRange(this.Instantiator.CreateTypesImplementingInterface(reflector));
+					found.AddRange(this.Instantiator.CreateTypesImplementingInterface(provider));
 				}
 			}
 

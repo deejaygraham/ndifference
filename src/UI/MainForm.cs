@@ -1,4 +1,4 @@
-﻿using NDifference.Analysis;
+using NDifference.Analysis;
 using NDifference.Framework;
 using NDifference.Inspectors;
 using NDifference.Projects;
@@ -231,7 +231,7 @@ namespace NDifference.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.GetBaseException().Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Plugin loading failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             this.tvInspectors.ExpandAll();
@@ -663,6 +663,20 @@ namespace NDifference.UI
 
 						this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = true;
 						this._dataEntryState.Enable();
+
+						if (antecedent.IsFaulted)
+						{
+							Exception error = antecedent.Exception
+								.Flatten()
+								.InnerExceptions
+								.FirstOrDefault();
+
+							MessageBox.Show(
+								error == null ? "The analysis failed." : error.Message,
+								"Analysis failed",
+								MessageBoxButtons.OK,
+								MessageBoxIcon.Error);
+						}
 					},
 					TaskScheduler.FromCurrentSynchronizationContext());
 

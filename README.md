@@ -54,10 +54,9 @@ Both the inspection rules and the report output are customisable.
 
 ### Custom inspector compatibility
 
-Custom inspector plugins should target `netstandard2.0` and reference the
-`netstandard2.0` build of `NDifference.Core`. This keeps plugins compatible with
-future NDifference host runtime upgrades, provided the inspector contracts remain
-binary compatible. Plugins may target `net10.0`, but doing so couples them to the
+Custom inspector plugins should target `netstandard2.0` and reference the `netstandard2.0` build 
+of `NDifference.Core`. This keeps plugins compatible with future NDifference host runtime upgrades, provided 
+the inspector contracts remain binary compatible. Plugins may target `net10.0`, but doing so couples them to the
 current host runtime and is not recommended.
 
 ## Prior Art
@@ -69,10 +68,15 @@ Get the source (fork or just use the download button at the top right) and run `
 
 ### Versioning and releases
 
-Assembly and installer versions are generated from Git release tags. Create release
-tags using semantic versions with a `v` prefix, for example `v1.0.4`. Builds from
-untagged commits receive a preview version automatically. The build requires full
-Git history; the GitHub Actions workflow is configured to fetch it.
+Assembly and installer versions are generated from Git release tags. Create release tags using semantic 
+versions with a `v` prefix, for example `v1.0.4`. Builds from untagged commits receive a preview version 
+automatically. The build requires full Git history; the GitHub Actions workflow is configured to fetch it.
+
+### Windows installer
+
+The WiX 6 installer is part of `NDifference.sln`. A Release build publishes the Windows UI as a self-contained 
+`win-x64` application and creates `installer/bin/Release/NDifference.Installer.msi`. The MSI includes the .NET 10
+Windows Desktop runtime, so target machines do not need a separate runtime install.
 
 
 ## Get Involved!

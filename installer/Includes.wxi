@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Include>
-	<!-- Variable definitions for installer -->
-	<?define NDifferenceBinariesPath = "..\src\UI\bin\Release"?>
-	<?define MsBuildTaskBinariesPath = "..\src\MsBuild\bin\Release"?>
-	<?define SamplesPath = "..\samples"?>
-	<?define IconFilePath = "..\src\UI\ndifference.ico"?>
-	<?define UpgradeCode="d73c1b74-0456-409a-9a66-f4366410ad29" ?>
-</Include>

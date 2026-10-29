@@ -5,7 +5,6 @@
     <RootNamespace>NDifference.Reflection</RootNamespace>
     <AssemblyName>NDifference.Reflection</AssemblyName>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />

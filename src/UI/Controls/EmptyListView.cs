@@ -12,6 +12,7 @@ namespace NDifference.UI.Controls
 	{
 		const int DrawBackground = 20;
 
+		[System.ComponentModel.DefaultValue(null)]
 		public string MessageWhenEmpty
 		{
 			get;

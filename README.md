@@ -1,95 +1,121 @@
-NDifference
-===========
+separate .NET runtime is not required.
 
-Tools for public API difference reporting on .Net assemblies
+Start NDifference from the Windows Start menu, select the assemblies from the
+older and newer releases, choose an output folder, and run the comparison.
 
-## What is it?
-NDifference is a difference and reporting tool to allow developers to discover breaking changes in the public 
-API of a .Net project between releases at the assembly level. It works with published assemblies via reflection 
-and does not require the original source code.
+## Build from source
 
-It performs static analysis on .Net assemblies, providing built-in inspectors for the most common checks and 
-supports loading of custom inspectors. Analysis is performed at the library, assembly and type level.
+The full solution requires:
 
-## Product Inspection
-The following is a list of built-in product level inspections:
+- Windows 10 or later
+- the .NET 10 SDK selected by `global.json`
+- Git history and tags, which MinVer uses to generate versions
 
-* Removed assemblies
-* Changed assemblies
-* Added assemblies
+Restore, build, and test with:
 
-## Assembly Inspection
-The following is a list of built-in assembly level inspections:
+```powershell
+dotnet restore NDifference.sln
+dotnet build NDifference.sln --configuration Release --no-restore
+dotnet test tests/UnitTests/UnitTests.csproj --configuration Release --no-build
+```
 
-* Changed target architecture
-* Changed assembly references
-* Removed types
-* Added types
-* Obsolete types
-* Changed types
+The Release build creates:
 
-## Type Inspection
-The following is a list of built-in type level inspections:
+- the self-contained application in `artifacts/publish/win-x64/`
+- the WiX 6 installer at
+  `installer/bin/Release/NDifference.Installer.msi`
 
-* Constant values
-* Enum values
-* Abstraction
-* Constructors
-* Derivation
-* Events
-* Fields
-* Finalizers
-* Interface implementation
-* Methods
-* Properties
-* Sealing
-* Obsolete members
-* Taxonomy
+The core libraries can be built on Linux, but the complete solution and
+installer build require Windows because they contain WinForms and WiX projects.
 
-## Reporting
-There is a built-in reporting capability for common file formats but custom reporting is supported too.
+Run the UI from source with:
 
-## Extensibility
-Both the inspection rules and the report output are customisable.
+```powershell
+dotnet run --project src/UI/UI.csproj
+```
 
-### Custom inspector compatibility
+## Command-line sample
 
-Custom inspector plugins should target `netstandard2.0` and reference the `netstandard2.0` build 
-of `NDifference.Core`. This keeps plugins compatible with future NDifference host runtime upgrades, provided 
-the inspector contracts remain binary compatible. Plugins may target `net10.0`, but doing so couples them to the
-current host runtime and is not recommended.
+`src/WalkingSkeleton` is an API usage sample rather than a supported command-line
+product. It compares every managed assembly found in two folders and writes
+Markdown reports to an output folder:
 
-## Prior Art
-The original inspiration for this project came from Microsoft's unsupported 
-[libcheck](http://www.microsoft.com/en-us/download/details.aspx?id=11287) tool.
+```powershell
+dotnet run --project src/WalkingSkeleton/WalkingSkeleton.csproj -- `
+  C:\releases\previous `
+  C:\releases\current `
+  C:\reports\api-difference
+```
 
-## Build It
-Get the source (fork or just use the download button at the top right) and run ```dotnet build```.
+The generated entry point is `Summary.md`.
 
-### Versioning and releases
+## Custom plugins
 
-Assembly and installer versions are generated from Git release tags. Create release tags using semantic 
-versions with a `v` prefix, for example `v1.0.4`. The first release of the .NET 10
-version is `v2.0.0`. Untagged commits receive a preview version automatically. The
-build requires full Git history; the GitHub Actions workflows fetch it.
+Custom inspector plugins should target `netstandard2.0` and reference the
+`netstandard2.0` build of `NDifference.Core`. This gives plugins the best chance
+of remaining compatible with future host runtime upgrades while the inspector
+contracts remain binary compatible. A plugin may target `net10.0`, but that
+couples it to the current host runtime.
 
-Pushing a release tag runs the dedicated release workflow, which validates the
-tag-derived assembly and MSI versions, creates a SHA-256 checksum and provenance
-attestation, and publishes the installer and checksum to a GitHub Release.
+Plugins compiled for the former .NET Framework application must be recompiled;
+the old binaries cannot be loaded by the .NET 10 host. Plugin classes must be
+public, implement an NDifference plugin interface, and have a public parameterless
+constructor. For example:
 
-### Windows installer
+```csharp
+using NDifference.Analysis;
+using NDifference.Inspectors;
+using NDifference.TypeSystem;
 
-The WiX 6 installer is part of `NDifference.sln`. A Release build publishes the Windows UI as a self-contained 
-`win-x64` application and creates `installer/bin/Release/NDifference.Installer.msi`. The MSI includes the .NET 10
-Windows Desktop runtime, so target machines do not need a separate runtime install.
+public sealed class CustomInspector : ITypeInspector
+{
+    public bool Enabled { get; set; } = true;
+    public string ShortCode => "CUSTOM001";
+    public string DisplayName => "Custom inspector";
+    public string Description => "Applies a project-specific compatibility rule.";
 
+    public void Inspect(
+        ITypeInfo previous,
+        ITypeInfo current,
+        IdentifiedChangeCollection changes)
+    {
+        // Add identified changes here.
+    }
+}
+```
 
-## Get Involved!
-Have an idea about improving the project? Please get involved. NDifference is an open source project (of course) and we accept 
-contributions! Contribute a patch or let us know how to improve.
+Place the plugin DLL and its private dependencies beside `NDifference.UI.exe`.
+Do not deploy a private copy of `NDifference.Core.dll`; the host shares its
+contract assembly with plugins. Native DLLs in the application directory are
+ignored during plugin discovery, while managed plugin load errors are reported.
 
-### Thank You's !
-* The [Mono.Cecil](http://www.mono-project.com/Cecil) Project for the reflection engine
-* The fine folks at [xunit](https://xunit.github.io/) for their unit testing framework.
+## Versioning and releases
 
+MinVer generates assembly and installer versions from Git tags. Release tags
+must be semantic versions with a `v` prefix, such as `v2.0.0` or
+`v2.1.0-rc.1`. Untagged commits receive a preview version automatically.
 
+Pushing a matching tag runs `.github/workflows/release.yml`. The workflow builds
+and tests the solution, validates the embedded MSI payload and generated
+versions, creates a SHA-256 checksum, publishes a GitHub Release, and attempts to
+create a provenance attestation. A temporary Sigstore/Rekor outage does not
+prevent the installer from being released.
+
+## Continuous integration
+
+[![CI](https://github.com/deejaygraham/ndifference/actions/workflows/ci-build.yml/badge.svg)](https://github.com/deejaygraham/ndifference/actions/workflows/ci-build.yml)
+
+CI builds the Release configuration, validates that the installer contains its
+payload, and runs the test suite on `windows-latest`.
+
+## Contributing
+
+Issues and pull requests are welcome. Build the Release configuration and run
+the complete test suite before submitting a change.
+
+## Acknowledgements
+
+- [Mono.Cecil](https://www.mono-project.com/docs/tools+libraries/libraries/Mono.Cecil/)
+  provides the static reflection engine.
+- [xUnit.net](https://xunit.net/) provides the unit testing framework.
+- The original inspiration was Microsoft's unsupported LibCheck tool.

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>NDifference</RootNamespace>
     <AssemblyName>NDifference.Core</AssemblyName>
@@ -16,8 +16,5 @@
     <Compile Remove="SourceFormatting\SyntaxKind.cs" />
     <Compile Remove="SourceFormatting\SyntaxNode.cs" />
     <Compile Remove="SourceFormatting\SyntaxTree.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 </Project>

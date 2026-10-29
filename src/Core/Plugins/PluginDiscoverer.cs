@@ -1,4 +1,5 @@
 using NDifference.Exceptions;
+using NDifference.Inspection;
 using NDifference.Inspectors;
 using System;
 using System.Collections.Generic;

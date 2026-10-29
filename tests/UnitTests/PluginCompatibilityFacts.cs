@@ -79,7 +79,8 @@ namespace CompatibilityPlugin
 					Path.Combine(pluginDirectory.Path, "clretwrc.dll"),
 					"Native runtime DLL placeholder");
 
-				var discoverer = new PluginDiscoverer<IInspector>(new FileFinder(pluginDirectory.Path));
+				var discoverer = new PluginDiscoverer<IInspector>(
+					new PluginDirectory(pluginDirectory.Path).CreateFinder());
 
 				IInspector plugin = Assert.Single(discoverer.Find());
 
@@ -171,7 +172,7 @@ namespace BrokenPlugin
 				}
 
 				var discoverer = new PluginDiscoverer<IInspector>(
-					new FileFinder(pluginDirectory.Path));
+					new PluginDirectory(pluginDirectory.Path).CreateFinder());
 
 				PluginLoadException exception = Assert.Throws<PluginLoadException>(
 					() => discoverer.Find());

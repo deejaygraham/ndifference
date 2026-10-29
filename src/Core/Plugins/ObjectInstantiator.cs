@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NDifference.Inspection;
 
 namespace NDifference.Plugins
 {

@@ -7,7 +7,7 @@
 			 Name="NDifference" 
 			 Language="1033" 
 			 Manufacturer="deejaygraham" 
-			 Version="$(var.Version)" 
+			 Version="!(bind.fileVersion.CoreDll)"
 			 UpgradeCode="$(var.UpgradeCode)"
 			 >
 		
@@ -205,14 +205,14 @@
 				Language="1033"
 				OnlyDetect="yes"
 				IncludeMinimum="no"
-				Minimum="$(var.Version)"
+				Minimum="!(bind.fileVersion.CoreDll)"
 				/>
 
 			<UpgradeVersion Property="OLDPRODUCTFOUND"
 				Language="1033"
 				OnlyDetect="no"
 				IncludeMaximum="no"
-				Maximum="$(var.Version)"
+				Maximum="!(bind.fileVersion.CoreDll)"
 				/>
 			
 		</Upgrade>

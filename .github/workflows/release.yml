@@ -91,9 +91,28 @@ jobs:
           "$hash *$assetName" | Set-Content -Encoding utf8NoBOM "release/$assetName.sha256"
 
       - name: Attest installer provenance
+        id: attest
+        continue-on-error: true
+        timeout-minutes: 5
         uses: actions/attest@v4
         with:
           subject-path: release/*.msi
+
+      - name: Retry installer provenance attestation
+        id: attest-retry
+        if: ${{ steps.attest.outcome == 'failure' }}
+        continue-on-error: true
+        timeout-minutes: 5
+        uses: actions/attest@v4
+        with:
+          subject-path: release/*.msi
+
+      - name: Report unavailable provenance attestation
+        if: ${{ steps.attest.outcome == 'failure' && steps.attest-retry.outcome == 'failure' }}
+        shell: pwsh
+        run: >-
+          Write-Warning
+          "The installer was released, but Sigstore/Rekor was unavailable and provenance attestation could not be created."
 
       - name: Upload release artifacts
         uses: actions/upload-artifact@v7

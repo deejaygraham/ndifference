@@ -52,6 +52,14 @@ There is a built-in reporting capability for common file formats but custom repo
 ## Extensibility
 Both the inspection rules and the report output are customisable.
 
+### Custom inspector compatibility
+
+Custom inspector plugins should target `netstandard2.0` and reference the
+`netstandard2.0` build of `NDifference.Core`. This keeps plugins compatible with
+future NDifference host runtime upgrades, provided the inspector contracts remain
+binary compatible. Plugins may target `net10.0`, but doing so couples them to the
+current host runtime and is not recommended.
+
 ## Prior Art
 The original inspiration for this project came from Microsoft's unsupported 
 [libcheck](http://www.microsoft.com/en-us/download/details.aspx?id=11287) tool.

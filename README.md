@@ -69,7 +69,8 @@ Get the source (fork or just use the download button at the top right) and run `
 ### Versioning and releases
 
 Assembly and installer versions are generated from Git release tags. Create release tags using semantic 
-versions with a `v` prefix, for example `v1.0.4`. Builds from untagged commits receive a preview version 
+versions with a `v` prefix, for example `v1.0.4`. The first release of the .NET 10
+version is `v2.0.0`. Builds from untagged commits receive a preview version 
 automatically. The build requires full Git history; the GitHub Actions workflow is configured to fetch it.
 
 ### Windows installer

@@ -4,7 +4,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>NDifference.Reporting</RootNamespace>
     <AssemblyName>NDifference.Reporting</AssemblyName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\CommonVersionInfo.cs">

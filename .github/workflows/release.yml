@@ -1,0 +1,142 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_VERSION: 10.0.x
+  CONFIGURATION: Release
+
+jobs:
+  release:
+    name: Build and publish release
+    runs-on: windows-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Validate release tag
+        shell: pwsh
+        run: |
+          if ("${{ github.ref_name }}" -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$') {
+            throw "Release tags must be semantic versions such as v2.0.0 or v2.0.0-rc.1."
+          }
+
+      - name: Build installer
+        run: >-
+          dotnet build NDifference.sln
+          --configuration ${{ env.CONFIGURATION }}
+
+      - name: Test
+        run: >-
+          dotnet test tests/UnitTests/UnitTests.csproj
+          --configuration ${{ env.CONFIGURATION }}
+          --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory TestResults
+
+      - name: Validate versions and prepare assets
+        shell: pwsh
+        run: |
+          $tagVersion = "${{ github.ref_name }}".Substring(1)
+          $assemblyPath = Resolve-Path "artifacts/publish/win-x64/NDifference.UI.dll"
+          $assemblyVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($assemblyPath).ProductVersion
+
+          if ($assemblyVersion -ne $tagVersion) {
+            throw "Assembly informational version '$assemblyVersion' does not match tag '$tagVersion'."
+          }
+
+          $msiPath = (Resolve-Path "installer/bin/Release/NDifference.Installer.msi").Path
+          $windowsInstaller = New-Object -ComObject WindowsInstaller.Installer
+          $database = $windowsInstaller.GetType().InvokeMember(
+            "OpenDatabase", "InvokeMethod", $null, $windowsInstaller, @($msiPath, 0))
+          $view = $database.GetType().InvokeMember(
+            "OpenView", "InvokeMethod", $null, $database,
+            @("SELECT ``Value`` FROM ``Property`` WHERE ``Property``='ProductVersion'"))
+          $view.GetType().InvokeMember("Execute", "InvokeMethod", $null, $view, $null) | Out-Null
+          $record = $view.GetType().InvokeMember("Fetch", "InvokeMethod", $null, $view, $null)
+          $msiVersion = $record.GetType().InvokeMember("StringData", "GetProperty", $null, $record, 1)
+          $expectedMsiVersion = "$($tagVersion.Split('-')[0]).0"
+
+          if ($msiVersion -ne $expectedMsiVersion) {
+            throw "MSI version '$msiVersion' does not match expected version '$expectedMsiVersion'."
+          }
+
+          New-Item -ItemType Directory -Path release -Force | Out-Null
+          $assetName = "NDifference-${{ github.ref_name }}-win-x64.msi"
+          $assetPath = Join-Path release $assetName
+          Copy-Item -LiteralPath $msiPath -Destination $assetPath
+
+          $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $assetPath).Hash.ToLowerInvariant()
+          "$hash *$assetName" | Set-Content -Encoding utf8NoBOM "release/$assetName.sha256"
+
+      - name: Attest installer provenance
+        uses: actions/attest@v4
+        with:
+          subject-path: release/*.msi
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: ndifference-${{ github.ref_name }}
+          path: release/*
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $assets = Get-ChildItem release -File | ForEach-Object FullName
+
+          gh release view $tag --repo "${{ github.repository }}" 2>$null | Out-Null
+
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $assets --clobber --repo "${{ github.repository }}"
+          }
+          elseif ($tag.Contains("-")) {
+            gh release create $tag $assets `
+              --verify-tag `
+              --generate-notes `
+              --prerelease `
+              --title "NDifference $tag" `
+              --repo "${{ github.repository }}"
+          }
+          else {
+            gh release create $tag $assets `
+              --verify-tag `
+              --generate-notes `
+              --title "NDifference $tag" `
+              --repo "${{ github.repository }}"
+          }
+
+      - name: Upload test results
+        if: ${{ !cancelled() && hashFiles('TestResults/*.trx') != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-test-results-${{ github.run_number }}
+          path: TestResults/*.trx
+          if-no-files-found: error
+          retention-days: 30

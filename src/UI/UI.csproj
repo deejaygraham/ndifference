@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>NDifference.UI</RootNamespace>
     <AssemblyName>NDifference.UI</AssemblyName>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseWindowsForms>true</UseWindowsForms>

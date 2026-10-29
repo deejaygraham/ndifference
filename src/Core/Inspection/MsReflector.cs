@@ -36,6 +36,11 @@ namespace NDifference
 			yield break;
 		}
 
+		public Type GetRuntimeType(string fullName)
+		{
+			return this.assembly.GetType(fullName, true, false);
+		}
+		
 		public IEnumerable<ITypeInfo> GetTypesImplementing(Type requiredInterface)
 		{
 			string interfaceName = requiredInterface.FullName;

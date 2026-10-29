@@ -2,6 +2,7 @@ using NDifference;
 using NDifference.Analysis;
 using NDifference.Framework;
 using NDifference.Inspectors;
+using NDifference.Plugins;
 using NDifference.Projects;
 using NDifference.Reflection;
 using NDifference.Reporting;
@@ -59,17 +60,20 @@ namespace WalkingSkeleton
 			project.Product.Add(currentVersion);
 			project.Settings.OutputFolder = outputFolder;
 
-			var pluginFinder = new FileFinder(
-				AppContext.BaseDirectory,
-				FileFilterConstants.AssemblyFilter);
+			IFileFinder builtInInspectorFinder = new ExplicitFileFinder(
+				typeof(RuntimeInspector).Assembly.Location);
+			IFileFinder customPluginFinder = PluginDirectory
+				.ForCurrentUser()
+				.CreateFinder();
 			var progress = new ConsoleProgress();
 
 			var inspectors = new InspectorRepository();
-			inspectors.Find(pluginFinder);
+			inspectors.Find(builtInInspectorFinder);
+			inspectors.Find(customPluginFinder);
 			inspectors.Filter(new InspectorFilter(project.Settings.IgnoreInspectors));
 
 			IAnalysisWorkflow analysis = new AnalysisWorkflow(
-				pluginFinder,
+				builtInInspectorFinder,
 				new CecilReflectorFactory());
 			AnalysisResult result = analysis.RunAnalysis(project, inspectors, progress);
 
@@ -80,7 +84,8 @@ namespace WalkingSkeleton
 			}
 
 			IReportingRepository reports = new ReportingRepository();
-			reports.Find(pluginFinder);
+			reports.Find(new ExplicitFileFinder(typeof(HtmlReportWriter).Assembly.Location));
+			reports.Find(customPluginFinder);
 
 			IReportingWorkflow reporting = new ReportingWorkflow();
 			reporting.RunReports(project, reports, result, progress);

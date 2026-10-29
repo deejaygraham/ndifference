@@ -20,6 +20,7 @@ namespace NDifference.UI.Controls
 			InitializeComponent();
 		}
 
+		[DefaultValue("")]
 		public string FolderPath
 		{
 			get

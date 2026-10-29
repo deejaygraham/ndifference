@@ -1,6 +1,7 @@
 using NDifference.Analysis;
 using NDifference.Framework;
 using NDifference.Inspectors;
+using NDifference.Plugins;
 using NDifference.Projects;
 using NDifference.Reflection;
 using NDifference.Reporting;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -201,17 +201,13 @@ namespace NDifference.UI
 
 			this.fsOutputFolder.FolderPath = project.Settings.OutputFolder;
 			
-			var finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
-
             this.tvInspectors.BeginUpdate();
 
             this.tvInspectors.Nodes.Clear();
 
             try
             {
-                InspectorRepository ir = new InspectorRepository();
-
-                ir.Find(finder);
+                InspectorRepository ir = DiscoverInspectors();
                 InspectorFilter filter = new InspectorFilter(project.Settings.IgnoreInspectors);
 
 			    ir.Filter(filter);
@@ -238,6 +234,29 @@ namespace NDifference.UI
 
             this.tvInspectors.EndUpdate();
         }
+
+		private static IFileFinder CreateBuiltInInspectorFinder()
+		{
+			return new ExplicitFileFinder(typeof(RuntimeInspector).Assembly.Location);
+		}
+
+		private static InspectorRepository DiscoverInspectors()
+		{
+			var inspectors = new InspectorRepository();
+			inspectors.Find(CreateBuiltInInspectorFinder());
+			inspectors.Find(PluginDirectory.ForCurrentUser().CreateFinder());
+
+			return inspectors;
+		}
+
+		private static IReportingRepository DiscoverReportWriters()
+		{
+			var reports = new ReportingRepository();
+			reports.Find(new ExplicitFileFinder(typeof(HtmlReportWriter).Assembly.Location));
+			reports.Find(PluginDirectory.ForCurrentUser().CreateFinder());
+
+			return reports;
+		}
 
         private void PopulateNodeChildren(TreeNode node, IEnumerable<IInspector> inspectors)
 		{
@@ -616,16 +635,15 @@ namespace NDifference.UI
 				{
 					progressIndicator.Report(new Progress("Starting..."));
 
-					IFileFinder finder = new FileFinder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), FileFilterConstants.AssemblyFilter);
+					IFileFinder builtInInspectorFinder = CreateBuiltInInspectorFinder();
 
 					AnalysisWorkflow analysis = new AnalysisWorkflow(
-						finder,
+						builtInInspectorFinder,
 						new CecilReflectorFactory());
 
 					progressIndicator.Report(new Progress("Loading Plugins..."));
 
-					InspectorRepository ir = new InspectorRepository();
-					ir.Find(finder);
+					InspectorRepository ir = DiscoverInspectors();
 
 					InspectorFilter filter = new InspectorFilter(this._project.Settings.IgnoreInspectors);
 
@@ -646,8 +664,7 @@ namespace NDifference.UI
                         // if no assembly level changes set changed assemblies to zero.
                     }
 
-					IReportingRepository rr = new ReportingRepository();
-					rr.Find(finder);
+					IReportingRepository rr = DiscoverReportWriters();
 
 					IReportingWorkflow reporting = new ReportingWorkflow();
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NDifference.Inspection;
+using NDifference.Plugins;
 using Xunit;
 
 namespace NDifference.UnitTests

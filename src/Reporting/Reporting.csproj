@@ -6,11 +6,6 @@
     <AssemblyName>NDifference.Reporting</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\CommonVersionInfo.cs">
-      <Link>Properties\CommonVersionInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 </Project>

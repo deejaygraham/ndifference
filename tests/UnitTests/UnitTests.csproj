@@ -6,13 +6,7 @@
     <AssemblyName>NDifference.UnitTests</AssemblyName>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\..\src\CommonVersionInfo.cs">
-      <Link>Properties\CommonVersionInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core\Core.csproj" />
     <ProjectReference Include="..\..\src\Inspectors\Inspectors.csproj" />

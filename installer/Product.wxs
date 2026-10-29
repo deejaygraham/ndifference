@@ -1,224 +1,70 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	
-	<?include $(sys.CURRENTDIR)Includes.wxi ?>
-	
-	<Product Id="*" 
-			 Name="NDifference" 
-			 Language="1033" 
-			 Manufacturer="deejaygraham" 
-			 Version="!(bind.fileVersion.CoreDll)"
-			 UpgradeCode="$(var.UpgradeCode)"
-			 >
-		
-		<Package Id="*" 
-				 Compressed="yes" 
-				 Description="NDifference 1.0 Windows Installer" 
-				 InstallerVersion="200" 
-				 InstallScope="perMachine" />
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package Name="NDifference"
+           Language="1033"
+           Manufacturer="deejaygraham"
+           Version="!(bind.fileVersion.NDifferenceUiDll)"
+           UpgradeCode="d73c1b74-0456-409a-9a66-f4366410ad29"
+           Scope="perMachine">
 
-		<Media Id="1"
-			Cabinet="NDifference.cab"
-			EmbedCab="yes" />
+    <SummaryInformation Description="NDifference Windows Installer" />
+    <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed." />
 
-		<!-- 1. Folders -->
-		<Directory Id="TARGETDIR"
-					Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="APPLICATIONROOTDIRECTORY"
-							Name="NDifference" >
-					<Directory Id="SamplesDirectory"
-								Name="Samples" />
-				</Directory>
-			</Directory>
-			<Directory Id="ProgramMenuFolder">
-				<Directory Id="ProgramShortcutsDirectory"
-							Name="NDifference" />
-			</Directory>
-		</Directory>
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="APPLICATIONROOTDIRECTORY" Name="NDifference" />
+    </StandardDirectory>
 
-		<!-- 2. Files -->
-		<DirectoryRef Id="APPLICATIONROOTDIRECTORY">
-			<Component Id="CMP_MainExecutable"
-						Guid="{9A5FE426-619B-429C-BED2-31ACB2015A8E}">
-				<File Id="NDifferenceExe"
-						Source="$(var.NDifferenceBinariesPath)\NDifference.UI.exe"
-						KeyPath="yes"
-						/>
-			</Component>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ProgramShortcutsDirectory" Name="NDifference">
+        <Component Id="ApplicationShortcut" Guid="{C77AD643-7D38-4552-8A37-1DF40762AEB9}">
+          <Shortcut Id="ProgramStartMenuShortcut"
+                    Name="NDifference"
+                    Description="Public API Reporting for .NET"
+                    Target="[APPLICATIONROOTDIRECTORY]NDifference.UI.exe"
+                    WorkingDirectory="APPLICATIONROOTDIRECTORY"
+                    Icon="NDifferenceIcon" />
+          <RemoveFolder Id="RemoveProgramShortcutsDirectory" On="uninstall" />
+          <RegistryValue Root="HKCU"
+                         Key="Software\NDifference"
+                         Name="installed"
+                         Type="integer"
+                         Value="1"
+                         KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
 
-			<Component Id="CMP_AppConfig"
-						Guid="{D5507347-38DB-4347-ACAC-1A2C3C758898}">
-				<File Id="NDifferenceConfig"
-						Source="$(var.NDifferenceBinariesPath)\NDifference.UI.exe.config"
-						KeyPath="yes"
-						/>
-			</Component>
+    <!-- Keep a stable file id for version binding; harvest the rest of the publish output. -->
+    <File Id="NDifferenceUiDll"
+          Source="$(PublishDir)\NDifference.UI.dll"
+          Directory="APPLICATIONROOTDIRECTORY" />
 
-			<Component Id="CMP_CoreAssembly"
-						Guid="{72F33202-D38F-4E91-A480-3096532A9A80}">
-				<File Id="CoreDll"
-						Source="$(var.NDifferenceBinariesPath)\NDifference.Core.dll"
-						KeyPath="yes"
-						/>
-			</Component>
+    <Files Include="$(PublishDir)\**" Directory="APPLICATIONROOTDIRECTORY">
+      <Exclude Files="$(PublishDir)\NDifference.UI.dll" />
+      <Exclude Files="$(PublishDir)\**\*.pdb" />
+    </Files>
 
-			<Component Id="CMP_ReportingAssembly"
-						Guid="{CF10A174-7545-4088-8716-B63E3BE527A0}">
-				<File Id="ReportingDll"
-						Source="$(var.NDifferenceBinariesPath)\NDifference.Reporting.dll"
-						KeyPath="yes"
-						/>
-			</Component>
+    <Icon Id="NDifferenceIcon" SourceFile="$(IconFilePath)" />
+    <Property Id="ARPPRODUCTICON" Value="NDifferenceIcon" />
+    <Property Id="ARPHELPLINK" Value="https://deejaygraham.github.io/ndifference/" />
 
-			<Component Id="CMP_ReflectionAssembly"
-						Guid="{B264A4BE-1A6C-4CD2-B62D-D45A4D98875F}">
-				<File Id="ReflectionDll"
-						Source="$(var.NDifferenceBinariesPath)\NDifference.Reflection.dll"
-						KeyPath="yes"
-						/>
-			</Component>
+    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
 
-			<Component Id="CMP_InspectionAssembly"
-						Guid="{B48CFCD7-3325-4EBC-9867-9AB8FE3950E5}">
-				<File Id="InspectionDll"
-						Source="$(var.NDifferenceBinariesPath)\NDifference.Inspectors.dll"
-						KeyPath="yes"
-						/>
-			</Component>
+    <UI>
+      <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="APPLICATIONROOTDIRECTORY" />
 
-			<Component Id="CMP_CecilAssembly"
-						Guid="{1CE43C0E-65E0-4C30-86EF-3B7228C37E7D}">
-				<File Id="CecilDll"
-						Source="$(var.NDifferenceBinariesPath)\Mono.Cecil.dll"
-						KeyPath="yes"
-						/>
-			</Component>
-
-			<Component Id="CMP_MsBuildTasks"
-						Guid="{20FADA27-206A-4581-9642-6F2148348AC9}">
-				<File Id="MsBuildDll"
-						Source="$(var.MsBuildTaskBinariesPath)\NDifference.Tasks.dll"
-						KeyPath="yes"
-						/>
-			</Component>
-
-		</DirectoryRef>
-
-		<DirectoryRef Id="ProgramShortcutsDirectory">
-			<Component Id="CMP_ApplicationShortcut"
-						Guid="{C77AD643-7D38-4552-8A37-1DF40762AEB9}">
-				<Shortcut Id="ProgramStartMenuShortcut"
-					Name="NDifference"
-					Description="Public API Reporting for .Net"
-					Target="[APPLICATIONROOTDIRECTORY]NDifference.UI.exe"
-					Icon="NDifferenceIcon"
-					/>
-				<RemoveFolder Id="RemoveProgramShortcutsDir"
-								On="uninstall" />
-
-				<RegistryValue Root="HKCU"
-								Key="Software\NDifference"
-								Name="installed"
-								Type="integer"
-								Value="1"
-								KeyPath="yes" />
-			</Component>
-		</DirectoryRef>
-
-		<!-- Samples -->
-		<DirectoryRef Id="SamplesDirectory">
-		
-			<Component Id="CMP_MsBuild"
-						Guid="{6EA2381A-6DEB-4132-8B19-DEF7D7B02BF6}">
-				<File Id="MsBuild"
-						Source="$(var.SamplesPath)\example.msbuild"
-						KeyPath="yes"
-						/>
-			</Component>
-
-			<Component Id="CMP_Batch"
-						Guid="{04A17823-2473-426F-B447-5AA460287156}">
-				<File Id="Batch"
-						Source="$(var.SamplesPath)\run-msbuild-example.cmd"
-						KeyPath="yes"
-						/>
-			</Component>
-
-			<Component Id="CMP_NDiff"
-						Guid="{F3046CCE-2A60-4848-9DBC-1500699F6EFF}">
-				<File Id="NDiff"
-						Source="$(var.SamplesPath)\example-project.ndiffproj"
-						KeyPath="yes"
-						/>
-			</Component>
-			
-		</DirectoryRef>
-
-		<!-- 3. Install -->
-
-		<Feature Id="Complete"
-				Level="1"
-				Title="Complete Product" >
-			<ComponentRef Id="CMP_MainExecutable" />
-			<ComponentRef Id="CMP_AppConfig" />
-			<ComponentRef Id="CMP_CoreAssembly" />
-			<ComponentRef Id="CMP_ReportingAssembly" />
-			<ComponentRef Id="CMP_ReflectionAssembly" />
-			<ComponentRef Id="CMP_InspectionAssembly" />
-			<ComponentRef Id="CMP_CecilAssembly" />
-			<ComponentRef Id="CMP_ApplicationShortcut" />
-			<ComponentRef Id="CMP_MsBuildTasks" />
-			<ComponentRef Id="CMP_MsBuild" />
-			<ComponentRef Id="CMP_Batch" />
-			<ComponentRef Id="CMP_NDiff" />
-		</Feature>
-
-		<Icon Id="NDifferenceIcon" SourceFile="$(var.IconFilePath)" />
-
-		<Property Id="ARPPRODUCTICON" Value="NDifferenceIcon" />
-		<Property Id="ARPHELPLINK" Value="http://deejaygraham.github.io/ndifference/" />
-
-		<Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONROOTDIRECTORY" />
-		<WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
-		<WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
-
-		<UI>
-			<UIRef Id="WixUI_InstallDir" />
-
-			<!-- Skip license dialog -->
-			<Publish Dialog="WelcomeDlg"
-					 Control="Next"
-					 Event="NewDialog"
-					 Value="InstallDirDlg"
-					 Order="2">1</Publish>
-			<Publish Dialog="InstallDirDlg"
-					 Control="Back"
-					 Event="NewDialog"
-					 Value="WelcomeDlg"
-					 Order="2">1</Publish>
-		</UI>
-		
-		<Upgrade Id="$(var.UpgradeCode)">
-		
-			<UpgradeVersion Property="NEWPRODUCTFOUND"
-				Language="1033"
-				OnlyDetect="yes"
-				IncludeMinimum="no"
-				Minimum="!(bind.fileVersion.CoreDll)"
-				/>
-
-			<UpgradeVersion Property="OLDPRODUCTFOUND"
-				Language="1033"
-				OnlyDetect="no"
-				IncludeMaximum="no"
-				Maximum="!(bind.fileVersion.CoreDll)"
-				/>
-			
-		</Upgrade>
-	
-		<MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
-
-	</Product>
-	
+      <!-- There is no license file to display, so bypass the standard license dialog. -->
+      <Publish Dialog="WelcomeDlg"
+               Control="Next"
+               Event="NewDialog"
+               Value="InstallDirDlg"
+               Order="2" />
+      <Publish Dialog="InstallDirDlg"
+               Control="Back"
+               Event="NewDialog"
+               Value="WelcomeDlg"
+               Order="2" />
+    </UI>
+  </Package>
 </Wix>

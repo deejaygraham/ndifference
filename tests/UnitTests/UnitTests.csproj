@@ -5,7 +5,6 @@
     <RootNamespace>NDifference.UnitTests</RootNamespace>
     <AssemblyName>NDifference.UnitTests</AssemblyName>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core\Core.csproj" />

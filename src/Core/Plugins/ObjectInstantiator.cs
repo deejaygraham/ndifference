@@ -24,7 +24,18 @@ namespace NDifference.Plugins
 						typeof(T).FullName));
 				}
 
-				objects.Add((T)Activator.CreateInstance(pluginType));
+				try
+				{
+					objects.Add((T)Activator.CreateInstance(pluginType));
+				}
+				catch (Exception exception)
+				{
+					throw new InvalidOperationException(
+						string.Format(
+							"Could not activate plugin type '{0}'.",
+							pluginType.FullName),
+						exception);
+				}
 			}
 
 			return objects;

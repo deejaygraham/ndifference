@@ -1,6 +1,6 @@
 using NDifference.Exceptions;
-using NDifference.Inspection;
 using NDifference.Inspectors;
+using NDifference.Inspection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -53,7 +53,18 @@ namespace NDifference.Plugins
 				if (this.FilterFile(file))
 					continue;
 
-				var reflector = factory.LoadAssembly(file.FullPath);
+				IAssemblyReflector reflector;
+
+				try
+				{
+					reflector = factory.LoadAssembly(file.FullPath);
+				}
+				catch (BadImageFormatException)
+				{
+					// Self-contained deployments include native runtime DLLs alongside
+					// managed plugin assemblies. Native DLLs are not plugin candidates.
+					continue;
+				}
 
 				Debug.Assert(reflector != null, "Reflector not loaded correctly");
 

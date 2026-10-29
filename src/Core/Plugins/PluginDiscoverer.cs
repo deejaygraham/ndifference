@@ -65,23 +65,48 @@ namespace NDifference.Plugins
 					// managed plugin assemblies. Native DLLs are not plugin candidates.
 					continue;
 				}
+				catch (Exception exception)
+				{
+					throw new PluginLoadException(file.FullPath, "load", exception);
+				}
 
 				Debug.Assert(reflector != null, "Reflector not loaded correctly");
 
-				IRuntimeTypeProvider provider = reflector as IRuntimeTypeProvider;
+				IRuntimeTypeProvider provider;
+				bool hasPublicTypes;
 
-				if (provider == null)
+				try
 				{
-					throw new InvalidOperationException("The selected reflector cannot provide runtime plugin types.");
+					provider = reflector as IRuntimeTypeProvider;
+
+					if (provider == null)
+					{
+						throw new InvalidOperationException("The selected reflector cannot provide runtime plugin types.");
+					}
+
+					hasPublicTypes = reflector
+						.GetTypes(AssemblyReflectionOption.Public)
+						.Any();
+				}
+				catch (Exception exception)
+				{
+					throw new PluginLoadException(file.FullPath, "inspect types in", exception);
 				}
 
-				var allPublicTypes = reflector.GetTypes(AssemblyReflectionOption.Public);
-
-				if (allPublicTypes.Any())
+				if (!hasPublicTypes)
 				{
-					Debug.Assert(this.Instantiator != null, "Instantiator is not set");
+					continue;
+				}
 
+				Debug.Assert(this.Instantiator != null, "Instantiator is not set");
+
+				try
+				{
 					found.AddRange(this.Instantiator.CreateTypesImplementingInterface(provider));
+				}
+				catch (Exception exception)
+				{
+					throw new PluginLoadException(file.FullPath, "activate types from", exception);
 				}
 			}
 

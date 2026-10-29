@@ -12,7 +12,7 @@ namespace NDifference
 			Debug.Assert(!string.IsNullOrEmpty(path), "Assembly name is blank");
 			Debug.Assert(File.Exists(path), "Path to assembly does not exist");
 
-			return new MsReflector(Assembly.LoadFile(path));
+			return new MsReflector(Assembly.LoadFrom(path));
 		}
 	}
 }

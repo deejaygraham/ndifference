@@ -67,6 +67,14 @@ The original inspiration for this project came from Microsoft's unsupported
 ## Build It
 Get the source (fork or just use the download button at the top right) and run ```dotnet build```.
 
+### Versioning and releases
+
+Assembly and installer versions are generated from Git release tags. Create release
+tags using semantic versions with a `v` prefix, for example `v1.0.4`. Builds from
+untagged commits receive a preview version automatically. The build requires full
+Git history; the GitHub Actions workflow is configured to fetch it.
+
+
 ## Get Involved!
 Have an idea about improving the project? Please get involved. NDifference is an open source project (of course) and we accept 
 contributions! Contribute a patch or let us know how to improve.

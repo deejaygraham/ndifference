@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0;net10.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>NDifference</RootNamespace>
     <AssemblyName>NDifference.Core</AssemblyName>
@@ -17,7 +17,7 @@
     <Compile Remove="SourceFormatting\SyntaxNode.cs" />
     <Compile Remove="SourceFormatting\SyntaxTree.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="10.0.14" />
   </ItemGroup>
 </Project>

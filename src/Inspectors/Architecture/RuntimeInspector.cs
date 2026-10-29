@@ -13,7 +13,7 @@ namespace NDifference.Inspectors
 
 		public string ShortCode { get { return "AI_NETRI"; } }
 
-		public string DisplayName { get { return ".Net Runtime"; } }
+		public string DisplayName { get { return ".NET Runtime"; } }
 
 		public string Description { get { return "Checks for changes to target runtime"; } }
 
@@ -25,7 +25,7 @@ namespace NDifference.Inspectors
 					Severity.BreakingChange,
 					new DeltaDescriptor 
 					{ 
-						Reason = ".Net Runtime change", 
+						Reason = ".NET Runtime change", 
 						Was = first.RuntimeVersion, 
 						IsNow = second.RuntimeVersion 
 					}));

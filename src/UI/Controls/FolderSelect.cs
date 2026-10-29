@@ -33,6 +33,7 @@ namespace NDifference.UI.Controls
 			}
 		}
 
+		[DefaultValue("<Watermark>")]
 		public string FolderLabel
 		{
 			get

@@ -8,8 +8,6 @@ history remains the record of that work.
 
 - Use a dedicated, user-writable plugin directory instead of discovering plugins
   in the application installation directory.
-- Add plugin diagnostics that identify the plugin path and missing or incompatible
-  dependency when activation fails.
 - Define and document a compatibility/versioning policy for plugin contracts.
 
 ## Command line and automation

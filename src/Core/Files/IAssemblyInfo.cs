@@ -19,7 +19,7 @@ namespace NDifference
         Version Version { get; }
 
 		/// <summary>
-		/// .Net runtime version.
+		/// .NET runtime version.
 		/// </summary>
 		string RuntimeVersion { get; }
 

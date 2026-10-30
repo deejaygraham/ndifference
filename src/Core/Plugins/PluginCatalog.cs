@@ -6,17 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 
 namespace NDifference.Plugins
 {
 	/// <summary>
-	/// Loads plugin assemblies once and owns their instances and load contexts.
+	/// Loads plugin assemblies once and owns their instances for the process lifetime.
 	/// </summary>
 	public sealed class PluginCatalog : IDisposable
 	{
 		private readonly List<IInspector> inspectors = new List<IInspector>();
 		private readonly List<IReportWriter> reportWriters = new List<IReportWriter>();
-		private readonly List<PluginLoadContext> loadContexts = new List<PluginLoadContext>();
 		private bool disposed;
 
 		public PluginCatalog(params IFileFinder[] finders)
@@ -106,61 +106,34 @@ namespace NDifference.Plugins
 
 			this.inspectors.Clear();
 			this.reportWriters.Clear();
-
-			foreach (PluginLoadContext loadContext in this.loadContexts)
-			{
-				Release(loadContext);
-			}
-
-			this.loadContexts.Clear();
 		}
 
 		private void Load(string path)
 		{
-			PluginLoadContext loadContext = null;
-			IAssemblyReflector reflector;
+			Assembly assembly;
 
 			try
 			{
-				loadContext = new PluginLoadContext(path, true);
-				reflector = new MsReflector(loadContext.LoadPluginAssembly());
+				AssemblyName.GetAssemblyName(path);
+				assembly = new PluginLoadContext(path).LoadPluginAssembly();
 			}
 			catch (BadImageFormatException)
 			{
-				if (loadContext != null)
-				{
-					Release(loadContext);
-				}
-
 				return;
 			}
 			catch (Exception exception)
 			{
-				if (loadContext != null)
-				{
-					Release(loadContext);
-				}
-
 				throw new PluginLoadException(path, "load", exception);
 			}
 
-			IRuntimeTypeProvider provider;
+			RuntimeTypeProvider provider;
 
 			try
 			{
-				provider = reflector as IRuntimeTypeProvider;
-
-				if (provider == null)
-				{
-					throw new InvalidOperationException(
-						"The selected reflector cannot provide runtime plugin types.");
-				}
-
-				reflector.GetTypes(AssemblyReflectionOption.Public).Any();
+				provider = new RuntimeTypeProvider(assembly);
 			}
 			catch (Exception exception)
 			{
-				Release(loadContext);
 				throw new PluginLoadException(path, "inspect types in", exception);
 			}
 
@@ -178,19 +151,11 @@ namespace NDifference.Plugins
 			}
 			catch (Exception exception)
 			{
-				Release(loadContext);
 				throw new PluginLoadException(path, "activate types from", exception);
-			}
-
-			if (!discoveredInspectors.Any() && !discoveredReportWriters.Any())
-			{
-				Release(loadContext);
-				return;
 			}
 
 			this.inspectors.AddRange(discoveredInspectors);
 			this.reportWriters.AddRange(discoveredReportWriters);
-			this.loadContexts.Add(loadContext);
 		}
 
 		private void ThrowIfDisposed()
@@ -201,14 +166,22 @@ namespace NDifference.Plugins
 			}
 		}
 
-		private static void Release(PluginLoadContext loadContext)
+		private sealed class RuntimeTypeProvider : IRuntimeTypeProvider
 		{
-#if NET10_0_OR_GREATER
-			if (loadContext != null && loadContext.IsCollectible)
+			private readonly Type[] types;
+
+			public RuntimeTypeProvider(Assembly assembly)
 			{
-				loadContext.Unload();
+				this.types = assembly.GetTypes();
 			}
-#endif
+
+			public IEnumerable<Type> GetRuntimeTypesImplementing(Type requiredInterface)
+			{
+				return this.types.Where(
+					type => !type.IsAbstract
+						&& !type.IsInterface
+						&& requiredInterface.IsAssignableFrom(type));
+			}
 		}
 	}
 }

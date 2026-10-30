@@ -67,9 +67,12 @@ namespace WalkingSkeleton
 				.CreateFinder();
 			var progress = new ConsoleProgress();
 
-			var inspectors = new InspectorRepository();
-			inspectors.Find(builtInInspectorFinder);
-			inspectors.Find(customPluginFinder);
+			using var pluginCatalog = new PluginCatalog(
+				builtInInspectorFinder,
+				new ExplicitFileFinder(typeof(HtmlReportWriter).Assembly.Location),
+				customPluginFinder);
+
+			var inspectors = pluginCatalog.CreateInspectorRepository();
 			inspectors.Filter(new InspectorFilter(project.Settings.IgnoreInspectors));
 
 			IAnalysisWorkflow analysis = new AnalysisWorkflow(
@@ -83,9 +86,7 @@ namespace WalkingSkeleton
 				return 1;
 			}
 
-			IReportingRepository reports = new ReportingRepository();
-			reports.Find(new ExplicitFileFinder(typeof(HtmlReportWriter).Assembly.Location));
-			reports.Find(customPluginFinder);
+			IReportingRepository reports = pluginCatalog.CreateReportingRepository();
 
 			IReportingWorkflow reporting = new ReportingWorkflow();
 			reporting.RunReports(project, reports, result, progress);

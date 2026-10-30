@@ -7,7 +7,7 @@
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 
     <Product>NDifference</Product>
-    <Copyright>Copyright © 2011-2023</Copyright>
+    <Copyright>Copyright © 2011-2026</Copyright>
 
     <!-- Titles and descriptions remain project-specific in Properties/AssemblyInfo.cs. -->
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace NDifference.Inspectors
 {
@@ -22,14 +21,14 @@ namespace NDifference.Inspectors
 		}
 
 		/// <summary>
-		/// Disables any inspector whose short code matches any in its list.
+		/// Enables or disables inspectors according to the current ignore list.
 		/// </summary>
 		/// <param name="inspectors">Current list of inspectors.</param>
 		public void Filter(IEnumerable<IInspector> inspectors)
 		{
-			foreach (var i in inspectors.Where( x => this.shortCodes.Contains(x.ShortCode)))
+			foreach (var i in inspectors)
 			{
-				i.Enabled = false;
+				i.Enabled = !this.shortCodes.Contains(i.ShortCode);
 			}
 		}
 	}

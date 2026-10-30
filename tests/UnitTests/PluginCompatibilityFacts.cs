@@ -86,17 +86,11 @@ namespace CompatibilityPlugin
 
 				Assert.Equal("External netstandard2.0 plugin", plugin.DisplayName);
 				Assert.Equal("EXT", plugin.ShortCode);
-				Assert.NotSame(
-					AssemblyLoadContext.Default,
-					AssemblyLoadContext.GetLoadContext(plugin.GetType().Assembly));
-				Assert.True(
-					AssemblyLoadContext.GetLoadContext(plugin.GetType().Assembly).IsCollectible);
-				Assert.Same(
-					typeof(IInspector).Assembly,
-					plugin.GetType().GetInterfaces().Single(type => type == typeof(IInspector)).Assembly);
+				Assert.NotSame(AssemblyLoadContext.Default, AssemblyLoadContext.GetLoadContext(plugin.GetType().Assembly));
+				Assert.False(AssemblyLoadContext.GetLoadContext(plugin.GetType().Assembly).IsCollectible);
+				Assert.Same(typeof(IInspector).Assembly, plugin.GetType().GetInterfaces().Single(type => type == typeof(IInspector)).Assembly);
 
-				TargetFrameworkAttribute targetFramework =
-					plugin.GetType().Assembly.GetCustomAttribute<TargetFrameworkAttribute>();
+				TargetFrameworkAttribute targetFramework = plugin.GetType().Assembly.GetCustomAttribute<TargetFrameworkAttribute>();
 
 				Assert.NotNull(targetFramework);
 				Assert.Equal(".NETStandard,Version=v2.0", targetFramework.FrameworkName);

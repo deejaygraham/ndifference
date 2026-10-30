@@ -27,6 +27,8 @@ namespace NDifference.UI
 
 		private ProjectCleanlinessTracker _tracker;
 
+		private PluginCatalog _pluginCatalog;
+
 		public event EventHandler ProjectLoaded;
 
 		public event EventHandler ProjectChanged;
@@ -38,6 +40,17 @@ namespace NDifference.UI
 			InitializeComponent();
 
 			this._tracker = new ProjectCleanlinessTracker(this);
+		}
+
+		protected override void OnFormClosed(FormClosedEventArgs e)
+		{
+			if (this._pluginCatalog != null)
+			{
+				this._pluginCatalog.Dispose();
+				this._pluginCatalog = null;
+			}
+
+			base.OnFormClosed(e);
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -240,22 +253,27 @@ namespace NDifference.UI
 			return new ExplicitFileFinder(typeof(RuntimeInspector).Assembly.Location);
 		}
 
-		private static InspectorRepository DiscoverInspectors()
+		private PluginCatalog GetPluginCatalog()
 		{
-			var inspectors = new InspectorRepository();
-			inspectors.Find(CreateBuiltInInspectorFinder());
-			inspectors.Find(PluginDirectory.ForCurrentUser().CreateFinder());
+			if (this._pluginCatalog == null)
+			{
+				this._pluginCatalog = new PluginCatalog(
+					CreateBuiltInInspectorFinder(),
+					new ExplicitFileFinder(typeof(HtmlReportWriter).Assembly.Location),
+					PluginDirectory.ForCurrentUser().CreateFinder());
+			}
 
-			return inspectors;
+			return this._pluginCatalog;
 		}
 
-		private static IReportingRepository DiscoverReportWriters()
+		private InspectorRepository DiscoverInspectors()
 		{
-			var reports = new ReportingRepository();
-			reports.Find(new ExplicitFileFinder(typeof(HtmlReportWriter).Assembly.Location));
-			reports.Find(PluginDirectory.ForCurrentUser().CreateFinder());
+			return this.GetPluginCatalog().CreateInspectorRepository();
+		}
 
-			return reports;
+		private IReportingRepository DiscoverReportWriters()
+		{
+			return this.GetPluginCatalog().CreateReportingRepository();
 		}
 
         private void PopulateNodeChildren(TreeNode node, IEnumerable<IInspector> inspectors)

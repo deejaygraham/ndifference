@@ -1,17 +1,14 @@
 using NDifference.Analysis;
 using NDifference.Framework;
 using NDifference.Inspectors;
-using NDifference.Plugins;
 using NDifference.Projects;
-using NDifference.Reflection;
-using NDifference.Reporting;
 using NDifference.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,7 +24,13 @@ namespace NDifference.UI
 
 		private ProjectCleanlinessTracker _tracker;
 
-		private PluginCatalog _pluginCatalog;
+		private AnalysisRunCoordinator _analysisRunCoordinator;
+
+		private CancellationTokenSource _analysisCancellation;
+
+		private Task _analysisTask;
+
+		private bool _closeAfterAnalysis;
 
 		public event EventHandler ProjectLoaded;
 
@@ -44,13 +47,25 @@ namespace NDifference.UI
 
 		protected override void OnFormClosed(FormClosedEventArgs e)
 		{
-			if (this._pluginCatalog != null)
+			if (this._analysisRunCoordinator != null)
 			{
-				this._pluginCatalog.Dispose();
-				this._pluginCatalog = null;
+				this._analysisRunCoordinator.Dispose();
+				this._analysisRunCoordinator = null;
 			}
 
 			base.OnFormClosed(e);
+		}
+
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			if (this._analysisTask != null && !this._analysisTask.IsCompleted)
+			{
+				e.Cancel = true;
+				this._closeAfterAnalysis = true;
+				this.RequestAnalysisCancellation();
+			}
+
+			base.OnFormClosing(e);
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -91,14 +106,14 @@ namespace NDifference.UI
 			this._progressState.Invisible();
 		}
 
-		private void btnStart_Click(object sender, EventArgs e)
+		private async void btnStart_Click(object sender, EventArgs e)
 		{
-			Build();
+			await this.BuildAsync();
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)
 		{
-			this.Close();
+			this.RequestAnalysisCancellation();
 		}
 
 
@@ -248,32 +263,19 @@ namespace NDifference.UI
             this.tvInspectors.EndUpdate();
         }
 
-		private static IFileFinder CreateBuiltInInspectorFinder()
+		private AnalysisRunCoordinator GetAnalysisRunCoordinator()
 		{
-			return new ExplicitFileFinder(typeof(RuntimeInspector).Assembly.Location);
-		}
-
-		private PluginCatalog GetPluginCatalog()
-		{
-			if (this._pluginCatalog == null)
+			if (this._analysisRunCoordinator == null)
 			{
-				this._pluginCatalog = new PluginCatalog(
-					CreateBuiltInInspectorFinder(),
-					new ExplicitFileFinder(typeof(HtmlReportWriter).Assembly.Location),
-					PluginDirectory.ForCurrentUser().CreateFinder());
+				this._analysisRunCoordinator = new AnalysisRunCoordinator();
 			}
 
-			return this._pluginCatalog;
+			return this._analysisRunCoordinator;
 		}
 
 		private InspectorRepository DiscoverInspectors()
 		{
-			return this.GetPluginCatalog().CreateInspectorRepository();
-		}
-
-		private IReportingRepository DiscoverReportWriters()
-		{
-			return this.GetPluginCatalog().CreateReportingRepository();
+			return this.GetAnalysisRunCoordinator().CreateInspectorRepository();
 		}
 
         private void PopulateNodeChildren(TreeNode node, IEnumerable<IInspector> inspectors)
@@ -589,137 +591,159 @@ namespace NDifference.UI
 			return true;
 		}
 
-		private void buildToolStripMenuItem1_Click(object sender, EventArgs e)
+		private async void buildToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
-			Build();
+			await this.BuildAsync();
 		}
 
-		private void Build()
+		private async Task BuildAsync()
 		{
-            this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = false;
-            this._dataEntryState.Disable();
-            this._progressState.Visible();
-
-            this.progressBar.Minimum = 0;
-            this.progressBar.Value = 0;
-            this.progressBar.Maximum = 100;
-
-            try
-            {
-			    var newProject = UpdateProjectFromUI();
-			    newProject.CopyMetaFrom(this._project);
-			    this._project = newProject;
-
-			    var errors = this.ValidateProject(this._project);
-
-			    if (errors.Any())
-			    {
-                    this._progressState.Invisible();
-
-                    this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = true;
-                    this._dataEntryState.Enable();
-
-                    StringBuilder messageBuilder = new StringBuilder();
-
-                    foreach (var error in errors)
-                    {
-                        messageBuilder.AppendLine(error);
-                    }
-
-                    MessageBox.Show(messageBuilder.ToString());
-				    return;
-			    }
-
-			    // auto save...
-			    if (this._tracker.IsDirty && !string.IsNullOrEmpty(this._project.FileName) && File.Exists(this._project.FileName))
-			    {
-				    ProjectWriter.Save(this._project, this._project.FileName);
-			    }
-
-				IProgress<Progress> progressIndicator = new Progress<Progress>(value =>
-				{
-					if (!String.IsNullOrEmpty(value.Description))
-					{
-						this.progressLabel.Visible = true;
-						this.progressLabel.Text = value.Description;
-					}
-					else
-						this.progressLabel.Visible = false;
-
-					// this.progressBar.Value = value.Percent;
-				});
-
-				Task t = new Task(() =>
-				{
-					progressIndicator.Report(new Progress("Starting..."));
-
-					IFileFinder builtInInspectorFinder = CreateBuiltInInspectorFinder();
-
-					AnalysisWorkflow analysis = new AnalysisWorkflow(
-						builtInInspectorFinder,
-						new CecilReflectorFactory());
-
-					progressIndicator.Report(new Progress("Loading Plugins..."));
-
-					InspectorRepository ir = DiscoverInspectors();
-
-					InspectorFilter filter = new InspectorFilter(this._project.Settings.IgnoreInspectors);
-
-					ir.Filter(filter);
-
-					progressIndicator.Report(new Progress("Starting Analysis..."));
-
-					var result = analysis.RunAnalysis(this._project, ir, progressIndicator);
-
-                    // now modify results.
-                    foreach(var r in result.TypeLevelChanges)
-                    {
-                        // if no changes .. set assembly level changes...
-                    }
-
-                    foreach(var a in result.AssemblyLevelChanges)
-                    {
-                        // if no assembly level changes set changed assemblies to zero.
-                    }
-
-					IReportingRepository rr = DiscoverReportWriters();
-
-					IReportingWorkflow reporting = new ReportingWorkflow();
-
-					progressIndicator.Report(new Progress("Starting Reports..."));
-
-					reporting.RunReports(this._project, rr, result, progressIndicator);
-
-				});
-
-				Task t2 = t.ContinueWith((antecedent) =>
-					{
-						this._progressState.Invisible();
-
-						this.fileToolStripMenuItem.Enabled = this.buildToolStripMenuItem.Enabled = true;
-						this._dataEntryState.Enable();
-
-						if (antecedent.IsFaulted)
-						{
-							Exception error = antecedent.Exception
-								.Flatten()
-								.InnerExceptions
-								.FirstOrDefault();
-
-							MessageBox.Show(
-								error == null ? "The analysis failed." : error.Message,
-								"Analysis failed",
-								MessageBoxButtons.OK,
-								MessageBoxIcon.Error);
-						}
-					},
-					TaskScheduler.FromCurrentSynchronizationContext());
-
-				t.Start();
-			}
-			catch(Exception ex)
+			if (this._analysisTask != null)
 			{
-                MessageBox.Show(ex.GetBaseException().Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+			this.SetAnalysisRunningState(true);
+			this._analysisCancellation = new CancellationTokenSource();
+			CancellationToken cancellationToken = this._analysisCancellation.Token;
+
+			try
+			{
+				Project project = this.UpdateProjectFromUI();
+				project.CopyMetaFrom(this._project);
+				this._project = project;
+
+				List<string> errors = this.ValidateProject(project);
+
+				if (errors.Any())
+				{
+					MessageBox.Show(String.Join(Environment.NewLine, errors));
+					return;
+				}
+
+				if (this._tracker.IsDirty
+					&& !string.IsNullOrEmpty(project.FileName)
+					&& File.Exists(project.FileName))
+				{
+					ProjectWriter.Save(project, project.FileName);
+				}
+
+				IProgress<Progress> uiProgress = new Progress<Progress>(
+					this.UpdateAnalysisProgress);
+				IProgress<Progress> progress = new CancellationAwareProgress(
+					uiProgress,
+					cancellationToken);
+
+				this._analysisTask = this.GetAnalysisRunCoordinator().RunAsync(
+					project,
+					progress,
+					cancellationToken);
+
+				await this._analysisTask;
+			}
+			catch (OperationCanceledException)
+			{
+				// Cancellation is an expected outcome initiated by the user.
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(
+					ex.Message,
+					"Analysis failed",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error);
+			}
+			finally
+			{
+				this._analysisTask = null;
+
+				if (this._analysisCancellation != null)
+				{
+					this._analysisCancellation.Dispose();
+					this._analysisCancellation = null;
+				}
+
+				bool closeAfterAnalysis = this._closeAfterAnalysis;
+				this._closeAfterAnalysis = false;
+
+				if (closeAfterAnalysis)
+				{
+					this.Close();
+				}
+				else
+				{
+					this.SetAnalysisRunningState(false);
+				}
+			}
+		}
+
+		private void RequestAnalysisCancellation()
+		{
+			if (this._analysisCancellation == null
+				|| this._analysisCancellation.IsCancellationRequested)
+			{
+				return;
+			}
+
+			this.btnCancel.Enabled = false;
+			this.progressLabel.Visible = true;
+			this.progressLabel.Text = "Cancelling...";
+			this._analysisCancellation.Cancel();
+		}
+
+		private void SetAnalysisRunningState(bool running)
+		{
+			this.fileToolStripMenuItem.Enabled =
+				this.buildToolStripMenuItem.Enabled = !running;
+
+			if (running)
+			{
+				this._dataEntryState.Disable();
+				this._progressState.Visible();
+				this.btnCancel.Enabled = true;
+				this.progressBar.Minimum = 0;
+				this.progressBar.Value = 0;
+				this.progressBar.Maximum = 100;
+			}
+			else
+			{
+				this._progressState.Invisible();
+				this._dataEntryState.Enable();
+			}
+		}
+
+		private void UpdateAnalysisProgress(Progress value)
+		{
+			if (value == null || String.IsNullOrEmpty(value.Description))
+			{
+				this.progressLabel.Visible = false;
+				return;
+			}
+
+			this.progressLabel.Visible = true;
+			this.progressLabel.Text = value.Description;
+			this.progressBar.Value = Math.Max(
+				this.progressBar.Minimum,
+				Math.Min(this.progressBar.Maximum, value.Percent));
+		}
+
+		private sealed class CancellationAwareProgress : IProgress<Progress>
+		{
+			private readonly IProgress<Progress> inner;
+			private readonly CancellationToken cancellationToken;
+
+			public CancellationAwareProgress(
+				IProgress<Progress> inner,
+				CancellationToken cancellationToken)
+			{
+				this.inner = inner;
+				this.cancellationToken = cancellationToken;
+			}
+
+			public void Report(Progress value)
+			{
+				this.cancellationToken.ThrowIfCancellationRequested();
+				this.inner.Report(value);
 			}
 		}
 		

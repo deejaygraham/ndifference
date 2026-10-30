@@ -79,16 +79,18 @@ namespace CompatibilityPlugin
 					Path.Combine(pluginDirectory.Path, "clretwrc.dll"),
 					"Native runtime DLL placeholder");
 
-				var discoverer = new PluginDiscoverer<IInspector>(
+				using var catalog = new PluginCatalog(
 					new PluginDirectory(pluginDirectory.Path).CreateFinder());
 
-				IInspector plugin = Assert.Single(discoverer.Find());
+				IInspector plugin = Assert.Single(catalog.Inspectors);
 
 				Assert.Equal("External netstandard2.0 plugin", plugin.DisplayName);
 				Assert.Equal("EXT", plugin.ShortCode);
 				Assert.NotSame(
 					AssemblyLoadContext.Default,
 					AssemblyLoadContext.GetLoadContext(plugin.GetType().Assembly));
+				Assert.True(
+					AssemblyLoadContext.GetLoadContext(plugin.GetType().Assembly).IsCollectible);
 				Assert.Same(
 					typeof(IInspector).Assembly,
 					plugin.GetType().GetInterfaces().Single(type => type == typeof(IInspector)).Assembly);
@@ -171,11 +173,9 @@ namespace BrokenPlugin
 					File.Delete(dependencyPath);
 				}
 
-				var discoverer = new PluginDiscoverer<IInspector>(
-					new PluginDirectory(pluginDirectory.Path).CreateFinder());
-
 				PluginLoadException exception = Assert.Throws<PluginLoadException>(
-					() => discoverer.Find());
+					() => new PluginCatalog(
+						new PluginDirectory(pluginDirectory.Path).CreateFinder()));
 
 				Assert.Equal(pluginPath, exception.PluginPath);
 				Assert.Equal("activate types from", exception.Operation);

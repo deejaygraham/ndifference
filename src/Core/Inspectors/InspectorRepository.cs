@@ -70,20 +70,7 @@ namespace NDifference.Inspectors
                 var pluginDiscoverer = new PluginDiscoverer<IInspector>(finder);
                 var plugins = pluginDiscoverer.Find();
 
-                this.aci.AddRange(plugins.OfType<IAssemblyCollectionInspector>());
-                this.aci.ForEach(x => x.Enabled = true);
-
-                this.ai.AddRange(plugins.OfType<IAssemblyInspector>());
-                this.ai.ForEach(x => x.Enabled = true);
-
-                this.tci.AddRange(plugins.OfType<ITypeCollectionInspector>());
-                this.tci.ForEach(x => x.Enabled = true);
-
-                this.ti.AddRange(plugins.OfType<ITypeInspector>());
-                this.ti.ForEach(x => x.Enabled = true);
-
-                this.iai.AddRange(plugins.OfType<IAnalysisInspector>());
-                this.iai.ForEach(x => x.Enabled = true);
+                this.AddRange(plugins);
             }
             catch (PluginLoadException)
             {
@@ -96,6 +83,27 @@ namespace NDifference.Inspectors
                     ex);
             }
         }
+
+		public void AddRange(IEnumerable<IInspector> inspectors)
+		{
+			if (inspectors == null)
+			{
+				throw new ArgumentNullException(nameof(inspectors));
+			}
+
+			IInspector[] plugins = inspectors.ToArray();
+
+			foreach (IInspector inspector in plugins)
+			{
+				inspector.Enabled = true;
+			}
+
+			this.aci.AddRange(plugins.OfType<IAssemblyCollectionInspector>());
+			this.ai.AddRange(plugins.OfType<IAssemblyInspector>());
+			this.tci.AddRange(plugins.OfType<ITypeCollectionInspector>());
+			this.ti.AddRange(plugins.OfType<ITypeInspector>());
+			this.iai.AddRange(plugins.OfType<IAnalysisInspector>());
+		}
 
         public void Filter(InspectorFilter filter)
 		{

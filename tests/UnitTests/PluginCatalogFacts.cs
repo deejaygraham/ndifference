@@ -27,7 +27,7 @@ namespace NDifference.UnitTests
 		}
 
 		[Fact]
-		public void Catalog_Loads_Plugins_Into_Collectible_Contexts()
+		public void Catalog_Loads_Plugins_Into_An_Isolated_Process_Lifetime_Context()
 		{
 			using var catalog = CreateBuiltInCatalog();
 
@@ -36,7 +36,7 @@ namespace NDifference.UnitTests
 
 			Assert.NotNull(loadContext);
 			Assert.NotSame(AssemblyLoadContext.Default, loadContext);
-			Assert.True(loadContext.IsCollectible);
+			Assert.False(loadContext.IsCollectible);
 		}
 
 		[Fact]

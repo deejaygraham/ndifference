@@ -11,7 +11,12 @@ namespace NDifference.Plugins
 		private readonly string pluginAssemblyPath;
 		private readonly string pluginDirectory;
 
-		public PluginLoadContext(string pluginAssemblyPath)
+		public PluginLoadContext(string pluginAssemblyPath, bool isCollectible = false)
+#if NET10_0_OR_GREATER
+			: base(
+				"NDifference.Plugin." + Path.GetFileNameWithoutExtension(pluginAssemblyPath),
+				isCollectible)
+#endif
 		{
 			if (string.IsNullOrWhiteSpace(pluginAssemblyPath))
 			{
